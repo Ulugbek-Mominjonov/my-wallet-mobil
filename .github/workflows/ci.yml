@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  domain:
+    name: Domen (Dart) — analiz, test, qoplama
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+      - working-directory: packages/domain
+        run: dart pub get
+      - name: Analiz (infolar ham xato hisoblanadi)
+        working-directory: packages/domain
+        run: dart analyze --fatal-infos
+      - name: Testlar
+        working-directory: packages/domain
+        run: dart test
+      - name: Qoplama (calc/ ≥95%)
+        working-directory: packages/domain
+        run: |
+          dart pub global activate coverage
+          dart test --coverage=.coverage
+          dart pub global run coverage:format_coverage \
+            --lcov --in=.coverage --out=.coverage/lcov.info \
+            --report-on=lib --packages=.dart_tool/package_config.json
+          python3 ../../tool/check_coverage.py .coverage/lcov.info
+
+  fixtures:
+    name: Fixture drifti (admin repo bilan shartnoma)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+      - working-directory: packages/domain
+        run: |
+          dart pub get
+          dart run tool/generate_fixtures.dart
+      - name: Fayl commit qilinganidan farq qilmasligi kerak
+        run: |
+          git diff --exit-code testdata/ || {
+            echo "❌ testdata eskirgan."
+            echo "   1) make fixtures"
+            echo "   2) oylik-byudjet-admin repoda: make sync-fixtures"
+            exit 1
+          }
+
+  flutter:
+    name: Flutter — analiz va testlar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - name: data_firebase
+        working-directory: packages/data_firebase
+        run: |
+          flutter pub get
+          flutter analyze
+          flutter test
+      - name: app
+        working-directory: app
+        run: |
+          flutter pub get
+          flutter analyze
+          flutter test
+
+  android:
+    name: Android build (haqiqiy kompilyatsiya)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      # `flutter analyze` topa olmaydigan xatolarni ushlaydi: Gradle
+      # sozlamalari, manifest, plaginlar mosligi, minSdk konflikti.
+      #
+      # `google-services.json` CI'da yo'q — Google Services plagini
+      # `build.gradle.kts` da SHARTLI qo'llanadi, shuning uchun build
+      # Firebase sozlanmasidan oldin ham o'tadi.
+      - name: Debug APK yig'ish
+        working-directory: app
+        run: |
+          flutter pub get
+          flutter build apk --debug
+      - name: Artefaktni saqlash
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-apk
+          path: app/build/app/outputs/flutter-apk/app-debug.apk
+          retention-days: 7
+

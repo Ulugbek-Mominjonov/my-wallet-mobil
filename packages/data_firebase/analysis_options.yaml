@@ -1,0 +1,4 @@
+analyzer:
+  exclude:
+    - build/**
+include: ../domain/analysis_options.yaml

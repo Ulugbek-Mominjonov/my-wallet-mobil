@@ -1,0 +1,24 @@
+name: data_firebase
+description: >-
+  Domen interfeyslarining Cloud Firestore implementatsiyasi: DTO'lar,
+  yagona yo'llar jadvali (refs) va delta-agregat yozuvchi (WriteBatch).
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+  flutter: '>=3.19.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  domain:
+    path: ../domain
+  cloud_firestore: ^6.10.0
+  firebase_core: ^4.15.0
+  firebase_auth: ^6.7.0
+
+dev_dependencies:
+  fake_cloud_firestore: ^4.2.0
+  flutter_test:
+    sdk: flutter

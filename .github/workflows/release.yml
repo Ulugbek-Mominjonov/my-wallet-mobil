@@ -1,0 +1,79 @@
+name: Release
+
+# Reliz teg qo'yilganda ishga tushadi:
+#   git tag v1.0.0 && git push origin v1.0.0
+#
+# Natija: imzolangan .aab (Play Store uchun) va .apk (to'g'ridan-to'g'ri
+# o'rnatish uchun) GitHub Release'ga biriktiriladi.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write   # GitHub Release yaratish uchun
+
+jobs:
+  build:
+    name: Reliz yig'ish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      # Imzo kaliti secretlarda bo'lsa — haqiqiy kalit bilan imzolanadi.
+      # Bo'lmasa debug kalit ishlatiladi: APK sinov uchun yaroqli,
+      # lekin Play Store uni rad etadi (bu ataylab — kalit majburiy).
+      - name: Imzo kalitini tayyorlash
+        id: signing
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "signed=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::ANDROID_KEYSTORE_BASE64 yo'q — debug kalit bilan yig'iladi"
+            exit 0
+          fi
+          echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
+          cat > app/android/key.properties <<PROPS
+          storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+          keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+          storeFile=$RUNNER_TEMP/release.jks
+          PROPS
+          echo "signed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Yig'ish
+        working-directory: app
+        env:
+          # Firebase sozlamalari `firebase_options.dart` da (flutterfire
+          # configure natijasi). Agar u repoda bo'lmasa, quyidagilar
+          # ishlatiladi — build baribir o'tadi.
+          FB: ${{ secrets.FIREBASE_PROJECT_ID }}
+        run: |
+          flutter pub get
+          flutter build appbundle --release
+          flutter build apk --release
+
+      - name: Kalitni o'chirish
+        if: always()
+        run: rm -f app/android/key.properties "$RUNNER_TEMP/release.jks"
+
+      - name: GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: My Wallet ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            app/build/app/outputs/bundle/release/app-release.aab
+            app/build/app/outputs/flutter-apk/app-release.apk
+          body: |
+            **Imzo:** ${{ steps.signing.outputs.signed == 'true' && 'reliz kaliti ✅' || '⚠️ debug kalit — Play Store qabul qilmaydi' }}
+
+            `.aab` → Play Console · `.apk` → to'g'ridan-to'g'ri o'rnatish

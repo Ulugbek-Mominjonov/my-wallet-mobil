@@ -1,0 +1,16 @@
+name: domain
+description: >-
+  Oylik byudjet — sof Dart domen qatlami. Flutter ham, Firebase ham bog'liqligi yo'q.
+  §2 dagi barcha biznes qoidalari shu paketda sof funksiya sifatida yashaydi.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  collection: ^1.19.0
+  meta: ^1.15.0
+
+dev_dependencies:
+  test: ^1.25.0

@@ -1,0 +1,13 @@
+# Reliz imzosi. Bu faylni `key.properties` deb nusxalang va to'ldiring.
+# ⚠️ `key.properties` va `.jks` fayli REPODA SAQLANMAYDI (.gitignore da).
+#
+# Kalit yaratish:
+#   keytool -genkey -v -keystore ~/mywallet-release.jks \
+#     -keyalg RSA -keysize 2048 -validity 10000 -alias mywallet
+#
+# Kalitni YO'QOTMANG: Play Store'ga yuklangan ilovani faqat shu kalit
+# bilan yangilash mumkin (Play App Signing yoqilmagan bo'lsa).
+storePassword=
+keyPassword=
+keyAlias=mywallet
+storeFile=/home/foydalanuvchi/mywallet-release.jks
