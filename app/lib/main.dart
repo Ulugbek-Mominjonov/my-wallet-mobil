@@ -11,16 +11,15 @@ import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Android'da `google-services.json` bo'lsa, Firebase `[DEFAULT]` ilovani
-  // jarayon boshlanishida O'ZI yaratadi (`FirebaseInitProvider`). Uni qayta
-  // yaratmoqchi bo'lish `[core/duplicate-app]` xatosini beradi va ilova
-  // splash ekranda qotib qoladi. Shuning uchun avval tekshiramiz —
-  // iOS va web'da ro'yxat bo'sh bo'ladi va odatdagidek ishga tushadi.
-  if (Firebase.apps.isEmpty) {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-  }
+  // ⚠️ `firebase_options.dart` va `android/app/google-services.json`
+  // BIR XIL Firebase loyihasidan bo'lishi shart. Aks holda FlutterFire
+  // `[core/duplicate-app]` tashlaydi: Android `[DEFAULT]` ilovani
+  // `google-services.json` dan o'zi yaratib qo'ygan bo'ladi, bu yerdagi
+  // `apiKey` esa boshqa loyihaniki bo'lib chiqadi.
+  // Ikkalasini `flutterfire configure --project=<loyiha>` birga yozadi.
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   // Offline-first: doimiy kesh + 100 MB. Aviarejimda ham yozuv ishlaydi,
   // bir marta o'qilgan oy qayta o'qilmaydi (§5.4).
