@@ -84,11 +84,13 @@
   (BR-060 — bir marta yaxlitlash, foiz bazis punktda, birlik —
   `Currency.allocationUnit`), `ReminderBuckets` (BR-160, offline eslatma
   BR-168 uchun ham).
-- [ ] **E12-T04** Qoidalar: `MonthSummaryCalc` (BR-090/091 — `MonthFacts`
-  kirishidan), `OverallTotals` (BR-092 + invariant), `ForecastCalc`
-  (BR-093, kutilayotgan daromad rejalari bilan), `SafeToSpend` (BR-094),
-  `SavingsCalc` (BR-100..102), `DebtCalc` (BR-112..114), `GoalCalc`
-  (BR-121), `LimitCalc` (BR-130).
+- [x] **E12-T04** Qoidalar: `MonthFacts` + `MonthSummary` (BR-090/091),
+  `OverallTotals` (BR-092 + invariant), `MonthForecast` (BR-093, kutilayotgan
+  daromad rejalari bilan), `safeToSpendPerDay` (BR-094), `savingsTable` /
+  `MonthSavings` (BR-100..102), `DebtProgress` / `DebtTotals` (BR-112..114),
+  `GoalProgress` (BR-121, BR-122), `limitStatus` (BR-130). Hammasi serverdagi
+  SQL bilan bir xil yaxlitlash (butun sonlarda, `round` — noldan uzoqqa);
+  domen qoplamasi 100%.
 - [ ] **E12-T05** Fixture yuklovchi (`test/support/fixtures.dart`) va
   parametrlangan testlar: har `contracts/fixtures/*.json` holati → kutilgan
   natija; test nomida BR ID.

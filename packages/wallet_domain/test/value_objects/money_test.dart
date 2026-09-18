@@ -27,6 +27,12 @@ void main() {
       expect(const Money(1).isPositive, isTrue);
     });
 
+    test("qiymat bo'yicha tenglik (hash bilan)", () {
+      final set = {const Money(5), Money(int.parse('5'))};
+      expect(set, hasLength(1));
+      expect(const Money(5).hashCode, Money(int.parse('5')).hashCode);
+    });
+
     test('valyutalar aralashmaydi', () {
       expect(
         () => const Money(1) + const Money(1, Currency.usd),
