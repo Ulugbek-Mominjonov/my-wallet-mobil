@@ -91,9 +91,16 @@
   `GoalProgress` (BR-121, BR-122), `limitStatus` (BR-130). Hammasi serverdagi
   SQL bilan bir xil yaxlitlash (butun sonlarda, `round` — noldan uzoqqa);
   domen qoplamasi 100%.
-- [ ] **E12-T05** Fixture yuklovchi (`test/support/fixtures.dart`) va
-  parametrlangan testlar: har `contracts/fixtures/*.json` holati → kutilgan
-  natija; test nomida BR ID.
+- [x] **E12-T05** Fixture yuklovchi (`test/support/fixture_ledger.dart` —
+  admin'dagi `load_fixture.sql` + triggerlar bilan bir xil yozuv yo'li:
+  standart to'plam, tegishli oy, "O'zim uchun", rejaning qarzi, to'langan
+  summa, fond rejasi, `settle`) va parametrlangan testlar: har
+  `contracts/fixtures/*.json` holati → 6 hisobot (`report_month`, `_year`,
+  `_savings`, `_personal_fund`, `_debts`, `_goals`) → `run.mjs` bilan bir xil
+  solishtiruv; test nomida BR ID. **51/51 holat mos** (40 tasi eski tizimdan);
+  ataylab 1 tiyin xato — aniq ushlandi. Amal tasnifi (`BudgetLine`,
+  `monthFactsOf`, BR-022/061..063/090) domen qoidasi sifatida — E13 SQL'i
+  uchun ham namuna.
 - [ ] **E12-T06** Repository interfeyslari va use-case'lar: `AddTransaction`,
   `EditTransaction`, `DeleteTransaction` (undo uchun qaytariladigan
   snapshot), `AddTransfer`, `PayPlanned` (BR-073), `SkipPlanned`,

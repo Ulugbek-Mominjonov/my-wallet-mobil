@@ -15,6 +15,7 @@ export 'src/entities/planned_item.dart';
 export 'src/entities/recurring_rule.dart';
 export 'src/entities/transaction.dart';
 export 'src/failures.dart';
+export 'src/rules/budget_lines.dart';
 export 'src/rules/debt_calc.dart';
 export 'src/rules/forecast.dart';
 export 'src/rules/goal_calc.dart';
