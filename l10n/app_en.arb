@@ -12,5 +12,10 @@
   "errorUnexpected": "Unexpected error. Please try again.",
   "errorNotFound": "Page not found",
   "emptyTitle": "No data yet",
-  "monthName": "{month, select, 1{January} 2{February} 3{March} 4{April} 5{May} 6{June} 7{July} 8{August} 9{September} 10{October} 11{November} 12{December} other{?}}"
+  "monthName": "{month, select, 1{January} 2{February} 3{March} 4{April} 5{May} 6{June} 7{July} 8{August} 9{September} 10{October} 11{November} 12{December} other{?}}",
+  "notFoundMessage": "The link is outdated or incorrect.",
+  "actionHome": "Go home",
+  "comingSoon": "Coming soon",
+  "addTitle": "New transaction",
+  "navAddLabel": "Add transaction"
 }

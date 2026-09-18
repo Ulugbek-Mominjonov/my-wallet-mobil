@@ -23,5 +23,10 @@
   },
   "@tabHome": {
     "description": "Pastki navigatsiya: bosh ekran (dashboard)"
-  }
+  },
+  "notFoundMessage": "Havola eskirgan yoki noto'g'ri.",
+  "actionHome": "Bosh sahifaga",
+  "comingSoon": "Tez orada",
+  "addTitle": "Yangi amal",
+  "navAddLabel": "Amal qo'shish"
 }

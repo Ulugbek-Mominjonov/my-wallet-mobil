@@ -64,4 +64,19 @@ class AppL10nUz extends AppL10n {
     });
     return '$_temp0';
   }
+
+  @override
+  String get notFoundMessage => 'Havola eskirgan yoki noto\'g\'ri.';
+
+  @override
+  String get actionHome => 'Bosh sahifaga';
+
+  @override
+  String get comingSoon => 'Tez orada';
+
+  @override
+  String get addTitle => 'Yangi amal';
+
+  @override
+  String get navAddLabel => 'Amal qo\'shish';
 }

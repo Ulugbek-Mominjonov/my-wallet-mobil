@@ -64,4 +64,19 @@ class AppL10nRu extends AppL10n {
     });
     return '$_temp0';
   }
+
+  @override
+  String get notFoundMessage => 'Ссылка устарела или указана с ошибкой.';
+
+  @override
+  String get actionHome => 'На главную';
+
+  @override
+  String get comingSoon => 'Скоро';
+
+  @override
+  String get addTitle => 'Новая операция';
+
+  @override
+  String get navAddLabel => 'Добавить операцию';
 }

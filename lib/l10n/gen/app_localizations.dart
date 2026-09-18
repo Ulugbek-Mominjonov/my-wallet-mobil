@@ -176,6 +176,36 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'{month, select, 1{Yanvar} 2{Fevral} 3{Mart} 4{Aprel} 5{May} 6{Iyun} 7{Iyul} 8{Avgust} 9{Sentabr} 10{Oktabr} 11{Noyabr} 12{Dekabr} other{?}}'**
   String monthName(String month);
+
+  /// No description provided for @notFoundMessage.
+  ///
+  /// In uz, this message translates to:
+  /// **'Havola eskirgan yoki noto\'g\'ri.'**
+  String get notFoundMessage;
+
+  /// No description provided for @actionHome.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bosh sahifaga'**
+  String get actionHome;
+
+  /// No description provided for @comingSoon.
+  ///
+  /// In uz, this message translates to:
+  /// **'Tez orada'**
+  String get comingSoon;
+
+  /// No description provided for @addTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yangi amal'**
+  String get addTitle;
+
+  /// No description provided for @navAddLabel.
+  ///
+  /// In uz, this message translates to:
+  /// **'Amal qo\'shish'**
+  String get navAddLabel;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

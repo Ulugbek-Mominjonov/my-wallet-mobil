@@ -45,8 +45,10 @@
 - [x] **E04-T05** l10n: `gen-l10n`, `l10n/app_uz.arb` (asosiy), `app_ru.arb`,
   `app_en.arb`; pul/sana formatlari (`1 234 567 so'm`, `Sentabr 2026`) +
   testlar.
-- [ ] **E04-T06** go_router karkasi: shell (4 tab + markaziy FAB — hozircha
-  bo'sh ekranlar), auth/onboarding marshrutlari uchun joy, xato sahifasi.
+- [x] **E04-T06** go_router karkasi: `StatefulShellRoute` (4 tab holatini
+  saqlaydi) + o'rtada chuqurchali "＋" (BottomAppBar notch), `/add` sahifasi
+  (vidjet/tez amallar deep-link'i uchun), 404 ekrani, dev katalog (faqat dev);
+  auth/onboarding redirect'lari → E14. Navigatsiya testlari (5 ta).
 - [ ] **E04-T07** CI `ci.yml`: Flutter (pinned versiya, kesh) → format →
   `build_runner` (generatsiya qilingan fayllar commit qilingan — farq bo'lsa
   qulaydi) → analyze → test + coverage → `tool/check_coverage.dart`.
@@ -349,3 +351,4 @@
 | 2026-09-18 | E04-T02..T03 | flavor'lar (dev APK: `uz.mywallet.app.dev`, "My Wallet Dev" ✅), AppConfig (+test), bootstrap (xato ushlagichlar, AppLog, ProviderScope) |
 | 2026-09-18 | E04-T04 | dizayn tokenlari, tema, formatMoney (+6 test), MoneyText (+3 vidjet testi), AppCard/EmptyState/Skeleton, dev katalog |
 | 2026-09-18 | E04-T05 | gen-l10n (uz asosiy, ru, en; `AppL10n`), noma'lum qurilma tili → uz, oy sarlavhasi admin bilan bir xil (+4 test) |
+| 2026-09-18 | E04-T06 | go_router shell (4 tab + notched ＋), /add, 404, dev katalog; 20 test yashil |

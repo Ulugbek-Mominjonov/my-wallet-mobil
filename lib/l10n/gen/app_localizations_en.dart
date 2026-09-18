@@ -64,4 +64,19 @@ class AppL10nEn extends AppL10n {
     });
     return '$_temp0';
   }
+
+  @override
+  String get notFoundMessage => 'The link is outdated or incorrect.';
+
+  @override
+  String get actionHome => 'Go home';
+
+  @override
+  String get comingSoon => 'Coming soon';
+
+  @override
+  String get addTitle => 'New transaction';
+
+  @override
+  String get navAddLabel => 'Add transaction';
 }

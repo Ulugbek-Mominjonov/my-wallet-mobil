@@ -1,0 +1,75 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:my_wallet/core/config/app_config.dart';
+import 'package:my_wallet/core/di/app_providers.dart';
+import 'package:my_wallet/features/dev/design_catalog_screen.dart';
+import 'package:my_wallet/features/shell/presentation/app_shell.dart';
+import 'package:my_wallet/features/shell/presentation/not_found_screen.dart';
+import 'package:my_wallet/features/shell/presentation/placeholder_screen.dart';
+import 'package:my_wallet/l10n/gen/app_localizations.dart';
+
+/// Marshrutlar. Auth va onboarding yo'naltirishlari (redirect) — E14.
+final routerProvider = Provider<GoRouter>((ref) {
+  final isDev = ref.watch(appConfigProvider).env == AppEnv.dev;
+
+  final router = GoRouter(
+    errorBuilder: (context, state) => const NotFoundScreen(),
+    routes: [
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, shell) => AppShell(navigationShell: shell),
+        branches: [
+          _tab('/', Icons.space_dashboard_outlined, (l10n) => l10n.tabHome),
+          _tab(
+            '/transactions',
+            Icons.receipt_long_outlined,
+            (l10n) => l10n.tabTransactions,
+          ),
+          _tab(
+            '/payments',
+            Icons.event_note_outlined,
+            (l10n) => l10n.tabPayments,
+          ),
+          _tab(
+            '/wallet',
+            Icons.account_balance_wallet_outlined,
+            (l10n) => l10n.tabWallet,
+          ),
+        ],
+      ),
+      // Amal qo'shish — alohida sahifa: vidjet va tez amallardan ham
+      // ochiladi (E15, E33).
+      GoRoute(
+        path: '/add',
+        pageBuilder: (context, state) => MaterialPage(
+          fullscreenDialog: true,
+          child: PlaceholderScreen(
+            title: AppL10n.of(context).addTitle,
+            icon: Icons.add_card_outlined,
+          ),
+        ),
+      ),
+      if (isDev)
+        GoRoute(
+          path: '/dev/catalog',
+          builder: (context, state) => const DesignCatalogScreen(),
+        ),
+    ],
+  );
+  ref.onDispose(router.dispose);
+  return router;
+});
+
+StatefulShellBranch _tab(
+  String path,
+  IconData icon,
+  String Function(AppL10n) title,
+) => StatefulShellBranch(
+  routes: [
+    GoRoute(
+      path: path,
+      builder: (context, state) =>
+          PlaceholderScreen(title: title(AppL10n.of(context)), icon: icon),
+    ),
+  ],
+);
