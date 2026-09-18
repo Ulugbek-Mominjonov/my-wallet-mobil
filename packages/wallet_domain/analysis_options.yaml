@@ -1,1 +1,15 @@
 include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - "**/*.freezed.dart"
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+
+linter:
+  rules:
+    # Ichki paket (publish_to: none) — ilova bilan bir xil: har a'zo uchun
+    # dartdoc shart emas; qoidalar va tiplar baribir hujjatlanadi.
+    public_member_api_docs: false

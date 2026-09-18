@@ -17,9 +17,9 @@ lint: contracts-check ## Format, analiz (ilova + domen paketi) va shartnoma yaxl
 	flutter analyze --fatal-infos
 	cd $(DOMAIN) && dart analyze --fatal-infos
 
-test: ## Barcha testlar (domen testlari — E12 dan boshlab)
+test: ## Barcha testlar (ilova + domen paketi)
 	flutter test
-	@if ls $(DOMAIN)/test/*_test.dart >/dev/null 2>&1; then cd $(DOMAIN) && dart test; fi
+	cd $(DOMAIN) && dart test
 
 fmt: ## Kodni formatlash
 	dart format lib test tool $(DOMAIN)
@@ -30,9 +30,11 @@ gen: ## Kod generatsiyasi: l10n (build_runner — kod generatsiyasi paydo bo'lga
 gen-check: gen ## Generatsiya qilingan kod commit qilinganiga mosligi (CI)
 	git diff --exit-code -- lib/l10n/gen
 
-coverage: ## Testlar + qoplama chegarasi (umumiy ≥ 70%; domen qoidalari ≥ 95% — E12)
+coverage: ## Testlar + qoplama chegarasi (ilova ≥ 70%, domen paketi ≥ 95%)
 	flutter test --coverage
 	dart run tool/check_coverage.dart coverage/lcov.info lib=70
+	cd $(DOMAIN) && dart test --coverage-path=coverage/lcov.info
+	cd $(DOMAIN) && dart run ../../tool/check_coverage.dart coverage/lcov.info lib=95
 
 contracts-sync: ## Admin'dan contracts/ olish: make contracts-sync REF=<to'liq-sha|branch|papka>
 	tool/sync_contracts.sh $(REF)

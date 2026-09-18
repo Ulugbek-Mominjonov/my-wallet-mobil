@@ -65,10 +65,12 @@
 > 121, 130, 160. **DoD:** barcha `contracts/fixtures` holatlari Dart'da
 > yashil; qoplama ≥ 95%.
 
-- [ ] **E12-T01** Value object'lar: `Money` (int eng kichik birlik + valyuta,
-  `+ − *`, `roundTo`, `parse` — `1 200 000`, `1,200,000`), `Currency`
+- [x] **E12-T01** Value object'lar: `Money` (int eng kichik birlik + valyuta,
+  `+ − *`, `roundTo` — Postgres `round` bilan bir xil, noldan uzoqqa;
+  `parse` — `1 200 000`, `1,200,000`, `1 200 000,50`), `Currency`
   (exponent), `MonthKey` (`shift`, `daysInMonth`, `dayOf` qisish),
-  `LocalDate` (kun aniqligi, BR-002).
+  `LocalDate` (kun aniqligi, BR-002). Domen qoplamasi `make coverage` da
+  (≥ 95%, hozir 98.9%).
 - [ ] **E12-T02** Entity'lar (freezed): Household, Member, Account,
   Category, RecurringRule, PlannedItem, Transaction, Debt, Goal,
   CategoryLimit, QuickAction, Tag; `Failure` sealed klasslari

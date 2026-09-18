@@ -3,6 +3,7 @@
 //   dart run tool/check_coverage.dart coverage/lcov.info lib=60 lib/core=80
 //
 // Generatsiya qilingan kod (l10n, *.g.dart, *.freezed.dart) hisobga olinmaydi.
+// Yo'llar joriy papkaga nisbatan (`dart test` absolyut yo'l yozadi).
 import 'dart:io';
 
 const _generated = ['lib/l10n/gen/', '.g.dart', '.freezed.dart'];
@@ -43,7 +44,7 @@ Map<String, ({int found, int hit})> _parseLcov(List<String> lines) {
   var hit = 0;
   for (final line in lines) {
     if (line.startsWith('SF:')) {
-      current = line.substring(3);
+      current = _relative(line.substring(3));
       found = 0;
       hit = 0;
     } else if (line.startsWith('LF:')) {
@@ -58,4 +59,9 @@ Map<String, ({int found, int hit})> _parseLcov(List<String> lines) {
     }
   }
   return result;
+}
+
+String _relative(String path) {
+  final cwd = '${Directory.current.path}/';
+  return path.startsWith(cwd) ? path.substring(cwd.length) : path;
 }
