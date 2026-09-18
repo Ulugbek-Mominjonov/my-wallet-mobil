@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyWalletApp());
-}
-
-/// Ilova ildizi. Flavor'lar, DI va marshrutlash E04-T02..T06 da qo'shiladi.
+/// Ilova ildizi. Tema, l10n va marshrutlash E04-T04..T06 da qo'shiladi.
 class MyWalletApp extends StatelessWidget {
   const new({super.key});
 

@@ -27,5 +27,5 @@ fmt: ## Kodni formatlash
 gen: ## Kod generatsiyasi (build_runner, l10n)
 	@echo "gen: E04 da qo'shiladi"
 
-run-dev: ## Ilovani dev flavor bilan ishga tushirish
-	@echo "run-dev: E04 da qo'shiladi"
+run-dev: ## Ilovani dev flavor bilan ishga tushirish (lokal Supabase)
+	flutter run --flavor dev -t lib/main_dev.dart --dart-define-from-file=env/dev.json

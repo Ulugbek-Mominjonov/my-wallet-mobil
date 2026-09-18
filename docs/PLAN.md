@@ -24,14 +24,17 @@
   `uz.mywallet.app`, "My Wallet"; iOS — Q4 bo'yicha keyinroq), pub
   workspace + `packages/wallet_domain` (sof Dart), `very_good_analysis`,
   `Makefile` (`check`, `gen`, `test`, `fmt`, `run-dev`), Dependabot'ga `pub` yozuvi.
-- [ ] **E04-T02** Flavor'lar `dev` / `staging` / `prod`: Android
+- [x] **E04-T02** Flavor'lar `dev` / `staging` / `prod`: Android
   `productFlavors` (`applicationIdSuffix` `.dev` / `.stg`, ilova nomi
-  qo'shimchasi, rangli ikon), `main_<flavor>.dart`,
+  qo'shimchasi — AGP 9 `resValues`), `main_<flavor>.dart`,
   `--dart-define-from-file=env/<flavor>.json` (`env/*.example.json` repoda,
-  haqiqiylari `.gitignore` da).
-- [ ] **E04-T03** `bootstrap.dart`: `runZonedGuarded`, `FlutterError.onError`,
-  `AppLog` (debug — konsol, release — Crashlytics), Riverpod `ProviderScope`
-  + `ProviderObserver`, birinchi kadrdan keyin kechiktirilgan init.
+  haqiqiylari `.gitignore` da), `AppConfig` noto'g'ri env faylni rad etadi.
+  Flavor rangli ikonlari → E20-T01 (brend ikoni bilan birga).
+- [x] **E04-T03** `bootstrap.dart`: `FlutterError.onError` +
+  `PlatformDispatcher.onError` (zamonaviy tavsiya — `runZonedGuarded` kerak
+  emas), `AppLog` (debug — konsol, release — ulanadigan `ErrorReporter`;
+  Crashlytics E20 da), Riverpod `ProviderScope` + `AppProviderObserver`,
+  `appConfigProvider`. Kechiktirilgan init — Firebase qo'shilganda (E19).
 - [ ] **E04-T04** Dizayn tizimi asosi: tokenlar (`ThemeExtension`), light/dark
   `ThemeData`, tipografiya (tabular raqamlar), `MoneyText`, `AppButton`,
   `AppCard`, `EmptyState`, `Skeleton`; komponentlar katalogi (demo ekran).
@@ -339,3 +342,4 @@
 |---|---|---|
 | 2026-09-18 | E00 | mobil arxitektura, reja, deploy yo'riqnomasi va CONTRIBUTING yozildi |
 | 2026-09-18 | E04-T01 | Flutter loyiha (Android), `uz.mywallet.app`, workspace + `wallet_domain`, very_good_analysis, `make check` yashil, debug APK ✅ |
+| 2026-09-18 | E04-T02..T03 | flavor'lar (dev APK: `uz.mywallet.app.dev`, "My Wallet Dev" ✅), AppConfig (+test), bootstrap (xato ushlagichlar, AppLog, ProviderScope) |

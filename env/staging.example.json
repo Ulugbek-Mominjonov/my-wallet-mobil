@@ -1,0 +1,8 @@
+{
+  "APP_ENV": "staging",
+  "SUPABASE_URL": "https://<staging-ref>.supabase.co",
+  "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_xxx",
+  "GOOGLE_WEB_CLIENT_ID": "",
+  "AUTH_REDIRECT": "mywallet-stg://auth-callback",
+  "TELEGRAM_BOT_USERNAME": "MyWalletStgBot"
+}

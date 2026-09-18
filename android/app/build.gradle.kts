@@ -28,6 +28,31 @@ android {
         versionName = flutter.versionName
     }
 
+    // Muhitlar (DEPLOY.md 3-bo'lim): bir telefonda uchala versiya yonma-yon
+    // o'rnatilishi mumkin; backend manzili --dart-define-from-file orqali.
+    // AGP 9: flavor bo'yicha ilova nomi (resValue) uchun yoqiladi.
+    buildFeatures {
+        resValues = true
+    }
+
+    flavorDimensions += "env"
+    productFlavors {
+        create("dev") {
+            dimension = "env"
+            applicationIdSuffix = ".dev"
+            resValue("string", "app_name", "My Wallet Dev")
+        }
+        create("staging") {
+            dimension = "env"
+            applicationIdSuffix = ".stg"
+            resValue("string", "app_name", "My Wallet Stg")
+        }
+        create("prod") {
+            dimension = "env"
+            resValue("string", "app_name", "My Wallet")
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

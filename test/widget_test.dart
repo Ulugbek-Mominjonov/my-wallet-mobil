@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_wallet/main.dart';
+import 'package:my_wallet/app/app.dart';
 
 void main() {
   testWidgets('ilova ishga tushadi', (tester) async {
