@@ -335,6 +335,6 @@
 
 ## Jarayon jurnali (mobil)
 
-| Sana | Vazifa | Natija | Commit |
-|---|---|---|---|
-| 2026-09-18 | E00 | mobil arxitektura, reja va deploy yo'riqnomasi yozildi | — |
+| Sana | Vazifa | Natija |
+|---|---|---|
+| 2026-09-18 | E00 | mobil arxitektura, reja, deploy yo'riqnomasi va CONTRIBUTING yozildi |
