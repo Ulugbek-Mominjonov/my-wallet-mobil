@@ -107,7 +107,8 @@ Eski tizimda faqat `karta / naqd` **usuli** bor edi. Endi ular haqiqiy hisoblar.
 
 - **BR-020** Hisob turlari: `cash` (naqd), `card` (karta), `bank` (bank
   hisobi), `ewallet` (Click/Payme va h.k.), `deposit` (omonat), `personal_fund`
-  (👤 shaxsiy fond — byudjetda bitta, tizim hisobi), `other`.
+  (👤 shaxsiy fond — byudjetda bitta, tizim hisobi: turi o'zgarmaydi,
+  o'chirilmaydi, arxivlanmaydi; nomi o'zgarishi mumkin), `other`.
 - **BR-021** Hisob qoldig'i =
   `boshlang'ich qoldiq + Σ daromad − Σ xarajat + Σ kiruvchi o'tkazma − Σ chiquvchi o'tkazma`
   (hisob valyutasida).
@@ -118,7 +119,10 @@ Eski tizimda faqat `karta / naqd` **usuli** bor edi. Endi ular haqiqiy hisoblar.
   (masalan kartadan naqd yechish). **Yagona istisno** — `personal_fund`
   hisobiga o'tkazma (BR-061).
 - **BR-024** Tranzaksiyasi bor hisob o'chirilmaydi — **arxivlanadi**
-  (tanlash ro'yxatlarida ko'rinmaydi, hisobotlarda qoladi).
+  (tanlash ro'yxatlarida ko'rinmaydi, hisobotlarda qoladi). Reja, doimiy
+  reja, tez tugma yoki 👤 fond manbai sifatida ishlatilayotgan hisob ham
+  o'chirilmaydi; fond manbai arxivlanmaydi ham — avval fond sozlamasida
+  boshqa hisob tanlanadi.
 - **BR-025** Naqd hisob qoldig'i manfiy bo'lsa — ogohlantirish (tekshiruvda
   va hisob kartasida).
 - **BR-026** Hisob valyutasi birinchi amaldan keyin o'zgartirilmaydi.
@@ -135,16 +139,21 @@ Eski tizimda faqat `karta / naqd` **usuli** bor edi. Endi ular haqiqiy hisoblar.
   Internet/Aloqa, Oziq-ovqat, Transport, Kredit/Qarz, Sog'liq, Ta'lim, Kiyim,
   Ko'ngilochar, Sovg'a, Uy-ro'zg'or, **O'zim uchun**, Boshqa.
 - **BR-033 [ASL]** **"O'zim uchun"** — tizim kategoriyasi
-  (`system_code = personal_allocation`). O'chirilmaydi, nomi o'zgartirilishi
-  mumkin. Shaxsiy fond ajratmalari shu kategoriyada ko'rinadi.
+  (`system_code = personal_allocation`). O'chirilmaydi va arxivlanmaydi,
+  nomi (ikon, rang) o'zgartirilishi mumkin. Shaxsiy fond ajratmalari shu
+  kategoriyada ko'rinadi.
 - **BR-034 [YANGI]** Bir darajali **subkategoriya** (masalan Transport →
   Taksi, Yoqilg'i). Hisobotlar ota-kategoriyaga yig'ib ko'rsata oladi.
 - **BR-035 [ASL*]** Eski tizimda kategoriya erkin matn edi (xato yozilsa
   alohida kategoriya bo'lib qolardi). Endi faqat spravochnikdan tanlanadi;
   amal qo'shayotganda **joyida yangi kategoriya** yaratish mumkin.
-- **BR-036 [YANGI]** Ishlatilgan kategoriya o'chirilmaydi — arxivlanadi yoki
+- **BR-036 [YANGI]** Ishlatilgan kategoriya (amal, reja, doimiy reja, limit,
+  tez tugma yoki subkategoriyasi bor) o'chirilmaydi — arxivlanadi yoki
   boshqasi bilan **birlashtiriladi** (barcha amallar ko'chiriladi, bitta
-  tranzaksiyada).
+  tranzaksiyada). Kategoriya turi (daromad/xarajat) yaratilgandan keyin
+  o'zgarmaydi. Birlashtirishda turlar bir xil, daromad turlarida oy siljishi
+  ham bir xil bo'lishi kerak (aks holda amallar jimgina boshqa oyga
+  ko'chardi — avval BR-043 bilan tekislanadi).
 - **BR-037 [YANGI]** Ikon va rang (UI uchun), tartib (drag & drop).
 
 ---
@@ -212,6 +221,8 @@ Pul **qachon kelgani** bilan **qaysi oyning puli** ekani har doim bir xil emas:
 - **BR-070 [ASL]** Reja: nomi, kategoriya, hisob (taxminiy), rejadagi summa
   (**bo'sh bo'lishi mumkin** = "summasi har oy o'zgaradi"), to'lov kuni,
   tegishli oy, avto to'lov belgisi, ixtiyoriy qarz bog'lanishi, izoh.
+  Reja summasi byudjetning asosiy valyutasida; 👤 fond hisobi rejada
+  qatnashmaydi. To'lovi bor reja o'chirilmaydi — o'tkazib yuboriladi.
 - **BR-071 [ASL]** Holat (ko'rsatishda **bugungi sanadan** hisoblanadi, BR-002):
 
   | Holat | Qachon |
@@ -231,7 +242,8 @@ Pul **qachon kelgani** bilan **qaysi oyning puli** ekani har doim bir xil emas:
   `[YANGI]` Summa qolgandan kam bo'lsa: "Qisman to'lov — qolganini keyin
   to'laysizmi?" → `partial`; yoki "Yopish" → `paid`.
 - **BR-074 [ASL]** Ommaviy "To'landi" (admin): tanlangan rejalar **bitta
-  tranzaksiyada**; faqat summasi aniq (> 0) rejalar.
+  tranzaksiyada**; faqat summasi aniq (> 0) rejalar. To'lanmaganlari sababi
+  bilan qaytadi (summa noma'lum, hisob yo'q, boshqa valyutadagi hisob va h.k.).
 - **BR-075 [ASL]** **Avto to'lov:** `avto && reja > 0 && to'lanmagan &&
   to'lov_kuni ≤ bugun` → server ilovani ochmasangiz ham har kuni (00:10)
   qolgan summaga teng to'lov yozadi (`source = auto_pay`). Internet, telefon,
@@ -280,12 +292,18 @@ Pul **qachon kelgani** bilan **qaysi oyning puli** ekani har doim bir xil emas:
 - **BR-061 [ASL*]** Ajratma = tanlangan hisobdan **👤 shaxsiy fond hisobiga
   o'tkazma**. Byudjet uchun u **"O'zim uchun" kategoriyasidagi xarajat**
   hisoblanadi (oy qoldig'ini kamaytiradi) — eski tizim bilan aynan bir xil
-  arifmetika, lekin endi pul qayerda ekani ham ko'rinadi.
+  arifmetika, lekin endi pul qayerda ekani ham ko'rinadi. Ajratma rejasi
+  faqat byudjet hisobidan fondga o'tkazma bilan to'lanadi. `[YANGI]` Fonddan
+  byudjet hisobiga o'tkazma — ajratmaning qaytishi (manfiy ajratma): oy
+  xarajatini kamaytiradi, shuning uchun BR-092 invarianti saqlanadi.
 - **BR-062 [ASL]** Shaxsiy fonddan sarf = `personal_fund` hisobidan xarajat.
   U **oylik byudjet qoldig'iga ta'sir qilmaydi** — faqat fond qoldig'ini
-  kamaytiradi.
+  kamaytiradi. Kategoriya ko'rsatilmasa — "O'zim uchun". Fonddan sarf
+  byudjet rejasiga bog'lanmaydi (reja — byudjet bandi).
 - **BR-063 [ASL]** Fond qoldig'i = Σ ajratilgan − Σ sarflangan
-  (= `personal_fund` hisobining qoldig'i).
+  (= `personal_fund` hisobining qoldig'i). Shu tenglik saqlanishi uchun fond
+  hisobiga daromad yozilmaydi — pul fondga faqat ajratma o'tkazmasi bilan
+  tushadi.
 - **BR-064 [ASL]** Fond ekrani: qoldiq, shu oy ajratilgan/sarflangan, jami
   ajratilgan/sarflangan, sarf qo'shish formasi, sarflar tarixi.
 - **BR-065 [ASL]** Fonddan sarfning tegishli oyi — sarf sanasi oyi.
@@ -381,7 +399,8 @@ hisobidan tashqari hisoblardagi daromad/xarajatlar + fondga ajratmalar.
   `owed_to_me` — menga qarzdor), umumiy summa, oldin to'langan (ilovadan
   tashqari), oylik to'lov, `[YANGI]` muddat, izoh, arxiv.
 - **BR-111 [ASL]** Bog'lanish **faqat aniq `debt_id` orqali** (nom bo'yicha
-  taxmin qilinmaydi — eski tizimdagi nom mosligi xatolari takrorlanmaydi):
+  taxmin qilinmaydi — eski tizimdagi nom mosligi xatolari takrorlanmaydi;
+  bog'langan amal qarz valyutasida bo'ladi):
   - `i_owe` ← bog'langan **xarajatlar** (qarzimni to'ladim);
   - `owed_to_me` ← bog'langan **daromadlar** (haqimni qaytarishdi).
   Doimiy reja qarzga bog'lansa, undan yaratilgan rejalar ham bog'lanadi.
@@ -462,7 +481,8 @@ hisobidan tashqari hisoblardagi daromad/xarajatlar + fondga ajratmalar.
 
 ## 16. 🔒 Oyni yopish
 
-- **BR-150 [ASL]** Tugagan oyni yopish / qayta ochish (owner/admin).
+- **BR-150 [ASL]** Tugagan oyni yopish / qayta ochish (owner/admin). Joriy va
+  kelgusi oylar yopilmaydi.
 - **BR-151 [ASL]** Yopilgan oy 🔒 belgisi bilan ko'rsatiladi (yillik ko'rinish,
   hisobot, dashboard).
 - **BR-152 [ASL]** Yopilgan oy amalini tahrirlash — ogohlantirish (BR-055).
@@ -556,7 +576,9 @@ hisobidan tashqari hisoblardagi daromad/xarajatlar + fondga ajratmalar.
 ## 21. Teglar, cheklar, qidiruv `[YANGI]`
 
 - **BR-200** Teg — erkin belgi (masalan `#samarqand-safari`); amalga bir
-  nechta teg; teg bo'yicha hisobot.
+  nechta teg; teg bo'yicha hisobot. Teg amal bilan birga yaratiladi, shuning
+  uchun uni amal yoza oladigan har a'zo yaratadi; nomini o'zgartirish va
+  o'chirish — `owner`/`admin`.
 - **BR-201** Chek rasmi: qurilmada ≤ 1 MB gacha siqiladi, byudjetning shaxsiy
   papkasida saqlanadi; amal o'chirilsa rasm ham o'chadi.
 - **BR-202** Qidiruv: nomi/izoh bo'yicha (xatoga chidamli), summa oralig'i,
