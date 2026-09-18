@@ -35,9 +35,13 @@
   emas), `AppLog` (debug — konsol, release — ulanadigan `ErrorReporter`;
   Crashlytics E20 da), Riverpod `ProviderScope` + `AppProviderObserver`,
   `appConfigProvider`. Kechiktirilgan init — Firebase qo'shilganda (E19).
-- [ ] **E04-T04** Dizayn tizimi asosi: tokenlar (`ThemeExtension`), light/dark
-  `ThemeData`, tipografiya (tabular raqamlar), `MoneyText`, `AppButton`,
-  `AppCard`, `EmptyState`, `Skeleton`; komponentlar katalogi (demo ekran).
+- [x] **E04-T04** Dizayn tizimi asosi: tokenlar (`AppColors` ThemeExtension —
+  income/expense/warning light/dark, `AppSpacing`, `AppRadii`), Material 3
+  tema (admin bilan bir xil indigo brend), `formatMoney` (admin bilan bir xil
+  kutilmalar — parite), `MoneyText` (tabular raqamlar, maxfiylik rejimi
+  BR-212), `AppCard`, `EmptyState`, `Skeleton` (reduce-motion'ni hurmat
+  qiladi), dev katalog ekrani. Alohida `AppButton` yo'q — Material tugmalari
+  tema orqali (keraksiz o'ram emas).
 - [ ] **E04-T05** l10n: `gen-l10n`, `l10n/app_uz.arb` (asosiy), `app_ru.arb`,
   `app_en.arb`; pul/sana formatlari (`1 234 567 so'm`, `Sentabr 2026`) +
   testlar.
@@ -343,3 +347,4 @@
 | 2026-09-18 | E00 | mobil arxitektura, reja, deploy yo'riqnomasi va CONTRIBUTING yozildi |
 | 2026-09-18 | E04-T01 | Flutter loyiha (Android), `uz.mywallet.app`, workspace + `wallet_domain`, very_good_analysis, `make check` yashil, debug APK ✅ |
 | 2026-09-18 | E04-T02..T03 | flavor'lar (dev APK: `uz.mywallet.app.dev`, "My Wallet Dev" ✅), AppConfig (+test), bootstrap (xato ushlagichlar, AppLog, ProviderScope) |
+| 2026-09-18 | E04-T04 | dizayn tokenlari, tema, formatMoney (+6 test), MoneyText (+3 vidjet testi), AppCard/EmptyState/Skeleton, dev katalog |
