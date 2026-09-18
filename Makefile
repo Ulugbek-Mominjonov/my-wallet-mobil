@@ -10,14 +10,19 @@ help: ## Buyruqlar ro'yxati
 
 check: lint test ## Barcha tekshiruvlar (PR'dan oldin majburiy)
 
-lint: ## Format va analiz
-	@echo "lint: E04 da qo'shiladi (dart format + flutter analyze)"
+DOMAIN := packages/wallet_domain
 
-test: ## Barcha testlar
-	@echo "test: E04 da qo'shiladi (flutter test + qoplama)"
+lint: ## Format va analiz (ilova + domen paketi)
+	dart format --output=none --set-exit-if-changed lib test $(DOMAIN)
+	flutter analyze --fatal-infos
+	cd $(DOMAIN) && dart analyze --fatal-infos
+
+test: ## Barcha testlar (domen testlari — E12 dan boshlab)
+	flutter test
+	@if ls $(DOMAIN)/test/*_test.dart >/dev/null 2>&1; then cd $(DOMAIN) && dart test; fi
 
 fmt: ## Kodni formatlash
-	@echo "fmt: E04 da qo'shiladi"
+	dart format lib test $(DOMAIN)
 
 gen: ## Kod generatsiyasi (build_runner, l10n)
 	@echo "gen: E04 da qo'shiladi"

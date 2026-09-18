@@ -1,5 +1,4 @@
 # Bog'liqliklar haftalik, guruhlab yangilanadi (PR soni kam bo'lsin).
-# pub yozuvi E04 da pubspec.yaml paydo bo'lganda qo'shiladi.
 version: 2
 updates:
   - package-ecosystem: github-actions
@@ -9,4 +8,12 @@ updates:
       day: monday
     groups:
       actions:
+        patterns: ["*"]
+  - package-ecosystem: pub
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      pub:
         patterns: ["*"]

@@ -20,7 +20,7 @@
 > **Maqsad:** flavor'li bo'sh ilova, domen paketi, dizayn tizimi asosi, CI
 > yashil. **DoD:** `flutter run --flavor dev` ishlaydi; CI PR'da yashil.
 
-- [ ] **E04-T01** Flutter loyiha (`flutter create --platforms=android`,
+- [x] **E04-T01** Flutter loyiha (`flutter create --platforms=android`,
   `uz.mywallet.app`, "My Wallet"; iOS — Q4 bo'yicha keyinroq), pub
   workspace + `packages/wallet_domain` (sof Dart), `very_good_analysis`,
   `Makefile` (`check`, `gen`, `test`, `fmt`, `run-dev`), Dependabot'ga `pub` yozuvi.
@@ -338,3 +338,4 @@
 | Sana | Vazifa | Natija |
 |---|---|---|
 | 2026-09-18 | E00 | mobil arxitektura, reja, deploy yo'riqnomasi va CONTRIBUTING yozildi |
+| 2026-09-18 | E04-T01 | Flutter loyiha (Android), `uz.mywallet.app`, workspace + `wallet_domain`, very_good_analysis, `make check` yashil, debug APK ✅ |
