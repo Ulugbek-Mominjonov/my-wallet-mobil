@@ -23,7 +23,7 @@
 - [ ] **E04-T01** Flutter loyiha (`flutter create --platforms=android`,
   `uz.mywallet.app`, "My Wallet"; iOS — Q4 bo'yicha keyinroq), pub
   workspace + `packages/wallet_domain` (sof Dart), `very_good_analysis`,
-  `Makefile` (`check`, `gen`, `test`, `fmt`, `run-dev`).
+  `Makefile` (`check`, `gen`, `test`, `fmt`, `run-dev`), Dependabot'ga `pub` yozuvi.
 - [ ] **E04-T02** Flavor'lar `dev` / `staging` / `prod`: Android
   `productFlavors` (`applicationIdSuffix` `.dev` / `.stg`, ilova nomi
   qo'shimchasi, rangli ikon), `main_<flavor>.dart`,
