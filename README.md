@@ -15,6 +15,17 @@ Backend va admin panel — alohida repo: `my-wallet-admin`.
 | [`docs/DEPLOY.md`](docs/DEPLOY.md) | imzolash, flavor'lar, reliz va tarqatish |
 | `contracts/BIZNES-QOIDALAR.md` | biznes qoidalar (admin repodan ko'chiriladi — E04-T08) |
 
+## Lokal ishga tushirish
+
+```bash
+make help     # barcha buyruqlar
+make run-dev  # dev flavor (lokal Supabase bilan)
+make check    # format + analiz + testlar — PR'dan oldin majburiy
+```
+
+Talablar: Flutter (pinned versiya), Android SDK, Docker (integratsiya testlari uchun).
+Batafsil: [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md).
+
 ## Holat
 
 Loyiha rejalashtirish bosqichida — kod `docs/PLAN.md` dagi E04 dan boshlanadi.
