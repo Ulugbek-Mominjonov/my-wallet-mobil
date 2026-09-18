@@ -78,9 +78,12 @@
   `Failure` sealed klasslari (`ValidationFailure(field, code)`,
   `ConflictFailure`, `MonthClosedWarning`). `make gen` domen paketini ham
   generatsiya qiladi, `gen-check` — commit qilinmagan fayllarni ham ushlaydi.
-- [ ] **E12-T03** Qoidalar: `MonthAttribution` (BR-040..046),
-  `PlannedStatus` (BR-071, `partial`/`skipped` bilan), `PersonalAllocation`
-  (BR-060 — bir marta yaxlitlash), `ReminderBuckets` (BR-160).
+- [x] **E12-T03** Qoidalar: `attributeBudgetMonth` (BR-040..046 — serverdagi
+  tartibda: qo'lda → reja oyi → daromad siljishi → sana oyi),
+  `PlannedStatus` (BR-071, `partial`/`skipped` bilan), `personalAllocation`
+  (BR-060 — bir marta yaxlitlash, foiz bazis punktda, birlik —
+  `Currency.allocationUnit`), `ReminderBuckets` (BR-160, offline eslatma
+  BR-168 uchun ham).
 - [ ] **E12-T04** Qoidalar: `MonthSummaryCalc` (BR-090/091 — `MonthFacts`
   kirishidan), `OverallTotals` (BR-092 + invariant), `ForecastCalc`
   (BR-093, kutilayotgan daromad rejalari bilan), `SafeToSpend` (BR-094),
