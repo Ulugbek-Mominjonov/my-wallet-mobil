@@ -71,10 +71,13 @@
   (exponent), `MonthKey` (`shift`, `daysInMonth`, `dayOf` qisish),
   `LocalDate` (kun aniqligi, BR-002). Domen qoplamasi `make coverage` da
   (≥ 95%, hozir 98.9%).
-- [ ] **E12-T02** Entity'lar (freezed): Household, Member, Account,
+- [x] **E12-T02** Entity'lar (freezed 4, Dart 3.13 konstruktor sintaksisi):
+  Household (+ `PersonalFundRule`, foiz — bazis punktda), Member, Account,
   Category, RecurringRule, PlannedItem, Transaction, Debt, Goal,
-  CategoryLimit, QuickAction, Tag; `Failure` sealed klasslari
-  (`ValidationFailure(field, code)`, `ConflictFailure`, `MonthClosedWarning`).
+  CategoryLimit, QuickAction, Tag; enum'lar server `wire` qiymatlari bilan;
+  `Failure` sealed klasslari (`ValidationFailure(field, code)`,
+  `ConflictFailure`, `MonthClosedWarning`). `make gen` domen paketini ham
+  generatsiya qiladi, `gen-check` — commit qilinmagan fayllarni ham ushlaydi.
 - [ ] **E12-T03** Qoidalar: `MonthAttribution` (BR-040..046),
   `PlannedStatus` (BR-071, `partial`/`skipped` bilan), `PersonalAllocation`
   (BR-060 — bir marta yaxlitlash), `ReminderBuckets` (BR-160).

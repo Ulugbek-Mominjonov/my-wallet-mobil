@@ -24,11 +24,13 @@ test: ## Barcha testlar (ilova + domen paketi)
 fmt: ## Kodni formatlash
 	dart format lib test tool $(DOMAIN)
 
-gen: ## Kod generatsiyasi: l10n (build_runner — kod generatsiyasi paydo bo'lganda)
+gen: ## Kod generatsiyasi: l10n + domen paketi (freezed)
 	flutter gen-l10n
+	cd $(DOMAIN) && dart run build_runner build
 
 gen-check: gen ## Generatsiya qilingan kod commit qilinganiga mosligi (CI)
-	git diff --exit-code -- lib/l10n/gen
+	git diff --exit-code -- lib/l10n/gen $(DOMAIN)/lib
+	@test -z "$$(git status --porcelain -- $(DOMAIN)/lib)" || { echo "Commit qilinmagan generatsiya fayllari:"; git status --porcelain -- $(DOMAIN)/lib; exit 1; }
 
 coverage: ## Testlar + qoplama chegarasi (ilova ≥ 70%, domen paketi ≥ 95%)
 	flutter test --coverage
