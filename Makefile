@@ -2,7 +2,7 @@
 # Har bir maqsad CI'dagi qadam bilan bir xil ishlaydi (lokal = CI).
 
 .DEFAULT_GOAL := help
-.PHONY: help check lint test fmt gen gen-check coverage run-dev
+.PHONY: help check lint test fmt gen gen-check coverage contracts-sync contracts-check run-dev
 
 help: ## Buyruqlar ro'yxati
 	@grep -E '^[a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) | \
@@ -12,7 +12,7 @@ check: lint test ## Barcha tekshiruvlar (PR'dan oldin majburiy)
 
 DOMAIN := packages/wallet_domain
 
-lint: ## Format va analiz (ilova + domen paketi)
+lint: contracts-check ## Format, analiz (ilova + domen paketi) va shartnoma yaxlitligi
 	dart format --output=none --set-exit-if-changed lib test tool $(DOMAIN)
 	flutter analyze --fatal-infos
 	cd $(DOMAIN) && dart analyze --fatal-infos
@@ -33,6 +33,12 @@ gen-check: gen ## Generatsiya qilingan kod commit qilinganiga mosligi (CI)
 coverage: ## Testlar + qoplama chegarasi (umumiy ≥ 70%; domen qoidalari ≥ 95% — E12)
 	flutter test --coverage
 	dart run tool/check_coverage.dart coverage/lcov.info lib=70
+
+contracts-sync: ## Admin'dan contracts/ olish: make contracts-sync REF=<to'liq-sha|branch|papka>
+	tool/sync_contracts.sh $(REF)
+
+contracts-check: ## contracts/ qo'lda o'zgartirilmaganmi (contracts.lock)
+	tool/check_contracts.sh
 
 run-dev: ## Ilovani dev flavor bilan ishga tushirish (lokal Supabase)
 	flutter run --flavor dev -t lib/main_dev.dart --dart-define-from-file=env/dev.json

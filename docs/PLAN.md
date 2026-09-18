@@ -54,9 +54,10 @@
   88%) va `android` job (dev APK build — Gradle/manifest xatolari). Action'lar
   SHA bilan pin. `tool/check_coverage.dart` (prefiks bo'yicha chegara,
   generatsiya qilingan kod hisobga olinmaydi).
-- [ ] **E04-T08** `contracts/` + `contracts.lock` + `tool/sync_contracts.sh
-  <admin-ref>` (admin repodan nusxalaydi, sha256 yozadi); CI: lock va fayllar
-  mosligi tekshiruvi.
+- [x] **E04-T08** `contracts/` + `contracts.lock` (admin commit + sha256) +
+  `tool/sync_contracts.sh <to'liq-sha|branch|papka>` + `tool/check_contracts.sh`
+  (`make lint` ichida — qo'lda o'zgartirilgan nusxa CI'da yiqiladi; buzilish
+  testi o'tkazildi).
 
 ### E12 · Domen paketi + fixtures pariteti `[mobile]`
 
@@ -354,3 +355,4 @@
 | 2026-09-18 | E04-T05 | gen-l10n (uz asosiy, ru, en; `AppL10n`), noma'lum qurilma tili → uz, oy sarlavhasi admin bilan bir xil (+4 test) |
 | 2026-09-18 | E04-T06 | go_router shell (4 tab + notched ＋), /add, 404, dev katalog; 20 test yashil |
 | 2026-09-18 | E04-T07 | mobil CI (dart + android job'lari), qoplama chegarasi skripti (88,4% ≥ 70%) |
+| 2026-09-18 | E04-T08 | contracts/ admin 5f95b9a dan olindi, lock + yaxlitlik tekshiruvi. **E04 yakunlandi** |
