@@ -1,0 +1,8 @@
+# gen-l10n: ARB fayllar → lib/l10n/gen/ (commit qilinadi, CI farqni tekshiradi).
+arb-dir: l10n
+template-arb-file: app_uz.arb
+output-dir: lib/l10n/gen
+output-localization-file: app_localizations.dart
+output-class: AppL10n
+nullable-getter: false
+preferred-supported-locales: [uz]

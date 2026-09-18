@@ -24,8 +24,8 @@ test: ## Barcha testlar (domen testlari — E12 dan boshlab)
 fmt: ## Kodni formatlash
 	dart format lib test $(DOMAIN)
 
-gen: ## Kod generatsiyasi (build_runner, l10n)
-	@echo "gen: E04 da qo'shiladi"
+gen: ## Kod generatsiyasi: l10n (build_runner — kod generatsiyasi paydo bo'lganda)
+	flutter gen-l10n
 
 run-dev: ## Ilovani dev flavor bilan ishga tushirish (lokal Supabase)
 	flutter run --flavor dev -t lib/main_dev.dart --dart-define-from-file=env/dev.json

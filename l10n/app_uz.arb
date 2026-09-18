@@ -1,0 +1,27 @@
+{
+  "@@locale": "uz",
+  "appName": "My Wallet",
+  "tabHome": "Xulosa",
+  "tabTransactions": "Amallar",
+  "tabPayments": "To'lovlar",
+  "tabWallet": "Hamyon",
+  "actionAdd": "Qo'shish",
+  "actionSave": "Saqlash",
+  "actionCancel": "Bekor qilish",
+  "actionRetry": "Qayta urinish",
+  "errorUnexpected": "Kutilmagan xato. Qayta urinib ko'ring.",
+  "errorNotFound": "Sahifa topilmadi",
+  "emptyTitle": "Hozircha ma'lumot yo'q",
+  "monthName": "{month, select, 1{Yanvar} 2{Fevral} 3{Mart} 4{Aprel} 5{May} 6{Iyun} 7{Iyul} 8{Avgust} 9{Sentabr} 10{Oktabr} 11{Noyabr} 12{Dekabr} other{?}}",
+  "@monthName": {
+    "description": "Oy nomi (1–12), bosh harf bilan — admin paneldagi bilan bir xil",
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
+  "@tabHome": {
+    "description": "Pastki navigatsiya: bosh ekran (dashboard)"
+  }
+}

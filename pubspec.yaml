@@ -14,7 +14,10 @@ workspace:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   flutter_riverpod: ^3.4.3
+  intl: any
   meta: ^1.19.0
   wallet_domain:
     path: packages/wallet_domain
@@ -26,3 +29,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true

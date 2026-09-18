@@ -42,7 +42,7 @@
   BR-212), `AppCard`, `EmptyState`, `Skeleton` (reduce-motion'ni hurmat
   qiladi), dev katalog ekrani. Alohida `AppButton` yo'q — Material tugmalari
   tema orqali (keraksiz o'ram emas).
-- [ ] **E04-T05** l10n: `gen-l10n`, `l10n/app_uz.arb` (asosiy), `app_ru.arb`,
+- [x] **E04-T05** l10n: `gen-l10n`, `l10n/app_uz.arb` (asosiy), `app_ru.arb`,
   `app_en.arb`; pul/sana formatlari (`1 234 567 so'm`, `Sentabr 2026`) +
   testlar.
 - [ ] **E04-T06** go_router karkasi: shell (4 tab + markaziy FAB — hozircha
@@ -348,3 +348,4 @@
 | 2026-09-18 | E04-T01 | Flutter loyiha (Android), `uz.mywallet.app`, workspace + `wallet_domain`, very_good_analysis, `make check` yashil, debug APK ✅ |
 | 2026-09-18 | E04-T02..T03 | flavor'lar (dev APK: `uz.mywallet.app.dev`, "My Wallet Dev" ✅), AppConfig (+test), bootstrap (xato ushlagichlar, AppLog, ProviderScope) |
 | 2026-09-18 | E04-T04 | dizayn tokenlari, tema, formatMoney (+6 test), MoneyText (+3 vidjet testi), AppCard/EmptyState/Skeleton, dev katalog |
+| 2026-09-18 | E04-T05 | gen-l10n (uz asosiy, ru, en; `AppL10n`), noma'lum qurilma tili → uz, oy sarlavhasi admin bilan bir xil (+4 test) |
