@@ -7,8 +7,9 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# LC_ALL=C: fayllar tartibi lokalga bog'liq bo'lmasin (CI va lokal bir xil hash).
 current_hash() {
-  (cd contracts && find . -type f -print0 | sort -z | xargs -0 sha256sum) \
+  (cd contracts && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum) \
     | sha256sum | cut -d' ' -f1
 }
 
