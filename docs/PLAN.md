@@ -49,10 +49,11 @@
   saqlaydi) + o'rtada chuqurchali "＋" (BottomAppBar notch), `/add` sahifasi
   (vidjet/tez amallar deep-link'i uchun), 404 ekrani, dev katalog (faqat dev);
   auth/onboarding redirect'lari → E14. Navigatsiya testlari (5 ta).
-- [ ] **E04-T07** CI `ci.yml`: Flutter (pinned versiya, kesh) → format →
-  `build_runner` (generatsiya qilingan fayllar commit qilingan — farq bo'lsa
-  qulaydi) → analyze → test + coverage → `tool/check_coverage.dart`.
-  `concurrency`, `paths` filtrlari.
+- [x] **E04-T07** CI `ci.yml`: `dart` job (Flutter 3.47.4 pinned + kesh →
+  `make gen-check` → `make lint` → `make coverage`: umumiy ≥ 70%, hozir
+  88%) va `android` job (dev APK build — Gradle/manifest xatolari). Action'lar
+  SHA bilan pin. `tool/check_coverage.dart` (prefiks bo'yicha chegara,
+  generatsiya qilingan kod hisobga olinmaydi).
 - [ ] **E04-T08** `contracts/` + `contracts.lock` + `tool/sync_contracts.sh
   <admin-ref>` (admin repodan nusxalaydi, sha256 yozadi); CI: lock va fayllar
   mosligi tekshiruvi.
@@ -352,3 +353,4 @@
 | 2026-09-18 | E04-T04 | dizayn tokenlari, tema, formatMoney (+6 test), MoneyText (+3 vidjet testi), AppCard/EmptyState/Skeleton, dev katalog |
 | 2026-09-18 | E04-T05 | gen-l10n (uz asosiy, ru, en; `AppL10n`), noma'lum qurilma tili → uz, oy sarlavhasi admin bilan bir xil (+4 test) |
 | 2026-09-18 | E04-T06 | go_router shell (4 tab + notched ＋), /add, 404, dev katalog; 20 test yashil |
+| 2026-09-18 | E04-T07 | mobil CI (dart + android job'lari), qoplama chegarasi skripti (88,4% ≥ 70%) |
