@@ -422,3 +422,5 @@
 | 2026-09-18 | E04-T06 | go_router shell (4 tab + notched ＋), /add, 404, dev katalog; 20 test yashil |
 | 2026-09-18 | E04-T07 | mobil CI (dart + android job'lari), qoplama chegarasi skripti (88,4% ≥ 70%) |
 | 2026-09-18 | E04-T08 | contracts/ admin 5f95b9a dan olindi, lock + yaxlitlik tekshiruvi. **E04 yakunlandi** |
+| 2026-09-19 | E12-T01..T06 | `wallet_domain`: value object'lar, 12 entity, 14 qoida moduli, 9 use-case; golden fixture pariteti 51/51 (mutatsiya testi bilan). **E12 yakunlandi** |
+| 2026-09-19 | E13-T01..T07 | drift sxemasi (14 jadval + outbox/kursor/muammolar), `LedgerDao` (oy yig'indisi SQL'da — domen bilan parite 52/52), `RemoteApi`, repository'lar (qator + outbox atomar), `SyncEngine`/`SyncScheduler`, WorkManager, holat nishoni va ekrani; 155 test (qoplama 92,5%), domen 192 (97,7%); lokal Supabase bilan 4 integratsiya testi — drift upsert NULL xatosini topdi. **E13 yakunlandi** |

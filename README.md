@@ -29,4 +29,4 @@ Batafsil: [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md).
 
 ## Holat
 
-Loyiha rejalashtirish bosqichida — kod `docs/PLAN.md` dagi E04 dan boshlanadi.
+Tayyor: skelet (E04), domen paketi (E12), lokal baza va sinxron (E13). Keyingi — auth, onboarding va ilova qobig'i (E14). Batafsil: [`docs/PLAN.md`](docs/PLAN.md).
