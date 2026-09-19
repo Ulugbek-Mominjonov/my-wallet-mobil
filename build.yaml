@@ -1,0 +1,14 @@
+# drift (E13): server qatorlari (snake_case JSON) to'g'ridan-to'g'ri jadvalga;
+# vaqtlar ISO matn — serverdagi qiymat aynan saqlanadi. Sxema snapshot'lari
+# (`dart run drift_dev make-migrations`) — drift_schemas/ va migratsiya testlari.
+targets:
+  $default:
+    builders:
+      drift_dev:
+        options:
+          store_date_time_values_as_text: true
+          use_sql_column_name_as_json_key: true
+          databases:
+            app: lib/data/local/database.dart
+          schema_dir: drift_schemas/
+          test_dir: test/data/local/migrations/

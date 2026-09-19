@@ -118,11 +118,15 @@
 > **DoD:** aviarejimda yozuv → darhol ekranda → tarmoq kelganda serverda;
 > to'qnashuv va rad etish UI'da; lokal Supabase bilan integratsiya testlari.
 
-- [ ] **E13-T01** drift sxemasi: sinxron jadvallar nusxasi (`row_version`,
-  `deleted_at` bilan) + `outbox`, `sync_state`, `sync_issues`; indekslar
+- [x] **E13-T01** drift 2.35 sxemasi: 14 sinxron jadval nusxasi (ustunlar
+  serverdagi bilan bir xil — pull qatori snake_case JSON bilan to'g'ridan-
+  to'g'ri; pul — butun son, sana/oy — ISO matn, enum — server qiymati; lokal
+  FK yo'q — pull tartibi) + `outbox` (yuborilmagan mutatsiya — qatorga bitta,
+  qisman unique indeks), `sync_state`, `sync_issues`; indekslar
   `(household_id, budget_month)`, `(household_id, occurred_on)`,
-  `(planned_item_id)`, `(debt_id)`; migratsiya strategiyasi (`schemaVersion`
-  + sxema snapshot testlari).
+  `(planned_item_id)`, `(debt_id)` — oy so'rovi `SEARCH`. Migratsiya:
+  `schemaVersion` + `drift_schemas/` snapshot (`make gen` → `make-migrations`,
+  `gen-check` eskirganini ushlaydi).
 - [ ] **E13-T02** DAO'lar: reaktiv ro'yxatlar (keyset, 50 tadan), `month_facts`
   agregat so'rovi (serverdagi `private.month_facts` ma'nosida), hisob
   qoldiqlari, qarz/maqsad yig'indilari, payee avto-to'ldirish (oxirgi
