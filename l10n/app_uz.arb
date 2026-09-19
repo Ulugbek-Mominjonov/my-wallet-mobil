@@ -28,5 +28,62 @@
   "actionHome": "Bosh sahifaga",
   "comingSoon": "Tez orada",
   "addTitle": "Yangi amal",
-  "navAddLabel": "Amal qo'shish"
+  "navAddLabel": "Amal qo'shish",
+  "syncStatusTitle": "Sinxron holati",
+  "syncSynced": "Sinxronlangan",
+  "syncSyncing": "Yuborilmoqda…",
+  "syncPending": "{count} ta o'zgarish yuborilmagan",
+  "syncOffline": "Oflayn — tarmoq kelganda yuboriladi",
+  "syncIssues": "{count} ta muammo",
+  "syncSignedOut": "Qayta kirish kerak",
+  "syncLastAt": "Oxirgi sinxron: {time}",
+  "syncNever": "Hali sinxronlanmagan",
+  "syncNow": "Hozir sinxronlash",
+  "syncFullReload": "To'liq qayta yuklash",
+  "syncFullReloadConfirm": "Byudjet ma'lumotlari serverdan qaytadan yuklanadi. Yuborilmagan o'zgarishlar saqlanadi.",
+  "syncIssueConflict": "Boshqa qurilmada o'zgartirilgan — server versiyasi ko'rsatilmoqda",
+  "syncIssueRejected": "Server qabul qilmadi ({code}) — o'zgarish bekor qilindi",
+  "syncKeepMine": "Mening versiyam",
+  "syncDismiss": "Tushunarli",
+  "syncRecordKind": "{table, select, transactions{Amal} planned_items{Reja} accounts{Hisob} categories{Kategoriya} debts{Qarz} goals{Maqsad} other{Yozuv}}",
+  "@syncPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@syncIssues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@syncLastAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@syncIssueRejected": {
+    "description": "code — server rad etish kodi (contracts/api.md)",
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "@syncRecordKind": {
+    "description": "Sinxron jadvali nomi → foydalanuvchi uchun yozuv turi",
+    "placeholders": {
+      "table": {
+        "type": "String"
+      }
+    }
+  },
+  "@syncStatusTitle": {
+    "description": "Sinxron holati ekrani (E13-T06)"
+  }
 }

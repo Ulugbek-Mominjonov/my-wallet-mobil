@@ -79,4 +79,76 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get navAddLabel => 'Добавить операцию';
+
+  @override
+  String get syncStatusTitle => 'Синхронизация';
+
+  @override
+  String get syncSynced => 'Синхронизировано';
+
+  @override
+  String get syncSyncing => 'Отправка…';
+
+  @override
+  String syncPending(int count) {
+    return 'Не отправлено изменений: $count';
+  }
+
+  @override
+  String get syncOffline => 'Офлайн — отправим, когда появится сеть';
+
+  @override
+  String syncIssues(int count) {
+    return 'Проблем: $count';
+  }
+
+  @override
+  String get syncSignedOut => 'Нужно войти снова';
+
+  @override
+  String syncLastAt(String time) {
+    return 'Последняя синхронизация: $time';
+  }
+
+  @override
+  String get syncNever => 'Ещё не синхронизировано';
+
+  @override
+  String get syncNow => 'Синхронизировать';
+
+  @override
+  String get syncFullReload => 'Полная перезагрузка';
+
+  @override
+  String get syncFullReloadConfirm =>
+      'Данные бюджета будут заново загружены с сервера. Неотправленные изменения сохранятся.';
+
+  @override
+  String get syncIssueConflict =>
+      'Изменено на другом устройстве — показана версия сервера';
+
+  @override
+  String syncIssueRejected(String code) {
+    return 'Сервер не принял ($code) — изменение отменено';
+  }
+
+  @override
+  String get syncKeepMine => 'Оставить мою версию';
+
+  @override
+  String get syncDismiss => 'Понятно';
+
+  @override
+  String syncRecordKind(String table) {
+    String _temp0 = intl.Intl.selectLogic(table, {
+      'transactions': 'Операция',
+      'planned_items': 'Платёж',
+      'accounts': 'Счёт',
+      'categories': 'Категория',
+      'debts': 'Долг',
+      'goals': 'Цель',
+      'other': 'Запись',
+    });
+    return '$_temp0';
+  }
 }

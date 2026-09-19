@@ -7,6 +7,7 @@ import 'package:my_wallet/features/dev/design_catalog_screen.dart';
 import 'package:my_wallet/features/shell/presentation/app_shell.dart';
 import 'package:my_wallet/features/shell/presentation/not_found_screen.dart';
 import 'package:my_wallet/features/shell/presentation/placeholder_screen.dart';
+import 'package:my_wallet/features/sync/presentation/sync_status_screen.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
 
 /// Marshrutlar. Auth va onboarding yo'naltirishlari (redirect) — E14.
@@ -48,6 +49,11 @@ final routerProvider = Provider<GoRouter>((ref) {
             icon: Icons.add_card_outlined,
           ),
         ),
+      ),
+      // Sinxron holati (E13-T06) — SyncStatusBadge'dan.
+      GoRoute(
+        path: '/sync',
+        builder: (context, state) => const SyncStatusScreen(),
       ),
       if (isDev)
         GoRoute(

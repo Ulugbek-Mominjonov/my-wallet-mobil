@@ -17,5 +17,22 @@
   "actionHome": "Go home",
   "comingSoon": "Coming soon",
   "addTitle": "New transaction",
-  "navAddLabel": "Add transaction"
+  "navAddLabel": "Add transaction",
+  "syncStatusTitle": "Sync status",
+  "syncSynced": "Synced",
+  "syncSyncing": "Syncing…",
+  "syncPending": "{count} changes not sent yet",
+  "syncOffline": "Offline — changes will sync when you're back online",
+  "syncIssues": "{count} issues",
+  "syncSignedOut": "Please sign in again",
+  "syncLastAt": "Last synced: {time}",
+  "syncNever": "Not synced yet",
+  "syncNow": "Sync now",
+  "syncFullReload": "Full reload",
+  "syncFullReloadConfirm": "Budget data will be reloaded from the server. Unsent changes are kept.",
+  "syncIssueConflict": "Changed on another device — showing the server version",
+  "syncIssueRejected": "Rejected by the server ({code}) — the change was undone",
+  "syncKeepMine": "Keep my version",
+  "syncDismiss": "Got it",
+  "syncRecordKind": "{table, select, transactions{Transaction} planned_items{Payment} accounts{Account} categories{Category} debts{Debt} goals{Goal} other{Record}}"
 }

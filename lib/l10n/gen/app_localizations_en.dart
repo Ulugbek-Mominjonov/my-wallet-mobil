@@ -79,4 +79,77 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get navAddLabel => 'Add transaction';
+
+  @override
+  String get syncStatusTitle => 'Sync status';
+
+  @override
+  String get syncSynced => 'Synced';
+
+  @override
+  String get syncSyncing => 'Syncing…';
+
+  @override
+  String syncPending(int count) {
+    return '$count changes not sent yet';
+  }
+
+  @override
+  String get syncOffline =>
+      'Offline — changes will sync when you\'re back online';
+
+  @override
+  String syncIssues(int count) {
+    return '$count issues';
+  }
+
+  @override
+  String get syncSignedOut => 'Please sign in again';
+
+  @override
+  String syncLastAt(String time) {
+    return 'Last synced: $time';
+  }
+
+  @override
+  String get syncNever => 'Not synced yet';
+
+  @override
+  String get syncNow => 'Sync now';
+
+  @override
+  String get syncFullReload => 'Full reload';
+
+  @override
+  String get syncFullReloadConfirm =>
+      'Budget data will be reloaded from the server. Unsent changes are kept.';
+
+  @override
+  String get syncIssueConflict =>
+      'Changed on another device — showing the server version';
+
+  @override
+  String syncIssueRejected(String code) {
+    return 'Rejected by the server ($code) — the change was undone';
+  }
+
+  @override
+  String get syncKeepMine => 'Keep my version';
+
+  @override
+  String get syncDismiss => 'Got it';
+
+  @override
+  String syncRecordKind(String table) {
+    String _temp0 = intl.Intl.selectLogic(table, {
+      'transactions': 'Transaction',
+      'planned_items': 'Payment',
+      'accounts': 'Account',
+      'categories': 'Category',
+      'debts': 'Debt',
+      'goals': 'Goal',
+      'other': 'Record',
+    });
+    return '$_temp0';
+  }
 }

@@ -17,5 +17,22 @@
   "actionHome": "На главную",
   "comingSoon": "Скоро",
   "addTitle": "Новая операция",
-  "navAddLabel": "Добавить операцию"
+  "navAddLabel": "Добавить операцию",
+  "syncStatusTitle": "Синхронизация",
+  "syncSynced": "Синхронизировано",
+  "syncSyncing": "Отправка…",
+  "syncPending": "Не отправлено изменений: {count}",
+  "syncOffline": "Офлайн — отправим, когда появится сеть",
+  "syncIssues": "Проблем: {count}",
+  "syncSignedOut": "Нужно войти снова",
+  "syncLastAt": "Последняя синхронизация: {time}",
+  "syncNever": "Ещё не синхронизировано",
+  "syncNow": "Синхронизировать",
+  "syncFullReload": "Полная перезагрузка",
+  "syncFullReloadConfirm": "Данные бюджета будут заново загружены с сервера. Неотправленные изменения сохранятся.",
+  "syncIssueConflict": "Изменено на другом устройстве — показана версия сервера",
+  "syncIssueRejected": "Сервер не принял ({code}) — изменение отменено",
+  "syncKeepMine": "Оставить мою версию",
+  "syncDismiss": "Понятно",
+  "syncRecordKind": "{table, select, transactions{Операция} planned_items{Платёж} accounts{Счёт} categories{Категория} debts{Долг} goals{Цель} other{Запись}}"
 }

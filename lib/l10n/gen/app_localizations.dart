@@ -206,6 +206,108 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Amal qo\'shish'**
   String get navAddLabel;
+
+  /// Sinxron holati ekrani (E13-T06)
+  ///
+  /// In uz, this message translates to:
+  /// **'Sinxron holati'**
+  String get syncStatusTitle;
+
+  /// No description provided for @syncSynced.
+  ///
+  /// In uz, this message translates to:
+  /// **'Sinxronlangan'**
+  String get syncSynced;
+
+  /// No description provided for @syncSyncing.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yuborilmoqda…'**
+  String get syncSyncing;
+
+  /// No description provided for @syncPending.
+  ///
+  /// In uz, this message translates to:
+  /// **'{count} ta o\'zgarish yuborilmagan'**
+  String syncPending(int count);
+
+  /// No description provided for @syncOffline.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oflayn — tarmoq kelganda yuboriladi'**
+  String get syncOffline;
+
+  /// No description provided for @syncIssues.
+  ///
+  /// In uz, this message translates to:
+  /// **'{count} ta muammo'**
+  String syncIssues(int count);
+
+  /// No description provided for @syncSignedOut.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qayta kirish kerak'**
+  String get syncSignedOut;
+
+  /// No description provided for @syncLastAt.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oxirgi sinxron: {time}'**
+  String syncLastAt(String time);
+
+  /// No description provided for @syncNever.
+  ///
+  /// In uz, this message translates to:
+  /// **'Hali sinxronlanmagan'**
+  String get syncNever;
+
+  /// No description provided for @syncNow.
+  ///
+  /// In uz, this message translates to:
+  /// **'Hozir sinxronlash'**
+  String get syncNow;
+
+  /// No description provided for @syncFullReload.
+  ///
+  /// In uz, this message translates to:
+  /// **'To\'liq qayta yuklash'**
+  String get syncFullReload;
+
+  /// No description provided for @syncFullReloadConfirm.
+  ///
+  /// In uz, this message translates to:
+  /// **'Byudjet ma\'lumotlari serverdan qaytadan yuklanadi. Yuborilmagan o\'zgarishlar saqlanadi.'**
+  String get syncFullReloadConfirm;
+
+  /// No description provided for @syncIssueConflict.
+  ///
+  /// In uz, this message translates to:
+  /// **'Boshqa qurilmada o\'zgartirilgan — server versiyasi ko\'rsatilmoqda'**
+  String get syncIssueConflict;
+
+  /// code — server rad etish kodi (contracts/api.md)
+  ///
+  /// In uz, this message translates to:
+  /// **'Server qabul qilmadi ({code}) — o\'zgarish bekor qilindi'**
+  String syncIssueRejected(String code);
+
+  /// No description provided for @syncKeepMine.
+  ///
+  /// In uz, this message translates to:
+  /// **'Mening versiyam'**
+  String get syncKeepMine;
+
+  /// No description provided for @syncDismiss.
+  ///
+  /// In uz, this message translates to:
+  /// **'Tushunarli'**
+  String get syncDismiss;
+
+  /// Sinxron jadvali nomi → foydalanuvchi uchun yozuv turi
+  ///
+  /// In uz, this message translates to:
+  /// **'{table, select, transactions{Amal} planned_items{Reja} accounts{Hisob} categories{Kategoriya} debts{Qarz} goals{Maqsad} other{Yozuv}}'**
+  String syncRecordKind(String table);
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

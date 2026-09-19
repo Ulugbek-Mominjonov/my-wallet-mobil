@@ -79,4 +79,76 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get navAddLabel => 'Amal qo\'shish';
+
+  @override
+  String get syncStatusTitle => 'Sinxron holati';
+
+  @override
+  String get syncSynced => 'Sinxronlangan';
+
+  @override
+  String get syncSyncing => 'Yuborilmoqda…';
+
+  @override
+  String syncPending(int count) {
+    return '$count ta o\'zgarish yuborilmagan';
+  }
+
+  @override
+  String get syncOffline => 'Oflayn — tarmoq kelganda yuboriladi';
+
+  @override
+  String syncIssues(int count) {
+    return '$count ta muammo';
+  }
+
+  @override
+  String get syncSignedOut => 'Qayta kirish kerak';
+
+  @override
+  String syncLastAt(String time) {
+    return 'Oxirgi sinxron: $time';
+  }
+
+  @override
+  String get syncNever => 'Hali sinxronlanmagan';
+
+  @override
+  String get syncNow => 'Hozir sinxronlash';
+
+  @override
+  String get syncFullReload => 'To\'liq qayta yuklash';
+
+  @override
+  String get syncFullReloadConfirm =>
+      'Byudjet ma\'lumotlari serverdan qaytadan yuklanadi. Yuborilmagan o\'zgarishlar saqlanadi.';
+
+  @override
+  String get syncIssueConflict =>
+      'Boshqa qurilmada o\'zgartirilgan — server versiyasi ko\'rsatilmoqda';
+
+  @override
+  String syncIssueRejected(String code) {
+    return 'Server qabul qilmadi ($code) — o\'zgarish bekor qilindi';
+  }
+
+  @override
+  String get syncKeepMine => 'Mening versiyam';
+
+  @override
+  String get syncDismiss => 'Tushunarli';
+
+  @override
+  String syncRecordKind(String table) {
+    String _temp0 = intl.Intl.selectLogic(table, {
+      'transactions': 'Amal',
+      'planned_items': 'Reja',
+      'accounts': 'Hisob',
+      'categories': 'Kategoriya',
+      'debts': 'Qarz',
+      'goals': 'Maqsad',
+      'other': 'Yozuv',
+    });
+    return '$_temp0';
+  }
 }

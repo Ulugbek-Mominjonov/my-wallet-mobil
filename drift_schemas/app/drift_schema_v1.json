@@ -2649,6 +2649,43 @@
     },
     {
       "id": 17,
+      "references": [],
+      "type": "table",
+      "data": {
+        "name": "app_settings",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "key",
+            "getter_name": "key",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "value",
+            "getter_name": "value",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [],
+        "explicit_pk": [
+          "key"
+        ]
+      }
+    },
+    {
+      "id": 18,
       "references": [
         1
       ],
@@ -2667,7 +2704,7 @@
       }
     },
     {
-      "id": 18,
+      "id": 19,
       "references": [
         2
       ],
@@ -2686,7 +2723,7 @@
       }
     },
     {
-      "id": 19,
+      "id": 20,
       "references": [
         3
       ],
@@ -2705,7 +2742,7 @@
       }
     },
     {
-      "id": 20,
+      "id": 21,
       "references": [
         4
       ],
@@ -2724,7 +2761,7 @@
       }
     },
     {
-      "id": 21,
+      "id": 22,
       "references": [
         5
       ],
@@ -2743,7 +2780,7 @@
       }
     },
     {
-      "id": 22,
+      "id": 23,
       "references": [
         6
       ],
@@ -2762,7 +2799,7 @@
       }
     },
     {
-      "id": 23,
+      "id": 24,
       "references": [
         7
       ],
@@ -2781,7 +2818,7 @@
       }
     },
     {
-      "id": 24,
+      "id": 25,
       "references": [
         8
       ],
@@ -2800,7 +2837,7 @@
       }
     },
     {
-      "id": 25,
+      "id": 26,
       "references": [
         10
       ],
@@ -2823,7 +2860,7 @@
       }
     },
     {
-      "id": 26,
+      "id": 27,
       "references": [
         10
       ],
@@ -2842,7 +2879,7 @@
       }
     },
     {
-      "id": 27,
+      "id": 28,
       "references": [
         11
       ],
@@ -2865,7 +2902,7 @@
       }
     },
     {
-      "id": 28,
+      "id": 29,
       "references": [
         11
       ],
@@ -2892,7 +2929,7 @@
       }
     },
     {
-      "id": 29,
+      "id": 30,
       "references": [
         11
       ],
@@ -2911,7 +2948,7 @@
       }
     },
     {
-      "id": 30,
+      "id": 31,
       "references": [
         11
       ],
@@ -2930,7 +2967,7 @@
       }
     },
     {
-      "id": 31,
+      "id": 32,
       "references": [
         11
       ],
@@ -2949,7 +2986,7 @@
       }
     },
     {
-      "id": 32,
+      "id": 33,
       "references": [
         11
       ],
@@ -2968,7 +3005,7 @@
       }
     },
     {
-      "id": 33,
+      "id": 34,
       "references": [
         12
       ],
@@ -2987,7 +3024,7 @@
       }
     },
     {
-      "id": 34,
+      "id": 35,
       "references": [
         13
       ],
@@ -3006,7 +3043,7 @@
       }
     },
     {
-      "id": 35,
+      "id": 36,
       "references": [
         14
       ],
@@ -3020,7 +3057,7 @@
       }
     },
     {
-      "id": 36,
+      "id": 37,
       "references": [
         14
       ],
@@ -3043,7 +3080,7 @@
       }
     },
     {
-      "id": 37,
+      "id": 38,
       "references": [
         16
       ],
@@ -3217,6 +3254,15 @@
         {
           "dialect": "sqlite",
           "sql": "CREATE TABLE IF NOT EXISTS \"sync_issues\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"household_id\" TEXT NOT NULL, \"mutation_id\" TEXT NOT NULL, \"target_table\" TEXT NOT NULL, \"record_id\" TEXT NOT NULL, \"status\" TEXT NOT NULL, \"code\" TEXT NULL, \"message\" TEXT NULL, \"server_row\" TEXT NULL, \"local_data\" TEXT NOT NULL, \"created_at\" TEXT NOT NULL, \"resolved_at\" TEXT NULL);"
+        }
+      ]
+    },
+    {
+      "name": "app_settings",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"app_settings\" (\"key\" TEXT NOT NULL, \"value\" TEXT NOT NULL, PRIMARY KEY (\"key\"));"
         }
       ]
     },

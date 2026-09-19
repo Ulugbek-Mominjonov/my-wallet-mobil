@@ -165,10 +165,17 @@
   sikl (ishlayotganda kelgan chaqiruv — keyin yana bir marta).
   `SyncScheduler`: start, yozuv debounce 1 s, tarmoq (darhol, hisob nolga),
   resume, pull-to-refresh; oflaynda 1→2→4…300 s. Platforma ulanishi — T06.
-- [ ] **E13-T06** Fon sinxron: Android WorkManager (6 soat, tarmoq sharti);
-  `SyncStatus` provider + `SyncStatusBadge` + "Sinxron holati" ekrani
-  (outbox soni, oxirgi sinxron, muammolar ro'yxati, "Qayta yuborish",
-  "To'liq qayta yuklash").
+- [x] **E13-T06** Fon sinxron: Android WorkManager (6 soat, tarmoq sharti;
+  sessiya yo'q — o'tkaziladi, tarmoq xatosi — qayta urinish; yadrosi
+  `runBackgroundSync` — testlangan). Provider'lar: baza, RPC, qurilma ID
+  (`app_settings`), joriy byudjet (E14 o'rnatadi), dvigatel, rejalashtiruvchi
+  (tarmoq qaytishi — `connectivity_plus`, resume — `AppLifecycleListener`),
+  `SyncStatus` (navbat, muammolar, kursor, jonli jarayon). `SyncStatusBadge`
+  (✓ · ↻ · navbat · 📴 · ⚠️ N · qayta kirish) + "Sinxron holati" ekrani
+  (`/sync`): holat, oxirgi sinxron, "Hozir sinxronlash", muammolar —
+  "Mening versiyam" (to'qnashuvda) / "Tushunarli", "To'liq qayta yuklash"
+  (tasdiq bilan). Supabase `bootstrap` da ishga tushadi. Qobiqqa joylash —
+  E14-T04.
 - [ ] **E13-T07** Integratsiya testlari (`integration_test/sync/`): admin
   repoda `contracts.lock` dagi commit → `supabase start` → 2 "qurilma"
   simulyatsiyasi: offline yozuv → push; bir qatorni ikki qurilmada tahrirlash

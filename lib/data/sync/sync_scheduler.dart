@@ -19,6 +19,13 @@ final class SyncScheduler {
   final Duration debounce;
   final Duration maxBackoff;
 
+  final _activity = StreamController<SyncActivity>.broadcast();
+  var _current = const SyncActivity();
+
+  /// Hozirgi holat (ishlayaptimi, oxirgi natija) va o'zgarishlari — UI uchun.
+  SyncActivity get activity => _current;
+  Stream<SyncActivity> get activityChanges => _activity.stream;
+
   Timer? _debounceTimer;
   Timer? _retryTimer;
   var _failures = 0;
@@ -50,8 +57,10 @@ final class SyncScheduler {
     _debounceTimer?.cancel();
     _retryTimer?.cancel();
     _retryTimer = null;
+    _emit(SyncActivity(running: true, lastReport: _current.lastReport));
     final report = await _sync();
     if (_disposed) return report;
+    _emit(SyncActivity(lastReport: report));
     if (report.failure is OfflineFailure) {
       _failures++;
       _retryTimer = Timer(_backoff(_failures), () => unawaited(_run()));
@@ -67,9 +76,23 @@ final class SyncScheduler {
     return delay > maxBackoff ? maxBackoff : delay;
   }
 
+  void _emit(SyncActivity activity) {
+    _current = activity;
+    _activity.add(activity);
+  }
+
   void dispose() {
     _disposed = true;
     _debounceTimer?.cancel();
     _retryTimer?.cancel();
+    unawaited(_activity.close());
   }
+}
+
+/// Sinxronning jonli holati.
+final class SyncActivity {
+  const new({this.running = false, this.lastReport});
+
+  final bool running;
+  final SyncReport? lastReport;
 }

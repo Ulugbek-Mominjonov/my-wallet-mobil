@@ -28,6 +28,7 @@ part 'database.g.dart';
     Outbox,
     SyncState,
     SyncIssues,
+    AppSettings,
   ],
   daos: [LedgerDao],
 )
@@ -43,4 +44,20 @@ class AppDatabase extends _$AppDatabase {
   @override
   MigrationStrategy get migration =>
       MigrationStrategy(onCreate: (migrator) => migrator.createAll());
+
+  static const _deviceIdKey = 'device_id';
+
+  /// Ilova o'rnatilishining doimiy ID si (`sync_push` `device_id`) —
+  /// birinchi chaqiruvda yaratiladi.
+  Future<String> deviceId({required String Function() newId}) =>
+      transaction(() async {
+        final existing = await (select(
+          appSettings,
+        )..where((s) => s.key.equals(_deviceIdKey))).getSingleOrNull();
+        if (existing != null) return existing.value;
+        final id = newId();
+        await into(appSettings)
+            .insert(AppSettingsCompanion.insert(key: _deviceIdKey, value: id));
+        return id;
+      });
 }
