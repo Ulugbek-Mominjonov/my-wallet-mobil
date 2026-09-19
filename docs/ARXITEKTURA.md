@@ -80,8 +80,8 @@ my-wallet-mobil/
 ├── contracts/                      # admin repodan (o'zgartirilmaydi)
 ├── contracts.lock                  # manba commit + sha256
 ├── l10n/                           # app_uz.arb, app_ru.arb, app_en.arb
-├── integration_test/ · test/
-├── tool/                           # sync_contracts.sh, check_coverage.dart
+├── integration/ · test/           # integration — lokal Supabase bilan (host)
+├── tool/                           # sync_contracts.sh, integration.sh, check_coverage.dart
 └── docs/
 ```
 

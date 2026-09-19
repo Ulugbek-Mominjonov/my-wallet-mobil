@@ -2,7 +2,7 @@
 # Har bir maqsad CI'dagi qadam bilan bir xil ishlaydi (lokal = CI).
 
 .DEFAULT_GOAL := help
-.PHONY: help check lint test fmt gen gen-check coverage contracts-sync contracts-check run-dev
+.PHONY: help check lint test fmt gen gen-check coverage integration contracts-sync contracts-check run-dev
 
 help: ## Buyruqlar ro'yxati
 	@grep -E '^[a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) | \
@@ -13,7 +13,7 @@ check: lint test ## Barcha tekshiruvlar (PR'dan oldin majburiy)
 DOMAIN := packages/wallet_domain
 
 lint: contracts-check ## Format, analiz (ilova + domen paketi) va shartnoma yaxlitligi
-	dart format --output=none --set-exit-if-changed lib test tool $(DOMAIN)
+	dart format --output=none --set-exit-if-changed lib test integration tool $(DOMAIN)
 	flutter analyze --fatal-infos
 	cd $(DOMAIN) && dart analyze --fatal-infos
 
@@ -22,7 +22,7 @@ test: ## Barcha testlar (ilova + domen paketi)
 	cd $(DOMAIN) && dart test
 
 fmt: ## Kodni formatlash
-	dart format lib test tool $(DOMAIN)
+	dart format lib test integration tool $(DOMAIN)
 
 GENERATED := lib $(DOMAIN)/lib drift_schemas
 
@@ -41,6 +41,9 @@ coverage: ## Testlar + qoplama chegarasi (ilova ≥ 70%, domen paketi ≥ 95%)
 	dart run tool/check_coverage.dart coverage/lcov.info lib=70
 	cd $(DOMAIN) && dart test --coverage-path=coverage/lcov.info
 	cd $(DOMAIN) && dart run ../../tool/check_coverage.dart coverage/lcov.info lib=95
+
+integration: ## Sinxron integratsiya testlari — lokal Supabase bilan (admin repo, contracts.lock)
+	tool/integration.sh
 
 contracts-sync: ## Admin'dan contracts/ olish: make contracts-sync REF=<to'liq-sha|branch|papka>
 	tool/sync_contracts.sh $(REF)

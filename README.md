@@ -21,6 +21,7 @@ Backend va admin panel — alohida repo: `my-wallet-admin`.
 make help     # barcha buyruqlar
 make run-dev  # dev flavor (lokal Supabase bilan)
 make check    # format + analiz + testlar — PR'dan oldin majburiy
+make integration  # sinxron — lokal Supabase bilan (../my-wallet-admin da supabase start)
 ```
 
 Talablar: Flutter (pinned versiya), Android SDK, Docker (integratsiya testlari uchun).

@@ -176,11 +176,17 @@
   "Mening versiyam" (to'qnashuvda) / "Tushunarli", "To'liq qayta yuklash"
   (tasdiq bilan). Supabase `bootstrap` da ishga tushadi. Qobiqqa joylash —
   E14-T04.
-- [ ] **E13-T07** Integratsiya testlari (`integration_test/sync/`): admin
-  repoda `contracts.lock` dagi commit → `supabase start` → 2 "qurilma"
-  simulyatsiyasi: offline yozuv → push; bir qatorni ikki qurilmada tahrirlash
-  → conflict; rad etiladigan yozuv → qaytarish; o'chirish → tombstone.
-  CI: `integration.yml` (PR + har kecha).
+- [x] **E13-T07** Integratsiya testlari (`integration/sync/` — host'da,
+  emulyatorsiz: `integration_test/` qurilma talab qiladi): admin repoda
+  `contracts.lock` dagi commit → `supabase start` → 2 "qurilma" (alohida
+  lokal baza + klient, bitta foydalanuvchi) simulyatsiyasi: offline yozuv →
+  push (server maydonlari bilan); bir qatorni ikki qurilmada tahrirlash →
+  conflict + muammo; o'chirilgan hisobga yozuv → rad etish + qaytarish;
+  o'chirish → tombstone, qaytarish → ikkinchi qurilmada ham. `make
+  integration` (kalitlar `supabase status` dan yoki `SUPABASE_*` env).
+  CI: `integration.yml` (PR, main, har kecha). Topilgan xato: drift
+  data-class upsert NULL maydonni yozmaydi (tiklangan tombstone qaytmasdi) —
+  pull `toCompanion(false)` bilan; regressiya testi bor.
 
 ### E14 · Auth, onboarding, ilova qobig'i `[mobile]`
 

@@ -56,6 +56,6 @@
 | drift DAO, sinxron | `flutter_test` (in-memory SQLite) | `test/data/` |
 | Controller'lar | `flutter_test` + `mocktail` | `test/features/` |
 | Vidjet va golden | `flutter_test` + `alchemist` | `test/features/**/golden/` |
-| Integratsiya (lokal Supabase) | `integration_test` | `integration_test/` |
+| Integratsiya (lokal Supabase, host'da — `make integration`) | `flutter_test` | `integration/` |
 
 Test nomida qoida ID si: `BR-040: 02.10 dagi Oylik 2026-09 ga tushadi`.

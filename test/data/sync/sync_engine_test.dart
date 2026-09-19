@@ -378,6 +378,39 @@ void main() {
       expect(remote.pulls.last, 54);
     });
 
+    test(
+      'NULL ga qaytgan maydon ham yangilanadi (tiklangan tombstone)',
+      () async {
+        remote.pages
+          ..add(
+            Ok(
+              FakeRemote.page([
+                (
+                  'transactions',
+                  serverTx(
+                    'a',
+                    note: 'eslatma',
+                    deletedAt: '2026-10-02T00:00:00+00:00',
+                  ),
+                ),
+              ], cursor: 51),
+            ),
+          )
+          ..add(
+            Ok(
+              FakeRemote.page([
+                ('transactions', serverTx('a', version: 52)),
+              ], cursor: 52),
+            ),
+          );
+        await engine.pull('h');
+        expect((await localTx('a'))!.deletedAt, isNotNull);
+        await engine.pull('h');
+        final row = (await localTx('a'))!;
+        expect((row.deletedAt, row.note, row.rowVersion), (null, null, 52));
+      },
+    );
+
     test("yuborilmagan lokal o'zgarish ustiga yozilmaydi", () async {
       final tx = await addExpense();
       remote.pages.add(

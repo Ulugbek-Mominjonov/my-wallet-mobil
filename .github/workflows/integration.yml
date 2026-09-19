@@ -1,0 +1,70 @@
+name: Integratsiya
+
+# E13-T07: sinxron — haqiqiy lokal Supabase bilan. Server contracts.lock dagi
+# admin commit'idan ko'tariladi (mobil tekshirgan shartnoma bilan bir xil).
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '30 1 * * *' # har kecha (Toshkent 06:30)
+  workflow_dispatch:
+
+concurrency:
+  group: integration-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  FLUTTER_VERSION: 3.47.4
+
+jobs:
+  sync:
+    name: sinxron — lokal Supabase bilan
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: mobil
+      - name: Shartnomadagi admin commit
+        id: lock
+        run: echo "admin_commit=$(sed -n 's/^admin_commit=//p' mobil/contracts.lock)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ github.repository_owner }}/my-wallet-admin
+          ref: ${{ steps.lock.outputs.admin_commit }}
+          path: admin
+      # pnpm versiyasi admin/package.json dagi "packageManager" dan olinadi.
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          package_json_file: admin/package.json
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: admin/pnpm-lock.yaml
+      - name: Admin bog'liqliklari (Supabase CLI)
+        working-directory: admin
+        run: pnpm install --frozen-lockfile
+      # Sinxronga faqat Postgres, PostgREST, GoTrue va Kong kerak.
+      - name: Lokal Supabase
+        working-directory: admin
+        run: >-
+          pnpm exec supabase start -x
+          studio,imgproxy,logflare,vector,supavisor,edge-runtime,realtime,storage-api,mailpit
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - name: Bog'liqliklar
+        working-directory: mobil
+        run: flutter pub get
+      - name: Sinxron integratsiya testlari
+        working-directory: mobil
+        env:
+          ADMIN_DIR: ../admin
+        run: make integration
