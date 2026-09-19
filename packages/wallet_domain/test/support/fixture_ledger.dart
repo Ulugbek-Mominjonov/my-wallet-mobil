@@ -335,18 +335,9 @@ final class FixtureLedger {
     );
   }
 
-  /// BR-071, BR-073: to'landi — to'liq to'lov, summasiz rejaga to'lov yoki
-  /// qo'lda yopish.
-  void _settlePlans() {
-    plans.updateAll((_, plan) {
-      final planned = plan.plannedAmount;
-      final settled =
-          plan.closedAt != null ||
-          (planned == null && plan.paidAmount.isPositive) ||
-          (planned != null && plan.paidAmount >= planned);
-      return plan.copyWith(settledAt: settled ? _now : null);
-    });
-  }
+  /// BR-071, BR-073: to'langanlik — domen qoidasi (`settlePlan`).
+  void _settlePlans() =>
+      plans.updateAll((_, plan) => settlePlan(plan, now: _now));
 
   Category get _allocationCategory =>
       categories.values.firstWhere((category) => category.isSystem);

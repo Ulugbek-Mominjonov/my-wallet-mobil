@@ -101,10 +101,16 @@
   ataylab 1 tiyin xato — aniq ushlandi. Amal tasnifi (`BudgetLine`,
   `monthFactsOf`, BR-022/061..063/090) domen qoidasi sifatida — E13 SQL'i
   uchun ham namuna.
-- [ ] **E12-T06** Repository interfeyslari va use-case'lar: `AddTransaction`,
-  `EditTransaction`, `DeleteTransaction` (undo uchun qaytariladigan
-  snapshot), `AddTransfer`, `PayPlanned` (BR-073), `SkipPlanned`,
-  `QuickAdd` (BR-141), `AddPersonalSpend` (BR-062).
+- [x] **E12-T06** Repository interfeyslari (`HouseholdRepository`,
+  `AccountRepository`, `CategoryRepository`, `PlannedItemRepository`,
+  `TransactionRepository`, `QuickActionRepository`, `Transactor` — yozuv +
+  outbox + reja bitta lokal tranzaksiyada, `IdGenerator`, `Clock`) va
+  use-case'lar: `AddTransaction`, `EditTransaction` (BR-043), `DeleteTransaction`
+  (undo uchun snapshot) + `UndoDeleteTransaction`, `AddTransfer`,
+  `PayPlanned` (BR-073), `SkipPlanned`, `QuickAdd` (BR-141),
+  `AddPersonalSpend` (BR-062). Natija — `Result` (`Ok`/`Err(Failure)`),
+  kodlar server bilan bir xil; yopilgan oy (BR-055) — tasdiq/taqiq; reja
+  to'lovi lokal taxmini — `settlePlan` (fixture ledger ham shuni ishlatadi).
 
 ### E13 · Lokal baza va sinxron dvigatel `[mobile]`
 
@@ -150,7 +156,9 @@
 - [ ] **E14-T01** Kirish: Google (native → `signInWithIdToken`), email OTP
   (kod kiritish ekrani), xatolar; sessiya `flutter_secure_storage` da;
   chiqish (lokal ma'lumotni tozalash tasdig'i bilan).
-- [ ] **E14-T02** `app_bootstrap` → byudjetlar; birinchi kirishda:
+- [ ] **E14-T02** `app_bootstrap` → byudjetlar (valyutalarga
+  `allocation_rounding` qo'shiladi — admin, qo'shimcha o'zgarish; domendagi
+  `Currency.allocationUnit` shundan); birinchi kirishda:
   "Yangi byudjet" yoki "Taklif kodi bilan qo'shilish" (kod / QR / deep link
   `mywallet://invite/<kod>`).
 - [ ] **E14-T03** Onboarding ustasi (har qadamni o'tkazib yuborish mumkin):
