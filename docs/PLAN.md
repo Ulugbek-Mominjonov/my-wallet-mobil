@@ -137,10 +137,14 @@
   byudjet hisoblari orasidagi o'tkazma) — alohida test; mutatsiya testi bilan
   tekshirilgan. `FixtureLedger` domen paketining `testing` kutubxonasiga
   ko'chdi (ilova testlari ham ishlatadi).
-- [ ] **E13-T03** `RemoteApi` (Supabase RPC): `app_bootstrap`, `sync_pull`,
-  `sync_push`, `open_month`, `open_month_preview`, `onboarding_apply`,
-  `accept_invite`, `telegram_link_token`, `register_device`; xatolarni
-  `Failure` ga o'girish (`contracts/api.md` kodlari).
+- [x] **E13-T03** `RemoteApi` (Supabase RPC, `RpcTransport` orqali —
+  testda soxta): `app_bootstrap`, `sync_pull`, `sync_push`, `open_month`,
+  `open_month_preview`, `onboarding_apply`, `accept_invite`,
+  `telegram_link_token`, `register_device`; javoblar qat'iy o'qiladi
+  (shartnoma buzilsa — log + `invalid_response`); xatolar → `Failure`:
+  `P0001` → `RejectedFailure(biznes kod)`, `PGRST30x`/auth →
+  `UnauthorizedFailure`, tarmoq/timeout (20 s) → `OfflineFailure`,
+  kutilmagan xato — yutilmaydi. Haqiqiy `app_bootstrap` javobi bilan test.
 - [ ] **E13-T04** Repository'lar: yozish = lokal qator + outbox bitta
   tranzaksiyada; bir qatorning ketma-ket o'zgarishlarini birlashtirish.
 - [ ] **E13-T05** `SyncEngine`: push (≤ 100, natijalarni qo'llash), pull

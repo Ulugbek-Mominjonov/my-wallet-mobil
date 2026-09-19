@@ -224,6 +224,9 @@ void main() {
         ConflictFailure(:final recordId) => 'conflict:$recordId',
         MonthClosedWarning(:final month, :final blocking) =>
           'closed:$month:$blocking',
+        RejectedFailure(:final code) => 'rejected:$code',
+        OfflineFailure() => 'offline',
+        UnauthorizedFailure() => 'unauthorized',
       };
       expect(describe(const ConflictFailure('t1')), 'conflict:t1');
       expect(
@@ -231,6 +234,20 @@ void main() {
         'closed:2026-09:true',
       );
       expect(const ConflictFailure('t1').toString(), 'ConflictFailure(t1)');
+      expect(
+        describe(const RejectedFailure('forbidden')),
+        'rejected:forbidden',
+      );
+      expect(describe(const OfflineFailure()), 'offline');
+      expect(describe(const UnauthorizedFailure()), 'unauthorized');
+      expect(const RejectedFailure('x', 'a'), const RejectedFailure('x', 'b'));
+      expect(
+        const RejectedFailure('x').hashCode,
+        const RejectedFailure('x', 'b').hashCode,
+      );
+      expect(const RejectedFailure('x').toString(), 'RejectedFailure(x)');
+      expect(const OfflineFailure().toString(), 'OfflineFailure');
+      expect(const UnauthorizedFailure().toString(), 'UnauthorizedFailure');
       expect(
         MonthClosedWarning(MonthKey(2026, 9), blocking: false).toString(),
         'MonthClosedWarning(2026-09, blocking: false)',

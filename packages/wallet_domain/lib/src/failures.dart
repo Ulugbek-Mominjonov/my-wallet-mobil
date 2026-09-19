@@ -49,3 +49,39 @@ final class MonthClosedWarning extends Failure {
   @override
   String toString() => 'MonthClosedWarning($month, blocking: $blocking)';
 }
+
+/// Server amalni rad etdi: [code] — biznes kod (`planned_already_paid`,
+/// `forbidden`, …) yoki SQLSTATE (`23505`, `42501`) — contracts/api.md.
+final class RejectedFailure extends Failure {
+  const new(this.code, [this.message]);
+
+  final String code;
+  final String? message;
+
+  @override
+  bool operator ==(Object other) =>
+      other is RejectedFailure && other.code == code;
+
+  @override
+  int get hashCode => code.hashCode;
+
+  @override
+  String toString() => 'RejectedFailure($code)';
+}
+
+/// Tarmoq yo'q yoki server javob bermadi — o'zgarish lokal saqlanadi va
+/// keyinroq yuboriladi (BR-007).
+final class OfflineFailure extends Failure {
+  const new();
+
+  @override
+  String toString() => 'OfflineFailure';
+}
+
+/// Sessiya eskirgan yoki bekor qilingan — qayta kirish kerak.
+final class UnauthorizedFailure extends Failure {
+  const new();
+
+  @override
+  String toString() => 'UnauthorizedFailure';
+}
