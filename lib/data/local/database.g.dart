@@ -11880,6 +11880,17 @@ class $OutboxTable extends Outbox with TableInfo<$OutboxTable, OutboxRow> {
     requiredDuringInsert: false,
     defaultValue: const Constant('{}'),
   );
+  static const VerificationMeta _baseRowMeta = const VerificationMeta(
+    'baseRow',
+  );
+  @override
+  late final GeneratedColumn<String> baseRow = GeneratedColumn<String>(
+    'base_row',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _statusMeta = const VerificationMeta('status');
   @override
   late final GeneratedColumn<String> status = GeneratedColumn<String>(
@@ -11934,6 +11945,7 @@ class $OutboxTable extends Outbox with TableInfo<$OutboxTable, OutboxRow> {
     op,
     baseVersion,
     data,
+    baseRow,
     status,
     attempts,
     lastError,
@@ -12012,6 +12024,12 @@ class $OutboxTable extends Outbox with TableInfo<$OutboxTable, OutboxRow> {
         this.data.isAcceptableOrUnknown(data['data']!, _dataMeta),
       );
     }
+    if (data.containsKey('base_row')) {
+      context.handle(
+        _baseRowMeta,
+        baseRow.isAcceptableOrUnknown(data['base_row']!, _baseRowMeta),
+      );
+    }
     if (data.containsKey('status')) {
       context.handle(
         _statusMeta,
@@ -12079,6 +12097,10 @@ class $OutboxTable extends Outbox with TableInfo<$OutboxTable, OutboxRow> {
         DriftSqlType.string,
         data['${effectivePrefix}data'],
       )!,
+      baseRow: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}base_row'],
+      ),
       status: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}status'],
@@ -12126,6 +12148,11 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
   /// Yoziladigan maydonlar (JSON, snake_case).
   final String data;
 
+  /// Birinchi tasdiqlanmagan o'zgarishdan oldingi qator (serverdagi holat,
+  /// JSON): rad etilsa yoki to'qnashsa — shu holatga qaytariladi. NULL —
+  /// yangi qator (serverda yo'q).
+  final String? baseRow;
+
   /// `pending` | `sending`.
   final String status;
   final int attempts;
@@ -12140,6 +12167,7 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
     required this.op,
     this.baseVersion,
     required this.data,
+    this.baseRow,
     required this.status,
     required this.attempts,
     this.lastError,
@@ -12158,6 +12186,9 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
       map['base_version'] = Variable<int>(baseVersion);
     }
     map['data'] = Variable<String>(data);
+    if (!nullToAbsent || baseRow != null) {
+      map['base_row'] = Variable<String>(baseRow);
+    }
     map['status'] = Variable<String>(status);
     map['attempts'] = Variable<int>(attempts);
     if (!nullToAbsent || lastError != null) {
@@ -12179,6 +12210,9 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
           ? const Value.absent()
           : Value(baseVersion),
       data: Value(data),
+      baseRow: baseRow == null && nullToAbsent
+          ? const Value.absent()
+          : Value(baseRow),
       status: Value(status),
       attempts: Value(attempts),
       lastError: lastError == null && nullToAbsent
@@ -12202,6 +12236,7 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
       op: serializer.fromJson<String>(json['op']),
       baseVersion: serializer.fromJson<int?>(json['base_version']),
       data: serializer.fromJson<String>(json['data']),
+      baseRow: serializer.fromJson<String?>(json['base_row']),
       status: serializer.fromJson<String>(json['status']),
       attempts: serializer.fromJson<int>(json['attempts']),
       lastError: serializer.fromJson<String?>(json['last_error']),
@@ -12220,6 +12255,7 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
       'op': serializer.toJson<String>(op),
       'base_version': serializer.toJson<int?>(baseVersion),
       'data': serializer.toJson<String>(data),
+      'base_row': serializer.toJson<String?>(baseRow),
       'status': serializer.toJson<String>(status),
       'attempts': serializer.toJson<int>(attempts),
       'last_error': serializer.toJson<String?>(lastError),
@@ -12236,6 +12272,7 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
     String? op,
     Value<int?> baseVersion = const Value.absent(),
     String? data,
+    Value<String?> baseRow = const Value.absent(),
     String? status,
     int? attempts,
     Value<String?> lastError = const Value.absent(),
@@ -12249,6 +12286,7 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
     op: op ?? this.op,
     baseVersion: baseVersion.present ? baseVersion.value : this.baseVersion,
     data: data ?? this.data,
+    baseRow: baseRow.present ? baseRow.value : this.baseRow,
     status: status ?? this.status,
     attempts: attempts ?? this.attempts,
     lastError: lastError.present ? lastError.value : this.lastError,
@@ -12272,6 +12310,7 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
           ? data.baseVersion.value
           : this.baseVersion,
       data: data.data.present ? data.data.value : this.data,
+      baseRow: data.baseRow.present ? data.baseRow.value : this.baseRow,
       status: data.status.present ? data.status.value : this.status,
       attempts: data.attempts.present ? data.attempts.value : this.attempts,
       lastError: data.lastError.present ? data.lastError.value : this.lastError,
@@ -12290,6 +12329,7 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
           ..write('op: $op, ')
           ..write('baseVersion: $baseVersion, ')
           ..write('data: $data, ')
+          ..write('baseRow: $baseRow, ')
           ..write('status: $status, ')
           ..write('attempts: $attempts, ')
           ..write('lastError: $lastError, ')
@@ -12308,6 +12348,7 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
     op,
     baseVersion,
     data,
+    baseRow,
     status,
     attempts,
     lastError,
@@ -12325,6 +12366,7 @@ class OutboxRow extends DataClass implements Insertable<OutboxRow> {
           other.op == this.op &&
           other.baseVersion == this.baseVersion &&
           other.data == this.data &&
+          other.baseRow == this.baseRow &&
           other.status == this.status &&
           other.attempts == this.attempts &&
           other.lastError == this.lastError &&
@@ -12340,6 +12382,7 @@ class OutboxCompanion extends UpdateCompanion<OutboxRow> {
   final Value<String> op;
   final Value<int?> baseVersion;
   final Value<String> data;
+  final Value<String?> baseRow;
   final Value<String> status;
   final Value<int> attempts;
   final Value<String?> lastError;
@@ -12353,6 +12396,7 @@ class OutboxCompanion extends UpdateCompanion<OutboxRow> {
     this.op = const Value.absent(),
     this.baseVersion = const Value.absent(),
     this.data = const Value.absent(),
+    this.baseRow = const Value.absent(),
     this.status = const Value.absent(),
     this.attempts = const Value.absent(),
     this.lastError = const Value.absent(),
@@ -12367,6 +12411,7 @@ class OutboxCompanion extends UpdateCompanion<OutboxRow> {
     required String op,
     this.baseVersion = const Value.absent(),
     this.data = const Value.absent(),
+    this.baseRow = const Value.absent(),
     this.status = const Value.absent(),
     this.attempts = const Value.absent(),
     this.lastError = const Value.absent(),
@@ -12386,6 +12431,7 @@ class OutboxCompanion extends UpdateCompanion<OutboxRow> {
     Expression<String>? op,
     Expression<int>? baseVersion,
     Expression<String>? data,
+    Expression<String>? baseRow,
     Expression<String>? status,
     Expression<int>? attempts,
     Expression<String>? lastError,
@@ -12400,6 +12446,7 @@ class OutboxCompanion extends UpdateCompanion<OutboxRow> {
       if (op != null) 'op': op,
       if (baseVersion != null) 'base_version': baseVersion,
       if (data != null) 'data': data,
+      if (baseRow != null) 'base_row': baseRow,
       if (status != null) 'status': status,
       if (attempts != null) 'attempts': attempts,
       if (lastError != null) 'last_error': lastError,
@@ -12416,6 +12463,7 @@ class OutboxCompanion extends UpdateCompanion<OutboxRow> {
     Value<String>? op,
     Value<int?>? baseVersion,
     Value<String>? data,
+    Value<String?>? baseRow,
     Value<String>? status,
     Value<int>? attempts,
     Value<String?>? lastError,
@@ -12430,6 +12478,7 @@ class OutboxCompanion extends UpdateCompanion<OutboxRow> {
       op: op ?? this.op,
       baseVersion: baseVersion ?? this.baseVersion,
       data: data ?? this.data,
+      baseRow: baseRow ?? this.baseRow,
       status: status ?? this.status,
       attempts: attempts ?? this.attempts,
       lastError: lastError ?? this.lastError,
@@ -12464,6 +12513,9 @@ class OutboxCompanion extends UpdateCompanion<OutboxRow> {
     if (data.present) {
       map['data'] = Variable<String>(data.value);
     }
+    if (baseRow.present) {
+      map['base_row'] = Variable<String>(baseRow.value);
+    }
     if (status.present) {
       map['status'] = Variable<String>(status.value);
     }
@@ -12490,6 +12542,7 @@ class OutboxCompanion extends UpdateCompanion<OutboxRow> {
           ..write('op: $op, ')
           ..write('baseVersion: $baseVersion, ')
           ..write('data: $data, ')
+          ..write('baseRow: $baseRow, ')
           ..write('status: $status, ')
           ..write('attempts: $attempts, ')
           ..write('lastError: $lastError, ')
@@ -19286,6 +19339,7 @@ typedef $$OutboxTableCreateCompanionBuilder = OutboxCompanion Function({
   required String op,
   Value<int?> baseVersion,
   Value<String> data,
+  Value<String?> baseRow,
   Value<String> status,
   Value<int> attempts,
   Value<String?> lastError,
@@ -19300,6 +19354,7 @@ typedef $$OutboxTableUpdateCompanionBuilder = OutboxCompanion Function({
   Value<String> op,
   Value<int?> baseVersion,
   Value<String> data,
+  Value<String?> baseRow,
   Value<String> status,
   Value<int> attempts,
   Value<String?> lastError,
@@ -19352,6 +19407,11 @@ class $$OutboxTableFilterComposer
 
   ColumnFilters<String> get data => $composableBuilder(
     column: $table.data,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get baseRow => $composableBuilder(
+    column: $table.baseRow,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -19425,6 +19485,11 @@ class $$OutboxTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get baseRow => $composableBuilder(
+    column: $table.baseRow,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get status => $composableBuilder(
     column: $table.status,
     builder: (column) => ColumnOrderings(column),
@@ -19487,6 +19552,9 @@ class $$OutboxTableAnnotationComposer
   GeneratedColumn<String> get data =>
       $composableBuilder(column: $table.data, builder: (column) => column);
 
+  GeneratedColumn<String> get baseRow =>
+      $composableBuilder(column: $table.baseRow, builder: (column) => column);
+
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
 
@@ -19536,6 +19604,7 @@ class $$OutboxTableTableManager
                 Value<String> op = const Value.absent(),
                 Value<int?> baseVersion = const Value.absent(),
                 Value<String> data = const Value.absent(),
+                Value<String?> baseRow = const Value.absent(),
                 Value<String> status = const Value.absent(),
                 Value<int> attempts = const Value.absent(),
                 Value<String?> lastError = const Value.absent(),
@@ -19549,6 +19618,7 @@ class $$OutboxTableTableManager
                 op: op,
                 baseVersion: baseVersion,
                 data: data,
+                baseRow: baseRow,
                 status: status,
                 attempts: attempts,
                 lastError: lastError,
@@ -19564,6 +19634,7 @@ class $$OutboxTableTableManager
                 required String op,
                 Value<int?> baseVersion = const Value.absent(),
                 Value<String> data = const Value.absent(),
+                Value<String?> baseRow = const Value.absent(),
                 Value<String> status = const Value.absent(),
                 Value<int> attempts = const Value.absent(),
                 Value<String?> lastError = const Value.absent(),
@@ -19577,6 +19648,7 @@ class $$OutboxTableTableManager
                 op: op,
                 baseVersion: baseVersion,
                 data: data,
+                baseRow: baseRow,
                 status: status,
                 attempts: attempts,
                 lastError: lastError,

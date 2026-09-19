@@ -154,10 +154,17 @@
   qator (snake_case, server maydonlarisiz; server ustun huquqlari bilan
   kesadi). `UuidV7Ids`, `TzClock` (BR-002: bugun — byudjet vaqt zonasida).
   Domen use-case'lari haqiqiy lokal bazada sinaldi.
-- [ ] **E13-T05** `SyncEngine`: push (≤ 100, natijalarni qo'llash), pull
-  (sahifalab, outbox'dagi qatorlarni himoya qilish), `resync_required`,
-  eksponensial qayta urinish, bir vaqtda faqat bitta sinxron (mutex),
-  triggerlar (start, yozuv debounce, tarmoq, resume, pull-to-refresh).
+- [x] **E13-T05** `SyncEngine`: push (≤ 100, har qatordan bitta mutatsiya,
+  navbat bo'shaguncha; `ok` — kanonik qator yoki keyingi lokal o'zgarishga
+  yangi versiya; `conflict` — server qatori + `sync_issues`; `rejected` —
+  `base_row` ga qaytarish yoki yangi qatorni o'chirish + muammo; tarmoq
+  xatosida o'sha mutatsiyalar o'sha ID bilan qayta; javoblar soni mos
+  kelmasa — to'xtaydi), pull (sahifalab, yuborilmagan o'zgarishli qatorlar
+  himoyada, noma'lum jadval — o'tkaziladi, kursor bir tranzaksiyada),
+  `resync_required` (byudjet tozalanib qayta yuklanadi), bir vaqtda bitta
+  sikl (ishlayotganda kelgan chaqiruv — keyin yana bir marta).
+  `SyncScheduler`: start, yozuv debounce 1 s, tarmoq (darhol, hisob nolga),
+  resume, pull-to-refresh; oflaynda 1→2→4…300 s. Platforma ulanishi — T06.
 - [ ] **E13-T06** Fon sinxron: Android WorkManager (6 soat, tarmoq sharti);
   `SyncStatus` provider + `SyncStatusBadge` + "Sinxron holati" ekrani
   (outbox soni, oxirgi sinxron, muammolar ro'yxati, "Qayta yuborish",

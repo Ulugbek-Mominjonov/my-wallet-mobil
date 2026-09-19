@@ -179,14 +179,15 @@ final class DriftPlannedItemRepository implements PlannedItemRepository {
 
   @override
   Future<void> save(PlannedItem item) => _db.transaction(() async {
+    final query = _db.select(_db.plannedItems)
+      ..where((p) => p.id.equals(item.id));
+    final before = await query.getSingleOrNull();
     await _db.into(_db.plannedItems).insertOnConflictUpdate(item.toCompanion());
-    final row = await (_db.select(
-      _db.plannedItems,
-    )..where((p) => p.id.equals(item.id))).getSingle();
     await _outbox.enqueue(
       table: 'planned_items',
       householdId: _householdId,
-      row: row,
+      row: await query.getSingle(),
+      before: before,
     );
   });
 }
@@ -223,16 +224,17 @@ final class DriftTransactionRepository implements TransactionRepository {
 
   @override
   Future<void> save(Transaction transaction) => _db.transaction(() async {
+    final query = _db.select(_db.transactions)
+      ..where((t) => t.id.equals(transaction.id));
+    final before = await query.getSingleOrNull();
     await _db
         .into(_db.transactions)
         .insertOnConflictUpdate(transaction.toCompanion());
-    final row = await (_db.select(
-      _db.transactions,
-    )..where((t) => t.id.equals(transaction.id))).getSingle();
     await _outbox.enqueue(
       table: 'transactions',
       householdId: _householdId,
-      row: row,
+      row: await query.getSingle(),
+      before: before,
     );
   });
 }

@@ -2385,6 +2385,16 @@
             "dsl_features": []
           },
           {
+            "name": "base_row",
+            "getter_name": "baseRow",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
             "name": "status",
             "getter_name": "status",
             "moor_type": "string",
@@ -3188,7 +3198,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"outbox\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"mutation_id\" TEXT NOT NULL UNIQUE, \"household_id\" TEXT NOT NULL, \"target_table\" TEXT NOT NULL, \"record_id\" TEXT NOT NULL, \"op\" TEXT NOT NULL, \"base_version\" INTEGER NULL, \"data\" TEXT NOT NULL DEFAULT '{}', \"status\" TEXT NOT NULL DEFAULT 'pending', \"attempts\" INTEGER NOT NULL DEFAULT 0, \"last_error\" TEXT NULL, \"created_at\" TEXT NOT NULL);"
+          "sql": "CREATE TABLE IF NOT EXISTS \"outbox\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"mutation_id\" TEXT NOT NULL UNIQUE, \"household_id\" TEXT NOT NULL, \"target_table\" TEXT NOT NULL, \"record_id\" TEXT NOT NULL, \"op\" TEXT NOT NULL, \"base_version\" INTEGER NULL, \"data\" TEXT NOT NULL DEFAULT '{}', \"base_row\" TEXT NULL, \"status\" TEXT NOT NULL DEFAULT 'pending', \"attempts\" INTEGER NOT NULL DEFAULT 0, \"last_error\" TEXT NULL, \"created_at\" TEXT NOT NULL);"
         }
       ]
     },

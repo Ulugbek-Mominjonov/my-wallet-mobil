@@ -34,10 +34,12 @@ final class OutboxWriter {
   );
 
   /// [row] — yozilgan qatorning to'liq lokal holati (`toJson` bilan).
+  /// [before] — yozuvdan oldingi holat (yangi qatorda null).
   Future<void> enqueue({
     required String table,
     required String householdId,
     required DataClass row,
+    DataClass? before,
   }) async {
     final json = row.toJson(serializer: _serializer);
     final recordId = json['id']! as String;
@@ -69,6 +71,24 @@ final class OutboxWriter {
       return;
     }
     if (version == 0 && deleted) return;
+    // Qaytarish nuqtasi — tasdiqlanmagan birinchi o'zgarishdan oldingi holat:
+    // yuborilayotgan mutatsiya bo'lsa uniki, aks holda yozuvdan oldingisi.
+    final sending =
+        await (_db.select(_db.outbox)
+              ..where(
+                (o) =>
+                    o.targetTable.equals(table) &
+                    o.recordId.equals(recordId) &
+                    o.status.equals('sending'),
+              )
+              ..orderBy([(o) => OrderingTerm.asc(o.id)])
+              ..limit(1))
+            .getSingleOrNull();
+    final baseRow = sending != null
+        ? sending.baseRow
+        : before == null
+        ? null
+        : jsonEncode(before.toJson(serializer: _serializer));
     await _db
         .into(_db.outbox)
         .insert(
@@ -80,6 +100,7 @@ final class OutboxWriter {
             op: 'upsert',
             baseVersion: Value(version == 0 ? null : version),
             data: Value(jsonEncode(data)),
+            baseRow: Value(baseRow),
             createdAt: now(),
           ),
         );

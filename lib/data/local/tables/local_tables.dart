@@ -37,6 +37,11 @@ class Outbox extends Table {
   /// Yoziladigan maydonlar (JSON, snake_case).
   TextColumn get data => text().withDefault(const Constant('{}'))();
 
+  /// Birinchi tasdiqlanmagan o'zgarishdan oldingi qator (serverdagi holat,
+  /// JSON): rad etilsa yoki to'qnashsa — shu holatga qaytariladi. NULL —
+  /// yangi qator (serverda yo'q).
+  TextColumn get baseRow => text().nullable()();
+
   /// `pending` | `sending`.
   TextColumn get status => text().withDefault(const Constant('pending'))();
   IntColumn get attempts => integer().withDefault(const Constant(0))();
