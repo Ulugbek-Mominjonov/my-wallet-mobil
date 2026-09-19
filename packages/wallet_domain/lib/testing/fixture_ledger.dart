@@ -376,7 +376,8 @@ final class FixtureLedger {
     return balance;
   }
 
-  MonthKey? get _firstRecordMonth {
+  /// Birinchi yozuv oyi (serverdagi `private.first_record_month`).
+  MonthKey? get firstRecordMonth {
     final months = [
       for (final tx in transactions)
         if (!tx.isDeleted) tx.budgetMonth,
@@ -386,7 +387,8 @@ final class FixtureLedger {
     return months.isEmpty ? null : months.first;
   }
 
-  List<MonthFacts> _facts(MonthKey from, MonthKey to) {
+  /// Oylar kesimi — domen qoidalari bilan (`monthFactsOf`).
+  List<MonthFacts> monthFacts(MonthKey from, MonthKey to) {
     final lines = _lines.toList();
     return [
       for (var month = from; !month.isAfter(to); month = month.shift(1))
@@ -395,14 +397,14 @@ final class FixtureLedger {
   }
 
   List<MonthFacts> get _toCurrent {
-    final first = _firstRecordMonth ?? currentMonth;
-    return _facts(first, currentMonth);
+    final first = firstRecordMonth ?? currentMonth;
+    return monthFacts(first, currentMonth);
   }
 
   // ─── Hisobotlar (server JSON ko'rinishida) ───────────────────────────────
   Json reportMonth(MonthKey month) {
-    final first = _firstRecordMonth ?? month;
-    final history = _facts(
+    final first = firstRecordMonth ?? month;
+    final history = monthFacts(
       first.isBefore(month) ? first : month,
       month.isAfter(currentMonth) ? month : currentMonth,
     );
@@ -574,7 +576,7 @@ final class FixtureLedger {
   }
 
   Json reportYear(int year) {
-    final months = _facts(MonthKey(year, 1), MonthKey(year, 12));
+    final months = monthFacts(MonthKey(year, 1), MonthKey(year, 12));
     Money sum(Money Function(MonthFacts) of) => Money.sum(months.map(of));
     final income = sum((m) => m.income);
     final expense = sum((m) => m.expense);
@@ -650,7 +652,7 @@ final class FixtureLedger {
       'total_allocated': total(BudgetLineKind.allocation).minor,
       'total_spent': total(BudgetLineKind.fundSpent).minor,
       'months': [
-        for (final m in _facts(from, to))
+        for (final m in monthFacts(from, to))
           {
             'month': m.month.toIsoDate(),
             'allocated': m.allocated.minor,

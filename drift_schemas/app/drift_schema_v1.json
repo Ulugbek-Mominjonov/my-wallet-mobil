@@ -2873,12 +2873,54 @@
           {
             "column": "occurred_on",
             "order_by": null
+          },
+          {
+            "column": "id",
+            "order_by": null
           }
         ]
       }
     },
     {
       "id": 29,
+      "references": [
+        11
+      ],
+      "type": "index",
+      "data": {
+        "on": 11,
+        "name": "transactions_account",
+        "sql": null,
+        "unique": false,
+        "columns": [
+          {
+            "column": "account_id",
+            "order_by": null
+          }
+        ]
+      }
+    },
+    {
+      "id": 30,
+      "references": [
+        11
+      ],
+      "type": "index",
+      "data": {
+        "on": 11,
+        "name": "transactions_to_account",
+        "sql": null,
+        "unique": false,
+        "columns": [
+          {
+            "column": "to_account_id",
+            "order_by": null
+          }
+        ]
+      }
+    },
+    {
+      "id": 31,
       "references": [
         11
       ],
@@ -2897,7 +2939,7 @@
       }
     },
     {
-      "id": 30,
+      "id": 32,
       "references": [
         11
       ],
@@ -2916,7 +2958,7 @@
       }
     },
     {
-      "id": 31,
+      "id": 33,
       "references": [
         12
       ],
@@ -2935,7 +2977,7 @@
       }
     },
     {
-      "id": 32,
+      "id": 34,
       "references": [
         13
       ],
@@ -2954,7 +2996,7 @@
       }
     },
     {
-      "id": 33,
+      "id": 35,
       "references": [
         14
       ],
@@ -2968,7 +3010,7 @@
       }
     },
     {
-      "id": 34,
+      "id": 36,
       "references": [
         14
       ],
@@ -2991,7 +3033,7 @@
       }
     },
     {
-      "id": 35,
+      "id": 37,
       "references": [
         16
       ],
@@ -3272,7 +3314,25 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE INDEX transactions_list ON transactions (household_id, occurred_on)"
+          "sql": "CREATE INDEX transactions_list ON transactions (household_id, occurred_on, id)"
+        }
+      ]
+    },
+    {
+      "name": "transactions_account",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX transactions_account ON transactions (account_id)"
+        }
+      ]
+    },
+    {
+      "name": "transactions_to_account",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX transactions_to_account ON transactions (to_account_id)"
         }
       ]
     },

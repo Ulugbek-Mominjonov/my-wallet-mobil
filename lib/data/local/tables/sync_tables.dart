@@ -207,7 +207,12 @@ class PlannedItems extends Table with SyncedRow {
 
 @DataClassName('TransactionRow')
 @TableIndex(name: 'transactions_month', columns: {#householdId, #budgetMonth})
-@TableIndex(name: 'transactions_list', columns: {#householdId, #occurredOn})
+@TableIndex(
+  name: 'transactions_list',
+  columns: {#householdId, #occurredOn, #id},
+)
+@TableIndex(name: 'transactions_account', columns: {#accountId})
+@TableIndex(name: 'transactions_to_account', columns: {#toAccountId})
 @TableIndex(name: 'transactions_planned', columns: {#plannedItemId})
 @TableIndex(name: 'transactions_debt', columns: {#debtId})
 class Transactions extends Table with SyncedRow {

@@ -127,10 +127,16 @@
   `(planned_item_id)`, `(debt_id)` — oy so'rovi `SEARCH`. Migratsiya:
   `schemaVersion` + `drift_schemas/` snapshot (`make gen` → `make-migrations`,
   `gen-check` eskirganini ushlaydi).
-- [ ] **E13-T02** DAO'lar: reaktiv ro'yxatlar (keyset, 50 tadan), `month_facts`
-  agregat so'rovi (serverdagi `private.month_facts` ma'nosida), hisob
-  qoldiqlari, qarz/maqsad yig'indilari, payee avto-to'ldirish (oxirgi
-  ishlatilganlar). Fixture'lar bilan DAO testlari (in-memory).
+- [x] **E13-T02** `LedgerDao`: reaktiv ro'yxat (keyset, 50 tadan, indeks —
+  saralash ham), `monthFacts` — serverdagi `budget_lines` + `month_facts`
+  SQL'da (bitta GROUP BY, domen `MonthFacts` qaytaradi), hisob qoldiqlari,
+  qarz faolligi (to'lovlar, kutilayotgan rejalar), shu oy qarz to'lovlari,
+  joy nomi avto-to'ldirish (oxirgi kategoriya/hisob — BR-056). Entity ↔ qator
+  mapperlari (round-trip testi). Parite: 51 fixture holati — SQL = domen
+  (oylar, qoldiqlar, qarzlar); fixture'larda yo'q holatlar (fonddan qaytish,
+  byudjet hisoblari orasidagi o'tkazma) — alohida test; mutatsiya testi bilan
+  tekshirilgan. `FixtureLedger` domen paketining `testing` kutubxonasiga
+  ko'chdi (ilova testlari ham ishlatadi).
 - [ ] **E13-T03** `RemoteApi` (Supabase RPC): `app_bootstrap`, `sync_pull`,
   `sync_push`, `open_month`, `open_month_preview`, `onboarding_apply`,
   `accept_invite`, `telegram_link_token`, `register_device`; xatolarni

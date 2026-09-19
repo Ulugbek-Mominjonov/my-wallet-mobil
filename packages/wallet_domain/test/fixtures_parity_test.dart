@@ -6,8 +6,7 @@ import 'dart:io';
 
 import 'package:test/test.dart';
 
-import 'support/fixture_ledger.dart';
-import 'support/json_compare.dart';
+import 'package:wallet_domain/testing.dart';
 
 /// Mobil repo ildizidagi shartnoma nusxasi (tool/sync_contracts.sh).
 const _fixturesDir = '../../contracts/fixtures';

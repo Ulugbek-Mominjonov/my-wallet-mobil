@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
+import 'package:my_wallet/data/local/daos/ledger_dao.dart';
 import 'package:my_wallet/data/local/tables/local_tables.dart';
 import 'package:my_wallet/data/local/tables/sync_tables.dart';
 
@@ -28,6 +29,7 @@ part 'database.g.dart';
     SyncState,
     SyncIssues,
   ],
+  daos: [LedgerDao],
 )
 class AppDatabase extends _$AppDatabase {
   new(super.e);

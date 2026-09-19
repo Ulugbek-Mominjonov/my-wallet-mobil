@@ -13661,7 +13661,15 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   );
   late final Index transactionsList = Index(
     'transactions_list',
-    'CREATE INDEX transactions_list ON transactions (household_id, occurred_on)',
+    'CREATE INDEX transactions_list ON transactions (household_id, occurred_on, id)',
+  );
+  late final Index transactionsAccount = Index(
+    'transactions_account',
+    'CREATE INDEX transactions_account ON transactions (account_id)',
+  );
+  late final Index transactionsToAccount = Index(
+    'transactions_to_account',
+    'CREATE INDEX transactions_to_account ON transactions (to_account_id)',
   );
   late final Index transactionsPlanned = Index(
     'transactions_planned',
@@ -13691,6 +13699,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'sync_issues_open',
     'CREATE INDEX sync_issues_open ON sync_issues (household_id, resolved_at)',
   );
+  late final LedgerDao ledgerDao = LedgerDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -13725,6 +13734,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     plannedItemsDebt,
     transactionsMonth,
     transactionsList,
+    transactionsAccount,
+    transactionsToAccount,
     transactionsPlanned,
     transactionsDebt,
     transactionTagsTransaction,
