@@ -145,8 +145,15 @@
   `P0001` → `RejectedFailure(biznes kod)`, `PGRST30x`/auth →
   `UnauthorizedFailure`, tarmoq/timeout (20 s) → `OfflineFailure`,
   kutilmagan xato — yutilmaydi. Haqiqiy `app_bootstrap` javobi bilan test.
-- [ ] **E13-T04** Repository'lar: yozish = lokal qator + outbox bitta
-  tranzaksiyada; bir qatorning ketma-ket o'zgarishlarini birlashtirish.
+- [x] **E13-T04** Repository'lar (domen interfeyslari — drift): yozish =
+  lokal qator + outbox bitta tranzaksiyada (`DriftTransactor`, `save` ham
+  atomar); bir qatorning yuborilmagan o'zgarishlari birlashtiriladi (bitta
+  mutatsiya, birinchi `base_version`); yuborilayotganiga (`sending`)
+  tegilmaydi — javob yo'qolsa keyingi o'zgarish yo'qolmasin; serverga
+  yetmagan yangi qator o'chirilsa — mutatsiya bekor. Push ma'lumoti — to'liq
+  qator (snake_case, server maydonlarisiz; server ustun huquqlari bilan
+  kesadi). `UuidV7Ids`, `TzClock` (BR-002: bugun — byudjet vaqt zonasida).
+  Domen use-case'lari haqiqiy lokal bazada sinaldi.
 - [ ] **E13-T05** `SyncEngine`: push (≤ 100, natijalarni qo'llash), pull
   (sahifalab, outbox'dagi qatorlarni himoya qilish), `resync_required`,
   eksponensial qayta urinish, bir vaqtda faqat bitta sinxron (mutex),
