@@ -4,6 +4,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:drift/drift.dart' hide Column;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_wallet/data/auth/auth_providers.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/remote/remote_api.dart';
 import 'package:my_wallet/data/repositories/local_ledger.dart';
@@ -37,7 +38,11 @@ final currentHouseholdIdProvider = NotifierProvider<CurrentHousehold, String?>(
 
 final class CurrentHousehold extends Notifier<String?> {
   @override
-  String? build() => null;
+  String? build() {
+    // Chiqish yoki boshqa akkaunt — tanlov bekor (sinxron ham to'xtaydi).
+    ref.watch(authUserProvider);
+    return null;
+  }
 
   // Notifier holati tashqaridan o'rnatiladi (E14 oqimlari).
   // ignore: use_setters_to_change_properties

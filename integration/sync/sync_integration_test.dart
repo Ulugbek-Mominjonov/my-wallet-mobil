@@ -6,16 +6,11 @@
 //
 // `integration_test/` emas: u qurilma talab qiladi, bu testlar esa host'da
 // (emulyatorsiz) ishlaydi — CI arzon va tez.
-//
-// Muhit: SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, SUPABASE_SECRET_KEY
-// (standart — lokal Supabase manzili; kalitlar `supabase status -o env`).
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:drift/drift.dart' show driftRuntimeOptions;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/http.dart' as http;
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/remote/dto.dart';
 import 'package:my_wallet/data/remote/remote_api.dart';
@@ -24,10 +19,7 @@ import 'package:my_wallet/data/sync/sync_engine.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
-final Map<String, String> _env = Platform.environment;
-final String _url = _env['SUPABASE_URL'] ?? 'http://127.0.0.1:54321';
-final String _publishableKey = _env['SUPABASE_PUBLISHABLE_KEY'] ?? '';
-final String _secretKey = _env['SUPABASE_SECRET_KEY'] ?? '';
+import '../support/local_supabase.dart';
 
 /// Bitta "qurilma": o'z lokal bazasi, klienti va sinxron dvigateli.
 final class Device {
@@ -45,11 +37,7 @@ final class Device {
     String email,
     String password,
   ) async {
-    final client = SupabaseClient(
-      _url,
-      _publishableKey,
-      authOptions: const AuthClientOptions(autoRefreshToken: false),
-    );
+    final client = newClient();
     await client.auth.signInWithPassword(email: email, password: password);
     final db = AppDatabase(NativeDatabase.memory());
     final api = RpcRemoteApi(supabaseTransport(client));
@@ -108,38 +96,11 @@ T ok<T>(Result<T> result) => switch (result) {
   Err(:final failure) => fail('Ok kutilgan, $failure keldi'),
 };
 
-Future<(String, String)> createUser() async {
-  final email = 'it-${DateTime.now().microsecondsSinceEpoch}@example.test';
-  final password = base64Url.encode(
-    List.generate(18, (i) => (i * 37 + 11) % 256),
-  );
-  final response = await http.post(
-    Uri.parse('$_url/auth/v1/admin/users'),
-    headers: {'apikey': _secretKey, 'content-type': 'application/json'},
-    body: jsonEncode({
-      'email': email,
-      'password': password,
-      'email_confirm': true,
-    }),
-  );
-  if (response.statusCode >= 300) {
-    throw StateError(
-      'Foydalanuvchi yaratilmadi: ${response.statusCode} ${response.body}',
-    );
-  }
-  return (email, password);
-}
-
 void main() {
   setUpAll(() {
     // Ikki qurilma — ikki alohida xotiradagi baza (umumiy executor yo'q).
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
-    if (_publishableKey.isEmpty || _secretKey.isEmpty) {
-      fail(
-        'SUPABASE_PUBLISHABLE_KEY va SUPABASE_SECRET_KEY kerak '
-        '(make integration)',
-      );
-    }
+    requireLocalSupabase();
   });
 
   late Device a;

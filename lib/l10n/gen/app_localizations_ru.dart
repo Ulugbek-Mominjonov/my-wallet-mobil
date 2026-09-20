@@ -151,4 +151,78 @@ class AppL10nRu extends AppL10n {
     });
     return '$_temp0';
   }
+
+  @override
+  String get authTagline => 'Знайте, куда уходят ваши деньги';
+
+  @override
+  String get authGoogle => 'Войти через Google';
+
+  @override
+  String get authOr => 'или';
+
+  @override
+  String get authEmailLabel => 'Email';
+
+  @override
+  String get authSendCode => 'Получить код';
+
+  @override
+  String get authCodeTitle => 'Проверьте почту';
+
+  @override
+  String authCodeSent(String email, int length) {
+    return 'Мы отправили $length-значный код на $email';
+  }
+
+  @override
+  String get authCodeLabel => 'Код';
+
+  @override
+  String get authVerify => 'Войти';
+
+  @override
+  String get authResend => 'Отправить код ещё раз';
+
+  @override
+  String authResendIn(int seconds) {
+    return 'Повторно — через $seconds с';
+  }
+
+  @override
+  String get authChangeEmail => 'Другой email';
+
+  @override
+  String get authErrorInvalidEmail => 'Проверьте адрес email';
+
+  @override
+  String authErrorInvalidCode(int length) {
+    return 'Введите $length-значный код';
+  }
+
+  @override
+  String get authErrorCodeExpired => 'Неверный или устаревший код';
+
+  @override
+  String get authErrorRateLimit =>
+      'Слишком много попыток — попробуйте чуть позже';
+
+  @override
+  String get authErrorGoogle =>
+      'Не удалось войти через Google — войдите по email';
+
+  @override
+  String get errorOffline => 'Нет интернета — проверьте подключение';
+
+  @override
+  String get signOut => 'Выйти';
+
+  @override
+  String get signOutConfirm =>
+      'Данные на устройстве будут удалены — при следующем входе они загрузятся с сервера.';
+
+  @override
+  String signOutUnsent(int count) {
+    return 'Не отправлено на сервер изменений: $count — при выходе они пропадут.';
+  }
 }

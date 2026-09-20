@@ -194,9 +194,20 @@
 > **DoD:** yangi foydalanuvchi 2 daqiqada sozlab, joriy oy ochilgan holda
 > dashboard'ni ko'radi.
 
-- [ ] **E14-T01** Kirish: Google (native → `signInWithIdToken`), email OTP
-  (kod kiritish ekrani), xatolar; sessiya `flutter_secure_storage` da;
-  chiqish (lokal ma'lumotni tozalash tasdig'i bilan).
+- [x] **E14-T01** Kirish: Google (native, google_sign_in 7 → `signInWithIdToken`;
+  har kirishda yangi nonce — Google'ga `sha256`, Supabase'ga xomi) va email
+  kodi (6 xona, admin `otp_length`; qayta yuborish 30 s — `max_frequency`).
+  Xatolar `Result` bilan: tarmoq/timeout → oflayn, GoTrue kodi → rad etish,
+  bekor qilish — xato emas; matnlar uz/ru/en. Sessiya
+  `flutter_secure_storage` da (`SecureSessionStorage`, ilova va fon sinxroni
+  bitta `initSupabase`). Router: kirilmagan — faqat `/sign-in`, sessiya
+  eskirsa avtomatik qaytadi; byudjet tanlovi ham bekor bo'ladi. Chiqish:
+  tasdiq (yuborilmagan o'zgarishlar soni bilan) → sessiya + lokal
+  ma'lumot tozalanadi (qurilma ID si qoladi); tugmasi qobiqda — T04.
+  Android: INTERNET ruxsati (release'da yo'q edi), `allowBackup=false`.
+  Admin: kirish xati shabloni — havola emas, kod (`{{ .Token }}`).
+  Testlar: 11 gateway + 7 oqim + 4 chiqish; integratsiya — haqiqiy GoTrue,
+  Mailpit'dan kod, `app_bootstrap` shaxsiy byudjetni qaytaradi (BR-010).
 - [ ] **E14-T02** `app_bootstrap` → byudjetlar (valyutalarga
   `allocation_rounding` qo'shiladi — admin, qo'shimcha o'zgarish; domendagi
   `Currency.allocationUnit` shundan); birinchi kirishda:

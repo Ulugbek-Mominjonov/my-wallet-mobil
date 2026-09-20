@@ -60,4 +60,13 @@ class AppDatabase extends _$AppDatabase {
             .insert(AppSettingsCompanion.insert(key: _deviceIdKey, value: id));
         return id;
       });
+
+  /// Chiqishda: foydalanuvchi ma'lumoti (sinxron nusxa, navbat, muammolar)
+  /// o'chiriladi — keyingi akkaunt ko'rmasin; qurilma sozlamalari qoladi.
+  Future<void> clearUserData() => transaction(() async {
+    for (final table in allTables) {
+      if (table == appSettings) continue;
+      await delete(table).go();
+    }
+  });
 }

@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_wallet/core/design_system/app_theme.dart';
 import 'package:my_wallet/core/format/time_format.dart';
+import 'package:my_wallet/data/auth/auth_providers.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/sync/sync_engine.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
@@ -17,6 +18,8 @@ import 'package:my_wallet/features/sync/presentation/sync_status_badge.dart';
 import 'package:my_wallet/features/sync/presentation/sync_status_screen.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
 import 'package:wallet_domain/wallet_domain.dart';
+
+import '../../support/fake_auth.dart';
 
 SyncIssueRow issue(int id, String status, {String? code}) => SyncIssueRow(
   id: id,
@@ -52,6 +55,9 @@ Future<void> pumpScreen(
     ProviderScope(
       overrides: [
         syncStatusProvider.overrideWith((ref) => Stream.value(status)),
+        authGatewayProvider.overrideWithValue(
+          FakeAuthGateway(currentUserId: 'u1'),
+        ),
         ...overrides,
       ],
       child: MaterialApp.router(

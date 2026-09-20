@@ -85,5 +85,61 @@
   },
   "@syncStatusTitle": {
     "description": "Sinxron holati ekrani (E13-T06)"
+  },
+  "authTagline": "Pulingiz qayerga ketayotganini biling",
+  "authGoogle": "Google bilan kirish",
+  "authOr": "yoki",
+  "authEmailLabel": "Email",
+  "authSendCode": "Kod olish",
+  "authCodeTitle": "Pochtangizni tekshiring",
+  "authCodeSent": "{email} manziliga {length} xonali kod yubordik",
+  "authCodeLabel": "Kod",
+  "authVerify": "Kirish",
+  "authResend": "Kodni qayta yuborish",
+  "authResendIn": "Qayta yuborish — {seconds} s",
+  "authChangeEmail": "Boshqa email",
+  "authErrorInvalidEmail": "Email manzilni tekshiring",
+  "authErrorInvalidCode": "{length} xonali kodni kiriting",
+  "authErrorCodeExpired": "Kod noto'g'ri yoki eskirgan",
+  "authErrorRateLimit": "Juda ko'p urinish — birozdan keyin qayta urinib ko'ring",
+  "authErrorGoogle": "Google bilan kirib bo'lmadi — email orqali kiring",
+  "errorOffline": "Internet yo'q — ulanishni tekshiring",
+  "signOut": "Chiqish",
+  "signOutConfirm": "Qurilmadagi ma'lumot o'chiriladi — qayta kirganingizda serverdan yuklanadi.",
+  "signOutUnsent": "{count} ta o'zgarish hali serverga yetmagan — chiqsangiz ular yo'qoladi.",
+  "@authCodeSent": {
+    "description": "Kod bosqichi (E14-T01)",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      },
+      "length": {
+        "type": "int"
+      }
+    }
+  },
+  "@authResendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@authErrorInvalidCode": {
+    "placeholders": {
+      "length": {
+        "type": "int"
+      }
+    }
+  },
+  "@signOutUnsent": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@authTagline": {
+    "description": "Kirish ekrani (E14-T01)"
   }
 }

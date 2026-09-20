@@ -3,6 +3,7 @@
 // coverage:ignore-file
 import 'package:my_wallet/core/config/app_config.dart';
 import 'package:my_wallet/core/logging/app_log.dart';
+import 'package:my_wallet/data/auth/secure_session_storage.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/remote/remote_api.dart';
 import 'package:my_wallet/data/repositories/local_ledger.dart';
@@ -32,10 +33,7 @@ void backgroundSyncDispatcher() {
     try {
       final env = AppEnv.values.byName(const String.fromEnvironment('APP_ENV'));
       final config = AppConfig.fromEnvironment(expected: env);
-      await Supabase.initialize(
-        url: config.supabaseUrl,
-        publishableKey: config.supabasePublishableKey,
-      );
+      await initSupabase(config);
       final client = Supabase.instance.client;
       if (client.auth.currentSession == null) return true;
       final db = AppDatabase.open();

@@ -7,8 +7,8 @@ import 'package:my_wallet/app/app.dart';
 import 'package:my_wallet/core/config/app_config.dart';
 import 'package:my_wallet/core/di/app_providers.dart';
 import 'package:my_wallet/core/logging/app_log.dart';
+import 'package:my_wallet/data/auth/secure_session_storage.dart';
 import 'package:my_wallet/data/sync/background_worker.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Barcha flavor'lar uchun yagona ishga tushirish nuqtasi.
 ///
@@ -35,11 +35,8 @@ Future<void> bootstrap({required AppEnv env}) async {
   final config = AppConfig.fromEnvironment(expected: env);
   AppLog.info('My Wallet ishga tushdi: ${config.env.name}');
 
-  // Sessiya qurilmada saqlanadi va shu yerda tiklanadi (E14 — kirish oqimi).
-  await Supabase.initialize(
-    url: config.supabaseUrl,
-    publishableKey: config.supabasePublishableKey,
-  );
+  // Sessiya shifrlangan xotirada saqlanadi va shu yerda tiklanadi.
+  await initSupabase(config);
   if (Platform.isAndroid) await registerBackgroundSync();
 
   runApp(

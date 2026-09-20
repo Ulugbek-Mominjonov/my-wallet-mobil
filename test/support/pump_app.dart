@@ -6,6 +6,9 @@ import 'package:my_wallet/app/app.dart';
 import 'package:my_wallet/app/router.dart';
 import 'package:my_wallet/core/config/app_config.dart';
 import 'package:my_wallet/core/di/app_providers.dart';
+import 'package:my_wallet/data/auth/auth_providers.dart';
+
+import 'fake_auth.dart';
 
 AppConfig testConfig({AppEnv env = AppEnv.dev}) => AppConfig(
   env: env,
@@ -17,7 +20,12 @@ AppConfig testConfig({AppEnv env = AppEnv.dev}) => AppConfig(
 );
 
 /// Butun ilovani o'zbek tilida, test konfiguratsiyasi bilan chizadi.
-Future<GoRouter> pumpApp(WidgetTester tester, {AppEnv env = AppEnv.dev}) async {
+/// Standart — kirilgan foydalanuvchi ([auth] bilan boshqariladi).
+Future<GoRouter> pumpApp(
+  WidgetTester tester, {
+  AppEnv env = AppEnv.dev,
+  FakeAuthGateway? auth,
+}) async {
   tester.platformDispatcher.localesTestValue = const [Locale('uz')];
   addTearDown(tester.platformDispatcher.clearLocalesTestValue);
   // Cheksiz animatsiyalar (skeleton) pumpAndSettle'ni to'xtatmasin —
@@ -27,7 +35,12 @@ Future<GoRouter> pumpApp(WidgetTester tester, {AppEnv env = AppEnv.dev}) async {
   addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
 
   final container = ProviderContainer.test(
-    overrides: [appConfigProvider.overrideWithValue(testConfig(env: env))],
+    overrides: [
+      appConfigProvider.overrideWithValue(testConfig(env: env)),
+      authGatewayProvider.overrideWithValue(
+        auth ?? FakeAuthGateway(currentUserId: 'user-1'),
+      ),
+    ],
   );
   await tester.pumpWidget(
     UncontrolledProviderScope(container: container, child: const MyWalletApp()),

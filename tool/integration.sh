@@ -4,7 +4,7 @@
 #
 #   make integration      — lokal: ../my-wallet-admin da `supabase start`
 #   ADMIN_DIR=admin make integration                 — CI (admin checkout)
-#   SUPABASE_URL=… SUPABASE_PUBLISHABLE_KEY=… SUPABASE_SECRET_KEY=… make integration
+#   SUPABASE_URL=… SUPABASE_PUBLISHABLE_KEY=… SUPABASE_SECRET_KEY=… [MAILPIT_URL=…] make integration
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -23,7 +23,9 @@ if [ -z "${SUPABASE_PUBLISHABLE_KEY:-}" ]; then
   SUPABASE_URL="$(echo "$status" | sed -n 's/^API_URL=//p')"
   SUPABASE_PUBLISHABLE_KEY="$(echo "$status" | sed -n 's/^PUBLISHABLE_KEY=//p')"
   SUPABASE_SECRET_KEY="$(echo "$status" | sed -n 's/^SECRET_KEY=//p')"
-  export SUPABASE_URL SUPABASE_PUBLISHABLE_KEY SUPABASE_SECRET_KEY
+  MAILPIT_URL="$(echo "$status" | sed -n 's/^MAILPIT_URL=//p')"
+  export SUPABASE_URL SUPABASE_PUBLISHABLE_KEY SUPABASE_SECRET_KEY MAILPIT_URL
 fi
 
-flutter test integration "$@"
+# Argument berilsa — faqat o'sha test (masalan tool/integration.sh integration/auth).
+flutter test "${@:-integration}"

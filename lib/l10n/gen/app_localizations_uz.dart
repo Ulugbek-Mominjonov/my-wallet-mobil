@@ -151,4 +151,78 @@ class AppL10nUz extends AppL10n {
     });
     return '$_temp0';
   }
+
+  @override
+  String get authTagline => 'Pulingiz qayerga ketayotganini biling';
+
+  @override
+  String get authGoogle => 'Google bilan kirish';
+
+  @override
+  String get authOr => 'yoki';
+
+  @override
+  String get authEmailLabel => 'Email';
+
+  @override
+  String get authSendCode => 'Kod olish';
+
+  @override
+  String get authCodeTitle => 'Pochtangizni tekshiring';
+
+  @override
+  String authCodeSent(String email, int length) {
+    return '$email manziliga $length xonali kod yubordik';
+  }
+
+  @override
+  String get authCodeLabel => 'Kod';
+
+  @override
+  String get authVerify => 'Kirish';
+
+  @override
+  String get authResend => 'Kodni qayta yuborish';
+
+  @override
+  String authResendIn(int seconds) {
+    return 'Qayta yuborish — $seconds s';
+  }
+
+  @override
+  String get authChangeEmail => 'Boshqa email';
+
+  @override
+  String get authErrorInvalidEmail => 'Email manzilni tekshiring';
+
+  @override
+  String authErrorInvalidCode(int length) {
+    return '$length xonali kodni kiriting';
+  }
+
+  @override
+  String get authErrorCodeExpired => 'Kod noto\'g\'ri yoki eskirgan';
+
+  @override
+  String get authErrorRateLimit =>
+      'Juda ko\'p urinish — birozdan keyin qayta urinib ko\'ring';
+
+  @override
+  String get authErrorGoogle =>
+      'Google bilan kirib bo\'lmadi — email orqali kiring';
+
+  @override
+  String get errorOffline => 'Internet yo\'q — ulanishni tekshiring';
+
+  @override
+  String get signOut => 'Chiqish';
+
+  @override
+  String get signOutConfirm =>
+      'Qurilmadagi ma\'lumot o\'chiriladi — qayta kirganingizda serverdan yuklanadi.';
+
+  @override
+  String signOutUnsent(int count) {
+    return '$count ta o\'zgarish hali serverga yetmagan — chiqsangiz ular yo\'qoladi.';
+  }
 }

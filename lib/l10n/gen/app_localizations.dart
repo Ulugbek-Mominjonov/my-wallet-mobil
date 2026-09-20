@@ -308,6 +308,132 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'{table, select, transactions{Amal} planned_items{Reja} accounts{Hisob} categories{Kategoriya} debts{Qarz} goals{Maqsad} other{Yozuv}}'**
   String syncRecordKind(String table);
+
+  /// Kirish ekrani (E14-T01)
+  ///
+  /// In uz, this message translates to:
+  /// **'Pulingiz qayerga ketayotganini biling'**
+  String get authTagline;
+
+  /// No description provided for @authGoogle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Google bilan kirish'**
+  String get authGoogle;
+
+  /// No description provided for @authOr.
+  ///
+  /// In uz, this message translates to:
+  /// **'yoki'**
+  String get authOr;
+
+  /// No description provided for @authEmailLabel.
+  ///
+  /// In uz, this message translates to:
+  /// **'Email'**
+  String get authEmailLabel;
+
+  /// No description provided for @authSendCode.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kod olish'**
+  String get authSendCode;
+
+  /// No description provided for @authCodeTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Pochtangizni tekshiring'**
+  String get authCodeTitle;
+
+  /// Kod bosqichi (E14-T01)
+  ///
+  /// In uz, this message translates to:
+  /// **'{email} manziliga {length} xonali kod yubordik'**
+  String authCodeSent(String email, int length);
+
+  /// No description provided for @authCodeLabel.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kod'**
+  String get authCodeLabel;
+
+  /// No description provided for @authVerify.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kirish'**
+  String get authVerify;
+
+  /// No description provided for @authResend.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kodni qayta yuborish'**
+  String get authResend;
+
+  /// No description provided for @authResendIn.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qayta yuborish — {seconds} s'**
+  String authResendIn(int seconds);
+
+  /// No description provided for @authChangeEmail.
+  ///
+  /// In uz, this message translates to:
+  /// **'Boshqa email'**
+  String get authChangeEmail;
+
+  /// No description provided for @authErrorInvalidEmail.
+  ///
+  /// In uz, this message translates to:
+  /// **'Email manzilni tekshiring'**
+  String get authErrorInvalidEmail;
+
+  /// No description provided for @authErrorInvalidCode.
+  ///
+  /// In uz, this message translates to:
+  /// **'{length} xonali kodni kiriting'**
+  String authErrorInvalidCode(int length);
+
+  /// No description provided for @authErrorCodeExpired.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kod noto\'g\'ri yoki eskirgan'**
+  String get authErrorCodeExpired;
+
+  /// No description provided for @authErrorRateLimit.
+  ///
+  /// In uz, this message translates to:
+  /// **'Juda ko\'p urinish — birozdan keyin qayta urinib ko\'ring'**
+  String get authErrorRateLimit;
+
+  /// No description provided for @authErrorGoogle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Google bilan kirib bo\'lmadi — email orqali kiring'**
+  String get authErrorGoogle;
+
+  /// No description provided for @errorOffline.
+  ///
+  /// In uz, this message translates to:
+  /// **'Internet yo\'q — ulanishni tekshiring'**
+  String get errorOffline;
+
+  /// No description provided for @signOut.
+  ///
+  /// In uz, this message translates to:
+  /// **'Chiqish'**
+  String get signOut;
+
+  /// No description provided for @signOutConfirm.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qurilmadagi ma\'lumot o\'chiriladi — qayta kirganingizda serverdan yuklanadi.'**
+  String get signOutConfirm;
+
+  /// No description provided for @signOutUnsent.
+  ///
+  /// In uz, this message translates to:
+  /// **'{count} ta o\'zgarish hali serverga yetmagan — chiqsangiz ular yo\'qoladi.'**
+  String signOutUnsent(int count);
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {
