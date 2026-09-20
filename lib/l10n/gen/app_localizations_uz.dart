@@ -444,4 +444,13 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get privacyMode => 'Maxfiylik rejimi';
+
+  @override
+  String get kindExpense => 'Xarajat';
+
+  @override
+  String get kindIncome => 'Daromad';
+
+  @override
+  String get kindTransfer => 'O\'tkazma';
 }

@@ -252,5 +252,11 @@
         "type": "int"
       }
     }
+  },
+  "kindExpense": "Xarajat",
+  "kindIncome": "Daromad",
+  "kindTransfer": "O'tkazma",
+  "@kindExpense": {
+    "description": "Amal turi (E15-T01)"
   }
 }

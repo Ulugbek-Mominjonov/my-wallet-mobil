@@ -123,5 +123,8 @@
   "lockAutoValue": "After {minutes} min",
   "lockSecureScreen": "Hide in the app switcher",
   "lockForgot": "Forgot your PIN — sign out",
-  "privacyMode": "Privacy mode"
+  "privacyMode": "Privacy mode",
+  "kindExpense": "Expense",
+  "kindIncome": "Income",
+  "kindTransfer": "Transfer"
 }

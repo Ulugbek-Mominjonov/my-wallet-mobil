@@ -268,8 +268,10 @@
 > **DoD:** xarajat 3 bosishda (tez tugma — 1 bosish), undo ishlaydi,
 > oflaynda to'liq ishlaydi.
 
-- [ ] **E15-T01** "Qo'shish" varag'i: Xarajat/Daromad/O'tkazma segmenti,
-  `AmountKeypad` (`000`, `⌫`, oddiy `+ −` hisob), summa formatlash jonli.
+- [x] **E15-T01** "Qo'shish" varag'i: Xarajat/Daromad/O'tkazma segmenti,
+  `AmountKeypad` (`000`, `⌫`, oddiy `+ −` hisob, haptic), summa jonli
+  formatlanadi (byudjet valyutasida). Kiritish mantiqi — sof `AmountEntry`
+  (5 test), varaq — 3 vidjet testi.
 - [ ] **E15-T02** Maydonlar: kategoriya to'ri (oxirgi 8 tasi oldinda,
   qidiruv, joyida yangi kategoriya — BR-035), hisob chiplari, sana
   (Bugun/Kecha/kalendar), payee avto-to'ldirish + oxirgi kategoriya/hisob

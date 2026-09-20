@@ -443,4 +443,13 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get privacyMode => 'Privacy mode';
+
+  @override
+  String get kindExpense => 'Expense';
+
+  @override
+  String get kindIncome => 'Income';
+
+  @override
+  String get kindTransfer => 'Transfer';
 }

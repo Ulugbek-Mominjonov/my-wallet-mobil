@@ -20,6 +20,7 @@ import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:my_wallet/features/startup/presentation/splash_screen.dart';
 import 'package:my_wallet/features/startup/presentation/update_required_screen.dart';
 import 'package:my_wallet/features/sync/presentation/sync_status_screen.dart';
+import 'package:my_wallet/features/transactions/presentation/add_transaction_screen.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
 
 /// Kirish ekrani manzili.
@@ -122,15 +123,9 @@ final routerProvider = Provider<GoRouter>((ref) {
       // ochiladi (E15, E33).
       GoRoute(
         path: '/add',
-        pageBuilder: (context, state) => MaterialPage(
+        pageBuilder: (context, state) => const MaterialPage(
           fullscreenDialog: true,
-          child: Scaffold(
-            appBar: AppBar(title: Text(AppL10n.of(context).addTitle)),
-            body: const PlaceholderScreen(
-              title: '',
-              icon: Icons.add_card_outlined,
-            ),
-          ),
+          child: AddTransactionScreen(),
         ),
       ),
       // Sinxron holati (E13-T06) — SyncStatusBadge'dan.

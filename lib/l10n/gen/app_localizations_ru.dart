@@ -443,4 +443,13 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get privacyMode => 'Режим приватности';
+
+  @override
+  String get kindExpense => 'Расход';
+
+  @override
+  String get kindIncome => 'Доход';
+
+  @override
+  String get kindTransfer => 'Перевод';
 }

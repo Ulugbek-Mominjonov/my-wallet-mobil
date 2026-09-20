@@ -842,6 +842,24 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Maxfiylik rejimi'**
   String get privacyMode;
+
+  /// Amal turi (E15-T01)
+  ///
+  /// In uz, this message translates to:
+  /// **'Xarajat'**
+  String get kindExpense;
+
+  /// No description provided for @kindIncome.
+  ///
+  /// In uz, this message translates to:
+  /// **'Daromad'**
+  String get kindIncome;
+
+  /// No description provided for @kindTransfer.
+  ///
+  /// In uz, this message translates to:
+  /// **'O\'tkazma'**
+  String get kindTransfer;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

@@ -123,5 +123,8 @@
   "lockAutoValue": "Через {minutes} мин",
   "lockSecureScreen": "Скрывать в списке приложений",
   "lockForgot": "Забыли PIN — выйти",
-  "privacyMode": "Режим приватности"
+  "privacyMode": "Режим приватности",
+  "kindExpense": "Расход",
+  "kindIncome": "Доход",
+  "kindTransfer": "Перевод"
 }
