@@ -434,6 +434,120 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'{count} ta o\'zgarish hali serverga yetmagan — chiqsangiz ular yo\'qoladi.'**
   String signOutUnsent(int count);
+
+  /// Ishga tushirish va byudjet tanlash (E14-T02)
+  ///
+  /// In uz, this message translates to:
+  /// **'Byudjet yuklanmoqda…'**
+  String get startupLoading;
+
+  /// No description provided for @startupFailed.
+  ///
+  /// In uz, this message translates to:
+  /// **'Ma\'lumotni yuklab bo\'lmadi'**
+  String get startupFailed;
+
+  /// No description provided for @householdSetupTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Byudjetni boshlang'**
+  String get householdSetupTitle;
+
+  /// No description provided for @householdSetupSubtitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yangi byudjet yarating yoki taklif kodi bilan mavjudiga qo\'shiling.'**
+  String get householdSetupSubtitle;
+
+  /// No description provided for @householdCreateTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yangi byudjet'**
+  String get householdCreateTitle;
+
+  /// No description provided for @householdNameLabel.
+  ///
+  /// In uz, this message translates to:
+  /// **'Byudjet nomi'**
+  String get householdNameLabel;
+
+  /// No description provided for @householdNameDefault.
+  ///
+  /// In uz, this message translates to:
+  /// **'Mening byudjetim'**
+  String get householdNameDefault;
+
+  /// No description provided for @householdCreate.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yaratish'**
+  String get householdCreate;
+
+  /// No description provided for @householdJoinTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Taklif kodi bilan qo\'shilish'**
+  String get householdJoinTitle;
+
+  /// No description provided for @householdCodeLabel.
+  ///
+  /// In uz, this message translates to:
+  /// **'Taklif kodi'**
+  String get householdCodeLabel;
+
+  /// No description provided for @householdJoin.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qo\'shilish'**
+  String get householdJoin;
+
+  /// No description provided for @householdScan.
+  ///
+  /// In uz, this message translates to:
+  /// **'QR kodni skanerlash'**
+  String get householdScan;
+
+  /// No description provided for @householdScanTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Taklif QR kodi'**
+  String get householdScanTitle;
+
+  /// No description provided for @householdErrorName.
+  ///
+  /// In uz, this message translates to:
+  /// **'Byudjet nomini kiriting'**
+  String get householdErrorName;
+
+  /// No description provided for @householdErrorCode.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kod 8 belgidan iborat'**
+  String get householdErrorCode;
+
+  /// No description provided for @householdErrorNotFound.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bunday kod topilmadi'**
+  String get householdErrorNotFound;
+
+  /// No description provided for @householdErrorUsed.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kod allaqachon ishlatilgan'**
+  String get householdErrorUsed;
+
+  /// No description provided for @householdErrorExpired.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kod muddati tugagan (7 kun)'**
+  String get householdErrorExpired;
+
+  /// No description provided for @householdErrorMember.
+  ///
+  /// In uz, this message translates to:
+  /// **'Siz allaqachon bu byudjet a\'zosisiz'**
+  String get householdErrorMember;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

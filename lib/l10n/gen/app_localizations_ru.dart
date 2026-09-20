@@ -225,4 +225,62 @@ class AppL10nRu extends AppL10n {
   String signOutUnsent(int count) {
     return 'Не отправлено на сервер изменений: $count — при выходе они пропадут.';
   }
+
+  @override
+  String get startupLoading => 'Загружаем бюджет…';
+
+  @override
+  String get startupFailed => 'Не удалось загрузить данные';
+
+  @override
+  String get householdSetupTitle => 'Начните бюджет';
+
+  @override
+  String get householdSetupSubtitle =>
+      'Создайте новый бюджет или присоединитесь к существующему по коду приглашения.';
+
+  @override
+  String get householdCreateTitle => 'Новый бюджет';
+
+  @override
+  String get householdNameLabel => 'Название бюджета';
+
+  @override
+  String get householdNameDefault => 'Мой бюджет';
+
+  @override
+  String get householdCreate => 'Создать';
+
+  @override
+  String get householdJoinTitle => 'Присоединиться по коду';
+
+  @override
+  String get householdCodeLabel => 'Код приглашения';
+
+  @override
+  String get householdJoin => 'Присоединиться';
+
+  @override
+  String get householdScan => 'Сканировать QR-код';
+
+  @override
+  String get householdScanTitle => 'QR-код приглашения';
+
+  @override
+  String get householdErrorName => 'Введите название бюджета';
+
+  @override
+  String get householdErrorCode => 'Код состоит из 8 символов';
+
+  @override
+  String get householdErrorNotFound => 'Такой код не найден';
+
+  @override
+  String get householdErrorUsed => 'Код уже использован';
+
+  @override
+  String get householdErrorExpired => 'Срок действия кода истёк (7 дней)';
+
+  @override
+  String get householdErrorMember => 'Вы уже участник этого бюджета';
 }

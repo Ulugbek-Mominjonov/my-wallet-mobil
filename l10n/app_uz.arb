@@ -141,5 +141,27 @@
   },
   "@authTagline": {
     "description": "Kirish ekrani (E14-T01)"
+  },
+  "startupLoading": "Byudjet yuklanmoqda…",
+  "startupFailed": "Ma'lumotni yuklab bo'lmadi",
+  "householdSetupTitle": "Byudjetni boshlang",
+  "householdSetupSubtitle": "Yangi byudjet yarating yoki taklif kodi bilan mavjudiga qo'shiling.",
+  "householdCreateTitle": "Yangi byudjet",
+  "householdNameLabel": "Byudjet nomi",
+  "householdNameDefault": "Mening byudjetim",
+  "householdCreate": "Yaratish",
+  "householdJoinTitle": "Taklif kodi bilan qo'shilish",
+  "householdCodeLabel": "Taklif kodi",
+  "householdJoin": "Qo'shilish",
+  "householdScan": "QR kodni skanerlash",
+  "householdScanTitle": "Taklif QR kodi",
+  "householdErrorName": "Byudjet nomini kiriting",
+  "householdErrorCode": "Kod 8 belgidan iborat",
+  "householdErrorNotFound": "Bunday kod topilmadi",
+  "householdErrorUsed": "Kod allaqachon ishlatilgan",
+  "householdErrorExpired": "Kod muddati tugagan (7 kun)",
+  "householdErrorMember": "Siz allaqachon bu byudjet a'zosisiz",
+  "@startupLoading": {
+    "description": "Ishga tushirish va byudjet tanlash (E14-T02)"
   }
 }

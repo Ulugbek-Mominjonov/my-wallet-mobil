@@ -46,6 +46,23 @@ class AppDatabase extends _$AppDatabase {
       MigrationStrategy(onCreate: (migrator) => migrator.createAll());
 
   static const _deviceIdKey = 'device_id';
+  static const _ownerKey = 'owner_user_id';
+
+  Future<String?> setting(String key) async => (await (select(
+    appSettings,
+  )..where((s) => s.key.equals(key))).getSingleOrNull())?.value;
+
+  Future<void> setSetting(String key, String value) => into(
+    appSettings,
+  ).insertOnConflictUpdate(AppSettingsCompanion.insert(key: key, value: value));
+
+  /// Lokal ma'lumot egasini belgilaydi: boshqa foydalanuvchi kirgan bo'lsa,
+  /// oldingisining ma'lumoti tozalanadi (bir qurilmada aralashmasin).
+  Future<void> claimForUser(String userId) => transaction(() async {
+    if (await setting(_ownerKey) == userId) return;
+    await clearUserData();
+    await setSetting(_ownerKey, userId);
+  });
 
   /// Ilova o'rnatilishining doimiy ID si (`sync_push` `device_id`) —
   /// birinchi chaqiruvda yaratiladi.
@@ -68,5 +85,9 @@ class AppDatabase extends _$AppDatabase {
       if (table == appSettings) continue;
       await delete(table).go();
     }
+    // Qurilma ID sidan boshqa sozlamalar foydalanuvchiga tegishli.
+    await (delete(
+      appSettings,
+    )..where((s) => s.key.equals(_deviceIdKey).not())).go();
   });
 }

@@ -70,8 +70,22 @@ final class FakeRemote implements RemoteApi {
     'resync_required': resync,
   });
 
+  /// `app_bootstrap`, `create_household` va `accept_invite` javoblari
+  /// (E14-T02) — testda o'rnatiladi.
+  Result<AppBootstrap>? boot;
+  Result<String>? created;
+  Result<String>? accepted;
+  final households = <String>[];
+
   @override
-  Future<Result<AppBootstrap>> bootstrap() => throw UnimplementedError();
+  Future<Result<AppBootstrap>> bootstrap() async =>
+      boot ?? (throw UnimplementedError());
+
+  @override
+  Future<Result<String>> createHousehold(String name) async {
+    households.add('create:$name');
+    return created ?? (throw UnimplementedError());
+  }
 
   @override
   Future<Result<OpenMonthPreview>> openMonthPreview(String h, MonthKey m) =>
@@ -86,8 +100,10 @@ final class FakeRemote implements RemoteApi {
       throw UnimplementedError();
 
   @override
-  Future<Result<String>> acceptInvite(String code) =>
-      throw UnimplementedError();
+  Future<Result<String>> acceptInvite(String code) async {
+    households.add('join:$code');
+    return accepted ?? (throw UnimplementedError());
+  }
 
   @override
   Future<Result<TelegramLinkToken>> telegramLinkToken() =>

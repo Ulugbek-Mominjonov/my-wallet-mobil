@@ -12,6 +12,7 @@ final class AppBootstrap {
     final profile = readObject(json, 'profile');
     final config = readObject(json, 'app_config');
     return AppBootstrap._(
+      raw: json,
       schemaVersion: read<int>(json, 'schema_version'),
       isPlatformAdmin: read<bool>(json, 'is_platform_admin'),
       userId: read<String>(profile, 'user_id'),
@@ -32,6 +33,7 @@ final class AppBootstrap {
   }
 
   const new _({
+    required this.raw,
     required this.schemaVersion,
     required this.isPlatformAdmin,
     required this.userId,
@@ -43,6 +45,9 @@ final class AppBootstrap {
     required this.minAndroidVersion,
     required this.maintenance,
   });
+
+  /// Xom javob — oflayn ishga tushish uchun saqlanadi (E14-T02).
+  final Json raw;
 
   /// Shartnoma versiyasi — ilova bilganidan katta bo'lsa yangilash kerak.
   final int schemaVersion;
@@ -99,6 +104,8 @@ final class BootstrapCurrency {
     ).map((locale, value) => MapEntry(locale, '$value')),
     symbol: read<String>(json, 'symbol'),
     exponent: read<int>(json, 'exponent'),
+    // Eski serverda yo'q bo'lishi mumkin — domen standarti bilan.
+    allocationRounding: json['allocation_rounding'] as int?,
   );
 
   const new _({
@@ -106,6 +113,7 @@ final class BootstrapCurrency {
     required this.names,
     required this.symbol,
     required this.exponent,
+    required this.allocationRounding,
   });
 
   final String code;
@@ -114,6 +122,13 @@ final class BootstrapCurrency {
   final Map<String, String> names;
   final String symbol;
   final int exponent;
+
+  /// BR-060: fond ajratmasi yaxlitlanadigan birlik (`null` — domen standarti).
+  final int? allocationRounding;
+
+  Currency toCurrency() => allocationRounding == null
+      ? Currency(code, exponent: exponent)
+      : Currency(code, exponent: exponent, allocationUnit: allocationRounding!);
 }
 
 /// `sync_pull` qatori: jadval nomi va serverdagi to'liq qator.

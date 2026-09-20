@@ -46,6 +46,9 @@ abstract interface class RemoteApi {
   /// `false` — allaqachon bajarilgan (bir marta — E08-T06).
   Future<Result<bool>> onboardingApply(String householdId, Json payload);
 
+  /// Yangi byudjet (BR-010) → byudjet ID si; chaqiruvchi — `owner`.
+  Future<Result<String>> createHousehold(String name);
+
   /// Taklif kodi (BR-012) → byudjet ID si.
   Future<Result<String>> acceptInvite(String code);
 
@@ -137,12 +140,15 @@ final class RpcRemoteApi implements RemoteApi {
       }, (json) => read<bool>(asObject(json), 'applied'));
 
   @override
-  Future<Result<String>> acceptInvite(String code) => _call(
-    'accept_invite',
-    {'p_code': code.trim()},
-    (json) =>
-        json is String ? json : throw FormatException('uuid kutilgan', json),
-  );
+  Future<Result<String>> createHousehold(String name) =>
+      _call('create_household', {'p_name': name.trim()}, _uuid);
+
+  @override
+  Future<Result<String>> acceptInvite(String code) =>
+      _call('accept_invite', {'p_code': code.trim()}, _uuid);
+
+  static String _uuid(Object? json) =>
+      json is String ? json : throw FormatException('uuid kutilgan', json);
 
   @override
   Future<Result<TelegramLinkToken>> telegramLinkToken() =>

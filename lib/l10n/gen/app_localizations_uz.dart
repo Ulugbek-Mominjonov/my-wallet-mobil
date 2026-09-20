@@ -225,4 +225,62 @@ class AppL10nUz extends AppL10n {
   String signOutUnsent(int count) {
     return '$count ta o\'zgarish hali serverga yetmagan — chiqsangiz ular yo\'qoladi.';
   }
+
+  @override
+  String get startupLoading => 'Byudjet yuklanmoqda…';
+
+  @override
+  String get startupFailed => 'Ma\'lumotni yuklab bo\'lmadi';
+
+  @override
+  String get householdSetupTitle => 'Byudjetni boshlang';
+
+  @override
+  String get householdSetupSubtitle =>
+      'Yangi byudjet yarating yoki taklif kodi bilan mavjudiga qo\'shiling.';
+
+  @override
+  String get householdCreateTitle => 'Yangi byudjet';
+
+  @override
+  String get householdNameLabel => 'Byudjet nomi';
+
+  @override
+  String get householdNameDefault => 'Mening byudjetim';
+
+  @override
+  String get householdCreate => 'Yaratish';
+
+  @override
+  String get householdJoinTitle => 'Taklif kodi bilan qo\'shilish';
+
+  @override
+  String get householdCodeLabel => 'Taklif kodi';
+
+  @override
+  String get householdJoin => 'Qo\'shilish';
+
+  @override
+  String get householdScan => 'QR kodni skanerlash';
+
+  @override
+  String get householdScanTitle => 'Taklif QR kodi';
+
+  @override
+  String get householdErrorName => 'Byudjet nomini kiriting';
+
+  @override
+  String get householdErrorCode => 'Kod 8 belgidan iborat';
+
+  @override
+  String get householdErrorNotFound => 'Bunday kod topilmadi';
+
+  @override
+  String get householdErrorUsed => 'Kod allaqachon ishlatilgan';
+
+  @override
+  String get householdErrorExpired => 'Kod muddati tugagan (7 kun)';
+
+  @override
+  String get householdErrorMember => 'Siz allaqachon bu byudjet a\'zosisiz';
 }

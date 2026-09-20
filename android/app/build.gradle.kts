@@ -37,19 +37,24 @@ android {
 
     flavorDimensions += "env"
     productFlavors {
+        // deepLinkScheme — taklif havolasi (mywallet://invite/<kod>) va auth
+        // qaytish manzili; har muhitda o'ziniki (bir telefonda uchalasi ham).
         create("dev") {
             dimension = "env"
             applicationIdSuffix = ".dev"
             resValue("string", "app_name", "My Wallet Dev")
+            manifestPlaceholders["deepLinkScheme"] = "mywallet-dev"
         }
         create("staging") {
             dimension = "env"
             applicationIdSuffix = ".stg"
             resValue("string", "app_name", "My Wallet Stg")
+            manifestPlaceholders["deepLinkScheme"] = "mywallet-stg"
         }
         create("prod") {
             dimension = "env"
             resValue("string", "app_name", "My Wallet")
+            manifestPlaceholders["deepLinkScheme"] = "mywallet"
         }
     }
 

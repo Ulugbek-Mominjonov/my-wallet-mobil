@@ -64,6 +64,10 @@ keytool -list -v -keystore upload.jks -alias upload   # SHA-1 va SHA-256
 }
 ```
 
+**Deep link sxemasi** (`build.gradle.kts` → `deepLinkScheme`): `mywallet-dev`,
+`mywallet-stg`, `mywallet` — taklif havolasi `<sxema>://invite/<kod>` va auth
+qaytishi (`AUTH_REDIRECT`). Bir telefonda uchala versiya aralashmaydi.
+
 `google-services.json` — flavor papkalarida
 (`android/app/src/staging/`, `android/app/src/prod/`); CI sirlardan yozadi.
 

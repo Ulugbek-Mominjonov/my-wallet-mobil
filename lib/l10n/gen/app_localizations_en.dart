@@ -224,4 +224,62 @@ class AppL10nEn extends AppL10n {
   String signOutUnsent(int count) {
     return '$count changes haven\'t reached the server yet — signing out will lose them.';
   }
+
+  @override
+  String get startupLoading => 'Loading your budget…';
+
+  @override
+  String get startupFailed => 'Couldn\'t load your data';
+
+  @override
+  String get householdSetupTitle => 'Start your budget';
+
+  @override
+  String get householdSetupSubtitle =>
+      'Create a new budget or join an existing one with an invite code.';
+
+  @override
+  String get householdCreateTitle => 'New budget';
+
+  @override
+  String get householdNameLabel => 'Budget name';
+
+  @override
+  String get householdNameDefault => 'My budget';
+
+  @override
+  String get householdCreate => 'Create';
+
+  @override
+  String get householdJoinTitle => 'Join with an invite code';
+
+  @override
+  String get householdCodeLabel => 'Invite code';
+
+  @override
+  String get householdJoin => 'Join';
+
+  @override
+  String get householdScan => 'Scan QR code';
+
+  @override
+  String get householdScanTitle => 'Invite QR code';
+
+  @override
+  String get householdErrorName => 'Enter a budget name';
+
+  @override
+  String get householdErrorCode => 'The code is 8 characters long';
+
+  @override
+  String get householdErrorNotFound => 'No such code';
+
+  @override
+  String get householdErrorUsed => 'The code has already been used';
+
+  @override
+  String get householdErrorExpired => 'The code has expired (7 days)';
+
+  @override
+  String get householdErrorMember => 'You\'re already a member of this budget';
 }

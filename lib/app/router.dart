@@ -6,31 +6,76 @@ import 'package:my_wallet/core/di/app_providers.dart';
 import 'package:my_wallet/data/auth/auth_providers.dart';
 import 'package:my_wallet/features/auth/presentation/sign_in_screen.dart';
 import 'package:my_wallet/features/dev/design_catalog_screen.dart';
+import 'package:my_wallet/features/household/application/invite_links.dart';
+import 'package:my_wallet/features/household/presentation/invite_scan_screen.dart';
+import 'package:my_wallet/features/household/presentation/join_or_create_screen.dart';
 import 'package:my_wallet/features/shell/presentation/app_shell.dart';
 import 'package:my_wallet/features/shell/presentation/not_found_screen.dart';
 import 'package:my_wallet/features/shell/presentation/placeholder_screen.dart';
+import 'package:my_wallet/features/startup/application/startup_controller.dart';
+import 'package:my_wallet/features/startup/presentation/splash_screen.dart';
 import 'package:my_wallet/features/sync/presentation/sync_status_screen.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
 
 /// Kirish ekrani manzili.
 const signInPath = '/sign-in';
 
+/// Byudjet yuklanguncha (`app_bootstrap`).
+const splashPath = '/splash';
+
+/// Byudjet yaratish yoki taklif kodi bilan qo'shilish.
+const joinPath = '/join';
+
+/// Sozlash oynasi (E14-T03).
+const onboardingPath = '/onboarding';
+
 /// Marshrutlar. Kirilmagan — faqat kirish ekrani; kirilgan — undan
 /// bosh sahifaga (sessiya eskirsa ham avtomatik).
 final routerProvider = Provider<GoRouter>((ref) {
   final isDev = ref.watch(appConfigProvider).env == AppEnv.dev;
   final signedIn = ValueNotifier(ref.read(authUserProvider) != null);
-  ref.listen(authUserProvider, (_, user) => signedIn.value = user != null);
+  final startup = ValueNotifier<StartupState>(ref.read(startupProvider));
+  final invite = ValueNotifier<String?>(ref.read(pendingInviteProvider));
+  ref
+    ..listen(authUserProvider, (_, user) => signedIn.value = user != null)
+    ..listen(startupProvider, (_, next) => startup.value = next)
+    ..listen(pendingInviteProvider, (_, code) => invite.value = code);
 
   final router = GoRouter(
-    refreshListenable: signedIn,
-    redirect: (context, state) =>
-        authRedirect(signedIn: signedIn.value, location: state.matchedLocation),
+    refreshListenable: Listenable.merge([signedIn, startup, invite]),
+    redirect: (context, state) => appRedirect(
+      signedIn: signedIn.value,
+      startup: startup.value,
+      hasInvite: invite.value != null,
+      location: state.matchedLocation,
+    ),
     errorBuilder: (context, state) => const NotFoundScreen(),
     routes: [
       GoRoute(
         path: signInPath,
         builder: (context, state) => const SignInScreen(),
+      ),
+      GoRoute(
+        path: splashPath,
+        builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: joinPath,
+        builder: (context, state) => const JoinOrCreateScreen(),
+        routes: [
+          GoRoute(
+            path: 'scan',
+            builder: (context, state) => const InviteScanScreen(),
+          ),
+        ],
+      ),
+      // E14-T03: sozlash ustasi shu manzilga keladi.
+      GoRoute(
+        path: onboardingPath,
+        builder: (context, state) => PlaceholderScreen(
+          title: AppL10n.of(context).comingSoon,
+          icon: Icons.tune,
+        ),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => AppShell(navigationShell: shell),
@@ -79,16 +124,42 @@ final routerProvider = Provider<GoRouter>((ref) {
   );
   ref
     ..onDispose(router.dispose)
-    ..onDispose(signedIn.dispose);
+    ..onDispose(signedIn.dispose)
+    ..onDispose(startup.dispose)
+    ..onDispose(invite.dispose);
   return router;
 });
 
-/// Kirish holatiga ko'ra yo'naltirish (`null` — o'z joyida qoladi).
-String? authRedirect({required bool signedIn, required String location}) {
-  final atSignIn = location == signInPath;
-  if (!signedIn) return atSignIn ? null : signInPath;
-  return atSignIn ? '/' : null;
+/// Yo'naltirish (`null` — o'z joyida qoladi): kirish → byudjet yuklash →
+/// byudjet tanlash/taklif → sozlash oynasi → ilova.
+String? appRedirect({
+  required bool signedIn,
+  required StartupState startup,
+  required bool hasInvite,
+  required String location,
+}) {
+  if (!signedIn) return location == signInPath ? null : signInPath;
+
+  final target = switch (startup) {
+    StartupLoading() || StartupFailed() => splashPath,
+    StartupNoHousehold() => joinPath,
+    // Taklif havolasi ochilgan — qo'shilish ekrani (byudjet bor bo'lsa ham).
+    StartupReady() when hasInvite => joinPath,
+    StartupReady(needsOnboarding: true) => onboardingPath,
+    StartupReady() => null,
+  };
+  if (target == null) {
+    return _gatePaths.any(location.startsWith) ? '/' : null;
+  }
+  return location.startsWith(target) ? null : target;
 }
+
+const List<String> _gatePaths = [
+  signInPath,
+  splashPath,
+  joinPath,
+  onboardingPath,
+];
 
 StatefulShellBranch _tab(
   String path,

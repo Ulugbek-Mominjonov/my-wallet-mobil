@@ -7,8 +7,11 @@ import 'package:my_wallet/app/router.dart';
 import 'package:my_wallet/core/config/app_config.dart';
 import 'package:my_wallet/core/di/app_providers.dart';
 import 'package:my_wallet/data/auth/auth_providers.dart';
+import 'package:my_wallet/features/household/application/invite_links.dart';
+import 'package:my_wallet/features/startup/application/startup_controller.dart';
 
 import 'fake_auth.dart';
+import 'fake_startup.dart';
 
 AppConfig testConfig({AppEnv env = AppEnv.dev}) => AppConfig(
   env: env,
@@ -25,6 +28,12 @@ Future<GoRouter> pumpApp(
   WidgetTester tester, {
   AppEnv env = AppEnv.dev,
   FakeAuthGateway? auth,
+  StartupState? startup,
+  FakeStartupController? startupController,
+  Stream<String>? inviteLinks,
+
+  /// Cheksiz animatsiya (yuklanish indikatori) bo'lsa — `false`.
+  bool settle = true,
 }) async {
   tester.platformDispatcher.localesTestValue = const [Locale('uz')];
   addTearDown(tester.platformDispatcher.clearLocalesTestValue);
@@ -40,12 +49,23 @@ Future<GoRouter> pumpApp(
       authGatewayProvider.overrideWithValue(
         auth ?? FakeAuthGateway(currentUserId: 'user-1'),
       ),
+      startupProvider.overrideWith(
+        () =>
+            startupController ?? FakeStartupController(startup ?? readyState()),
+      ),
+      inviteLinksProvider.overrideWith(
+        (ref) => inviteLinks ?? const Stream<String>.empty(),
+      ),
     ],
   );
   await tester.pumpWidget(
     UncontrolledProviderScope(container: container, child: const MyWalletApp()),
   );
-  await tester.pumpAndSettle();
+  if (settle) {
+    await tester.pumpAndSettle();
+  } else {
+    await tester.pump();
+  }
   final router = container.read(routerProvider);
   return router;
 }

@@ -208,11 +208,18 @@
   Admin: kirish xati shabloni — havola emas, kod (`{{ .Token }}`).
   Testlar: 11 gateway + 7 oqim + 4 chiqish; integratsiya — haqiqiy GoTrue,
   Mailpit'dan kod, `app_bootstrap` shaxsiy byudjetni qaytaradi (BR-010).
-- [ ] **E14-T02** `app_bootstrap` → byudjetlar (valyutalarga
-  `allocation_rounding` qo'shiladi — admin, qo'shimcha o'zgarish; domendagi
-  `Currency.allocationUnit` shundan); birinchi kirishda:
-  "Yangi byudjet" yoki "Taklif kodi bilan qo'shilish" (kod / QR / deep link
-  `mywallet://invite/<kod>`).
+- [x] **E14-T02** `app_bootstrap` → byudjetlar (valyutalarda
+  `allocation_rounding` — admin tomonda qo'shimcha maydon; domendagi
+  `Currency.allocationUnit` shundan). Tanlov: saqlangan byudjet → serverdagi
+  oxirgisi → birinchisi; javob nusxasi lokal saqlanadi — **oflaynda ham
+  ochiladi** (BR-007), nusxa yo'q bo'lsa qayta urinish ekrani. Boshqa akkaunt
+  kirsa lokal ma'lumot tozalanadi. Byudjet yo'q (yoki taklif havolasi
+  ochilgan) — "Yangi byudjet" / "Taklif kodi bilan qo'shilish": kod (katta
+  harf, 8 belgi), QR (`mobile_scanner`, ML Kit modeli Play xizmatlaridan —
+  APK kichik) yoki deep link `<sxema>://invite/<kod>` (flavor bo'yicha
+  sxema). Router: splash → qo'shilish → sozlash → ilova. Testlar: 9 startup +
+  4 qo'shilish + 3 splash + 4 yo'naltirish; integratsiya —
+  `create_household` → `create_invite` → `accept_invite` (bir martalik kod).
 - [ ] **E14-T03** Onboarding ustasi (har qadamni o'tkazib yuborish mumkin):
   hisoblar + boshlang'ich qoldiq → maosh jadvali (Avans/Oylik/KPI/Qo'shimcha:
   kuni va "qaysi oyga tegishli") → doimiy to'lovlar (Ijara, Kommunal,

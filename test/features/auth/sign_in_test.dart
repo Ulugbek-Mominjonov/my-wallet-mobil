@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_wallet/app/router.dart';
 import 'package:my_wallet/data/auth/auth_gateway.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
@@ -18,13 +17,6 @@ void main() {
     await tester.tap(find.text('Kod olish'));
     await tester.pumpAndSettle();
   }
-
-  test("yo'naltirish: kirilmagan — faqat kirish ekrani", () {
-    expect(authRedirect(signedIn: false, location: '/wallet'), signInPath);
-    expect(authRedirect(signedIn: false, location: signInPath), isNull);
-    expect(authRedirect(signedIn: true, location: signInPath), '/');
-    expect(authRedirect(signedIn: true, location: '/wallet'), isNull);
-  });
 
   testWidgets('kirilmagan — kirish ekrani; sessiya eskirsa — qaytadi', (
     tester,
