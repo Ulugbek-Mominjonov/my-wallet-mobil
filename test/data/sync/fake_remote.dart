@@ -91,13 +91,27 @@ final class FakeRemote implements RemoteApi {
   Future<Result<OpenMonthPreview>> openMonthPreview(String h, MonthKey m) =>
       throw UnimplementedError();
 
-  @override
-  Future<Result<OpenMonthResult>> openMonth(String h, MonthKey m) =>
-      throw UnimplementedError();
+  /// Onboarding (E14-T03): yuk va ochilgan oylar yozib boriladi.
+  Json? appliedPayload;
+  final openedMonths = <MonthKey>[];
+  Result<bool> applyResult = const Ok(true);
+  Result<OpenMonthResult> openMonthResult = Ok((
+    month: MonthKey(2026, 10),
+    created: 0,
+    skipped: 0,
+  ));
 
   @override
-  Future<Result<bool>> onboardingApply(String h, Json payload) =>
-      throw UnimplementedError();
+  Future<Result<OpenMonthResult>> openMonth(String h, MonthKey m) async {
+    openedMonths.add(m);
+    return openMonthResult;
+  }
+
+  @override
+  Future<Result<bool>> onboardingApply(String h, Json payload) async {
+    appliedPayload = payload;
+    return applyResult;
+  }
 
   @override
   Future<Result<String>> acceptInvite(String code) async {

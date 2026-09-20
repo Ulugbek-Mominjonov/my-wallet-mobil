@@ -220,12 +220,19 @@
   sxema). Router: splash → qo'shilish → sozlash → ilova. Testlar: 9 startup +
   4 qo'shilish + 3 splash + 4 yo'naltirish; integratsiya —
   `create_household` → `create_invite` → `accept_invite` (bir martalik kod).
-- [ ] **E14-T03** Onboarding ustasi (har qadamni o'tkazib yuborish mumkin):
-  hisoblar + boshlang'ich qoldiq → maosh jadvali (Avans/Oylik/KPI/Qo'shimcha:
-  kuni va "qaysi oyga tegishli") → doimiy to'lovlar (Ijara, Kommunal,
-  Internet… tayyor ro'yxatdan, summa, kun, avto to'lov) → 👤 fond qoidasi
-  (10% / qat'iy) → bildirishnoma ruxsati → `onboarding_apply` +
-  `open_month(joriy)`.
+- [x] **E14-T03** Onboarding ustasi (har qadamni o'tkazib yuborish mumkin):
+  hisoblar + joriy qoldiq → maosh jadvali (daromad turlari: kuni, summa,
+  hisob va "qaysi oyga tegishli" — BR-031/BR-040) → doimiy to'lovlar
+  (kategoriyalar ro'yxatidan: summa, kun, hisob, avto to'lov) → 👤 fond
+  qoidasi (foiz/qat'iy, kun, manba hisob) → yakun. Ro'yxatlar **lokal
+  bazadan** (sinxron keltirgan nomlar — server yukni nom bo'yicha topadi),
+  kiritilgan qiymatlar yangi ro'yxat kelganda saqlanadi. Yakunda bitta
+  `onboarding_apply` + `open_month(joriy)` (oy ochilmasa — sozlash baribir
+  saqlanadi, oy keyin "To'lovlar"da ochiladi). Bildirishnoma ruxsati —
+  E19-T01 (FCM bilan birga). Yangi: `DirectoryDao`, `MoneyField`
+  (raqam + to'liq ko'rinish), `clockProvider` (byudjet vaqt zonasi).
+  Testlar: 7 boshqaruvchi + 2 usta oqimi; integratsiya — haqiqiy
+  `onboarding_apply` (ikkinchi chaqiruv — `applied: false`) va `open_month`.
 - [ ] **E14-T04** Ilova qobig'i: pastki navigatsiya + markaziy FAB, byudjet
   almashtirgich, `OfflineBanner`, `SyncStatusBadge`, majburiy yangilash
   ekrani (BR-214), texnik ishlar banneri (`app_config`).

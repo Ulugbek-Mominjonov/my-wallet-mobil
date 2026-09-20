@@ -9,6 +9,7 @@ import 'package:my_wallet/features/dev/design_catalog_screen.dart';
 import 'package:my_wallet/features/household/application/invite_links.dart';
 import 'package:my_wallet/features/household/presentation/invite_scan_screen.dart';
 import 'package:my_wallet/features/household/presentation/join_or_create_screen.dart';
+import 'package:my_wallet/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:my_wallet/features/shell/presentation/app_shell.dart';
 import 'package:my_wallet/features/shell/presentation/not_found_screen.dart';
 import 'package:my_wallet/features/shell/presentation/placeholder_screen.dart';
@@ -69,13 +70,9 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      // E14-T03: sozlash ustasi shu manzilga keladi.
       GoRoute(
         path: onboardingPath,
-        builder: (context, state) => PlaceholderScreen(
-          title: AppL10n.of(context).comingSoon,
-          icon: Icons.tune,
-        ),
+        builder: (context, state) => const OnboardingScreen(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => AppShell(navigationShell: shell),

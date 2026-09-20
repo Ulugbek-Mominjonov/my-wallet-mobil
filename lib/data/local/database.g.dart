@@ -13962,6 +13962,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'CREATE INDEX sync_issues_open ON sync_issues (household_id, resolved_at)',
   );
   late final LedgerDao ledgerDao = LedgerDao(this as AppDatabase);
+  late final DirectoryDao directoryDao = DirectoryDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

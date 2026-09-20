@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:my_wallet/data/remote/dto.dart';
 import 'package:my_wallet/data/remote/json_read.dart';
+import 'package:my_wallet/data/sync/sync_providers.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
@@ -64,7 +67,19 @@ final class FakeStartupController extends StartupController {
   Result<void> result = const Ok(null);
 
   @override
-  StartupState build() => initial;
+  StartupState build() {
+    // Haqiqiy boshqaruvchi kabi — byudjetni tanlaydi (build'dan keyin).
+    if (initial case StartupReady(:final household)) {
+      unawaited(
+        Future.microtask(
+          () => ref
+              .read(currentHouseholdIdProvider.notifier)
+              .select(household.id),
+        ),
+      );
+    }
+    return initial;
+  }
 
   @override
   Future<void> reload() async => calls.add('reload');

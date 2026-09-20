@@ -548,6 +548,174 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Siz allaqachon bu byudjet a\'zosisiz'**
   String get householdErrorMember;
+
+  /// No description provided for @onboardingTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Sozlash'**
+  String get onboardingTitle;
+
+  /// Sozlash ustasi (E14-T03)
+  ///
+  /// In uz, this message translates to:
+  /// **'{current}/{total}-qadam'**
+  String onboardingStep(int current, int total);
+
+  /// No description provided for @onboardingAccountsTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Hisoblar va qoldiq'**
+  String get onboardingAccountsTitle;
+
+  /// No description provided for @onboardingAccountsSubtitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Hozirgi qoldiqni kiriting — keyin hammasi shundan hisoblanadi.'**
+  String get onboardingAccountsSubtitle;
+
+  /// No description provided for @onboardingIncomeTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Maosh jadvali'**
+  String get onboardingIncomeTitle;
+
+  /// No description provided for @onboardingIncomeSubtitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qaysi daromadlarni olasiz, qaysi kuni va qaysi oyga tegishli.'**
+  String get onboardingIncomeSubtitle;
+
+  /// No description provided for @onboardingRecurringTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Doimiy to\'lovlar'**
+  String get onboardingRecurringTitle;
+
+  /// No description provided for @onboardingRecurringSubtitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Har oy takrorlanadigan to\'lovlar — har oy avtomatik rejaga tushadi.'**
+  String get onboardingRecurringSubtitle;
+
+  /// No description provided for @onboardingFundTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'👤 Shaxsiy fond'**
+  String get onboardingFundTitle;
+
+  /// No description provided for @onboardingFundSubtitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Har oy o\'zingiz uchun ajratadigan ulush.'**
+  String get onboardingFundSubtitle;
+
+  /// No description provided for @onboardingDoneTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Tayyor!'**
+  String get onboardingDoneTitle;
+
+  /// No description provided for @onboardingDoneSubtitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Joriy oy ochiladi va rejalar yaratiladi.'**
+  String get onboardingDoneSubtitle;
+
+  /// No description provided for @onboardingWaiting.
+  ///
+  /// In uz, this message translates to:
+  /// **'Spravochniklar yuklanmoqda…'**
+  String get onboardingWaiting;
+
+  /// No description provided for @onboardingFinish.
+  ///
+  /// In uz, this message translates to:
+  /// **'Boshlash'**
+  String get onboardingFinish;
+
+  /// No description provided for @onboardingSkip.
+  ///
+  /// In uz, this message translates to:
+  /// **'O\'tkazib yuborish'**
+  String get onboardingSkip;
+
+  /// No description provided for @actionNext.
+  ///
+  /// In uz, this message translates to:
+  /// **'Davom etish'**
+  String get actionNext;
+
+  /// No description provided for @actionBack.
+  ///
+  /// In uz, this message translates to:
+  /// **'Orqaga'**
+  String get actionBack;
+
+  /// No description provided for @fieldDay.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kuni'**
+  String get fieldDay;
+
+  /// No description provided for @fieldAmount.
+  ///
+  /// In uz, this message translates to:
+  /// **'Summa'**
+  String get fieldAmount;
+
+  /// No description provided for @fieldAccount.
+  ///
+  /// In uz, this message translates to:
+  /// **'Hisob'**
+  String get fieldAccount;
+
+  /// No description provided for @monthThis.
+  ///
+  /// In uz, this message translates to:
+  /// **'Shu oy'**
+  String get monthThis;
+
+  /// No description provided for @monthPrevious.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oldingi oy'**
+  String get monthPrevious;
+
+  /// No description provided for @fundPercentMode.
+  ///
+  /// In uz, this message translates to:
+  /// **'Foiz'**
+  String get fundPercentMode;
+
+  /// No description provided for @fundFixedMode.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qat\'iy summa'**
+  String get fundFixedMode;
+
+  /// No description provided for @fundPercent.
+  ///
+  /// In uz, this message translates to:
+  /// **'Daromadning foizi'**
+  String get fundPercent;
+
+  /// No description provided for @fundSource.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qaysi hisobdan'**
+  String get fundSource;
+
+  /// No description provided for @autoPay.
+  ///
+  /// In uz, this message translates to:
+  /// **'Avto to\'lov'**
+  String get autoPay;
+
+  /// No description provided for @onboardingSummary.
+  ///
+  /// In uz, this message translates to:
+  /// **'{accounts} ta hisob, {incomes} ta daromad turi, {plans} ta doimiy to\'lov'**
+  String onboardingSummary(int accounts, int incomes, int plans);
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

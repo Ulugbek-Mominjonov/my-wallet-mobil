@@ -283,4 +283,97 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get householdErrorMember => 'Вы уже участник этого бюджета';
+
+  @override
+  String get onboardingTitle => 'Настройка';
+
+  @override
+  String onboardingStep(int current, int total) {
+    return 'Шаг $current/$total';
+  }
+
+  @override
+  String get onboardingAccountsTitle => 'Счета и остаток';
+
+  @override
+  String get onboardingAccountsSubtitle =>
+      'Введите текущий остаток — дальше всё считается от него.';
+
+  @override
+  String get onboardingIncomeTitle => 'График доходов';
+
+  @override
+  String get onboardingIncomeSubtitle =>
+      'Какие доходы вы получаете, какого числа и к какому месяцу относятся.';
+
+  @override
+  String get onboardingRecurringTitle => 'Постоянные платежи';
+
+  @override
+  String get onboardingRecurringSubtitle =>
+      'Ежемесячные платежи — каждый месяц попадают в план автоматически.';
+
+  @override
+  String get onboardingFundTitle => '👤 Личный фонд';
+
+  @override
+  String get onboardingFundSubtitle =>
+      'Доля, которую вы каждый месяц откладываете на себя.';
+
+  @override
+  String get onboardingDoneTitle => 'Готово!';
+
+  @override
+  String get onboardingDoneSubtitle =>
+      'Откроется текущий месяц и создадутся планы.';
+
+  @override
+  String get onboardingWaiting => 'Загружаем справочники…';
+
+  @override
+  String get onboardingFinish => 'Начать';
+
+  @override
+  String get onboardingSkip => 'Пропустить';
+
+  @override
+  String get actionNext => 'Далее';
+
+  @override
+  String get actionBack => 'Назад';
+
+  @override
+  String get fieldDay => 'День';
+
+  @override
+  String get fieldAmount => 'Сумма';
+
+  @override
+  String get fieldAccount => 'Счёт';
+
+  @override
+  String get monthThis => 'Этот месяц';
+
+  @override
+  String get monthPrevious => 'Прошлый месяц';
+
+  @override
+  String get fundPercentMode => 'Процент';
+
+  @override
+  String get fundFixedMode => 'Фиксированная сумма';
+
+  @override
+  String get fundPercent => 'Процент от дохода';
+
+  @override
+  String get fundSource => 'С какого счёта';
+
+  @override
+  String get autoPay => 'Автоплатёж';
+
+  @override
+  String onboardingSummary(int accounts, int incomes, int plans) {
+    return 'Счетов: $accounts, видов дохода: $incomes, постоянных платежей: $plans';
+  }
 }

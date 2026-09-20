@@ -282,4 +282,97 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get householdErrorMember => 'You\'re already a member of this budget';
+
+  @override
+  String get onboardingTitle => 'Setup';
+
+  @override
+  String onboardingStep(int current, int total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String get onboardingAccountsTitle => 'Accounts and balances';
+
+  @override
+  String get onboardingAccountsSubtitle =>
+      'Enter your current balance — everything is counted from it.';
+
+  @override
+  String get onboardingIncomeTitle => 'Income schedule';
+
+  @override
+  String get onboardingIncomeSubtitle =>
+      'Which income you receive, on which day, and which month it belongs to.';
+
+  @override
+  String get onboardingRecurringTitle => 'Recurring payments';
+
+  @override
+  String get onboardingRecurringSubtitle =>
+      'Monthly payments — they go into the plan automatically each month.';
+
+  @override
+  String get onboardingFundTitle => '👤 Personal fund';
+
+  @override
+  String get onboardingFundSubtitle =>
+      'The share you set aside for yourself each month.';
+
+  @override
+  String get onboardingDoneTitle => 'All set!';
+
+  @override
+  String get onboardingDoneSubtitle =>
+      'The current month will open and plans will be created.';
+
+  @override
+  String get onboardingWaiting => 'Loading your lists…';
+
+  @override
+  String get onboardingFinish => 'Start';
+
+  @override
+  String get onboardingSkip => 'Skip';
+
+  @override
+  String get actionNext => 'Next';
+
+  @override
+  String get actionBack => 'Back';
+
+  @override
+  String get fieldDay => 'Day';
+
+  @override
+  String get fieldAmount => 'Amount';
+
+  @override
+  String get fieldAccount => 'Account';
+
+  @override
+  String get monthThis => 'This month';
+
+  @override
+  String get monthPrevious => 'Previous month';
+
+  @override
+  String get fundPercentMode => 'Percent';
+
+  @override
+  String get fundFixedMode => 'Fixed amount';
+
+  @override
+  String get fundPercent => 'Percent of income';
+
+  @override
+  String get fundSource => 'From which account';
+
+  @override
+  String get autoPay => 'Auto-pay';
+
+  @override
+  String onboardingSummary(int accounts, int incomes, int plans) {
+    return '$accounts accounts, $incomes income types, $plans recurring payments';
+  }
 }

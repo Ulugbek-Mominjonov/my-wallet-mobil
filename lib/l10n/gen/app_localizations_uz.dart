@@ -283,4 +283,97 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get householdErrorMember => 'Siz allaqachon bu byudjet a\'zosisiz';
+
+  @override
+  String get onboardingTitle => 'Sozlash';
+
+  @override
+  String onboardingStep(int current, int total) {
+    return '$current/$total-qadam';
+  }
+
+  @override
+  String get onboardingAccountsTitle => 'Hisoblar va qoldiq';
+
+  @override
+  String get onboardingAccountsSubtitle =>
+      'Hozirgi qoldiqni kiriting — keyin hammasi shundan hisoblanadi.';
+
+  @override
+  String get onboardingIncomeTitle => 'Maosh jadvali';
+
+  @override
+  String get onboardingIncomeSubtitle =>
+      'Qaysi daromadlarni olasiz, qaysi kuni va qaysi oyga tegishli.';
+
+  @override
+  String get onboardingRecurringTitle => 'Doimiy to\'lovlar';
+
+  @override
+  String get onboardingRecurringSubtitle =>
+      'Har oy takrorlanadigan to\'lovlar — har oy avtomatik rejaga tushadi.';
+
+  @override
+  String get onboardingFundTitle => '👤 Shaxsiy fond';
+
+  @override
+  String get onboardingFundSubtitle =>
+      'Har oy o\'zingiz uchun ajratadigan ulush.';
+
+  @override
+  String get onboardingDoneTitle => 'Tayyor!';
+
+  @override
+  String get onboardingDoneSubtitle =>
+      'Joriy oy ochiladi va rejalar yaratiladi.';
+
+  @override
+  String get onboardingWaiting => 'Spravochniklar yuklanmoqda…';
+
+  @override
+  String get onboardingFinish => 'Boshlash';
+
+  @override
+  String get onboardingSkip => 'O\'tkazib yuborish';
+
+  @override
+  String get actionNext => 'Davom etish';
+
+  @override
+  String get actionBack => 'Orqaga';
+
+  @override
+  String get fieldDay => 'Kuni';
+
+  @override
+  String get fieldAmount => 'Summa';
+
+  @override
+  String get fieldAccount => 'Hisob';
+
+  @override
+  String get monthThis => 'Shu oy';
+
+  @override
+  String get monthPrevious => 'Oldingi oy';
+
+  @override
+  String get fundPercentMode => 'Foiz';
+
+  @override
+  String get fundFixedMode => 'Qat\'iy summa';
+
+  @override
+  String get fundPercent => 'Daromadning foizi';
+
+  @override
+  String get fundSource => 'Qaysi hisobdan';
+
+  @override
+  String get autoPay => 'Avto to\'lov';
+
+  @override
+  String onboardingSummary(int accounts, int incomes, int plans) {
+    return '$accounts ta hisob, $incomes ta daromad turi, $plans ta doimiy to\'lov';
+  }
 }

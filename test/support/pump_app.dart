@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_wallet/app/app.dart';
@@ -34,6 +35,7 @@ Future<GoRouter> pumpApp(
 
   /// Cheksiz animatsiya (yuklanish indikatori) bo'lsa — `false`.
   bool settle = true,
+  List<Override> overrides = const [],
 }) async {
   tester.platformDispatcher.localesTestValue = const [Locale('uz')];
   addTearDown(tester.platformDispatcher.clearLocalesTestValue);
@@ -56,6 +58,7 @@ Future<GoRouter> pumpApp(
       inviteLinksProvider.overrideWith(
         (ref) => inviteLinks ?? const Stream<String>.empty(),
       ),
+      ...overrides,
     ],
   );
   await tester.pumpWidget(

@@ -7,6 +7,7 @@ import 'package:my_wallet/data/auth/auth_providers.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/remote/dto.dart';
 import 'package:my_wallet/data/remote/remote_api.dart';
+import 'package:my_wallet/data/repositories/local_ledger.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
@@ -155,6 +156,14 @@ base class StartupController extends Notifier<StartupState> {
     return boot.households.first;
   }
 }
+
+/// Byudjet vaqt zonasidagi soat (BR-002) — byudjet tanlangach aniq bo'ladi.
+final clockProvider = Provider<Clock>((ref) {
+  final state = ref.watch(startupProvider);
+  return TzClock(
+    state is StartupReady ? state.household.timezone : 'Asia/Tashkent',
+  );
+});
 
 /// Taklif kodi: 8 belgi (adashtiradigan harflarsiz — serverdagi alifbo),
 /// kod, `mywallet://invite/<kod>` yoki havola ichidan.

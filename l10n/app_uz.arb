@@ -163,5 +163,57 @@
   "householdErrorMember": "Siz allaqachon bu byudjet a'zosisiz",
   "@startupLoading": {
     "description": "Ishga tushirish va byudjet tanlash (E14-T02)"
+  },
+  "onboardingTitle": "Sozlash",
+  "onboardingStep": "{current}/{total}-qadam",
+  "onboardingAccountsTitle": "Hisoblar va qoldiq",
+  "onboardingAccountsSubtitle": "Hozirgi qoldiqni kiriting — keyin hammasi shundan hisoblanadi.",
+  "onboardingIncomeTitle": "Maosh jadvali",
+  "onboardingIncomeSubtitle": "Qaysi daromadlarni olasiz, qaysi kuni va qaysi oyga tegishli.",
+  "onboardingRecurringTitle": "Doimiy to'lovlar",
+  "onboardingRecurringSubtitle": "Har oy takrorlanadigan to'lovlar — har oy avtomatik rejaga tushadi.",
+  "onboardingFundTitle": "👤 Shaxsiy fond",
+  "onboardingFundSubtitle": "Har oy o'zingiz uchun ajratadigan ulush.",
+  "onboardingDoneTitle": "Tayyor!",
+  "onboardingDoneSubtitle": "Joriy oy ochiladi va rejalar yaratiladi.",
+  "onboardingWaiting": "Spravochniklar yuklanmoqda…",
+  "onboardingFinish": "Boshlash",
+  "onboardingSkip": "O'tkazib yuborish",
+  "actionNext": "Davom etish",
+  "actionBack": "Orqaga",
+  "fieldDay": "Kuni",
+  "fieldAmount": "Summa",
+  "fieldAccount": "Hisob",
+  "monthThis": "Shu oy",
+  "monthPrevious": "Oldingi oy",
+  "fundPercentMode": "Foiz",
+  "fundFixedMode": "Qat'iy summa",
+  "fundPercent": "Daromadning foizi",
+  "fundSource": "Qaysi hisobdan",
+  "autoPay": "Avto to'lov",
+  "onboardingSummary": "{accounts} ta hisob, {incomes} ta daromad turi, {plans} ta doimiy to'lov",
+  "@onboardingStep": {
+    "description": "Sozlash ustasi (E14-T03)",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSummary": {
+    "placeholders": {
+      "accounts": {
+        "type": "int"
+      },
+      "incomes": {
+        "type": "int"
+      },
+      "plans": {
+        "type": "int"
+      }
+    }
   }
 }
