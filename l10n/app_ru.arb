@@ -102,5 +102,11 @@
   "fundPercent": "Процент от дохода",
   "fundSource": "С какого счёта",
   "autoPay": "Автоплатёж",
-  "onboardingSummary": "Счетов: {accounts}, видов дохода: {incomes}, постоянных платежей: {plans}"
+  "onboardingSummary": "Счетов: {accounts}, видов дохода: {incomes}, постоянных платежей: {plans}",
+  "updateRequiredTitle": "Обновите приложение",
+  "updateRequiredBody": "Нужна новая версия ({version}) — обновите в Play Маркете.",
+  "householdSwitch": "Сменить бюджет",
+  "householdAdd": "Новый бюджет или код приглашения",
+  "offlineBanner": "Офлайн — изменения отправятся при подключении",
+  "menuSettings": "Настройки"
 }

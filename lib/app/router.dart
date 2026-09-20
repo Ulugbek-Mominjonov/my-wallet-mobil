@@ -15,6 +15,7 @@ import 'package:my_wallet/features/shell/presentation/not_found_screen.dart';
 import 'package:my_wallet/features/shell/presentation/placeholder_screen.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:my_wallet/features/startup/presentation/splash_screen.dart';
+import 'package:my_wallet/features/startup/presentation/update_required_screen.dart';
 import 'package:my_wallet/features/sync/presentation/sync_status_screen.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
 
@@ -29,6 +30,9 @@ const joinPath = '/join';
 
 /// Sozlash oynasi (E14-T03).
 const onboardingPath = '/onboarding';
+
+/// BR-214: majburiy yangilash ekrani.
+const updatePath = '/update';
 
 /// Marshrutlar. Kirilmagan — faqat kirish ekrani; kirilgan — undan
 /// bosh sahifaga (sessiya eskirsa ham avtomatik).
@@ -59,6 +63,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: splashPath,
         builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: updatePath,
+        builder: (context, state) => const UpdateRequiredScreen(),
       ),
       GoRoute(
         path: joinPath,
@@ -101,9 +109,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/add',
         pageBuilder: (context, state) => MaterialPage(
           fullscreenDialog: true,
-          child: PlaceholderScreen(
-            title: AppL10n.of(context).addTitle,
-            icon: Icons.add_card_outlined,
+          child: Scaffold(
+            appBar: AppBar(title: Text(AppL10n.of(context).addTitle)),
+            body: const PlaceholderScreen(
+              title: '',
+              icon: Icons.add_card_outlined,
+            ),
           ),
         ),
       ),
@@ -138,6 +149,7 @@ String? appRedirect({
   if (!signedIn) return location == signInPath ? null : signInPath;
 
   final target = switch (startup) {
+    StartupUpdateRequired() => updatePath,
     StartupLoading() || StartupFailed() => splashPath,
     StartupNoHousehold() => joinPath,
     // Taklif havolasi ochilgan — qo'shilish ekrani (byudjet bor bo'lsa ham).
@@ -146,6 +158,8 @@ String? appRedirect({
     StartupReady() => null,
   };
   if (target == null) {
+    // `/join` ro'yxatda yo'q: byudjet bor bo'lsa ham foydalanuvchi uni
+    // almashtirgichdan ochishi mumkin (qo'shilgach ekranning o'zi qaytaradi).
     return _gatePaths.any(location.startsWith) ? '/' : null;
   }
   return location.startsWith(target) ? null : target;
@@ -154,8 +168,8 @@ String? appRedirect({
 const List<String> _gatePaths = [
   signInPath,
   splashPath,
-  joinPath,
   onboardingPath,
+  updatePath,
 ];
 
 StatefulShellBranch _tab(

@@ -215,5 +215,19 @@
         "type": "int"
       }
     }
+  },
+  "updateRequiredTitle": "Ilovani yangilang",
+  "updateRequiredBody": "Yangi versiya ({version}) kerak — Play Market'dan yangilang.",
+  "householdSwitch": "Byudjetni almashtirish",
+  "householdAdd": "Yangi byudjet yoki taklif kodi",
+  "offlineBanner": "Oflayn — o'zgarishlar tarmoq kelganda yuboriladi",
+  "menuSettings": "Sozlamalar",
+  "@updateRequiredBody": {
+    "description": "BR-214 (E14-T04)",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
   }
 }

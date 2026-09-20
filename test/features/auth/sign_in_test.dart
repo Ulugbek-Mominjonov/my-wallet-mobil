@@ -31,7 +31,7 @@ void main() {
 
     auth.emitUser('user-1');
     await tester.pumpAndSettle();
-    expect(find.widgetWithText(AppBar, 'Xulosa'), findsOneWidget);
+    expect(find.widgetWithText(AppBar, 'Uy'), findsOneWidget);
 
     auth.emitUser(null);
     await tester.pumpAndSettle();
@@ -54,7 +54,7 @@ void main() {
     await tester.enterText(field('Kod'), '12a3456');
     await tester.pumpAndSettle();
     expect(auth.calls, ['send: Ali@B.uz ', 'verify:ali@b.uz:123456']);
-    expect(find.widgetWithText(AppBar, 'Xulosa'), findsOneWidget);
+    expect(find.widgetWithText(AppBar, 'Uy'), findsOneWidget);
   });
 
   testWidgets('xatolar maydon ostida: email, kod, tarmoq', (tester) async {
@@ -140,7 +140,7 @@ void main() {
 
     await tester.tap(find.text('Google bilan kirish'));
     await tester.pumpAndSettle();
-    expect(find.widgetWithText(AppBar, 'Xulosa'), findsOneWidget);
+    expect(find.widgetWithText(AppBar, 'Uy'), findsOneWidget);
     expect(auth.calls, ['google', 'google', 'google']);
   });
 }

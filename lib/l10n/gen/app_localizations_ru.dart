@@ -376,4 +376,24 @@ class AppL10nRu extends AppL10n {
   String onboardingSummary(int accounts, int incomes, int plans) {
     return 'Счетов: $accounts, видов дохода: $incomes, постоянных платежей: $plans';
   }
+
+  @override
+  String get updateRequiredTitle => 'Обновите приложение';
+
+  @override
+  String updateRequiredBody(String version) {
+    return 'Нужна новая версия ($version) — обновите в Play Маркете.';
+  }
+
+  @override
+  String get householdSwitch => 'Сменить бюджет';
+
+  @override
+  String get householdAdd => 'Новый бюджет или код приглашения';
+
+  @override
+  String get offlineBanner => 'Офлайн — изменения отправятся при подключении';
+
+  @override
+  String get menuSettings => 'Настройки';
 }

@@ -1,3 +1,4 @@
+import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
@@ -8,6 +9,8 @@ import 'package:my_wallet/app/router.dart';
 import 'package:my_wallet/core/config/app_config.dart';
 import 'package:my_wallet/core/di/app_providers.dart';
 import 'package:my_wallet/data/auth/auth_providers.dart';
+import 'package:my_wallet/data/local/database.dart';
+import 'package:my_wallet/data/sync/sync_providers.dart';
 import 'package:my_wallet/features/household/application/invite_links.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 
@@ -36,6 +39,9 @@ Future<GoRouter> pumpApp(
   /// Cheksiz animatsiya (yuklanish indikatori) bo'lsa — `false`.
   bool settle = true,
   List<Override> overrides = const [],
+
+  /// Lokal baza (standart — bo'sh xotiradagi baza).
+  AppDatabase? database,
 }) async {
   tester.platformDispatcher.localesTestValue = const [Locale('uz')];
   addTearDown(tester.platformDispatcher.clearLocalesTestValue);
@@ -45,6 +51,8 @@ Future<GoRouter> pumpApp(
       const FakeAccessibilityFeatures(disableAnimations: true);
   addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
 
+  final db = database ?? AppDatabase(NativeDatabase.memory());
+  if (database == null) addTearDown(db.close);
   final container = ProviderContainer.test(
     overrides: [
       appConfigProvider.overrideWithValue(testConfig(env: env)),
@@ -58,6 +66,8 @@ Future<GoRouter> pumpApp(
       inviteLinksProvider.overrideWith(
         (ref) => inviteLinks ?? const Stream<String>.empty(),
       ),
+      // Lokal baza — xotirada (testda haqiqiy fayl ochilmaydi).
+      appDatabaseProvider.overrideWithValue(db),
       ...overrides,
     ],
   );

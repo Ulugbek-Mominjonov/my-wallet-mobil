@@ -52,7 +52,10 @@ class _JoinOrCreateState extends ConsumerState<JoinOrCreateScreen> {
       _busy = false;
       _failure = result is Err ? (result as Err<void>).failure : null;
     });
-    if (result is Ok) ref.read(pendingInviteProvider.notifier).clear();
+    if (result is Ok) {
+      ref.read(pendingInviteProvider.notifier).clear();
+      context.go('/');
+    }
   }
 
   Future<void> _scan() async {

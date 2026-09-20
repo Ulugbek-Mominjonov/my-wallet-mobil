@@ -75,6 +75,6 @@ void main() {
     await tester.pumpAndSettle();
     expect(controller.calls, ['join:ABCD2345']);
     // Kod ishlatildi — ilovaga qaytadi.
-    expect(find.widgetWithText(AppBar, 'Xulosa'), findsOneWidget);
+    expect(find.widgetWithText(AppBar, 'Uy'), findsOneWidget);
   });
 }

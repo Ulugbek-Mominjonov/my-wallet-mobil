@@ -376,4 +376,25 @@ class AppL10nUz extends AppL10n {
   String onboardingSummary(int accounts, int incomes, int plans) {
     return '$accounts ta hisob, $incomes ta daromad turi, $plans ta doimiy to\'lov';
   }
+
+  @override
+  String get updateRequiredTitle => 'Ilovani yangilang';
+
+  @override
+  String updateRequiredBody(String version) {
+    return 'Yangi versiya ($version) kerak — Play Market\'dan yangilang.';
+  }
+
+  @override
+  String get householdSwitch => 'Byudjetni almashtirish';
+
+  @override
+  String get householdAdd => 'Yangi byudjet yoki taklif kodi';
+
+  @override
+  String get offlineBanner =>
+      'Oflayn — o\'zgarishlar tarmoq kelganda yuboriladi';
+
+  @override
+  String get menuSettings => 'Sozlamalar';
 }

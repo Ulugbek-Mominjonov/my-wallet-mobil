@@ -19,11 +19,13 @@ void main() {
   late AppDatabase db;
   late FakeRemote remote;
   late FakeAuthGateway auth;
+  var version = '9.9.9';
 
   setUp(() {
     db = AppDatabase(NativeDatabase.memory());
     remote = FakeRemote();
     auth = FakeAuthGateway(currentUserId: 'user-1');
+    version = '9.9.9';
   });
   tearDown(() => db.close());
 
@@ -32,6 +34,7 @@ void main() {
       appDatabaseProvider.overrideWithValue(db),
       remoteApiProvider.overrideWithValue(remote),
       authGatewayProvider.overrideWithValue(auth),
+      appVersionProvider.overrideWith((ref) async => version),
     ],
   );
 
@@ -96,6 +99,17 @@ void main() {
     remote.boot = Ok(bootstrapFixture());
     await ref.read(startupProvider.notifier).reload();
     expect(await settled(ref), isA<StartupReady>());
+  });
+
+  test('BR-214: eski versiya — boshqa hech narsa yuklanmaydi', () async {
+    version = '0.0.9';
+    remote.boot = Ok(bootstrapFixture());
+    final ref = container();
+
+    final state = await settled(ref);
+    expect(state, isA<StartupUpdateRequired>());
+    expect((state as StartupUpdateRequired).minVersion, '0.1.0');
+    expect(ref.read(currentHouseholdIdProvider), isNull);
   });
 
   test("byudjet yo'q — yaratish yoki qo'shilish holati", () async {

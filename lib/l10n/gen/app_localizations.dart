@@ -716,6 +716,42 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'{accounts} ta hisob, {incomes} ta daromad turi, {plans} ta doimiy to\'lov'**
   String onboardingSummary(int accounts, int incomes, int plans);
+
+  /// No description provided for @updateRequiredTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Ilovani yangilang'**
+  String get updateRequiredTitle;
+
+  /// BR-214 (E14-T04)
+  ///
+  /// In uz, this message translates to:
+  /// **'Yangi versiya ({version}) kerak — Play Market\'dan yangilang.'**
+  String updateRequiredBody(String version);
+
+  /// No description provided for @householdSwitch.
+  ///
+  /// In uz, this message translates to:
+  /// **'Byudjetni almashtirish'**
+  String get householdSwitch;
+
+  /// No description provided for @householdAdd.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yangi byudjet yoki taklif kodi'**
+  String get householdAdd;
+
+  /// No description provided for @offlineBanner.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oflayn — o\'zgarishlar tarmoq kelganda yuboriladi'**
+  String get offlineBanner;
+
+  /// No description provided for @menuSettings.
+  ///
+  /// In uz, this message translates to:
+  /// **'Sozlamalar'**
+  String get menuSettings;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

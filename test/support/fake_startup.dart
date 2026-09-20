@@ -11,6 +11,7 @@ Json bootstrapJson({
   List<Json>? households,
   String? lastHouseholdId = 'h1',
   bool onboarded = true,
+  String minVersion = '0.1.0',
   Json config = const {},
 }) => {
   'schema_version': 1,
@@ -31,7 +32,8 @@ Json bootstrapJson({
       'allocation_rounding': 100000,
     },
   ],
-  'app_config': config,
+  // Serverdagi standart qiymatlar (BR-214) + testdagi qo'shimchalar.
+  'app_config': {'min_android_version': minVersion, ...config},
 };
 
 Json householdJson({
@@ -83,6 +85,10 @@ final class FakeStartupController extends StartupController {
 
   @override
   Future<void> reload() async => calls.add('reload');
+
+  @override
+  Future<void> selectHousehold(String householdId) async =>
+      calls.add('select:$householdId');
 
   @override
   Future<Result<void>> createHousehold(String name) async {

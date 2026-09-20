@@ -375,4 +375,25 @@ class AppL10nEn extends AppL10n {
   String onboardingSummary(int accounts, int incomes, int plans) {
     return '$accounts accounts, $incomes income types, $plans recurring payments';
   }
+
+  @override
+  String get updateRequiredTitle => 'Update the app';
+
+  @override
+  String updateRequiredBody(String version) {
+    return 'A newer version ($version) is required — update from Play Store.';
+  }
+
+  @override
+  String get householdSwitch => 'Switch budget';
+
+  @override
+  String get householdAdd => 'New budget or invite code';
+
+  @override
+  String get offlineBanner =>
+      'Offline — changes will sync when you\'re back online';
+
+  @override
+  String get menuSettings => 'Settings';
 }

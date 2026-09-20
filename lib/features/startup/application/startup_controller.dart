@@ -9,6 +9,7 @@ import 'package:my_wallet/data/remote/dto.dart';
 import 'package:my_wallet/data/remote/remote_api.dart';
 import 'package:my_wallet/data/repositories/local_ledger.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
 /// Ilova ochilgandagi holat: `app_bootstrap` (ARXITEKTURA 5) → byudjet.
@@ -31,6 +32,13 @@ final class StartupFailed extends StartupState {
 /// Byudjet yo'q (hammasidan chiqib ketilgan) — yaratish yoki qo'shilish.
 final class StartupNoHousehold extends StartupState {
   const new();
+}
+
+/// BR-214: server talab qilgan minimal versiyadan eski — ilova ishlamaydi.
+final class StartupUpdateRequired extends StartupState {
+  const new(this.minVersion);
+
+  final String minVersion;
 }
 
 final class StartupReady extends StartupState {
@@ -113,6 +121,17 @@ base class StartupController extends Notifier<StartupState> {
     final boot = await _bootstrap();
     if (boot == null) return;
 
+    // BR-214: eski versiya — boshqa hech narsa ko'rsatilmaydi.
+    final minVersion = boot.minAndroidVersion;
+    if (minVersion != null &&
+        isUpdateRequired(
+          await ref.read(appVersionProvider.future),
+          minVersion,
+        )) {
+      state = StartupUpdateRequired(minVersion);
+      return;
+    }
+
     if (boot.households.isEmpty) {
       state = const StartupNoHousehold();
       return;
@@ -146,6 +165,20 @@ base class StartupController extends Notifier<StartupState> {
     }
   }
 
+  /// Byudjet almashtirgich (E14-T04): tanlov saqlanadi va sinxron yangi
+  /// byudjetga o'tadi.
+  Future<void> selectHousehold(String householdId) async {
+    if (state case StartupReady(:final boot)) {
+      final household = boot.households.firstWhere(
+        (h) => h.id == householdId,
+        orElse: () => throw ArgumentError.value(householdId, 'householdId'),
+      );
+      await _db.setSetting(householdKey, household.id);
+      ref.read(currentHouseholdIdProvider.notifier).select(household.id);
+      state = StartupReady(household, boot);
+    }
+  }
+
   /// Oxirgi tanlov → serverdagi oxirgi byudjet → birinchisi.
   BootstrapHousehold _select(AppBootstrap boot, String? saved) {
     for (final id in [saved, boot.lastHouseholdId]) {
@@ -155,6 +188,28 @@ base class StartupController extends Notifier<StartupState> {
     }
     return boot.households.first;
   }
+}
+
+/// Ilova versiyasi (`pubspec.yaml`) — BR-214 tekshiruvi uchun.
+final appVersionProvider = FutureProvider<String>(
+  (ref) async => (await PackageInfo.fromPlatform()).version,
+);
+
+/// BR-214: `current` < `minimum` bo'lsa — yangilash kerak. Versiya
+/// `major.minor.patch` (build raqami — `+` dan keyin — hisobga olinmaydi).
+bool isUpdateRequired(String current, String minimum) {
+  List<int> parts(String version) => [
+    for (final part in version.split('+').first.split('.'))
+      int.tryParse(part.trim()) ?? 0,
+  ];
+  final currentParts = parts(current);
+  final minimumParts = parts(minimum);
+  for (var i = 0; i < 3; i++) {
+    final a = i < currentParts.length ? currentParts[i] : 0;
+    final b = i < minimumParts.length ? minimumParts[i] : 0;
+    if (a != b) return a < b;
+  }
+  return false;
 }
 
 /// Byudjet vaqt zonasidagi soat (BR-002) — byudjet tanlangach aniq bo'ladi.

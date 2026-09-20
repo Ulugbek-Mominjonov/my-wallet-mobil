@@ -233,9 +233,15 @@
   (raqam + to'liq ko'rinish), `clockProvider` (byudjet vaqt zonasi).
   Testlar: 7 boshqaruvchi + 2 usta oqimi; integratsiya — haqiqiy
   `onboarding_apply` (ikkinchi chaqiruv — `applied: false`) va `open_month`.
-- [ ] **E14-T04** Ilova qobig'i: pastki navigatsiya + markaziy FAB, byudjet
-  almashtirgich, `OfflineBanner`, `SyncStatusBadge`, majburiy yangilash
-  ekrani (BR-214), texnik ishlar banneri (`app_config`).
+- [x] **E14-T04** Ilova qobig'i: yuqorida byudjet almashtirgich (ro'yxat,
+  rol, "Yangi byudjet yoki taklif kodi"), `SyncStatusBadge` va profil menyusi
+  (chiqish); tagida 4 bo'lim + markaziy FAB; oflayn va texnik ishlar
+  bannerlari (`app_config.maintenance` — shartnomada ta'riflandi: til bo'yicha
+  matn + `until`); majburiy yangilash ekrani (BR-214 — `min_android_version`
+  bilan `package_info_plus` versiyasi solishtiriladi, boshqa ekranlarga
+  o'tib bo'lmaydi). Bo'lim sarlavhalari mazmun ichida (qobiqda bitta panel).
+  Tuzatildi: byudjet bor bo'lsa ham `/join` ochilaveradi (almashtirgichdan) —
+  qo'shilgach ekranning o'zi bosh sahifaga qaytaradi.
 - [ ] **E14-T05** Ilova qulfi: PIN o'rnatish/o'zgartirish, biometrika,
   avto-qulf (1/5/15 daqiqa), qulf ekrani; ilova almashtirgichda yashirish
   (BR-211). Maxfiylik rejimi tugmasi (BR-212).

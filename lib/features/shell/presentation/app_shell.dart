@@ -1,11 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_wallet/app/router.dart';
 import 'package:my_wallet/core/design_system/tokens.dart';
+import 'package:my_wallet/data/sync/sync_providers.dart';
+import 'package:my_wallet/data/sync/sync_status.dart';
+import 'package:my_wallet/features/auth/presentation/sign_out_dialog.dart';
+import 'package:my_wallet/features/startup/application/startup_controller.dart';
+import 'package:my_wallet/features/sync/presentation/sync_status_badge.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
 
-/// Pastki navigatsiya: 4 bo'lim + o'rtada "＋" (ARXITEKTURA 7-bo'lim).
+/// Ilova qobig'i: byudjet almashtirgich, sinxron holati, oflayn va texnik
+/// ishlar bannerlari; pastda 4 bo'lim + o'rtada "＋" (ARXITEKTURA 7).
 /// Har bo'lim o'z holatini saqlaydi (StatefulShellRoute).
-class AppShell extends StatelessWidget {
+class AppShell extends ConsumerWidget {
   const new({required this.navigationShell, super.key});
 
   final StatefulNavigationShell navigationShell;
@@ -17,7 +27,7 @@ class AppShell extends StatelessWidget {
   );
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppL10n.of(context);
     final items = [
       (Icons.space_dashboard_outlined, Icons.space_dashboard, l10n.tabHome),
@@ -31,7 +41,17 @@ class AppShell extends StatelessWidget {
     ];
 
     return Scaffold(
-      body: navigationShell,
+      appBar: AppBar(
+        title: const _HouseholdSwitcher(),
+        titleSpacing: AppSpacing.lg,
+        actions: const [SyncStatusBadge(), _AccountMenu()],
+      ),
+      body: Column(
+        children: [
+          const _Banners(),
+          Expanded(child: navigationShell),
+        ],
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         tooltip: l10n.navAddLabel,
@@ -62,6 +82,154 @@ class AppShell extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Joriy byudjet nomi; bosilganda — ro'yxat (BR-011 roli bilan).
+class _HouseholdSwitcher extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(startupProvider);
+    if (state is! StartupReady) return const SizedBox.shrink();
+    return InkWell(
+      onTap: () => unawaited(_show(context, ref, state)),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: Text(state.household.name, overflow: TextOverflow.ellipsis),
+          ),
+          if (state.boot.households.length > 1) const Icon(Icons.expand_more),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _show(
+    BuildContext context,
+    WidgetRef ref,
+    StartupReady state,
+  ) async {
+    final l10n = AppL10n.of(context);
+    await showModalBottomSheet<void>(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (final household in state.boot.households)
+              ListTile(
+                leading: Icon(
+                  household.id == state.household.id
+                      ? Icons.check_circle
+                      : Icons.circle_outlined,
+                ),
+                title: Text(household.name),
+                subtitle: Text(household.role.wire),
+                onTap: () {
+                  Navigator.pop(context);
+                  unawaited(
+                    ref
+                        .read(startupProvider.notifier)
+                        .selectHousehold(household.id),
+                  );
+                },
+              ),
+            const Divider(height: 1),
+            ListTile(
+              leading: const Icon(Icons.add),
+              title: Text(l10n.householdAdd),
+              onTap: () {
+                Navigator.pop(context);
+                unawaited(context.push(joinPath));
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Profil menyusi: sozlamalar (E19) va chiqish.
+class _AccountMenu extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    return PopupMenuButton<void>(
+      icon: const Icon(Icons.account_circle_outlined),
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          onTap: () => unawaited(confirmSignOut(context, ref)),
+          child: Text(l10n.signOut),
+        ),
+      ],
+    );
+  }
+}
+
+/// Oflayn va texnik ishlar (BR-214 qo'shnisi) bannerlari.
+class _Banners extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    final locale = Localizations.localeOf(context).languageCode;
+    final offline = ref.watch(syncStatusProvider).value?.phase;
+    final startup = ref.watch(startupProvider);
+    final maintenance = startup is StartupReady
+        ? startup.boot.maintenance
+        : null;
+
+    return Column(
+      children: [
+        if (maintenance != null && maintenance.isActive(DateTime.now()))
+          _Banner(
+            icon: Icons.construction,
+            text: maintenance.message(locale),
+            color: Theme.of(context).colorScheme.tertiaryContainer,
+          ),
+        if (offline == SyncPhase.offline)
+          _Banner(
+            icon: Icons.cloud_off,
+            text: l10n.offlineBanner,
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          ),
+      ],
+    );
+  }
+}
+
+class _Banner extends StatelessWidget {
+  const new({required this.icon, required this.text, required this.color});
+
+  final IconData icon;
+  final String text;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) => Material(
+    color: color,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.sm,
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 18),
+          const SizedBox(width: AppSpacing.sm),
+          Expanded(
+            child: Text(text, style: Theme.of(context).textTheme.bodySmall),
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 class _NavItem extends StatelessWidget {

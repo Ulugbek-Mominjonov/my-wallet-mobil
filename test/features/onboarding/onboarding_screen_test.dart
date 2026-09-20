@@ -53,8 +53,8 @@ void main() {
     await pumpApp(
       tester,
       startup: readyState(onboarded: false),
+      database: db,
       overrides: [
-        appDatabaseProvider.overrideWithValue(db),
         remoteApiProvider.overrideWithValue(remote),
         syncSchedulerProvider.overrideWith((ref) async => null),
       ],

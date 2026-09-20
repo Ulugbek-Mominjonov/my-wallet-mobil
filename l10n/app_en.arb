@@ -102,5 +102,11 @@
   "fundPercent": "Percent of income",
   "fundSource": "From which account",
   "autoPay": "Auto-pay",
-  "onboardingSummary": "{accounts} accounts, {incomes} income types, {plans} recurring payments"
+  "onboardingSummary": "{accounts} accounts, {incomes} income types, {plans} recurring payments",
+  "updateRequiredTitle": "Update the app",
+  "updateRequiredBody": "A newer version ({version}) is required — update from Play Store.",
+  "householdSwitch": "Switch budget",
+  "householdAdd": "New budget or invite code",
+  "offlineBanner": "Offline — changes will sync when you're back online",
+  "menuSettings": "Settings"
 }

@@ -42,7 +42,8 @@ void main() {
       isNull,
     );
     expect(redirect(hasInvite: true), joinPath);
-    expect(redirect(location: joinPath), '/');
+    // Byudjet bor bo'lsa ham almashtirgichdan ochish mumkin.
+    expect(redirect(location: joinPath), isNull);
   });
 
   test('sozlash tugamagan — onboarding; tugagan — ilova', () {

@@ -28,7 +28,7 @@ final class AppBootstrap {
           BootstrapCurrency.fromJson(c),
       ],
       minAndroidVersion: read<String?>(config, 'min_android_version'),
-      maintenance: config['maintenance'],
+      maintenance: MaintenanceNotice.tryFrom(config['maintenance']),
     );
   }
 
@@ -62,8 +62,40 @@ final class AppBootstrap {
   /// BR-214: majburiy yangilash chegarasi.
   final String? minAndroidVersion;
 
-  /// Texnik ishlar banneri (E26-T02).
-  final Object? maintenance;
+  /// Texnik ishlar banneri (E26-T02) — yo'q bo'lsa `null`.
+  final MaintenanceNotice? maintenance;
+}
+
+/// `app_config.maintenance` (contracts/api.md): tillarga bo'lingan matn va
+/// ixtiyoriy tugash vaqti.
+@immutable
+final class MaintenanceNotice {
+  const new({required this.messages, this.until});
+
+  /// Shartnomaga mos kelmasa — `null` (banner ko'rsatilmaydi).
+  static MaintenanceNotice? tryFrom(Object? value) {
+    if (value is! Map<String, Object?>) return null;
+    final messages = value['message'];
+    if (messages is! Map<String, Object?>) return null;
+    final until = value['until'];
+    return MaintenanceNotice(
+      messages: {
+        for (final entry in messages.entries) entry.key: '${entry.value}',
+      },
+      until: until is String ? DateTime.tryParse(until) : null,
+    );
+  }
+
+  /// Til → matn (`uz`, `ru`, `en`).
+  final Map<String, String> messages;
+  final DateTime? until;
+
+  /// Muddati o'tmagan va matni bor bo'lsa — ko'rsatiladi.
+  bool isActive(DateTime now) =>
+      messages.isNotEmpty && (until == null || until!.isAfter(now));
+
+  String message(String locale) =>
+      messages[locale] ?? messages['uz'] ?? messages.values.first;
 }
 
 @immutable
