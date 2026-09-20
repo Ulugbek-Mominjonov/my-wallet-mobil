@@ -141,7 +141,12 @@ base class StartupController extends Notifier<StartupState> {
     await _db.setSetting(householdKey, household.id);
     ref.read(currentHouseholdIdProvider.notifier).select(household.id);
     state = StartupReady(household, boot);
+    _startSync();
   }
+
+  /// Sinxron ekranlardan qat'i nazar ishlasin (sozlash oynasida ham
+  /// spravochniklar kerak) — rejalashtiruvchi shu yerda yaratiladi.
+  void _startSync() => unawaited(ref.read(syncSchedulerProvider.future));
 
   /// Serverdan; tarmoq yo'q bo'lsa — saqlangan nusxadan.
   Future<AppBootstrap?> _bootstrap() async {
@@ -176,6 +181,7 @@ base class StartupController extends Notifier<StartupState> {
       await _db.setSetting(householdKey, household.id);
       ref.read(currentHouseholdIdProvider.notifier).select(household.id);
       state = StartupReady(household, boot);
+      _startSync();
     }
   }
 

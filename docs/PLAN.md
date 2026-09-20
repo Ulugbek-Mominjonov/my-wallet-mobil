@@ -253,8 +253,14 @@
   kutadi); qulf ochilgach ilovaga qaytariladi. Testlar: 5 birlik
   (PIN, urinishlar, biometrika, sozlamalar) + 2 oqim (PIN o'rnatish →
   avto-qulf → ochish; maxfiylik tugmasi).
-- [ ] **E14-T06** Widget testlar: onboarding oqimi (fake repo), qulf
-  ekrani; integratsiya: yangi foydalanuvchi → onboarding → dashboard.
+- [x] **E14-T06** Testlar: kirish oqimi (7), byudjet tanlash/qo'shilish (13),
+  sozlash ustasi (9), qobiq va BR-214 (7), qulf (7); integratsiya —
+  **yangi foydalanuvchi: email kodi (Mailpit) → sozlash ustasi → dashboard**
+  ilovaning o'zida (haqiqiy server, sinxron). Topilgan xato: sozlash
+  oynasida sinxron ishlamasdi (rejalashtiruvchini hech kim kuzatmasdi) —
+  byudjet tanlangach ishga tushadi. Host'da `testWidgets` HTTP so'rovlarni
+  soxtalashtiradi va fake-async ishlatadi: `HttpOverrides.global = null` +
+  `runAsync` bilan haqiqiy tarmoq (izoh testda).
 
 ### E15 · Amallar `[mobile]`
 
@@ -462,4 +468,5 @@
 | 2026-09-18 | E04-T07 | mobil CI (dart + android job'lari), qoplama chegarasi skripti (88,4% ≥ 70%) |
 | 2026-09-18 | E04-T08 | contracts/ admin 5f95b9a dan olindi, lock + yaxlitlik tekshiruvi. **E04 yakunlandi** |
 | 2026-09-19 | E12-T01..T06 | `wallet_domain`: value object'lar, 12 entity, 14 qoida moduli, 9 use-case; golden fixture pariteti 51/51 (mutatsiya testi bilan). **E12 yakunlandi** |
+| 2026-09-20 | E14-T01..T06 | kirish (email kodi, Google + nonce; sessiya shifrlangan xotirada), byudjet yuklash/tanlash va taklif bilan qo'shilish (QR, deep link), sozlash ustasi (`onboarding_apply` + joriy oy), qobiq (almashtirgich, bannerlar, BR-214), ilova qulfi (PIN/PBKDF2, biometrika, avto-qulf, FLAG_SECURE) va maxfiylik rejimi; 221 test (92,6%), 8 integratsiya testi. **E14 yakunlandi** |
 | 2026-09-19 | E13-T01..T07 | drift sxemasi (14 jadval + outbox/kursor/muammolar), `LedgerDao` (oy yig'indisi SQL'da — domen bilan parite 52/52), `RemoteApi`, repository'lar (qator + outbox atomar), `SyncEngine`/`SyncScheduler`, WorkManager, holat nishoni va ekrani; 155 test (qoplama 92,5%), domen 192 (97,7%); lokal Supabase bilan 4 integratsiya testi — drift upsert NULL xatosini topdi. **E13 yakunlandi** |

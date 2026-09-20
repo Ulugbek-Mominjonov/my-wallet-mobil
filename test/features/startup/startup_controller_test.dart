@@ -35,6 +35,8 @@ void main() {
       remoteApiProvider.overrideWithValue(remote),
       authGatewayProvider.overrideWithValue(auth),
       appVersionProvider.overrideWith((ref) async => version),
+      // Rejalashtiruvchi platforma kanallariga tegadi — bu yerda kerak emas.
+      syncSchedulerProvider.overrideWith((ref) async => null),
     ],
   );
 
@@ -200,6 +202,7 @@ void main() {
         appDatabaseProvider.overrideWithValue(db),
         remoteApiProvider.overrideWithValue(remote),
         authGatewayProvider.overrideWithValue(FakeAuthGateway()),
+        syncSchedulerProvider.overrideWith((ref) async => null),
       ],
     );
     expect(ref.read(startupProvider), isA<StartupLoading>());

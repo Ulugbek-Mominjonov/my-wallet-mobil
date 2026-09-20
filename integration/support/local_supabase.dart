@@ -28,9 +28,10 @@ void requireLocalSupabase() {
 String uniqueEmail() =>
     'it-${DateTime.now().microsecondsSinceEpoch}@example.test';
 
-SupabaseClient newClient() => SupabaseClient(
+SupabaseClient newClient({http.Client? httpClient}) => SupabaseClient(
   supabaseUrl,
   publishableKey,
+  httpClient: httpClient,
   // Ilovada bu xotirani `Supabase.initialize` beradi (PKCE — email kodi).
   authOptions: AuthClientOptions(
     autoRefreshToken: false,
