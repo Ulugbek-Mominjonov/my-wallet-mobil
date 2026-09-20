@@ -108,5 +108,20 @@
   "householdSwitch": "Сменить бюджет",
   "householdAdd": "Новый бюджет или код приглашения",
   "offlineBanner": "Офлайн — изменения отправятся при подключении",
-  "menuSettings": "Настройки"
+  "menuSettings": "Настройки",
+  "lockTitle": "Блокировка приложения",
+  "lockEnterPin": "Введите PIN-код",
+  "lockWrongPin": "Неверный PIN-код",
+  "lockBiometrics": "Биометрия",
+  "lockNewPin": "Новый PIN-код",
+  "lockRepeatPin": "Повторите PIN-код",
+  "lockMismatch": "PIN-коды не совпадают",
+  "lockSetPin": "Установить PIN-код",
+  "lockChangePin": "Изменить PIN-код",
+  "lockDisable": "Отключить блокировку",
+  "lockAuto": "Автоблокировка",
+  "lockAutoValue": "Через {minutes} мин",
+  "lockSecureScreen": "Скрывать в списке приложений",
+  "lockForgot": "Забыли PIN — выйти",
+  "privacyMode": "Режим приватности"
 }

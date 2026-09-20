@@ -10,11 +10,13 @@ void main() {
     bool signedIn = true,
     StartupState? startup,
     bool hasInvite = false,
+    bool locked = false,
     String location = '/wallet',
   }) => appRedirect(
     signedIn: signedIn,
     startup: startup ?? readyState(),
     hasInvite: hasInvite,
+    locked: locked,
     location: location,
   );
 
@@ -44,6 +46,14 @@ void main() {
     expect(redirect(hasInvite: true), joinPath);
     // Byudjet bor bo'lsa ham almashtirgichdan ochish mumkin.
     expect(redirect(location: joinPath), isNull);
+  });
+
+  test('BR-211: qulflangan — faqat qulf ekrani; ochilgach ilovaga', () {
+    expect(redirect(locked: true), lockPath);
+    expect(redirect(locked: true, location: lockPath), isNull);
+    expect(redirect(location: lockPath), '/');
+    // Qulf kirishdan keyin: kirilmagan bo'lsa — kirish ekrani.
+    expect(redirect(signedIn: false, locked: true), signInPath);
   });
 
   test('sozlash tugamagan — onboarding; tugagan — ilova', () {

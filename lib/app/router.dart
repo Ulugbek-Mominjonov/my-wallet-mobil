@@ -3,12 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_wallet/core/config/app_config.dart';
 import 'package:my_wallet/core/di/app_providers.dart';
+import 'package:my_wallet/core/security/app_lock.dart';
 import 'package:my_wallet/data/auth/auth_providers.dart';
 import 'package:my_wallet/features/auth/presentation/sign_in_screen.dart';
 import 'package:my_wallet/features/dev/design_catalog_screen.dart';
 import 'package:my_wallet/features/household/application/invite_links.dart';
 import 'package:my_wallet/features/household/presentation/invite_scan_screen.dart';
 import 'package:my_wallet/features/household/presentation/join_or_create_screen.dart';
+import 'package:my_wallet/features/lock/presentation/lock_screen.dart';
+import 'package:my_wallet/features/lock/presentation/lock_settings_screen.dart';
 import 'package:my_wallet/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:my_wallet/features/shell/presentation/app_shell.dart';
 import 'package:my_wallet/features/shell/presentation/not_found_screen.dart';
@@ -34,24 +37,31 @@ const onboardingPath = '/onboarding';
 /// BR-214: majburiy yangilash ekrani.
 const updatePath = '/update';
 
+/// BR-211: ilova qulfi ekrani va uning sozlamalari.
+const lockPath = '/lock';
+const lockSettingsPath = '/settings/lock';
+
 /// Marshrutlar. Kirilmagan — faqat kirish ekrani; kirilgan — undan
 /// bosh sahifaga (sessiya eskirsa ham avtomatik).
 final routerProvider = Provider<GoRouter>((ref) {
   final isDev = ref.watch(appConfigProvider).env == AppEnv.dev;
   final signedIn = ValueNotifier(ref.read(authUserProvider) != null);
+  final locked = ValueNotifier(ref.read(appLockProvider).locked);
   final startup = ValueNotifier<StartupState>(ref.read(startupProvider));
   final invite = ValueNotifier<String?>(ref.read(pendingInviteProvider));
   ref
     ..listen(authUserProvider, (_, user) => signedIn.value = user != null)
     ..listen(startupProvider, (_, next) => startup.value = next)
-    ..listen(pendingInviteProvider, (_, code) => invite.value = code);
+    ..listen(pendingInviteProvider, (_, code) => invite.value = code)
+    ..listen(appLockProvider, (_, next) => locked.value = next.locked);
 
   final router = GoRouter(
-    refreshListenable: Listenable.merge([signedIn, startup, invite]),
+    refreshListenable: Listenable.merge([signedIn, startup, invite, locked]),
     redirect: (context, state) => appRedirect(
       signedIn: signedIn.value,
       startup: startup.value,
       hasInvite: invite.value != null,
+      locked: locked.value,
       location: state.matchedLocation,
     ),
     errorBuilder: (context, state) => const NotFoundScreen(),
@@ -67,6 +77,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: updatePath,
         builder: (context, state) => const UpdateRequiredScreen(),
+      ),
+      GoRoute(path: lockPath, builder: (context, state) => const LockScreen()),
+      GoRoute(
+        path: lockSettingsPath,
+        builder: (context, state) => const LockSettingsScreen(),
       ),
       GoRoute(
         path: joinPath,
@@ -134,7 +149,8 @@ final routerProvider = Provider<GoRouter>((ref) {
     ..onDispose(router.dispose)
     ..onDispose(signedIn.dispose)
     ..onDispose(startup.dispose)
-    ..onDispose(invite.dispose);
+    ..onDispose(invite.dispose)
+    ..onDispose(locked.dispose);
   return router;
 });
 
@@ -145,8 +161,11 @@ String? appRedirect({
   required StartupState startup,
   required bool hasInvite,
   required String location,
+  bool locked = false,
 }) {
   if (!signedIn) return location == signInPath ? null : signInPath;
+  // BR-211: qulf hamma narsadan oldin.
+  if (locked) return location == lockPath ? null : lockPath;
 
   final target = switch (startup) {
     StartupUpdateRequired() => updatePath,
@@ -165,11 +184,14 @@ String? appRedirect({
   return location.startsWith(target) ? null : target;
 }
 
+/// Ular faqat shart bajarilguncha ko'rsatiladi — shart tugasa ilovaga
+/// qaytariladi (`/join` bunda yo'q: uni foydalanuvchi o'zi ochadi).
 const List<String> _gatePaths = [
   signInPath,
   splashPath,
   onboardingPath,
   updatePath,
+  lockPath,
 ];
 
 StatefulShellBranch _tab(

@@ -752,6 +752,96 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Sozlamalar'**
   String get menuSettings;
+
+  /// No description provided for @lockTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Ilova qulfi'**
+  String get lockTitle;
+
+  /// No description provided for @lockEnterPin.
+  ///
+  /// In uz, this message translates to:
+  /// **'PIN kodni kiriting'**
+  String get lockEnterPin;
+
+  /// No description provided for @lockWrongPin.
+  ///
+  /// In uz, this message translates to:
+  /// **'PIN noto\'g\'ri'**
+  String get lockWrongPin;
+
+  /// No description provided for @lockBiometrics.
+  ///
+  /// In uz, this message translates to:
+  /// **'Biometrika'**
+  String get lockBiometrics;
+
+  /// No description provided for @lockNewPin.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yangi PIN'**
+  String get lockNewPin;
+
+  /// No description provided for @lockRepeatPin.
+  ///
+  /// In uz, this message translates to:
+  /// **'PIN ni takrorlang'**
+  String get lockRepeatPin;
+
+  /// No description provided for @lockMismatch.
+  ///
+  /// In uz, this message translates to:
+  /// **'PIN mos kelmadi'**
+  String get lockMismatch;
+
+  /// No description provided for @lockSetPin.
+  ///
+  /// In uz, this message translates to:
+  /// **'PIN o\'rnatish'**
+  String get lockSetPin;
+
+  /// No description provided for @lockChangePin.
+  ///
+  /// In uz, this message translates to:
+  /// **'PIN ni o\'zgartirish'**
+  String get lockChangePin;
+
+  /// No description provided for @lockDisable.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qulfni o\'chirish'**
+  String get lockDisable;
+
+  /// No description provided for @lockAuto.
+  ///
+  /// In uz, this message translates to:
+  /// **'Avto-qulf'**
+  String get lockAuto;
+
+  /// Ilova qulfi (E14-T05, BR-211)
+  ///
+  /// In uz, this message translates to:
+  /// **'{minutes} daqiqadan keyin'**
+  String lockAutoValue(int minutes);
+
+  /// No description provided for @lockSecureScreen.
+  ///
+  /// In uz, this message translates to:
+  /// **'Ilova almashtirgichda yashirish'**
+  String get lockSecureScreen;
+
+  /// No description provided for @lockForgot.
+  ///
+  /// In uz, this message translates to:
+  /// **'PIN esimdan chiqdi — chiqish'**
+  String get lockForgot;
+
+  /// No description provided for @privacyMode.
+  ///
+  /// In uz, this message translates to:
+  /// **'Maxfiylik rejimi'**
+  String get privacyMode;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

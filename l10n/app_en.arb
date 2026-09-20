@@ -108,5 +108,20 @@
   "householdSwitch": "Switch budget",
   "householdAdd": "New budget or invite code",
   "offlineBanner": "Offline — changes will sync when you're back online",
-  "menuSettings": "Settings"
+  "menuSettings": "Settings",
+  "lockTitle": "App lock",
+  "lockEnterPin": "Enter your PIN",
+  "lockWrongPin": "Wrong PIN",
+  "lockBiometrics": "Biometrics",
+  "lockNewPin": "New PIN",
+  "lockRepeatPin": "Repeat the PIN",
+  "lockMismatch": "The PINs don't match",
+  "lockSetPin": "Set a PIN",
+  "lockChangePin": "Change PIN",
+  "lockDisable": "Turn off the lock",
+  "lockAuto": "Auto-lock",
+  "lockAutoValue": "After {minutes} min",
+  "lockSecureScreen": "Hide in the app switcher",
+  "lockForgot": "Forgot your PIN — sign out",
+  "privacyMode": "Privacy mode"
 }

@@ -397,4 +397,51 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get menuSettings => 'Sozlamalar';
+
+  @override
+  String get lockTitle => 'Ilova qulfi';
+
+  @override
+  String get lockEnterPin => 'PIN kodni kiriting';
+
+  @override
+  String get lockWrongPin => 'PIN noto\'g\'ri';
+
+  @override
+  String get lockBiometrics => 'Biometrika';
+
+  @override
+  String get lockNewPin => 'Yangi PIN';
+
+  @override
+  String get lockRepeatPin => 'PIN ni takrorlang';
+
+  @override
+  String get lockMismatch => 'PIN mos kelmadi';
+
+  @override
+  String get lockSetPin => 'PIN o\'rnatish';
+
+  @override
+  String get lockChangePin => 'PIN ni o\'zgartirish';
+
+  @override
+  String get lockDisable => 'Qulfni o\'chirish';
+
+  @override
+  String get lockAuto => 'Avto-qulf';
+
+  @override
+  String lockAutoValue(int minutes) {
+    return '$minutes daqiqadan keyin';
+  }
+
+  @override
+  String get lockSecureScreen => 'Ilova almashtirgichda yashirish';
+
+  @override
+  String get lockForgot => 'PIN esimdan chiqdi — chiqish';
+
+  @override
+  String get privacyMode => 'Maxfiylik rejimi';
 }

@@ -229,5 +229,28 @@
         "type": "String"
       }
     }
+  },
+  "lockTitle": "Ilova qulfi",
+  "lockEnterPin": "PIN kodni kiriting",
+  "lockWrongPin": "PIN noto'g'ri",
+  "lockBiometrics": "Biometrika",
+  "lockNewPin": "Yangi PIN",
+  "lockRepeatPin": "PIN ni takrorlang",
+  "lockMismatch": "PIN mos kelmadi",
+  "lockSetPin": "PIN o'rnatish",
+  "lockChangePin": "PIN ni o'zgartirish",
+  "lockDisable": "Qulfni o'chirish",
+  "lockAuto": "Avto-qulf",
+  "lockAutoValue": "{minutes} daqiqadan keyin",
+  "lockSecureScreen": "Ilova almashtirgichda yashirish",
+  "lockForgot": "PIN esimdan chiqdi — chiqish",
+  "privacyMode": "Maxfiylik rejimi",
+  "@lockAutoValue": {
+    "description": "Ilova qulfi (E14-T05, BR-211)",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
   }
 }

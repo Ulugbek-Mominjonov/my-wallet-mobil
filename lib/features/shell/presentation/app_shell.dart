@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_wallet/app/router.dart';
 import 'package:my_wallet/core/design_system/tokens.dart';
+import 'package:my_wallet/core/security/privacy_mode.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
 import 'package:my_wallet/data/sync/sync_status.dart';
 import 'package:my_wallet/features/auth/presentation/sign_out_dialog.dart';
@@ -44,7 +45,7 @@ class AppShell extends ConsumerWidget {
       appBar: AppBar(
         title: const _HouseholdSwitcher(),
         titleSpacing: AppSpacing.lg,
-        actions: const [SyncStatusBadge(), _AccountMenu()],
+        actions: const [_PrivacyToggle(), SyncStatusBadge(), _AccountMenu()],
       ),
       body: Column(
         children: [
@@ -152,7 +153,22 @@ class _HouseholdSwitcher extends ConsumerWidget {
   }
 }
 
-/// Profil menyusi: sozlamalar (E19) va chiqish.
+/// BR-212: bir bosishda barcha summalar `•••` bo'ladi.
+class _PrivacyToggle extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final hidden = ref.watch(privacyModeProvider);
+    return IconButton(
+      tooltip: AppL10n.of(context).privacyMode,
+      icon: Icon(hidden ? Icons.visibility_off : Icons.visibility),
+      onPressed: ref.read(privacyModeProvider.notifier).toggle,
+    );
+  }
+}
+
+/// Profil menyusi: ilova qulfi, sozlamalar (E19) va chiqish.
 class _AccountMenu extends ConsumerWidget {
   const new();
 
@@ -162,6 +178,10 @@ class _AccountMenu extends ConsumerWidget {
     return PopupMenuButton<void>(
       icon: const Icon(Icons.account_circle_outlined),
       itemBuilder: (context) => [
+        PopupMenuItem(
+          onTap: () => unawaited(context.push(lockSettingsPath)),
+          child: Text(l10n.lockTitle),
+        ),
         PopupMenuItem(
           onTap: () => unawaited(confirmSignOut(context, ref)),
           child: Text(l10n.signOut),

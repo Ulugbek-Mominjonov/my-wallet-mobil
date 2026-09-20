@@ -396,4 +396,51 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get menuSettings => 'Настройки';
+
+  @override
+  String get lockTitle => 'Блокировка приложения';
+
+  @override
+  String get lockEnterPin => 'Введите PIN-код';
+
+  @override
+  String get lockWrongPin => 'Неверный PIN-код';
+
+  @override
+  String get lockBiometrics => 'Биометрия';
+
+  @override
+  String get lockNewPin => 'Новый PIN-код';
+
+  @override
+  String get lockRepeatPin => 'Повторите PIN-код';
+
+  @override
+  String get lockMismatch => 'PIN-коды не совпадают';
+
+  @override
+  String get lockSetPin => 'Установить PIN-код';
+
+  @override
+  String get lockChangePin => 'Изменить PIN-код';
+
+  @override
+  String get lockDisable => 'Отключить блокировку';
+
+  @override
+  String get lockAuto => 'Автоблокировка';
+
+  @override
+  String lockAutoValue(int minutes) {
+    return 'Через $minutes мин';
+  }
+
+  @override
+  String get lockSecureScreen => 'Скрывать в списке приложений';
+
+  @override
+  String get lockForgot => 'Забыли PIN — выйти';
+
+  @override
+  String get privacyMode => 'Режим приватности';
 }

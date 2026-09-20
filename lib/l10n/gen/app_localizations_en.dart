@@ -396,4 +396,51 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get menuSettings => 'Settings';
+
+  @override
+  String get lockTitle => 'App lock';
+
+  @override
+  String get lockEnterPin => 'Enter your PIN';
+
+  @override
+  String get lockWrongPin => 'Wrong PIN';
+
+  @override
+  String get lockBiometrics => 'Biometrics';
+
+  @override
+  String get lockNewPin => 'New PIN';
+
+  @override
+  String get lockRepeatPin => 'Repeat the PIN';
+
+  @override
+  String get lockMismatch => 'The PINs don\'t match';
+
+  @override
+  String get lockSetPin => 'Set a PIN';
+
+  @override
+  String get lockChangePin => 'Change PIN';
+
+  @override
+  String get lockDisable => 'Turn off the lock';
+
+  @override
+  String get lockAuto => 'Auto-lock';
+
+  @override
+  String lockAutoValue(int minutes) {
+    return 'After $minutes min';
+  }
+
+  @override
+  String get lockSecureScreen => 'Hide in the app switcher';
+
+  @override
+  String get lockForgot => 'Forgot your PIN — sign out';
+
+  @override
+  String get privacyMode => 'Privacy mode';
 }

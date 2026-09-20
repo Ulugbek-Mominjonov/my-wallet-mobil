@@ -242,9 +242,17 @@
   o'tib bo'lmaydi). Bo'lim sarlavhalari mazmun ichida (qobiqda bitta panel).
   Tuzatildi: byudjet bor bo'lsa ham `/join` ochilaveradi (almashtirgichdan) —
   qo'shilgach ekranning o'zi bosh sahifaga qaytaradi.
-- [ ] **E14-T05** Ilova qulfi: PIN o'rnatish/o'zgartirish, biometrika,
-  avto-qulf (1/5/15 daqiqa), qulf ekrani; ilova almashtirgichda yashirish
-  (BR-211). Maxfiylik rejimi tugmasi (BR-212).
+- [x] **E14-T05** Ilova qulfi (BR-211): 4 xonali PIN (tuz + PBKDF2, hash
+  Keystore bilan shifrlangan xotirada — ochiq saqlanmaydi), biometrika
+  (`local_auth`; xato/bekor — PIN qoladi), avto-qulf 1/5/15 daqiqa (fonda
+  turgan vaqt bo'yicha), qulf ekrani (PIN esidan chiqsa — chiqish); ilova
+  almashtirgichda yashirish — Android `FLAG_SECURE` (MethodChannel,
+  `MainActivity`). Maxfiylik rejimi tugmasi qobiqda (BR-212 — `MoneyText`
+  allaqachon hurmat qiladi). Tuzatildi: sozlamalar kech o'qilsa
+  foydalanuvchi o'zgartirgan holat bosilib ketardi (amallar o'qishni
+  kutadi); qulf ochilgach ilovaga qaytariladi. Testlar: 5 birlik
+  (PIN, urinishlar, biometrika, sozlamalar) + 2 oqim (PIN o'rnatish →
+  avto-qulf → ochish; maxfiylik tugmasi).
 - [ ] **E14-T06** Widget testlar: onboarding oqimi (fake repo), qulf
   ekrani; integratsiya: yangi foydalanuvchi → onboarding → dashboard.
 
