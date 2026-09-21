@@ -4,6 +4,7 @@ import 'package:my_wallet/core/design_system/tokens.dart';
 import 'package:my_wallet/core/format/format_context.dart';
 import 'package:my_wallet/core/format/money_format.dart';
 import 'package:my_wallet/core/security/privacy_mode.dart';
+import 'package:wallet_domain/wallet_domain.dart';
 
 /// Summa rangi: `auto` — manfiy qizil, musbat yashil (qoldiq uchun).
 enum MoneyTone { neutral, auto, income, expense }
@@ -64,3 +65,14 @@ class MoneyText extends ConsumerWidget {
     };
   }
 }
+
+/// Summa matn ichida (masalan "Kuniga ≈ X") — [MoneyText] bilan bir xil
+/// format va maxfiylik rejimi (BR-212).
+String moneyLabel(BuildContext context, WidgetRef ref, Money amount) =>
+    ref.watch(privacyModeProvider)
+    ? MoneyText.hiddenValue
+    : formatMoney(
+        amount.minor,
+        currency: amount.currency.code,
+        locale: appLocaleOf(context),
+      );

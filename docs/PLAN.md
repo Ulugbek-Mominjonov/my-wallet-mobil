@@ -401,25 +401,38 @@
 > BR-130..134. **DoD:** eski "🏦 Fondlar" bo'limining hammasi + hisoblar,
 > o'tkazmalar, limitlar.
 
-- [ ] **E18-T01** Hisoblar: turlari bo'yicha guruh, qoldiqlar, jami (valyuta
-  bo'yicha), manfiy naqd ogohlantirishi (BR-025), hisob tafsiloti (harakatlar
-  ro'yxati), "O'tkazma" tugmasi.
-- [ ] **E18-T02** 👤 Shaxsiy fond: qoldiq, shu oy va jami ajratilgan/
-  sarflangan, "Sarf qo'shish" (fond hisobidan xarajat — BR-062), tarix,
-  ajratma rejasi holati (`percent` rejimida jonli summa).
-- [ ] **E18-T03** 🏦 Jamg'arma: jami, to'planish chizig'i, oylar jadvali
-  (daromad, xarajat, shu oy qolgan, to'plangan, ⏳ joriy oy), izoh: "pul
-  jismonan qayerda — Hisoblar bo'limida" (BR-103).
-- [ ] **E18-T04** 💳 Qarzlar: men qarzdorman / menga qarzdor / ⚖️ sof holat,
-  oylik majburiyat; element: progress, qolgan, tugash oyi, 3 holat (BR-116),
-  kutilmoqda summasi; tafsilot: bog'langan to'lovlar; qo'shish/tahrirlash
-  (member huquqi bilan).
-- [ ] **E18-T05** 🎯 Maqsadlar: progress, oyiga, "N oy (YYYY-MM)", ulguradimi
-  belgisi, hisobga bog'lash yoki qo'lda summa; yig'ilganda tabrik animatsiyasi.
-- [ ] **E18-T06** 📊 Limitlar (byudjet boshqaruvi): kategoriyalar limit
-  progressi, limit summasini o'zgartirish (owner/admin), 80/100% ranglar.
-- [ ] **E18-T07** Testlar: fond va jamg'arma **hech qayerda qo'shilmasligi**
-  (BR-005) — widget testi; qarz/maqsad holatlari.
+- [x] **E18-T01** Hisoblar (`/wallet`): turi bo'yicha, qoldiqlar, jami —
+  valyuta bo'yicha **fondsiz** (BR-005), manfiy naqd ogohlantirishi (BR-025);
+  hisob bosilsa — shu hisob harakatlari (Amallar filtri), "O'tkazma" →
+  `/add?kind=transfer`.
+- [x] **E18-T02** 👤 Shaxsiy fond (`/wallet/fund`): qoldiq, shu oy va butun
+  davr ajratilgan/sarflangan, oylar kesimi (6 oy), joriy oy ajratma rejasi
+  holati, foiz rejimida jonli summa (BR-060), "Sarf qo'shish" →
+  `/add?kind=expense&account=<fond>`, sarflar tarixi (Amallar filtri).
+- [x] **E18-T03** 🏦 Jamg'arma (`/wallet/savings`): shu oygacha to'plangan,
+  oyiga o'rtacha orttirish, to'planish chizig'i (`LineChart`, 12 oy), oylar
+  jadvali (⏳ joriy oy), BR-103 izohi.
+- [x] **E18-T04** 💳 Qarzlar (`/wallet/debts`, `/wallet/debts/:id`): jamlar
+  (men qarzdorman / menga qarzdor / ⚖️ sof / oylik majburiyat / shu oy
+  to'langan), yo'nalish bo'yicha kartalar (progress, qolgan, tugash oyi, 4
+  holat, kutilmoqda summasi), arxiv; tafsilot — bog'langan to'lovlar
+  (`transactions_debt` indeksi); qo'shish/tahrirlash (`SaveDebt`), arxivlash.
+- [x] **E18-T05** 🎯 Maqsadlar (`/wallet/goals`): progress, oyiga (o'zi yoki
+  o'rtacha), "N oy (oy)", ✅/⚠️ ulguradimi; hisobga bog'lash (shu valyuta) yoki
+  qo'lda; yig'ilganda bir marta tabrik (🎉 animatsiya, `achieved_at`);
+  qo'shish/tahrirlash/o'chirish.
+- [x] **E18-T06** 📊 Limitlar (`/wallet/limits`): barcha xarajat kategoriyalari
+  (ota → sub), joriy oy fakti (`by_category` bilan bir xil), 80/100% ranglar;
+  limit qo'yish/o'zgartirish/olib tashlash — faqat owner/admin
+  (`SetCategoryLimit`), boshqalarga "faqat ko'rish".
+- [x] **E18-T07** Testlar: `report_savings`/`report_personal_fund`/
+  `report_debts`/`report_goals` pariteti (5/5, birinchi urinishda); domen —
+  qarz/maqsad/limit use-case'lari (server cheklovlari); vidjet — BR-005
+  (fond + jamg'arma hech qayerda qo'shilmaydi), BR-025, qarz holatlari va
+  qo'shish/takror nom/arxiv, maqsad tabrigi, limit (owner/member);
+  goldenlar (4). Testlar topgan xatolar: qo'shish varag'ida hisoblar
+  yuklanganda tanlangan tur/hisob tushib qolishi (controller `build`),
+  Xulosa kategoriya qatori va maqsad formasi tor ekranda toshib ketishi.
 
 ### E19 · Bildirishnomalar va sozlamalar `[mobile]`
 
@@ -528,3 +541,4 @@
 | 2026-09-21 | E15-T01..T08 | "Qo'shish" varag'i (klaviatura, tez tugmalar + undo, kategoriya/hisob/sana/joy/teg/qarz, joyida kategoriya, tegishli oy izohi, fond izohlari, cheklar — siqish, oflayn navbat, Storage), amallar ro'yxati (oy, kunlik jami, filtr, qidiruv, swipe-o'chirish + undo, tahrirlash); lokal sxema v2 (migratsiya testi indeks xatosini ushladi); 264 test (90,9%), goldenlar, 9 integratsiya. **E15 yakunlandi** |
 | 2026-09-21 | E16-T01..T07 | Xulosa lokal bazadan (tarmoqsiz): `MonthReportLoader` + `ReportDao` — `report_month` bilan parite 49/49, `report_year` jami; hero (qoldiq, prognoz, kuniga, orttirgan %), statistika → filtrlangan amallar, rejalar, yaqin to'lovlar (To'landi), prognoz, kategoriyalar (limit rangi), daromad turlari, fond/jamg'arma, qarz, maqsadlar; oyni ochish; yillik ko'rinish + kategoriya trendi; PNG ulashish; bo'sh oy holati; 328 test (89,1%), goldenlar tor ekran xatolarini topdi. **E16 yakunlandi** |
 | 2026-09-21 | E17-T01..T06 | To'lovlar: tablar (xarajat/daromad), holat bo'limlari va `X + N ta ?` jami (`PlanBoard`), to'lash varag'i (qolgan summa, `?` majburiy, hisob/sana), qisman → keyin/yopish, swipe, shu oy summasi, yopish/qayta ochish, o'tkazish + undo, kalendar, oyni ochish preview'i (umumiy `OpenMonthCard`); domen: `ClosePlan`, `EditPlan`, reja o'zgarishlarida yopilgan oy tekshiruvi; umumiy `MonthSwitcher`; 341 test (91,4%), domen 203 (97,8%), goldenlar. **E17 yakunlandi** |
+| 2026-09-21 | E18-T01..T07 | Hamyon: hisoblar (fondsiz jami, manfiy naqd), 👤 fond (jonli ajratma), 🏦 jamg'arma (chiziq, jadval), 💳 qarzlar (jamlar, holatlar, tafsilot, forma, arxiv), 🎯 maqsadlar (prognoz, tabrik, forma), 📊 limitlar (rol bo'yicha); `WalletReportLoader` — 4 hisobot pariteti 5/5 (Xulosa ham shu loader'dan); domen: qarz/maqsad/limit use-case'lari + drift repo'lari; `/add` oldindan tanlash; 365 test (92,0%), domen 212 (97,7%). **E18 yakunlandi** |

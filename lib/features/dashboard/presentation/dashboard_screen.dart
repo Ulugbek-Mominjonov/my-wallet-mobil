@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_wallet/core/design_system/tokens.dart';
-import 'package:my_wallet/core/format/format_context.dart';
-import 'package:my_wallet/core/format/money_format.dart';
-import 'package:my_wallet/core/security/privacy_mode.dart';
 import 'package:my_wallet/core/widgets/app_card.dart';
 import 'package:my_wallet/core/widgets/empty_state.dart';
 import 'package:my_wallet/core/widgets/money_text.dart';
@@ -114,16 +111,6 @@ class _ShareButton extends StatelessWidget {
   );
 }
 
-/// Summani matn sifatida (maxfiylik rejimi — `•••`, BR-212).
-String _money(BuildContext context, WidgetRef ref, Money amount) =>
-    ref.watch(privacyModeProvider)
-    ? MoneyText.hiddenValue
-    : formatMoney(
-        amount.minor,
-        currency: amount.currency.code,
-        locale: appLocaleOf(context),
-      );
-
 class _MonthHeader extends ConsumerWidget {
   const new({required this.month, required this.report});
 
@@ -186,13 +173,13 @@ class _HeroCard extends ConsumerWidget {
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   '${l10n.dashForecast}: '
-                  '${_money(context, ref, summary.forecast)}',
+                  '${moneyLabel(context, ref, summary.forecast)}',
                   style: theme.textTheme.bodySmall,
                 ),
                 if (report.isCurrent)
                   Text(
                     l10n.dashMonthEnd(
-                      _money(context, ref, report.forecast.monthEndBalance),
+                      moneyLabel(context, ref, report.forecast.monthEndBalance),
                     ),
                     style: theme.textTheme.bodySmall,
                   ),
@@ -200,7 +187,7 @@ class _HeroCard extends ConsumerWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: AppSpacing.sm),
                     child: Text(
-                      l10n.dashPerDay(_money(context, ref, perDay)),
+                      l10n.dashPerDay(moneyLabel(context, ref, perDay)),
                       style: theme.textTheme.titleSmall?.copyWith(
                         color: perDay.isNegative
                             ? colors.expense
@@ -369,9 +356,9 @@ class _PlanCard extends ConsumerWidget {
           const SizedBox(height: AppSpacing.xs),
           Text(
             [
-              _money(context, ref, facts.expense),
+              moneyLabel(context, ref, facts.expense),
               '/',
-              _money(context, ref, facts.planned),
+              moneyLabel(context, ref, facts.planned),
               if (facts.unknownCount > 0) l10n.dashUnknown(facts.unknownCount),
               '(${(ratio * 100).round()}%)',
             ].join(' '),
@@ -409,7 +396,7 @@ class _UpcomingCard extends ConsumerWidget {
                 [
                   _dayMonth(plan.dueDate),
                   if (plan.plannedAmount case final planned?)
-                    _money(context, ref, planned - plan.paidAmount),
+                    moneyLabel(context, ref, planned - plan.paidAmount),
                 ].join(' · '),
               ),
               trailing: plan.plannedAmount == null
@@ -460,14 +447,22 @@ class _ForecastCard extends ConsumerWidget {
           '${l10n.dashDays(f.daysElapsed, f.daysInMonth)}',
       child: Column(
         children: [
-          row(l10n.dashDailySpend, _money(context, ref, f.dailySpend)),
-          row(l10n.dashMonthEndSpend, _money(context, ref, f.monthEndSpend)),
-          row(l10n.dashExpectedIncome, _money(context, ref, f.incomeExpected)),
+          row(l10n.dashDailySpend, moneyLabel(context, ref, f.dailySpend)),
+          row(
+            l10n.dashMonthEndSpend,
+            moneyLabel(context, ref, f.monthEndSpend),
+          ),
+          row(
+            l10n.dashExpectedIncome,
+            moneyLabel(context, ref, f.incomeExpected),
+          ),
           if (report.forecast.incomePending)
             Align(
               alignment: Alignment.centerRight,
               child: Text(
-                l10n.dashReceivedSoFar(_money(context, ref, f.incomeReceived)),
+                l10n.dashReceivedSoFar(
+                  moneyLabel(context, ref, f.incomeReceived),
+                ),
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
@@ -500,13 +495,19 @@ class _CategoriesCard extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(child: Text(line.name)),
-                        Text(
-                          _money(context, ref, line.actual) +
-                              (ratio == null
-                                  ? ''
-                                  : ' (${(ratio * 100).round()}%)'),
+                        const SizedBox(width: AppSpacing.sm),
+                        // Tor ekran/katta shriftda summa ikki qatorga o'tadi.
+                        Flexible(
+                          child: Text(
+                            moneyLabel(context, ref, line.actual) +
+                                (ratio == null
+                                    ? ''
+                                    : ' (${(ratio * 100).round()}%)'),
+                            textAlign: TextAlign.end,
+                          ),
                         ),
                       ],
                     ),
@@ -550,8 +551,8 @@ class _IncomeTypesCard extends ConsumerWidget {
                 children: [
                   Text(line.name),
                   Text(
-                    '${l10n.dashCard} ${_money(context, ref, line.card)} · '
-                    '${l10n.dashCash} ${_money(context, ref, line.cash)}',
+                    '${l10n.dashCard} ${moneyLabel(context, ref, line.card)} · '
+                    '${l10n.dashCash} ${moneyLabel(context, ref, line.cash)}',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
@@ -588,7 +589,7 @@ class _FundSavingsRow extends ConsumerWidget {
                 ),
                 for (final (label, value) in rows)
                   Text(
-                    '$label: ${_money(context, ref, value)}',
+                    '$label: ${moneyLabel(context, ref, value)}',
                     style: theme.textTheme.bodySmall,
                   ),
               ],
@@ -630,12 +631,14 @@ class _DebtsCard extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('${l10n.dashIOwe}: ${_money(context, ref, debts.iOwe)}'),
-          Text('${l10n.dashOwedToMe}: ${_money(context, ref, debts.owedToMe)}'),
+          Text('${l10n.dashIOwe}: ${moneyLabel(context, ref, debts.iOwe)}'),
+          Text(
+            '${l10n.dashOwedToMe}: ${moneyLabel(context, ref, debts.owedToMe)}',
+          ),
           if (debts.monthlyObligation.isPositive)
             Text(
               '${l10n.dashMonthly}: '
-              '${_money(context, ref, debts.monthlyObligation)}',
+              '${moneyLabel(context, ref, debts.monthlyObligation)}',
             ),
         ],
       ),

@@ -72,9 +72,6 @@ class AppL10nUz extends AppL10n {
   String get actionHome => 'Bosh sahifaga';
 
   @override
-  String get comingSoon => 'Tez orada';
-
-  @override
   String get addTitle => 'Yangi amal';
 
   @override
@@ -925,4 +922,259 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get shareTopExpenses => 'Eng katta xarajatlar';
+
+  @override
+  String get fieldName => 'Nomi';
+
+  @override
+  String get actionDelete => 'O\'chirish';
+
+  @override
+  String get actionEdit => 'Tahrirlash';
+
+  @override
+  String get errorInvalidName => 'Nomni kiriting (60 belgigacha)';
+
+  @override
+  String get errorDuplicateName => 'Bu nom allaqachon bor';
+
+  @override
+  String get errorInvalidAmount => 'Summa noto\'g\'ri';
+
+  @override
+  String get errorPaidBefore => 'Oldin to\'langan umumiy summadan oshmasin';
+
+  @override
+  String get accountTypeCash => 'Naqd';
+
+  @override
+  String get accountTypeCard => 'Karta';
+
+  @override
+  String get accountTypeBank => 'Bank hisobi';
+
+  @override
+  String get accountTypeEwallet => 'Elektron hamyon';
+
+  @override
+  String get accountTypeDeposit => 'Omonat';
+
+  @override
+  String get accountTypePersonalFund => 'Shaxsiy fond';
+
+  @override
+  String get accountTypeOther => 'Boshqa';
+
+  @override
+  String get walletAccounts => 'Hisoblar';
+
+  @override
+  String get walletTotalNoFund => 'Jami (fondsiz)';
+
+  @override
+  String get walletNegativeCash => 'Naqd qoldiq manfiy — yozuvlarni tekshiring';
+
+  @override
+  String get walletDebts => '💳 Qarzlar';
+
+  @override
+  String get walletGoals => '🎯 Maqsadlar';
+
+  @override
+  String get walletLimits => '📊 Limitlar';
+
+  @override
+  String get fundAllTime => 'Butun davr';
+
+  @override
+  String get fundAddSpend => 'Sarf qo\'shish';
+
+  @override
+  String get fundSpends => 'Sarflar tarixi';
+
+  @override
+  String get fundAllocation => 'Shu oy ajratmasi';
+
+  @override
+  String fundAllocationLive(String amount, String percent) {
+    return 'Hozirgi daromaddan: $amount ($percent%)';
+  }
+
+  @override
+  String get fundAllocationNone => 'Bu oy uchun ajratma rejasi yo\'q';
+
+  @override
+  String get fundMonths => 'Oylar bo\'yicha';
+
+  @override
+  String get savingsTotal => 'Shu oygacha to\'plangan';
+
+  @override
+  String get savingsAvg => 'Oyiga o\'rtacha orttirish';
+
+  @override
+  String savingsMonthsCount(int count) {
+    return '$count oy';
+  }
+
+  @override
+  String get savingsAccumulated => 'To\'plangan';
+
+  @override
+  String get savingsNote =>
+      'Jamg\'arma — ko\'rsatkich. Pul jismonan qayerda ekanini «Hisoblar» ko\'rsatadi.';
+
+  @override
+  String get debtNet => '⚖️ Sof holat';
+
+  @override
+  String get debtMonthly => 'Oylik majburiyat';
+
+  @override
+  String get debtPaidThisMonth => 'Shu oy to\'langan';
+
+  @override
+  String get debtStatusPaying => 'To\'lanyapti';
+
+  @override
+  String get debtStatusPending => 'Kutilmoqda';
+
+  @override
+  String get debtStatusUnlinked => 'Bog\'lanmagan';
+
+  @override
+  String get debtStatusClosed => 'Yopildi';
+
+  @override
+  String debtRemaining(String amount) {
+    return 'Qolgan: $amount';
+  }
+
+  @override
+  String debtEnds(String month) {
+    return 'Tugaydi: $month';
+  }
+
+  @override
+  String debtPending(String amount) {
+    return 'Kutilmoqda: $amount';
+  }
+
+  @override
+  String get debtAdd => 'Qarz qo\'shish';
+
+  @override
+  String get debtEdit => 'Qarzni tahrirlash';
+
+  @override
+  String get debtTotal => 'Umumiy summa';
+
+  @override
+  String get debtPaidBefore => 'Oldin to\'langan';
+
+  @override
+  String get debtMonthlyPayment => 'Oylik to\'lov';
+
+  @override
+  String get debtDueDate => 'Muddati';
+
+  @override
+  String get debtArchive => 'Arxivlash';
+
+  @override
+  String get debtUnarchive => 'Arxivdan chiqarish';
+
+  @override
+  String get debtArchived => 'Arxiv';
+
+  @override
+  String get debtPayments => 'Bog\'langan to\'lovlar';
+
+  @override
+  String get debtNoPayments => 'Hali to\'lov yo\'q';
+
+  @override
+  String get debtsEmpty => 'Qarz yo\'q';
+
+  @override
+  String get goalAdd => 'Maqsad qo\'shish';
+
+  @override
+  String get goalEdit => 'Maqsadni tahrirlash';
+
+  @override
+  String get goalTarget => 'Kerakli summa';
+
+  @override
+  String get goalSaved => 'Yig\'ilgan';
+
+  @override
+  String get goalMonthly => 'Oyiga ajratma';
+
+  @override
+  String get goalDeadline => 'Muddat (oy)';
+
+  @override
+  String get goalAccount => 'Hisobga bog\'lash';
+
+  @override
+  String get goalAccountNone => 'Bog\'lanmagan (qo\'lda)';
+
+  @override
+  String goalPerMonth(String amount) {
+    return 'oyiga $amount';
+  }
+
+  @override
+  String goalPerMonthAvg(String amount) {
+    return 'oyiga $amount (o\'rtacha)';
+  }
+
+  @override
+  String goalEta(int months, String month) {
+    return '$months oy ($month)';
+  }
+
+  @override
+  String get goalOnTrack => '✅ Ulguradi';
+
+  @override
+  String get goalOffTrack => '⚠️ Ulgurmaydi';
+
+  @override
+  String get goalReached => '🎉 Yig\'ildi';
+
+  @override
+  String goalCongrats(String name) {
+    return 'Tabriklaymiz! «$name» maqsadi yig\'ildi';
+  }
+
+  @override
+  String get goalThanks => 'Rahmat';
+
+  @override
+  String goalDeleteConfirm(String name) {
+    return '«$name» o\'chirilsinmi?';
+  }
+
+  @override
+  String get goalsEmpty => 'Maqsad yo\'q';
+
+  @override
+  String get goalNoForecast => 'Prognoz uchun oyiga ajratma kiriting';
+
+  @override
+  String get limitSet => 'Limit qo\'yish';
+
+  @override
+  String get limitNone => 'Limit yo\'q';
+
+  @override
+  String get limitRemove => 'Limitni olib tashlash';
+
+  @override
+  String get limitsReadOnly => 'Limitlarni faqat ega yoki admin o\'zgartiradi';
+
+  @override
+  String get limitMonthly => 'Oylik limit';
 }

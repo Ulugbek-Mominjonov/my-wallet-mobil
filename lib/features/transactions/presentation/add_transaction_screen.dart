@@ -16,11 +16,36 @@ import 'package:wallet_domain/wallet_domain.dart';
 
 /// "Qo'shish" varag'i (E15): tur, summa, maydonlar va saqlash.
 /// Oflaynda ham ishlaydi — yozuv lokal bazaga tushadi (BR-007).
-class AddTransactionScreen extends ConsumerWidget {
-  const new({super.key});
+class AddTransactionScreen extends ConsumerStatefulWidget {
+  const new({this.kind, this.accountId, super.key});
+
+  /// Oldindan tanlangan tur va hisob (Hamyon: "O'tkazma", "Sarf qo'shish").
+  final TransactionKind? kind;
+  final String? accountId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AddTransactionScreen> createState() =>
+      _AddTransactionScreenState();
+}
+
+class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
+  @override
+  void initState() {
+    super.initState();
+    final kind = widget.kind;
+    final accountId = widget.accountId;
+    if (kind == null && accountId == null) return;
+    // Qurish paytida provider o'zgartirilmaydi — birinchi kadrdan keyin.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final controller = ref.read(addTransactionProvider.notifier);
+      if (kind != null) controller.selectKind(kind);
+      if (accountId != null) controller.selectAccount(accountId);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
     final state = ref.watch(addTransactionProvider);
     final controller = ref.read(addTransactionProvider.notifier);

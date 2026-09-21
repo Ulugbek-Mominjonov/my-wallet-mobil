@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:my_wallet/core/config/app_config.dart';
-import 'package:my_wallet/core/widgets/empty_state.dart';
 import 'package:my_wallet/features/dashboard/presentation/dashboard_screen.dart';
+import 'package:my_wallet/features/wallet/presentation/wallet_screen.dart';
 
 import '../support/pump_app.dart';
-
-/// Bo'lim sarlavhasi — mazmun ichida (pastki navigatsiyada ham shu matn bor).
-Finder tabTitle(String title) =>
-    find.descendant(of: find.byType(EmptyState), matching: find.text(title));
 
 void main() {
   testWidgets('ilova Xulosa bo‘limida ochiladi', (tester) async {
@@ -27,7 +23,8 @@ void main() {
 
     await tester.tap(find.bySemanticsLabel('Hamyon'));
     await tester.pumpAndSettle();
-    expect(tabTitle('Hamyon'), findsOneWidget);
+    expect(find.byType(WalletScreen), findsOneWidget);
+    expect(find.text('Hisoblar'), findsOneWidget);
   });
 
   testWidgets('＋ tugmasi yangi amal sahifasini ochadi va yopiladi', (

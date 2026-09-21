@@ -19,7 +19,6 @@ import 'package:my_wallet/features/onboarding/presentation/onboarding_screen.dar
 import 'package:my_wallet/features/payments/presentation/payments_screen.dart';
 import 'package:my_wallet/features/shell/presentation/app_shell.dart';
 import 'package:my_wallet/features/shell/presentation/not_found_screen.dart';
-import 'package:my_wallet/features/shell/presentation/placeholder_screen.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:my_wallet/features/startup/presentation/splash_screen.dart';
 import 'package:my_wallet/features/startup/presentation/update_required_screen.dart';
@@ -27,7 +26,13 @@ import 'package:my_wallet/features/sync/presentation/sync_status_screen.dart';
 import 'package:my_wallet/features/transactions/presentation/add_transaction_screen.dart';
 import 'package:my_wallet/features/transactions/presentation/edit_transaction_screen.dart';
 import 'package:my_wallet/features/transactions/presentation/transactions_screen.dart';
-import 'package:my_wallet/l10n/gen/app_localizations.dart';
+import 'package:my_wallet/features/wallet/presentation/debts_screen.dart';
+import 'package:my_wallet/features/wallet/presentation/fund_screen.dart';
+import 'package:my_wallet/features/wallet/presentation/goals_screen.dart';
+import 'package:my_wallet/features/wallet/presentation/limits_screen.dart';
+import 'package:my_wallet/features/wallet/presentation/savings_screen.dart';
+import 'package:my_wallet/features/wallet/presentation/wallet_screen.dart';
+import 'package:wallet_domain/wallet_domain.dart';
 
 /// Kirish ekrani manzili.
 const signInPath = '/sign-in';
@@ -131,10 +136,13 @@ final routerProvider = Provider<GoRouter>((ref) {
               ),
             ],
           ),
-          _tab(
-            '/wallet',
-            Icons.account_balance_wallet_outlined,
-            (l10n) => l10n.tabWallet,
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/wallet',
+                builder: (context, state) => const WalletScreen(),
+              ),
+            ],
           ),
         ],
       ),
@@ -142,12 +150,45 @@ final routerProvider = Provider<GoRouter>((ref) {
       // ochiladi (E15, E33).
       GoRoute(
         path: '/add',
-        pageBuilder: (context, state) => const MaterialPage(
+        pageBuilder: (context, state) => MaterialPage(
           fullscreenDialog: true,
-          child: AddTransactionScreen(),
+          child: AddTransactionScreen(
+            kind: TransactionKind.values
+                .where((k) => k.wire == state.uri.queryParameters['kind'])
+                .firstOrNull,
+            accountId: state.uri.queryParameters['account'],
+          ),
         ),
       ),
       // Hisobotlar (E16-T05): yillik ko'rinish va kategoriya trendi.
+      // Hamyon bo'limlari (E18) — qobiq ustida, orqaga — Hamyon.
+      GoRoute(
+        path: '/wallet/fund',
+        builder: (context, state) => const FundScreen(),
+      ),
+      GoRoute(
+        path: '/wallet/savings',
+        builder: (context, state) => const SavingsScreen(),
+      ),
+      GoRoute(
+        path: '/wallet/debts',
+        builder: (context, state) => const DebtsScreen(),
+        routes: [
+          GoRoute(
+            path: ':id',
+            builder: (context, state) =>
+                DebtDetailScreen(debtId: state.pathParameters['id']!),
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '/wallet/goals',
+        builder: (context, state) => const GoalsScreen(),
+      ),
+      GoRoute(
+        path: '/wallet/limits',
+        builder: (context, state) => const LimitsScreen(),
+      ),
       GoRoute(
         path: '/reports/year',
         builder: (context, state) => const YearScreen(),
@@ -225,17 +266,3 @@ const List<String> _gatePaths = [
   updatePath,
   lockPath,
 ];
-
-StatefulShellBranch _tab(
-  String path,
-  IconData icon,
-  String Function(AppL10n) title,
-) => StatefulShellBranch(
-  routes: [
-    GoRoute(
-      path: path,
-      builder: (context, state) =>
-          PlaceholderScreen(title: title(AppL10n.of(context)), icon: icon),
-    ),
-  ],
-);

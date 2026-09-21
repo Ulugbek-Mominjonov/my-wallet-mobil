@@ -72,9 +72,6 @@ class AppL10nEn extends AppL10n {
   String get actionHome => 'Go home';
 
   @override
-  String get comingSoon => 'Coming soon';
-
-  @override
   String get addTitle => 'New transaction';
 
   @override
@@ -925,4 +922,260 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get shareTopExpenses => 'Top expenses';
+
+  @override
+  String get fieldName => 'Name';
+
+  @override
+  String get actionDelete => 'Delete';
+
+  @override
+  String get actionEdit => 'Edit';
+
+  @override
+  String get errorInvalidName => 'Enter a name (up to 60 characters)';
+
+  @override
+  String get errorDuplicateName => 'This name already exists';
+
+  @override
+  String get errorInvalidAmount => 'Invalid amount';
+
+  @override
+  String get errorPaidBefore => 'Paid before cannot exceed the total';
+
+  @override
+  String get accountTypeCash => 'Cash';
+
+  @override
+  String get accountTypeCard => 'Card';
+
+  @override
+  String get accountTypeBank => 'Bank account';
+
+  @override
+  String get accountTypeEwallet => 'E-wallet';
+
+  @override
+  String get accountTypeDeposit => 'Deposit';
+
+  @override
+  String get accountTypePersonalFund => 'Personal fund';
+
+  @override
+  String get accountTypeOther => 'Other';
+
+  @override
+  String get walletAccounts => 'Accounts';
+
+  @override
+  String get walletTotalNoFund => 'Total (excluding fund)';
+
+  @override
+  String get walletNegativeCash =>
+      'Cash balance is negative — check your records';
+
+  @override
+  String get walletDebts => '💳 Debts';
+
+  @override
+  String get walletGoals => '🎯 Goals';
+
+  @override
+  String get walletLimits => '📊 Limits';
+
+  @override
+  String get fundAllTime => 'All time';
+
+  @override
+  String get fundAddSpend => 'Add spending';
+
+  @override
+  String get fundSpends => 'Spending history';
+
+  @override
+  String get fundAllocation => 'This month\'s allocation';
+
+  @override
+  String fundAllocationLive(String amount, String percent) {
+    return 'From income so far: $amount ($percent%)';
+  }
+
+  @override
+  String get fundAllocationNone => 'No allocation plan this month';
+
+  @override
+  String get fundMonths => 'By month';
+
+  @override
+  String get savingsTotal => 'Saved so far';
+
+  @override
+  String get savingsAvg => 'Average saved per month';
+
+  @override
+  String savingsMonthsCount(int count) {
+    return '$count months';
+  }
+
+  @override
+  String get savingsAccumulated => 'Accumulated';
+
+  @override
+  String get savingsNote =>
+      'Savings is an indicator. Where the money physically is — see Accounts.';
+
+  @override
+  String get debtNet => '⚖️ Net position';
+
+  @override
+  String get debtMonthly => 'Monthly obligation';
+
+  @override
+  String get debtPaidThisMonth => 'Paid this month';
+
+  @override
+  String get debtStatusPaying => 'Paying';
+
+  @override
+  String get debtStatusPending => 'Pending';
+
+  @override
+  String get debtStatusUnlinked => 'Not linked';
+
+  @override
+  String get debtStatusClosed => 'Closed';
+
+  @override
+  String debtRemaining(String amount) {
+    return 'Remaining: $amount';
+  }
+
+  @override
+  String debtEnds(String month) {
+    return 'Ends: $month';
+  }
+
+  @override
+  String debtPending(String amount) {
+    return 'Pending: $amount';
+  }
+
+  @override
+  String get debtAdd => 'Add debt';
+
+  @override
+  String get debtEdit => 'Edit debt';
+
+  @override
+  String get debtTotal => 'Total amount';
+
+  @override
+  String get debtPaidBefore => 'Paid before';
+
+  @override
+  String get debtMonthlyPayment => 'Monthly payment';
+
+  @override
+  String get debtDueDate => 'Due date';
+
+  @override
+  String get debtArchive => 'Archive';
+
+  @override
+  String get debtUnarchive => 'Restore';
+
+  @override
+  String get debtArchived => 'Archived';
+
+  @override
+  String get debtPayments => 'Linked payments';
+
+  @override
+  String get debtNoPayments => 'No payments yet';
+
+  @override
+  String get debtsEmpty => 'No debts';
+
+  @override
+  String get goalAdd => 'Add goal';
+
+  @override
+  String get goalEdit => 'Edit goal';
+
+  @override
+  String get goalTarget => 'Target amount';
+
+  @override
+  String get goalSaved => 'Saved';
+
+  @override
+  String get goalMonthly => 'Monthly contribution';
+
+  @override
+  String get goalDeadline => 'Deadline (month)';
+
+  @override
+  String get goalAccount => 'Link to account';
+
+  @override
+  String get goalAccountNone => 'Not linked (manual)';
+
+  @override
+  String goalPerMonth(String amount) {
+    return '$amount a month';
+  }
+
+  @override
+  String goalPerMonthAvg(String amount) {
+    return '$amount a month (average)';
+  }
+
+  @override
+  String goalEta(int months, String month) {
+    return '$months months ($month)';
+  }
+
+  @override
+  String get goalOnTrack => '✅ On track';
+
+  @override
+  String get goalOffTrack => '⚠️ Behind';
+
+  @override
+  String get goalReached => '🎉 Reached';
+
+  @override
+  String goalCongrats(String name) {
+    return 'Congratulations! Goal “$name” is reached';
+  }
+
+  @override
+  String get goalThanks => 'Thanks';
+
+  @override
+  String goalDeleteConfirm(String name) {
+    return 'Delete “$name”?';
+  }
+
+  @override
+  String get goalsEmpty => 'No goals';
+
+  @override
+  String get goalNoForecast => 'Set a monthly contribution to see a forecast';
+
+  @override
+  String get limitSet => 'Set limit';
+
+  @override
+  String get limitNone => 'No limit';
+
+  @override
+  String get limitRemove => 'Remove limit';
+
+  @override
+  String get limitsReadOnly => 'Only the owner or an admin can change limits';
+
+  @override
+  String get limitMonthly => 'Monthly limit';
 }

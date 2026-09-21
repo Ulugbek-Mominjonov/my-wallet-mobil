@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart' show BooleanExpressionOperators, OrderingTerm;
 import 'package:meta/meta.dart';
+import 'package:my_wallet/data/local/daos/report_dao.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/local/mappers.dart';
 import 'package:wallet_domain/wallet_domain.dart';
@@ -91,6 +92,25 @@ final class GoalsReport {
   final Money avgMonthlySaved;
   final List<GoalLine> lines;
 }
+
+/// BR-130..132: xarajat kategoriyasi limiti va joriy oy fakti
+/// (subkategoriyalari bilan); `depth` 1 — subkategoriya.
+typedef LimitLine = ({
+  Category category,
+  int depth,
+  Money actual,
+  Money? limit,
+  LimitStatus? status,
+  double? ratio,
+});
+
+/// Joriy oyning 👤 fond ajratmasi: reja (bo'lsa) va foiz rejimida jonli
+/// summa — shu oy daromadidan (BR-060).
+typedef FundAllocation = ({
+  PlannedItem? plan,
+  Money? live,
+  PersonalFundRule rule,
+});
 
 /// "Hamyon" hisobotlari lokal bazadan — serverdagi hisobotlar bilan bir xil
 /// ma'no (golden fixture'lar bilan qotirilgan); formulalar `wallet_domain`da.
@@ -269,6 +289,84 @@ final class WalletReportLoader {
             ),
       ],
     );
+  }
+
+  Future<FundAllocation?> allocation() async {
+    final household = await (_db.select(
+      _db.households,
+    )..where((h) => h.id.equals(_householdId))).getSingleOrNull();
+    if (household == null) return null;
+    final rule = household.toDomain().personalFund;
+    final plan =
+        await (_db.select(_db.plannedItems)..where(
+              (p) =>
+                  p.householdId.equals(_householdId) &
+                  p.budgetMonth.equals(_current.toIsoDate()) &
+                  p.systemCode.equals(SystemCode.personalAllocation.wire) &
+                  p.deletedAt.isNull(),
+            ))
+            .getSingleOrNull();
+    final facts = await _db.ledgerDao.monthFacts(
+      _householdId,
+      _current,
+      _current,
+      base: base,
+    );
+    return (
+      plan: plan?.toDomain(base),
+      live: rule.mode == PersonalFundMode.percent
+          ? personalAllocation(income: facts.single.income, rule: rule)
+          : null,
+      rule: rule,
+    );
+  }
+
+  /// Barcha xarajat kategoriyalari (ota → subkategoriyalari) — joriy oy
+  /// fakti `report_month.by_category` bilan bir xil.
+  Future<List<LimitLine>> limits() async {
+    final lines = <String, CategoryLine>{
+      for (final line in await _db.reportDao.byCategory(
+        _householdId,
+        _current,
+        base: base,
+      ))
+        line.categoryId: line,
+    };
+    final rows =
+        await (_db.select(_db.categories)
+              ..where(
+                (c) =>
+                    c.householdId.equals(_householdId) &
+                    c.kind.equals(CategoryKind.expense.wire) &
+                    c.deletedAt.isNull(),
+              )
+              ..orderBy([
+                (c) => OrderingTerm.asc(c.sortOrder),
+                (c) => OrderingTerm.asc(c.name),
+              ]))
+            .get();
+    final categories = [for (final row in rows) row.toDomain()];
+    LimitLine lineOf(Category category, int depth) {
+      final line = lines[category.id];
+      final actual = line?.actualTotal ?? Money(0, base);
+      return (
+        category: category,
+        depth: depth,
+        actual: actual,
+        limit: line?.limit,
+        status: limitStatus(actual, line?.limit),
+        ratio: limitRatio(actual, line?.limit),
+      );
+    }
+
+    return [
+      for (final parent in categories)
+        if (parent.parentId == null) ...[
+          lineOf(parent, 0),
+          for (final child in categories)
+            if (child.parentId == parent.id) lineOf(child, 1),
+        ],
+    ];
   }
 
   Future<AccountRow?> _fundAccount() =>

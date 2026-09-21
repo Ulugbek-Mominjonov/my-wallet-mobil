@@ -285,6 +285,27 @@ class LedgerDao extends DatabaseAccessor<AppDatabase> with _$LedgerDaoMixin {
     return Money((await query.getSingle()).read(amount) ?? 0, base);
   }
 
+  /// BR-118: qarzga bog'langan to'lovlar — yangidan eskiga
+  /// (`transactions_debt` indeksi; ro'yxat uchun [limit] ta).
+  Stream<List<TransactionRow>> watchDebtPayments(
+    String householdId,
+    String debtId, {
+    int limit = pageSize,
+  }) =>
+      (select(transactions)
+            ..where(
+              (t) =>
+                  t.householdId.equals(householdId) &
+                  t.debtId.equals(debtId) &
+                  t.deletedAt.isNull(),
+            )
+            ..orderBy([
+              (t) => OrderingTerm.desc(t.occurredOn),
+              (t) => OrderingTerm.desc(t.id),
+            ])
+            ..limit(limit))
+          .watch();
+
   /// Oy rejalari (o'chirilmaganlar) — "To'lovlar" ro'yxati va kalendari.
   /// `planned_items_month` indeksi; reaktiv (to'lov, sinxron).
   Stream<List<PlannedItemRow>> watchMonthPlans(

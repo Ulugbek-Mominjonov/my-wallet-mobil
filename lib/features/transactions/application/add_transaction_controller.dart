@@ -123,18 +123,26 @@ base class AddTransactionController extends Notifier<AddTransactionState> {
   @override
   AddTransactionState build() {
     final startup = ref.watch(startupProvider);
-    final state = AddTransactionState(
+    final initial = AddTransactionState(
       currency: startup is StartupReady ? startup.currency : Currency.uzs,
     );
-    // Standart hisob — ro'yxatdagi birinchisi (fond emas).
-    final accounts = ref.watch(accountsProvider).value ?? const [];
-    final defaultAccount = accounts
-        .where((a) => a.type != AccountType.personalFund)
-        .firstOrNull;
-    return defaultAccount == null
-        ? state
-        : state.copyWith(accountId: defaultAccount.id);
+    // Hisoblar keyinroq yuklanishi mumkin: standart hisob faqat hali
+    // tanlanmagan bo'lsa qo'yiladi — kiritilgan qiymatlar o'chmaydi.
+    ref.listen(accountsProvider, (_, next) {
+      final accountId = _defaultAccountId(next.value);
+      if (accountId != null && stateOrNull?.accountId == null) {
+        state = state.copyWith(accountId: accountId);
+      }
+    });
+    final accountId = _defaultAccountId(ref.read(accountsProvider).value);
+    return accountId == null ? initial : initial.copyWith(accountId: accountId);
   }
+
+  /// Standart hisob — ro'yxatdagi birinchisi (fond emas).
+  static String? _defaultAccountId(List<Account>? accounts) => accounts
+      ?.where((a) => a.type != AccountType.personalFund)
+      .firstOrNull
+      ?.id;
 
   /// Tur o'zgarsa kategoriya va qo'lda tanlangan oy qaytadan tanlanadi;
   /// daromadda fond hisobi bo'lmaydi (BR-063) — standart hisobga qaytadi.

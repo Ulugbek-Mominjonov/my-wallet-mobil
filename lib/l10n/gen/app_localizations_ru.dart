@@ -72,9 +72,6 @@ class AppL10nRu extends AppL10n {
   String get actionHome => 'На главную';
 
   @override
-  String get comingSoon => 'Скоро';
-
-  @override
   String get addTitle => 'Новая операция';
 
   @override
@@ -923,4 +920,261 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get shareTopExpenses => 'Крупнейшие расходы';
+
+  @override
+  String get fieldName => 'Название';
+
+  @override
+  String get actionDelete => 'Удалить';
+
+  @override
+  String get actionEdit => 'Изменить';
+
+  @override
+  String get errorInvalidName => 'Введите название (до 60 символов)';
+
+  @override
+  String get errorDuplicateName => 'Такое название уже есть';
+
+  @override
+  String get errorInvalidAmount => 'Неверная сумма';
+
+  @override
+  String get errorPaidBefore => 'Оплачено ранее не может превышать сумму';
+
+  @override
+  String get accountTypeCash => 'Наличные';
+
+  @override
+  String get accountTypeCard => 'Карта';
+
+  @override
+  String get accountTypeBank => 'Банковский счёт';
+
+  @override
+  String get accountTypeEwallet => 'Электронный кошелёк';
+
+  @override
+  String get accountTypeDeposit => 'Вклад';
+
+  @override
+  String get accountTypePersonalFund => 'Личный фонд';
+
+  @override
+  String get accountTypeOther => 'Другое';
+
+  @override
+  String get walletAccounts => 'Счета';
+
+  @override
+  String get walletTotalNoFund => 'Итого (без фонда)';
+
+  @override
+  String get walletNegativeCash =>
+      'Остаток наличных отрицательный — проверьте записи';
+
+  @override
+  String get walletDebts => '💳 Долги';
+
+  @override
+  String get walletGoals => '🎯 Цели';
+
+  @override
+  String get walletLimits => '📊 Лимиты';
+
+  @override
+  String get fundAllTime => 'За всё время';
+
+  @override
+  String get fundAddSpend => 'Добавить расход';
+
+  @override
+  String get fundSpends => 'История расходов';
+
+  @override
+  String get fundAllocation => 'Отчисление в этом месяце';
+
+  @override
+  String fundAllocationLive(String amount, String percent) {
+    return 'От текущего дохода: $amount ($percent%)';
+  }
+
+  @override
+  String get fundAllocationNone => 'Плана отчисления в этом месяце нет';
+
+  @override
+  String get fundMonths => 'По месяцам';
+
+  @override
+  String get savingsTotal => 'Накоплено';
+
+  @override
+  String get savingsAvg => 'В среднем в месяц';
+
+  @override
+  String savingsMonthsCount(int count) {
+    return '$count мес.';
+  }
+
+  @override
+  String get savingsAccumulated => 'Накоплено';
+
+  @override
+  String get savingsNote =>
+      'Накопления — показатель. Где деньги физически, показывают «Счета».';
+
+  @override
+  String get debtNet => '⚖️ Чистая позиция';
+
+  @override
+  String get debtMonthly => 'Ежемесячные обязательства';
+
+  @override
+  String get debtPaidThisMonth => 'Оплачено в этом месяце';
+
+  @override
+  String get debtStatusPaying => 'Погашается';
+
+  @override
+  String get debtStatusPending => 'Ожидается';
+
+  @override
+  String get debtStatusUnlinked => 'Не привязан';
+
+  @override
+  String get debtStatusClosed => 'Закрыт';
+
+  @override
+  String debtRemaining(String amount) {
+    return 'Осталось: $amount';
+  }
+
+  @override
+  String debtEnds(String month) {
+    return 'Закончится: $month';
+  }
+
+  @override
+  String debtPending(String amount) {
+    return 'Ожидается: $amount';
+  }
+
+  @override
+  String get debtAdd => 'Добавить долг';
+
+  @override
+  String get debtEdit => 'Изменить долг';
+
+  @override
+  String get debtTotal => 'Общая сумма';
+
+  @override
+  String get debtPaidBefore => 'Оплачено ранее';
+
+  @override
+  String get debtMonthlyPayment => 'Ежемесячный платёж';
+
+  @override
+  String get debtDueDate => 'Срок';
+
+  @override
+  String get debtArchive => 'В архив';
+
+  @override
+  String get debtUnarchive => 'Из архива';
+
+  @override
+  String get debtArchived => 'Архив';
+
+  @override
+  String get debtPayments => 'Связанные платежи';
+
+  @override
+  String get debtNoPayments => 'Платежей пока нет';
+
+  @override
+  String get debtsEmpty => 'Долгов нет';
+
+  @override
+  String get goalAdd => 'Добавить цель';
+
+  @override
+  String get goalEdit => 'Изменить цель';
+
+  @override
+  String get goalTarget => 'Нужная сумма';
+
+  @override
+  String get goalSaved => 'Накоплено';
+
+  @override
+  String get goalMonthly => 'Отчисление в месяц';
+
+  @override
+  String get goalDeadline => 'Срок (месяц)';
+
+  @override
+  String get goalAccount => 'Привязать к счёту';
+
+  @override
+  String get goalAccountNone => 'Не привязана (вручную)';
+
+  @override
+  String goalPerMonth(String amount) {
+    return '$amount в месяц';
+  }
+
+  @override
+  String goalPerMonthAvg(String amount) {
+    return '$amount в месяц (в среднем)';
+  }
+
+  @override
+  String goalEta(int months, String month) {
+    return '$months мес. ($month)';
+  }
+
+  @override
+  String get goalOnTrack => '✅ Успевает';
+
+  @override
+  String get goalOffTrack => '⚠️ Не успевает';
+
+  @override
+  String get goalReached => '🎉 Собрано';
+
+  @override
+  String goalCongrats(String name) {
+    return 'Поздравляем! Цель «$name» собрана';
+  }
+
+  @override
+  String get goalThanks => 'Спасибо';
+
+  @override
+  String goalDeleteConfirm(String name) {
+    return 'Удалить «$name»?';
+  }
+
+  @override
+  String get goalsEmpty => 'Целей нет';
+
+  @override
+  String get goalNoForecast => 'Укажите отчисление в месяц для прогноза';
+
+  @override
+  String get limitSet => 'Установить лимит';
+
+  @override
+  String get limitNone => 'Без лимита';
+
+  @override
+  String get limitRemove => 'Убрать лимит';
+
+  @override
+  String get limitsReadOnly =>
+      'Лимиты меняют только владелец или администратор';
+
+  @override
+  String get limitMonthly => 'Месячный лимит';
 }

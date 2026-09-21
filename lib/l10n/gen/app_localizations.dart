@@ -189,12 +189,6 @@ abstract class AppL10n {
   /// **'Bosh sahifaga'**
   String get actionHome;
 
-  /// No description provided for @comingSoon.
-  ///
-  /// In uz, this message translates to:
-  /// **'Tez orada'**
-  String get comingSoon;
-
   /// No description provided for @addTitle.
   ///
   /// In uz, this message translates to:
@@ -1670,6 +1664,474 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Eng katta xarajatlar'**
   String get shareTopExpenses;
+
+  /// No description provided for @fieldName.
+  ///
+  /// In uz, this message translates to:
+  /// **'Nomi'**
+  String get fieldName;
+
+  /// No description provided for @actionDelete.
+  ///
+  /// In uz, this message translates to:
+  /// **'O\'chirish'**
+  String get actionDelete;
+
+  /// No description provided for @actionEdit.
+  ///
+  /// In uz, this message translates to:
+  /// **'Tahrirlash'**
+  String get actionEdit;
+
+  /// No description provided for @errorInvalidName.
+  ///
+  /// In uz, this message translates to:
+  /// **'Nomni kiriting (60 belgigacha)'**
+  String get errorInvalidName;
+
+  /// No description provided for @errorDuplicateName.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bu nom allaqachon bor'**
+  String get errorDuplicateName;
+
+  /// No description provided for @errorInvalidAmount.
+  ///
+  /// In uz, this message translates to:
+  /// **'Summa noto\'g\'ri'**
+  String get errorInvalidAmount;
+
+  /// No description provided for @errorPaidBefore.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oldin to\'langan umumiy summadan oshmasin'**
+  String get errorPaidBefore;
+
+  /// No description provided for @accountTypeCash.
+  ///
+  /// In uz, this message translates to:
+  /// **'Naqd'**
+  String get accountTypeCash;
+
+  /// No description provided for @accountTypeCard.
+  ///
+  /// In uz, this message translates to:
+  /// **'Karta'**
+  String get accountTypeCard;
+
+  /// No description provided for @accountTypeBank.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bank hisobi'**
+  String get accountTypeBank;
+
+  /// No description provided for @accountTypeEwallet.
+  ///
+  /// In uz, this message translates to:
+  /// **'Elektron hamyon'**
+  String get accountTypeEwallet;
+
+  /// No description provided for @accountTypeDeposit.
+  ///
+  /// In uz, this message translates to:
+  /// **'Omonat'**
+  String get accountTypeDeposit;
+
+  /// No description provided for @accountTypePersonalFund.
+  ///
+  /// In uz, this message translates to:
+  /// **'Shaxsiy fond'**
+  String get accountTypePersonalFund;
+
+  /// No description provided for @accountTypeOther.
+  ///
+  /// In uz, this message translates to:
+  /// **'Boshqa'**
+  String get accountTypeOther;
+
+  /// No description provided for @walletAccounts.
+  ///
+  /// In uz, this message translates to:
+  /// **'Hisoblar'**
+  String get walletAccounts;
+
+  /// No description provided for @walletTotalNoFund.
+  ///
+  /// In uz, this message translates to:
+  /// **'Jami (fondsiz)'**
+  String get walletTotalNoFund;
+
+  /// No description provided for @walletNegativeCash.
+  ///
+  /// In uz, this message translates to:
+  /// **'Naqd qoldiq manfiy — yozuvlarni tekshiring'**
+  String get walletNegativeCash;
+
+  /// No description provided for @walletDebts.
+  ///
+  /// In uz, this message translates to:
+  /// **'💳 Qarzlar'**
+  String get walletDebts;
+
+  /// No description provided for @walletGoals.
+  ///
+  /// In uz, this message translates to:
+  /// **'🎯 Maqsadlar'**
+  String get walletGoals;
+
+  /// No description provided for @walletLimits.
+  ///
+  /// In uz, this message translates to:
+  /// **'📊 Limitlar'**
+  String get walletLimits;
+
+  /// No description provided for @fundAllTime.
+  ///
+  /// In uz, this message translates to:
+  /// **'Butun davr'**
+  String get fundAllTime;
+
+  /// No description provided for @fundAddSpend.
+  ///
+  /// In uz, this message translates to:
+  /// **'Sarf qo\'shish'**
+  String get fundAddSpend;
+
+  /// No description provided for @fundSpends.
+  ///
+  /// In uz, this message translates to:
+  /// **'Sarflar tarixi'**
+  String get fundSpends;
+
+  /// No description provided for @fundAllocation.
+  ///
+  /// In uz, this message translates to:
+  /// **'Shu oy ajratmasi'**
+  String get fundAllocation;
+
+  /// Hamyon (E18)
+  ///
+  /// In uz, this message translates to:
+  /// **'Hozirgi daromaddan: {amount} ({percent}%)'**
+  String fundAllocationLive(String amount, String percent);
+
+  /// No description provided for @fundAllocationNone.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bu oy uchun ajratma rejasi yo\'q'**
+  String get fundAllocationNone;
+
+  /// No description provided for @fundMonths.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oylar bo\'yicha'**
+  String get fundMonths;
+
+  /// No description provided for @savingsTotal.
+  ///
+  /// In uz, this message translates to:
+  /// **'Shu oygacha to\'plangan'**
+  String get savingsTotal;
+
+  /// No description provided for @savingsAvg.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oyiga o\'rtacha orttirish'**
+  String get savingsAvg;
+
+  /// Hamyon (E18)
+  ///
+  /// In uz, this message translates to:
+  /// **'{count} oy'**
+  String savingsMonthsCount(int count);
+
+  /// No description provided for @savingsAccumulated.
+  ///
+  /// In uz, this message translates to:
+  /// **'To\'plangan'**
+  String get savingsAccumulated;
+
+  /// No description provided for @savingsNote.
+  ///
+  /// In uz, this message translates to:
+  /// **'Jamg\'arma — ko\'rsatkich. Pul jismonan qayerda ekanini «Hisoblar» ko\'rsatadi.'**
+  String get savingsNote;
+
+  /// No description provided for @debtNet.
+  ///
+  /// In uz, this message translates to:
+  /// **'⚖️ Sof holat'**
+  String get debtNet;
+
+  /// No description provided for @debtMonthly.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oylik majburiyat'**
+  String get debtMonthly;
+
+  /// No description provided for @debtPaidThisMonth.
+  ///
+  /// In uz, this message translates to:
+  /// **'Shu oy to\'langan'**
+  String get debtPaidThisMonth;
+
+  /// No description provided for @debtStatusPaying.
+  ///
+  /// In uz, this message translates to:
+  /// **'To\'lanyapti'**
+  String get debtStatusPaying;
+
+  /// No description provided for @debtStatusPending.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kutilmoqda'**
+  String get debtStatusPending;
+
+  /// No description provided for @debtStatusUnlinked.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bog\'lanmagan'**
+  String get debtStatusUnlinked;
+
+  /// No description provided for @debtStatusClosed.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yopildi'**
+  String get debtStatusClosed;
+
+  /// Hamyon (E18)
+  ///
+  /// In uz, this message translates to:
+  /// **'Qolgan: {amount}'**
+  String debtRemaining(String amount);
+
+  /// Hamyon (E18)
+  ///
+  /// In uz, this message translates to:
+  /// **'Tugaydi: {month}'**
+  String debtEnds(String month);
+
+  /// Hamyon (E18)
+  ///
+  /// In uz, this message translates to:
+  /// **'Kutilmoqda: {amount}'**
+  String debtPending(String amount);
+
+  /// No description provided for @debtAdd.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qarz qo\'shish'**
+  String get debtAdd;
+
+  /// No description provided for @debtEdit.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qarzni tahrirlash'**
+  String get debtEdit;
+
+  /// No description provided for @debtTotal.
+  ///
+  /// In uz, this message translates to:
+  /// **'Umumiy summa'**
+  String get debtTotal;
+
+  /// No description provided for @debtPaidBefore.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oldin to\'langan'**
+  String get debtPaidBefore;
+
+  /// No description provided for @debtMonthlyPayment.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oylik to\'lov'**
+  String get debtMonthlyPayment;
+
+  /// No description provided for @debtDueDate.
+  ///
+  /// In uz, this message translates to:
+  /// **'Muddati'**
+  String get debtDueDate;
+
+  /// No description provided for @debtArchive.
+  ///
+  /// In uz, this message translates to:
+  /// **'Arxivlash'**
+  String get debtArchive;
+
+  /// No description provided for @debtUnarchive.
+  ///
+  /// In uz, this message translates to:
+  /// **'Arxivdan chiqarish'**
+  String get debtUnarchive;
+
+  /// No description provided for @debtArchived.
+  ///
+  /// In uz, this message translates to:
+  /// **'Arxiv'**
+  String get debtArchived;
+
+  /// No description provided for @debtPayments.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bog\'langan to\'lovlar'**
+  String get debtPayments;
+
+  /// No description provided for @debtNoPayments.
+  ///
+  /// In uz, this message translates to:
+  /// **'Hali to\'lov yo\'q'**
+  String get debtNoPayments;
+
+  /// No description provided for @debtsEmpty.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qarz yo\'q'**
+  String get debtsEmpty;
+
+  /// No description provided for @goalAdd.
+  ///
+  /// In uz, this message translates to:
+  /// **'Maqsad qo\'shish'**
+  String get goalAdd;
+
+  /// No description provided for @goalEdit.
+  ///
+  /// In uz, this message translates to:
+  /// **'Maqsadni tahrirlash'**
+  String get goalEdit;
+
+  /// No description provided for @goalTarget.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kerakli summa'**
+  String get goalTarget;
+
+  /// No description provided for @goalSaved.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yig\'ilgan'**
+  String get goalSaved;
+
+  /// No description provided for @goalMonthly.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oyiga ajratma'**
+  String get goalMonthly;
+
+  /// No description provided for @goalDeadline.
+  ///
+  /// In uz, this message translates to:
+  /// **'Muddat (oy)'**
+  String get goalDeadline;
+
+  /// No description provided for @goalAccount.
+  ///
+  /// In uz, this message translates to:
+  /// **'Hisobga bog\'lash'**
+  String get goalAccount;
+
+  /// No description provided for @goalAccountNone.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bog\'lanmagan (qo\'lda)'**
+  String get goalAccountNone;
+
+  /// Hamyon (E18)
+  ///
+  /// In uz, this message translates to:
+  /// **'oyiga {amount}'**
+  String goalPerMonth(String amount);
+
+  /// Hamyon (E18)
+  ///
+  /// In uz, this message translates to:
+  /// **'oyiga {amount} (o\'rtacha)'**
+  String goalPerMonthAvg(String amount);
+
+  /// Hamyon (E18)
+  ///
+  /// In uz, this message translates to:
+  /// **'{months} oy ({month})'**
+  String goalEta(int months, String month);
+
+  /// No description provided for @goalOnTrack.
+  ///
+  /// In uz, this message translates to:
+  /// **'✅ Ulguradi'**
+  String get goalOnTrack;
+
+  /// No description provided for @goalOffTrack.
+  ///
+  /// In uz, this message translates to:
+  /// **'⚠️ Ulgurmaydi'**
+  String get goalOffTrack;
+
+  /// No description provided for @goalReached.
+  ///
+  /// In uz, this message translates to:
+  /// **'🎉 Yig\'ildi'**
+  String get goalReached;
+
+  /// Hamyon (E18)
+  ///
+  /// In uz, this message translates to:
+  /// **'Tabriklaymiz! «{name}» maqsadi yig\'ildi'**
+  String goalCongrats(String name);
+
+  /// No description provided for @goalThanks.
+  ///
+  /// In uz, this message translates to:
+  /// **'Rahmat'**
+  String get goalThanks;
+
+  /// Hamyon (E18)
+  ///
+  /// In uz, this message translates to:
+  /// **'«{name}» o\'chirilsinmi?'**
+  String goalDeleteConfirm(String name);
+
+  /// No description provided for @goalsEmpty.
+  ///
+  /// In uz, this message translates to:
+  /// **'Maqsad yo\'q'**
+  String get goalsEmpty;
+
+  /// No description provided for @goalNoForecast.
+  ///
+  /// In uz, this message translates to:
+  /// **'Prognoz uchun oyiga ajratma kiriting'**
+  String get goalNoForecast;
+
+  /// No description provided for @limitSet.
+  ///
+  /// In uz, this message translates to:
+  /// **'Limit qo\'yish'**
+  String get limitSet;
+
+  /// No description provided for @limitNone.
+  ///
+  /// In uz, this message translates to:
+  /// **'Limit yo\'q'**
+  String get limitNone;
+
+  /// No description provided for @limitRemove.
+  ///
+  /// In uz, this message translates to:
+  /// **'Limitni olib tashlash'**
+  String get limitRemove;
+
+  /// No description provided for @limitsReadOnly.
+  ///
+  /// In uz, this message translates to:
+  /// **'Limitlarni faqat ega yoki admin o\'zgartiradi'**
+  String get limitsReadOnly;
+
+  /// No description provided for @limitMonthly.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oylik limit'**
+  String get limitMonthly;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

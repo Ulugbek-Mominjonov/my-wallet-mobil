@@ -26,7 +26,6 @@
   },
   "notFoundMessage": "Havola eskirgan yoki noto'g'ri.",
   "actionHome": "Bosh sahifaga",
-  "comingSoon": "Tez orada",
   "addTitle": "Yangi amal",
   "navAddLabel": "Amal qo'shish",
   "syncStatusTitle": "Sinxron holati",
@@ -542,5 +541,169 @@
         "type": "String"
       }
     }
-  }
+  },
+  "fieldName": "Nomi",
+  "actionDelete": "O'chirish",
+  "actionEdit": "Tahrirlash",
+  "errorInvalidName": "Nomni kiriting (60 belgigacha)",
+  "errorDuplicateName": "Bu nom allaqachon bor",
+  "errorInvalidAmount": "Summa noto'g'ri",
+  "errorPaidBefore": "Oldin to'langan umumiy summadan oshmasin",
+  "accountTypeCash": "Naqd",
+  "accountTypeCard": "Karta",
+  "accountTypeBank": "Bank hisobi",
+  "accountTypeEwallet": "Elektron hamyon",
+  "accountTypeDeposit": "Omonat",
+  "accountTypePersonalFund": "Shaxsiy fond",
+  "accountTypeOther": "Boshqa",
+  "walletAccounts": "Hisoblar",
+  "walletTotalNoFund": "Jami (fondsiz)",
+  "walletNegativeCash": "Naqd qoldiq manfiy — yozuvlarni tekshiring",
+  "walletDebts": "💳 Qarzlar",
+  "walletGoals": "🎯 Maqsadlar",
+  "walletLimits": "📊 Limitlar",
+  "fundAllTime": "Butun davr",
+  "fundAddSpend": "Sarf qo'shish",
+  "fundSpends": "Sarflar tarixi",
+  "fundAllocation": "Shu oy ajratmasi",
+  "fundAllocationLive": "Hozirgi daromaddan: {amount} ({percent}%)",
+  "@fundAllocationLive": {
+    "description": "Hamyon (E18)",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "fundAllocationNone": "Bu oy uchun ajratma rejasi yo'q",
+  "fundMonths": "Oylar bo'yicha",
+  "savingsTotal": "Shu oygacha to'plangan",
+  "savingsAvg": "Oyiga o'rtacha orttirish",
+  "savingsMonthsCount": "{count} oy",
+  "@savingsMonthsCount": {
+    "description": "Hamyon (E18)",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "savingsAccumulated": "To'plangan",
+  "savingsNote": "Jamg'arma — ko'rsatkich. Pul jismonan qayerda ekanini «Hisoblar» ko'rsatadi.",
+  "debtNet": "⚖️ Sof holat",
+  "debtMonthly": "Oylik majburiyat",
+  "debtPaidThisMonth": "Shu oy to'langan",
+  "debtStatusPaying": "To'lanyapti",
+  "debtStatusPending": "Kutilmoqda",
+  "debtStatusUnlinked": "Bog'lanmagan",
+  "debtStatusClosed": "Yopildi",
+  "debtRemaining": "Qolgan: {amount}",
+  "@debtRemaining": {
+    "description": "Hamyon (E18)",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "debtEnds": "Tugaydi: {month}",
+  "@debtEnds": {
+    "description": "Hamyon (E18)",
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
+  "debtPending": "Kutilmoqda: {amount}",
+  "@debtPending": {
+    "description": "Hamyon (E18)",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "debtAdd": "Qarz qo'shish",
+  "debtEdit": "Qarzni tahrirlash",
+  "debtTotal": "Umumiy summa",
+  "debtPaidBefore": "Oldin to'langan",
+  "debtMonthlyPayment": "Oylik to'lov",
+  "debtDueDate": "Muddati",
+  "debtArchive": "Arxivlash",
+  "debtUnarchive": "Arxivdan chiqarish",
+  "debtArchived": "Arxiv",
+  "debtPayments": "Bog'langan to'lovlar",
+  "debtNoPayments": "Hali to'lov yo'q",
+  "debtsEmpty": "Qarz yo'q",
+  "goalAdd": "Maqsad qo'shish",
+  "goalEdit": "Maqsadni tahrirlash",
+  "goalTarget": "Kerakli summa",
+  "goalSaved": "Yig'ilgan",
+  "goalMonthly": "Oyiga ajratma",
+  "goalDeadline": "Muddat (oy)",
+  "goalAccount": "Hisobga bog'lash",
+  "goalAccountNone": "Bog'lanmagan (qo'lda)",
+  "goalPerMonth": "oyiga {amount}",
+  "@goalPerMonth": {
+    "description": "Hamyon (E18)",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "goalPerMonthAvg": "oyiga {amount} (o'rtacha)",
+  "@goalPerMonthAvg": {
+    "description": "Hamyon (E18)",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "goalEta": "{months} oy ({month})",
+  "@goalEta": {
+    "description": "Hamyon (E18)",
+    "placeholders": {
+      "months": {
+        "type": "int"
+      },
+      "month": {
+        "type": "String"
+      }
+    }
+  },
+  "goalOnTrack": "✅ Ulguradi",
+  "goalOffTrack": "⚠️ Ulgurmaydi",
+  "goalReached": "🎉 Yig'ildi",
+  "goalCongrats": "Tabriklaymiz! «{name}» maqsadi yig'ildi",
+  "@goalCongrats": {
+    "description": "Hamyon (E18)",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goalThanks": "Rahmat",
+  "goalDeleteConfirm": "«{name}» o'chirilsinmi?",
+  "@goalDeleteConfirm": {
+    "description": "Hamyon (E18)",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goalsEmpty": "Maqsad yo'q",
+  "goalNoForecast": "Prognoz uchun oyiga ajratma kiriting",
+  "limitSet": "Limit qo'yish",
+  "limitNone": "Limit yo'q",
+  "limitRemove": "Limitni olib tashlash",
+  "limitsReadOnly": "Limitlarni faqat ega yoki admin o'zgartiradi",
+  "limitMonthly": "Oylik limit"
 }
