@@ -9,8 +9,10 @@ import 'package:my_wallet/core/config/app_config.dart';
 import 'package:my_wallet/core/di/app_providers.dart';
 import 'package:my_wallet/core/logging/app_log.dart';
 import 'package:my_wallet/core/notifications/push_service.dart';
+import 'package:my_wallet/core/settings/app_settings.dart';
 import 'package:my_wallet/data/auth/secure_session_storage.dart';
 import 'package:my_wallet/data/sync/background_worker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Barcha flavor'lar uchun yagona ishga tushirish nuqtasi.
 ///
@@ -41,12 +43,14 @@ Future<void> bootstrap({required AppEnv env}) async {
   await initSupabase(config);
   if (Platform.isAndroid) await registerBackgroundSync();
   final firebaseReady = await _initFirebase(config.firebase);
+  final preferences = await SharedPreferences.getInstance();
 
   runApp(
     ProviderScope(
       overrides: [
         appConfigProvider.overrideWithValue(config),
         firebaseReadyProvider.overrideWithValue(firebaseReady),
+        sharedPreferencesProvider.overrideWithValue(preferences),
       ],
       observers: const [AppProviderObserver()],
       child: const MyWalletApp(),

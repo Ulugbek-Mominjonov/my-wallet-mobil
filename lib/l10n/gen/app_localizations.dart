@@ -2162,6 +2162,24 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Ruxsat berilmadi — keyin sozlamalardan yoqish mumkin'**
   String get onboardingNotifyDenied;
+
+  /// No description provided for @reminderTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'📌 Bugun to\'lov kuni'**
+  String get reminderTitle;
+
+  /// Lokal eslatma (E19-T02)
+  ///
+  /// In uz, this message translates to:
+  /// **'{name} — {amount}'**
+  String reminderBody(String name, String amount);
+
+  /// Lokal eslatma (E19-T02)
+  ///
+  /// In uz, this message translates to:
+  /// **'{name} — summa o\'zgaruvchi'**
+  String reminderBodyUnknown(String name);
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

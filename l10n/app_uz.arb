@@ -710,5 +710,27 @@
   "onboardingNotifyBody": "To'lov kunlari, limitlar va oylik hisobot haqida xabar beramiz",
   "onboardingNotifyAllow": "Yoqish",
   "onboardingNotifyOn": "Yoqildi",
-  "onboardingNotifyDenied": "Ruxsat berilmadi — keyin sozlamalardan yoqish mumkin"
+  "onboardingNotifyDenied": "Ruxsat berilmadi — keyin sozlamalardan yoqish mumkin",
+  "reminderTitle": "📌 Bugun to'lov kuni",
+  "reminderBody": "{name} — {amount}",
+  "@reminderBody": {
+    "description": "Lokal eslatma (E19-T02)",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderBodyUnknown": "{name} — summa o'zgaruvchi",
+  "@reminderBodyUnknown": {
+    "description": "Lokal eslatma (E19-T02)",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }

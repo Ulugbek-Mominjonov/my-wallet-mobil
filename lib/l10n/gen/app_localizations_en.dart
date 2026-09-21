@@ -1195,4 +1195,17 @@ class AppL10nEn extends AppL10n {
   @override
   String get onboardingNotifyDenied =>
       'Not allowed — you can turn it on later in settings';
+
+  @override
+  String get reminderTitle => '📌 Payment due today';
+
+  @override
+  String reminderBody(String name, String amount) {
+    return '$name — $amount';
+  }
+
+  @override
+  String reminderBodyUnknown(String name) {
+    return '$name — amount varies';
+  }
 }

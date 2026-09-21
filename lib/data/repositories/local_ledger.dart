@@ -54,7 +54,7 @@ final class UuidV7Ids implements IdGenerator {
 /// BR-002: "bugun" — byudjet vaqt zonasida (IANA), `now` — UTC.
 final class TzClock implements Clock {
   new(String timezone, {DateTime Function()? utcNow})
-    : _location = _locationOf(timezone),
+    : _location = locationOf(timezone),
       _utcNow = utcNow ?? (() => DateTime.now().toUtc());
 
   final tz.Location _location;
@@ -62,7 +62,10 @@ final class TzClock implements Clock {
 
   static var _initialized = false;
 
-  static tz.Location _locationOf(String timezone) {
+  /// Hozir — byudjet vaqt zonasida (rejali eslatmalar uchun).
+  tz.TZDateTime localNow() => tz.TZDateTime.from(_utcNow(), _location);
+
+  static tz.Location locationOf(String timezone) {
     if (!_initialized) {
       tz_data.initializeTimeZones();
       _initialized = true;

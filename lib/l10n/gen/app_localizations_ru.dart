@@ -1194,4 +1194,17 @@ class AppL10nRu extends AppL10n {
   @override
   String get onboardingNotifyDenied =>
       'Не разрешено — можно включить позже в настройках';
+
+  @override
+  String get reminderTitle => '📌 Сегодня день платежа';
+
+  @override
+  String reminderBody(String name, String amount) {
+    return '$name — $amount';
+  }
+
+  @override
+  String reminderBodyUnknown(String name) {
+    return '$name — сумма меняется';
+  }
 }

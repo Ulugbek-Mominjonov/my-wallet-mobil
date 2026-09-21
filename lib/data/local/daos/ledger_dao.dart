@@ -306,6 +306,29 @@ class LedgerDao extends DatabaseAccessor<AppDatabase> with _$LedgerDaoMixin {
             ..limit(limit))
           .watch();
 
+  /// BR-168: [from]..[to] kunlarda to'lanadigan ochiq xarajat/ajratma
+  /// rejalari (lokal eslatmalar). Oy oralig'i — `planned_items_month`
+  /// indeksi bilan.
+  Future<List<PlannedItemRow>> openPlansDue(
+    String householdId,
+    LocalDate from,
+    LocalDate to,
+  ) =>
+      (select(plannedItems)..where(
+            (p) =>
+                p.householdId.equals(householdId) &
+                p.budgetMonth.isBetweenValues(
+                  from.monthKey.shift(-1).toIsoDate(),
+                  to.monthKey.shift(1).toIsoDate(),
+                ) &
+                p.dueDate.isBetweenValues(from.toString(), to.toString()) &
+                p.kind.isNotValue(PlanKind.income.wire) &
+                p.deletedAt.isNull() &
+                p.skippedAt.isNull() &
+                p.settledAt.isNull(),
+          ))
+          .get();
+
   /// Oy rejalari (o'chirilmaganlar) — "To'lovlar" ro'yxati va kalendari.
   /// `planned_items_month` indeksi; reaktiv (to'lov, sinxron).
   Stream<List<PlannedItemRow>> watchMonthPlans(

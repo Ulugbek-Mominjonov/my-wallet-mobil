@@ -445,9 +445,13 @@
   `unregister_device` + lokal eslatmalar o'chadi; ilova ochiq paytidagi push —
   lokal bildirishnoma; bosilganda `data.type` → oq ro'yxatdagi marshrut
   (`/payments`, `/wallet/limits`, `/`), boshqasi e'tiborsiz.
-- [ ] **E19-T02** Lokal eslatmalar (BR-168): yaqin 14 kun rejalari uchun
-  qurilmada `zonedSchedule` (eslatma soati), ma'lumot o'zgarsa qayta
-  rejalashtirish, ≤ 30 ta.
+- [x] **E19-T02** Lokal eslatmalar (BR-168): yaqin 14 kun ochiq xarajat/
+  ajratma rejalari — to'lov kuni eslatma soatida (byudjet vaqt zonasi,
+  `zonedSchedule`, aniq-vaqt ruxsatisiz), ≤ 30 ta; rejalar o'zgarsa 2 s
+  debounce bilan qayta (sinxron paketi bir marta); matn — tanlangan tilda.
+  Rejalashtiruvchi sof funksiya (`planLocalReminders`, qotirilgan soat bilan
+  testlangan). Tema va til sozlamasi (SharedPreferences, bootstrap'da
+  yuklanadi) shu bosqichda qo'shildi.
 - [ ] **E19-T03** Bildirishnoma sozlamalari: push, Telegram (ulash:
   `telegram_link_token` → `t.me/<bot>?start=…` ochish, holat), email, soat,
   necha kun oldin, oylik hisobot kuni, limit ogohlantirishlari.

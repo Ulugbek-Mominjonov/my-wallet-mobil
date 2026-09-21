@@ -343,5 +343,8 @@
   "onboardingNotifyBody": "Напомним о днях платежей, лимитах и месячном отчёте",
   "onboardingNotifyAllow": "Включить",
   "onboardingNotifyOn": "Включено",
-  "onboardingNotifyDenied": "Не разрешено — можно включить позже в настройках"
+  "onboardingNotifyDenied": "Не разрешено — можно включить позже в настройках",
+  "reminderTitle": "📌 Сегодня день платежа",
+  "reminderBody": "{name} — {amount}",
+  "reminderBodyUnknown": "{name} — сумма меняется"
 }

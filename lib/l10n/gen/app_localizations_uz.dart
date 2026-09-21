@@ -1194,4 +1194,17 @@ class AppL10nUz extends AppL10n {
   @override
   String get onboardingNotifyDenied =>
       'Ruxsat berilmadi — keyin sozlamalardan yoqish mumkin';
+
+  @override
+  String get reminderTitle => '📌 Bugun to\'lov kuni';
+
+  @override
+  String reminderBody(String name, String amount) {
+    return '$name — $amount';
+  }
+
+  @override
+  String reminderBodyUnknown(String name) {
+    return '$name — summa o\'zgaruvchi';
+  }
 }

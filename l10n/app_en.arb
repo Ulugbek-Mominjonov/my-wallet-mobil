@@ -343,5 +343,8 @@
   "onboardingNotifyBody": "We'll remind you about payment days, limits and the monthly report",
   "onboardingNotifyAllow": "Turn on",
   "onboardingNotifyOn": "Turned on",
-  "onboardingNotifyDenied": "Not allowed — you can turn it on later in settings"
+  "onboardingNotifyDenied": "Not allowed — you can turn it on later in settings",
+  "reminderTitle": "📌 Payment due today",
+  "reminderBody": "{name} — {amount}",
+  "reminderBodyUnknown": "{name} — amount varies"
 }

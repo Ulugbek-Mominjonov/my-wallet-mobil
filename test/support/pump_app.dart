@@ -9,11 +9,14 @@ import 'package:my_wallet/app/router.dart';
 import 'package:my_wallet/core/config/app_config.dart';
 import 'package:my_wallet/core/di/app_providers.dart';
 import 'package:my_wallet/core/notifications/local_notifier.dart';
+import 'package:my_wallet/core/settings/app_settings.dart';
 import 'package:my_wallet/data/auth/auth_providers.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
 import 'package:my_wallet/features/household/application/invite_links.dart';
+import 'package:my_wallet/features/notifications/application/local_reminders.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'fake_auth.dart';
 import 'fake_notifier.dart';
@@ -48,6 +51,13 @@ Future<GoRouter> pumpApp(
 
   /// Qurilma bildirishnomalari (standart — yozib boruvchi soxta).
   FakeLocalNotifier? notifier,
+
+  /// Saqlangan ilova sozlamalari (tema, til).
+  Map<String, Object> preferences = const {},
+
+  /// Lokal eslatmalar rejalashtiruvchisi (E19-T02) — debounce taymeri
+  /// boshqa testlarda "pending timer" bo'lmasin, standart o'chiq.
+  bool localReminders = false,
 }) async {
   tester.platformDispatcher.localesTestValue = const [Locale('uz')];
   addTearDown(tester.platformDispatcher.clearLocalesTestValue);
@@ -59,6 +69,9 @@ Future<GoRouter> pumpApp(
 
   // Keystore yo'q — ilova qulfi (PIN) xotiradagi soxta xotiradan o'qiydi.
   FlutterSecureStorage.setMockInitialValues({});
+  // Tema/til sozlamalari — xotirada (E19-T04).
+  SharedPreferences.setMockInitialValues(preferences);
+  final prefs = await SharedPreferences.getInstance();
   final db = database ?? testDatabase();
   if (database == null) addTearDown(db.close);
   final container = ProviderContainer.test(
@@ -77,6 +90,8 @@ Future<GoRouter> pumpApp(
       // Lokal baza — xotirada (testda haqiqiy fayl ochilmaydi).
       appDatabaseProvider.overrideWithValue(db),
       localNotifierProvider.overrideWithValue(notifier ?? FakeLocalNotifier()),
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      if (!localReminders) localRemindersProvider.overrideWith((ref) {}),
       ...overrides,
     ],
   );

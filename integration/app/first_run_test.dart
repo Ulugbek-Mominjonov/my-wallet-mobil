@@ -16,6 +16,7 @@ import 'package:my_wallet/core/config/app_config.dart';
 import 'package:my_wallet/core/di/app_providers.dart';
 import 'package:my_wallet/core/notifications/local_notifier.dart';
 import 'package:my_wallet/core/security/secure_screen.dart';
+import 'package:my_wallet/core/settings/app_settings.dart';
 import 'package:my_wallet/data/auth/auth_gateway.dart';
 import 'package:my_wallet/data/auth/auth_providers.dart';
 import 'package:my_wallet/data/local/database.dart';
@@ -25,6 +26,7 @@ import 'package:my_wallet/data/remote/remote_api.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
 import 'package:my_wallet/features/household/application/invite_links.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../test/support/fake_notifier.dart';
 import '../support/local_supabase.dart';
@@ -67,6 +69,10 @@ void main() {
     );
     final client = newClient(httpClient: httpClient);
     final db = AppDatabase(NativeDatabase.memory());
+    // Host'da plagin yo'q — xotiradagi sozlamalar (integratsiya ham test).
+    // ignore: invalid_use_of_visible_for_testing_member
+    SharedPreferences.setMockInitialValues({});
+    final preferences = await SharedPreferences.getInstance();
 
     await tester.pumpWidget(
       ProviderScope(
@@ -101,6 +107,7 @@ void main() {
           appVersionProvider.overrideWith((ref) async => '9.9.9'),
           // Bildirishnomalar plagini host'da yo'q (E19).
           localNotifierProvider.overrideWithValue(FakeLocalNotifier()),
+          sharedPreferencesProvider.overrideWithValue(preferences),
         ],
         child: const MyWalletApp(),
       ),
