@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:my_wallet/data/local/daos/ledger_dao.dart';
@@ -9,45 +6,7 @@ import 'package:my_wallet/data/local/mappers.dart';
 import 'package:wallet_domain/testing.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
-/// Golden fixture holati → lokal baza (repository yozadigan ko'rinishda).
-Future<void> _store(AppDatabase db, FixtureLedger ledger) => db.batch((batch) {
-  batch
-    ..insert(db.households, ledger.household.toRow())
-    ..insertAll(db.accounts, [
-      for (final a in ledger.accounts.values) a.toCompanion(),
-    ])
-    ..insertAll(db.categories, [
-      for (final c in ledger.categories.values) c.toCompanion(),
-    ])
-    ..insertAll(db.debts, [
-      for (final d in ledger.debts.values) d.toCompanion(),
-    ])
-    ..insertAll(db.plannedItems, [
-      for (final p in ledger.plans.values) p.toCompanion(),
-    ])
-    ..insertAll(db.transactions, [
-      for (final t in ledger.transactions) t.toCompanion(),
-    ]);
-});
-
-List<Map<String, Object?>> _cases() {
-  final files =
-      Directory('contracts/fixtures')
-          .listSync()
-          .whereType<File>()
-          .where((f) => f.path.endsWith('.json'))
-          .toList()
-        ..sort((a, b) => a.path.compareTo(b.path));
-  return [
-    for (final file in files)
-      for (final c
-          in ((jsonDecode(file.readAsStringSync())
-                      as Map<String, Object?>)['cases']!
-                  as List<Object?>)
-              .cast<Map<String, Object?>>())
-        {...c, 'file': file.uri.pathSegments.last},
-  ];
-}
+import '../../support/fixtures.dart';
 
 void main() {
   late AppDatabase db;
@@ -55,13 +14,13 @@ void main() {
   tearDown(() => db.close());
 
   group('golden fixture: SQL agregat = domen qoidalari', () {
-    final cases = _cases();
+    final cases = fixtureCases();
     test('fixture fayllari topildi', () => expect(cases, isNotEmpty));
 
     for (final testCase in cases) {
       test('${testCase['file']}: ${testCase['name']}', () async {
         final ledger = FixtureLedger.load(testCase);
-        await _store(db, ledger);
+        await storeFixture(db, ledger);
         final first = ledger.firstRecordMonth ?? ledger.currentMonth;
         final to = first.isAfter(ledger.currentMonth)
             ? first

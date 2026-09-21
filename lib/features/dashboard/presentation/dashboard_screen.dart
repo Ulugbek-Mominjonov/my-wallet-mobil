@@ -1,0 +1,734 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:my_wallet/core/design_system/tokens.dart';
+import 'package:my_wallet/core/format/format_context.dart';
+import 'package:my_wallet/core/format/money_format.dart';
+import 'package:my_wallet/core/format/month_format.dart';
+import 'package:my_wallet/core/security/privacy_mode.dart';
+import 'package:my_wallet/core/widgets/app_card.dart';
+import 'package:my_wallet/core/widgets/money_text.dart';
+import 'package:my_wallet/data/local/daos/ledger_dao.dart';
+import 'package:my_wallet/features/dashboard/application/dashboard_controller.dart';
+import 'package:my_wallet/features/dashboard/application/month_report.dart';
+import 'package:my_wallet/features/transactions/application/transaction_list_controller.dart';
+import 'package:my_wallet/features/transactions/presentation/add_transaction_screen.dart';
+import 'package:my_wallet/l10n/gen/app_localizations.dart';
+import 'package:wallet_domain/wallet_domain.dart';
+
+/// "Xulosa" (E16): oy hisobi lokal bazadan (tarmoqsiz) — qoldiq, prognoz,
+/// statistika, rejalar, kategoriyalar, fond va jamg'arma (alohida, BR-005),
+/// qarz va maqsadlar. Oy — ‹ › yoki surish bilan.
+class DashboardScreen extends ConsumerWidget {
+  const new({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final report = ref.watch(monthReportProvider).value;
+    final month = ref.watch(dashboardMonthProvider);
+    final controller = ref.read(dashboardMonthProvider.notifier);
+
+    return GestureDetector(
+      // Oy almashtirish — gorizontal surish.
+      onHorizontalDragEnd: (details) {
+        final velocity = details.primaryVelocity ?? 0;
+        if (velocity.abs() < 300) return;
+        controller.shift(velocity > 0 ? -1 : 1);
+      },
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(AppSpacing.lg, 0, AppSpacing.lg, 96),
+        children: [
+          _MonthHeader(month: month, report: report),
+          if (report == null)
+            const Padding(
+              padding: EdgeInsets.all(AppSpacing.xxl),
+              child: Center(child: CircularProgressIndicator()),
+            )
+          else ...[
+            if (!report.state.opened &&
+                !report.month.isBefore(report.today.monthKey))
+              _OpenMonthCard(month: report.month),
+            _HeroCard(report: report),
+            const SizedBox(height: AppSpacing.md),
+            _StatsGrid(report: report),
+            const SizedBox(height: AppSpacing.md),
+            if (report.facts.planned.isPositive ||
+                report.facts.unknownCount > 0)
+              _PlanCard(report: report),
+            if (report.upcomingPayments.isNotEmpty)
+              _UpcomingCard(report: report),
+            if (report.isCurrent) _ForecastCard(report: report),
+            if (report.categories.isNotEmpty) _CategoriesCard(report: report),
+            if (report.incomeTypes.isNotEmpty) _IncomeTypesCard(report: report),
+            _FundSavingsRow(report: report),
+            if (report.debts.iOwe.isPositive ||
+                report.debts.owedToMe.isPositive)
+              _DebtsCard(report: report),
+            if (report.goals.isNotEmpty) _GoalsCard(report: report),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Summani matn sifatida (maxfiylik rejimi — `•••`, BR-212).
+String _money(BuildContext context, WidgetRef ref, Money amount) =>
+    ref.watch(privacyModeProvider)
+    ? MoneyText.hiddenValue
+    : formatMoney(
+        amount.minor,
+        currency: amount.currency.code,
+        locale: appLocaleOf(context),
+      );
+
+class _MonthHeader extends ConsumerWidget {
+  const new({required this.month, required this.report});
+
+  final MonthKey month;
+  final MonthReport? report;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    final controller = ref.read(dashboardMonthProvider.notifier);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(
+          tooltip: l10n.monthPrevious,
+          icon: const Icon(Icons.chevron_left),
+          onPressed: () => controller.shift(-1),
+        ),
+        Text(
+          formatMonthTitle(l10n, year: month.year, month: month.month),
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        if (report?.state.closed ?? false) ...[
+          const SizedBox(width: AppSpacing.sm),
+          Chip(
+            avatar: const Icon(Icons.lock, size: 16),
+            label: Text(l10n.dashClosed),
+            visualDensity: VisualDensity.compact,
+          ),
+        ],
+        IconButton(
+          icon: const Icon(Icons.chevron_right),
+          onPressed: () => controller.shift(1),
+        ),
+      ],
+    );
+  }
+}
+
+class _OpenMonthCard extends ConsumerWidget {
+  const new({required this.month});
+
+  final MonthKey month;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.md),
+      child: AppCard(
+        child: Row(
+          children: [
+            const Icon(Icons.event_available_outlined),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(child: Text(l10n.dashNotOpened)),
+            const SizedBox(width: AppSpacing.sm),
+            FilledButton(
+              onPressed: () => unawaited(_open(context, ref)),
+              child: Text(l10n.dashOpenMonth),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// BR-081: preview → tasdiq → ochish (tarmoq kerak).
+  Future<void> _open(BuildContext context, WidgetRef ref) async {
+    final l10n = AppL10n.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final actions = ref.read(dashboardActionsProvider);
+    final preview = await actions.preview(month);
+    if (!context.mounted) return;
+    final count = switch (preview) {
+      Ok(:final value) => value.items.where((i) => !i.exists).length,
+      Err(:final failure) => () {
+        messenger.showSnackBar(
+          SnackBar(content: Text(transactionErrorText(l10n, failure))),
+        );
+        return null;
+      }(),
+    };
+    if (count == null) return;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.dashOpenMonth),
+        content: Text(l10n.dashOpenMonthBody(count)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.actionCancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.dashOpenMonth),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    final result = await actions.open(month);
+    if (result case Err(:final failure)) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(transactionErrorText(l10n, failure))),
+      );
+    }
+  }
+}
+
+/// BR-091, BR-093, BR-094: qoldiq, prognoz, kuniga, orttirgan %.
+class _HeroCard extends ConsumerWidget {
+  const new({required this.report});
+
+  final MonthReport report;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    final theme = Theme.of(context);
+    final colors = context.appColors;
+    final summary = report.summary;
+    final perDay = report.forecast.perDayAvailable;
+    return AppCard(
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l10n.dashBalance, style: theme.textTheme.labelLarge),
+                MoneyText(
+                  summary.balance.minor,
+                  currency: summary.balance.currency.code,
+                  tone: summary.balance.isNegative
+                      ? MoneyTone.expense
+                      : MoneyTone.neutral,
+                  style: theme.textTheme.headlineMedium,
+                ),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  '${l10n.dashForecast}: '
+                  '${_money(context, ref, summary.forecast)}',
+                  style: theme.textTheme.bodySmall,
+                ),
+                if (report.isCurrent)
+                  Text(
+                    l10n.dashMonthEnd(
+                      _money(context, ref, report.forecast.monthEndBalance),
+                    ),
+                    style: theme.textTheme.bodySmall,
+                  ),
+                if (perDay != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: AppSpacing.sm),
+                    child: Text(
+                      l10n.dashPerDay(_money(context, ref, perDay)),
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        color: perDay.isNegative
+                            ? colors.expense
+                            : theme.colorScheme.primary,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          _SavedRing(ratio: summary.savedRatio, label: l10n.dashSaved),
+        ],
+      ),
+    );
+  }
+}
+
+class _SavedRing extends StatelessWidget {
+  const new({required this.ratio, required this.label});
+
+  final double ratio;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final clamped = ratio.clamp(0.0, 1.0);
+    return SizedBox.square(
+      dimension: 88,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          SizedBox.square(
+            dimension: 80,
+            child: CircularProgressIndicator(
+              value: clamped,
+              strokeWidth: 8,
+              color: ratio.isNegative
+                  ? context.appColors.expense
+                  : context.appColors.income,
+              backgroundColor: theme.colorScheme.surfaceContainerHighest,
+            ),
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '${(ratio * 100).round()}%',
+                style: theme.textTheme.titleMedium,
+              ),
+              Text(label, style: theme.textTheme.labelSmall),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 4 stat: daromad, xarajat, karta, naqd — bosilsa filtrlangan amallar.
+class _StatsGrid extends ConsumerWidget {
+  const new({required this.report});
+
+  final MonthReport report;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    final facts = report.facts;
+    void open({TransactionKind? kind}) {
+      ref
+          .read(transactionListProvider.notifier)
+          .setFilter(TransactionFilter(month: report.month, kind: kind));
+      context.go('/transactions');
+    }
+
+    Widget stat(
+      String label,
+      Money value,
+      MoneyTone tone,
+      VoidCallback onTap,
+    ) => Expanded(
+      child: AppCard(
+        onTap: onTap,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(label, style: Theme.of(context).textTheme.labelMedium),
+            MoneyText(value.minor, currency: value.currency.code, tone: tone),
+          ],
+        ),
+      ),
+    );
+
+    return Column(
+      children: [
+        Row(
+          children: [
+            stat(
+              l10n.kindIncome,
+              facts.income,
+              MoneyTone.income,
+              () => open(kind: TransactionKind.income),
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            stat(
+              l10n.kindExpense,
+              facts.expense,
+              MoneyTone.expense,
+              () => open(kind: TransactionKind.expense),
+            ),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        Row(
+          children: [
+            stat(l10n.dashCard, report.summary.card, MoneyTone.auto, open),
+            const SizedBox(width: AppSpacing.sm),
+            stat(l10n.dashCash, report.summary.cash, MoneyTone.auto, open),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _Section extends StatelessWidget {
+  const new({required this.title, required this.child});
+
+  final String title;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(bottom: AppSpacing.md),
+    child: AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(title, style: Theme.of(context).textTheme.titleSmall),
+          const SizedBox(height: AppSpacing.sm),
+          child,
+        ],
+      ),
+    ),
+  );
+}
+
+/// BR-090: reja bajarilishi — `X so'm + N ta ?` (noma'lum summali rejalar).
+class _PlanCard extends ConsumerWidget {
+  const new({required this.report});
+
+  final MonthReport report;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    final facts = report.facts;
+    final ratio = report.summary.planRatio ?? 0;
+    return _Section(
+      title: l10n.dashPlan,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          LinearProgressIndicator(value: ratio.clamp(0.0, 1.0)),
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            [
+              _money(context, ref, facts.expense),
+              '/',
+              _money(context, ref, facts.planned),
+              if (facts.unknownCount > 0) l10n.dashUnknown(facts.unknownCount),
+              '(${(ratio * 100).round()}%)',
+            ].join(' '),
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Yaqin 3 to'lov — bir bosishda "To'landi" (BR-073).
+class _UpcomingCard extends ConsumerWidget {
+  const new({required this.report});
+
+  final MonthReport report;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    return _Section(
+      title: l10n.dashUpcoming,
+      child: Column(
+        children: [
+          for (final (:plan, :status) in report.upcomingPayments.take(3))
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: Icon(switch (status) {
+                PlannedStatus.overdue => Icons.warning_amber,
+                PlannedStatus.partial => Icons.timelapse,
+                _ => Icons.event,
+              }),
+              title: Text(plan.name),
+              subtitle: Text(
+                [
+                  _dayMonth(plan.dueDate),
+                  if (plan.plannedAmount case final planned?)
+                    _money(context, ref, planned - plan.paidAmount),
+                ].join(' · '),
+              ),
+              trailing: plan.plannedAmount == null
+                  ? null
+                  : TextButton(
+                      onPressed: () => unawaited(_pay(context, ref, plan.id)),
+                      child: Text(l10n.dashMarkPaid),
+                    ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _pay(
+    BuildContext context,
+    WidgetRef ref,
+    String planId, {
+    bool confirmClosedMonth = false,
+  }) async {
+    final l10n = AppL10n.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final result = await ref
+        .read(dashboardActionsProvider)
+        .pay(planId, confirmClosedMonth: confirmClosedMonth);
+    if (!context.mounted) return;
+    switch (result) {
+      case Ok():
+        messenger.showSnackBar(SnackBar(content: Text(l10n.saved)));
+      case Err(failure: MonthClosedWarning(blocking: false)):
+        if (await confirmClosedMonthDialog(context) && context.mounted) {
+          await _pay(context, ref, planId, confirmClosedMonth: true);
+        }
+      case Err(:final failure):
+        messenger.showSnackBar(
+          SnackBar(content: Text(transactionErrorText(l10n, failure))),
+        );
+    }
+  }
+}
+
+/// BR-093: prognoz — o'tgan kunlar, kunlik sarf, oy oxiri, kutilayotgan
+/// daromad (hozircha kelgani).
+class _ForecastCard extends ConsumerWidget {
+  const new({required this.report});
+
+  final MonthReport report;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    final f = report.forecast;
+    Widget row(String label, String value) => Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        children: [
+          Expanded(child: Text(label)),
+          Text(value),
+        ],
+      ),
+    );
+    return _Section(
+      title:
+          '${l10n.dashForecastTitle} · '
+          '${l10n.dashDays(f.daysElapsed, f.daysInMonth)}',
+      child: Column(
+        children: [
+          row(l10n.dashDailySpend, _money(context, ref, f.dailySpend)),
+          row(l10n.dashMonthEndSpend, _money(context, ref, f.monthEndSpend)),
+          row(l10n.dashExpectedIncome, _money(context, ref, f.incomeExpected)),
+          if (report.forecast.incomePending)
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                l10n.dashReceivedSoFar(_money(context, ref, f.incomeReceived)),
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Kategoriyalar — limit rangi va `2 000 000 (100%)` (BR-130, BR-131).
+class _CategoriesCard extends ConsumerWidget {
+  const new({required this.report});
+
+  final MonthReport report;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    final colors = context.appColors;
+    return _Section(
+      title: l10n.dashCategories,
+      child: Column(
+        children: [
+          for (final (:line, :status, :ratio) in report.categories)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(child: Text(line.name)),
+                      Text(
+                        _money(context, ref, line.actual) +
+                            (ratio == null
+                                ? ''
+                                : ' (${(ratio * 100).round()}%)'),
+                      ),
+                    ],
+                  ),
+                  if (ratio != null)
+                    LinearProgressIndicator(
+                      value: ratio.clamp(0.0, 1.0),
+                      color: switch (status) {
+                        LimitStatus.over => colors.expense,
+                        LimitStatus.near => colors.warning,
+                        _ => colors.income,
+                      },
+                    ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _IncomeTypesCard extends ConsumerWidget {
+  const new({required this.report});
+
+  final MonthReport report;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    return _Section(
+      title: l10n.dashIncomeTypes,
+      child: Column(
+        children: [
+          for (final line in report.incomeTypes)
+            Row(
+              children: [
+                Expanded(child: Text(line.name)),
+                Text(
+                  '${l10n.dashCard} ${_money(context, ref, line.card)} · '
+                  '${l10n.dashCash} ${_money(context, ref, line.cash)}',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// BR-005: 👤 fond va 🏦 jamg'arma — alohida plitalar, hech qachon
+/// qo'shilmaydi.
+class _FundSavingsRow extends ConsumerWidget {
+  const new({required this.report});
+
+  final MonthReport report;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    final theme = Theme.of(context);
+    Widget tile(String title, Money total, List<(String, Money)> rows) =>
+        Expanded(
+          child: AppCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: theme.textTheme.titleSmall),
+                MoneyText(
+                  total.minor,
+                  currency: total.currency.code,
+                  style: theme.textTheme.titleLarge,
+                ),
+                for (final (label, value) in rows)
+                  Text(
+                    '$label: ${_money(context, ref, value)}',
+                    style: theme.textTheme.bodySmall,
+                  ),
+              ],
+            ),
+          ),
+        );
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.md),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            tile(l10n.dashFund, report.fundBalance, [
+              (l10n.dashAllocated, report.facts.allocated),
+              (l10n.dashSpent, report.facts.fundSpent),
+            ]),
+            const SizedBox(width: AppSpacing.sm),
+            tile(l10n.dashSavings, report.savings.total, [
+              (l10n.dashThisMonth, report.savings.thisMonth),
+            ]),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DebtsCard extends ConsumerWidget {
+  const new({required this.report});
+
+  final MonthReport report;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    final debts = report.debts;
+    return _Section(
+      title: l10n.dashDebts,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text('${l10n.dashIOwe}: ${_money(context, ref, debts.iOwe)}'),
+          Text('${l10n.dashOwedToMe}: ${_money(context, ref, debts.owedToMe)}'),
+          if (debts.monthlyObligation.isPositive)
+            Text(
+              '${l10n.dashMonthly}: '
+              '${_money(context, ref, debts.monthlyObligation)}',
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _GoalsCard extends ConsumerWidget {
+  const new({required this.report});
+
+  final MonthReport report;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    return _Section(
+      title: l10n.dashGoals,
+      child: Column(
+        children: [
+          for (final (goal, progress) in report.goals)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(child: Text(goal.name)),
+                      Text('${(progress.progress * 100).round()}%'),
+                    ],
+                  ),
+                  LinearProgressIndicator(
+                    value: progress.progress.clamp(0.0, 1.0),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// `05.10` ko'rinishidagi kun va oy.
+String _dayMonth(LocalDate date) =>
+    '${date.day.toString().padLeft(2, '0')}.'
+    '${date.month.toString().padLeft(2, '0')}';

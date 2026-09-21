@@ -634,4 +634,119 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get receiptPending => 'Yuklanishi kutilmoqda';
+
+  @override
+  String get dashBalance => 'Qoldiq';
+
+  @override
+  String get dashForecast => 'Prognoz qoldiq';
+
+  @override
+  String dashMonthEnd(String amount) {
+    return 'Oy oxirida ≈ $amount';
+  }
+
+  @override
+  String dashPerDay(String amount) {
+    return 'Kuniga ≈ $amount';
+  }
+
+  @override
+  String get dashSaved => 'Orttirgan';
+
+  @override
+  String get dashCard => 'Karta';
+
+  @override
+  String get dashCash => 'Naqd';
+
+  @override
+  String get dashPlan => 'Reja bajarilishi';
+
+  @override
+  String dashUnknown(int count) {
+    return '+ $count ta ?';
+  }
+
+  @override
+  String get dashUpcoming => 'Yaqin to\'lovlar';
+
+  @override
+  String get dashMarkPaid => 'To\'landi';
+
+  @override
+  String get dashCategories => 'Kategoriyalar';
+
+  @override
+  String get dashIncomeTypes => 'Daromad turlari';
+
+  @override
+  String get dashFund => '👤 Shaxsiy fond';
+
+  @override
+  String get dashSavings => '🏦 Jamg\'arma';
+
+  @override
+  String get dashThisMonth => 'Shu oy';
+
+  @override
+  String get dashAllocated => 'Ajratilgan';
+
+  @override
+  String get dashSpent => 'Sarflangan';
+
+  @override
+  String get dashDebts => 'Qarzlar';
+
+  @override
+  String get dashIOwe => 'Men qarzman';
+
+  @override
+  String get dashOwedToMe => 'Menga qarz';
+
+  @override
+  String get dashMonthly => 'Oyiga';
+
+  @override
+  String get dashGoals => 'Maqsadlar';
+
+  @override
+  String get dashForecastTitle => 'Prognoz';
+
+  @override
+  String dashDays(int elapsed, int total) {
+    return '$elapsed / $total kun';
+  }
+
+  @override
+  String get dashDailySpend => 'Kunlik sarf';
+
+  @override
+  String get dashMonthEndSpend => 'Oy oxiri sarfi';
+
+  @override
+  String get dashExpectedIncome => 'Kutilayotgan daromad';
+
+  @override
+  String dashReceivedSoFar(String amount) {
+    return 'hozircha kelgani $amount';
+  }
+
+  @override
+  String get dashNotOpened =>
+      'Oy hali ochilmagan — doimiy to\'lovlar rejaga tushmagan';
+
+  @override
+  String get dashOpenMonth => 'Oyni ochish';
+
+  @override
+  String dashOpenMonthBody(int count) {
+    return '$count ta reja yaratiladi';
+  }
+
+  @override
+  String get dashClosed => 'Yopilgan';
+
+  @override
+  String get dashEmpty => 'Bu oyda hali yozuv yo\'q';
 }

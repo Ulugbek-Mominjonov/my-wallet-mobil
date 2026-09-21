@@ -1172,6 +1172,210 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Yuklanishi kutilmoqda'**
   String get receiptPending;
+
+  /// No description provided for @dashBalance.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qoldiq'**
+  String get dashBalance;
+
+  /// No description provided for @dashForecast.
+  ///
+  /// In uz, this message translates to:
+  /// **'Prognoz qoldiq'**
+  String get dashForecast;
+
+  /// Dashboard (E16)
+  ///
+  /// In uz, this message translates to:
+  /// **'Oy oxirida ≈ {amount}'**
+  String dashMonthEnd(String amount);
+
+  /// No description provided for @dashPerDay.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kuniga ≈ {amount}'**
+  String dashPerDay(String amount);
+
+  /// No description provided for @dashSaved.
+  ///
+  /// In uz, this message translates to:
+  /// **'Orttirgan'**
+  String get dashSaved;
+
+  /// No description provided for @dashCard.
+  ///
+  /// In uz, this message translates to:
+  /// **'Karta'**
+  String get dashCard;
+
+  /// No description provided for @dashCash.
+  ///
+  /// In uz, this message translates to:
+  /// **'Naqd'**
+  String get dashCash;
+
+  /// No description provided for @dashPlan.
+  ///
+  /// In uz, this message translates to:
+  /// **'Reja bajarilishi'**
+  String get dashPlan;
+
+  /// No description provided for @dashUnknown.
+  ///
+  /// In uz, this message translates to:
+  /// **'+ {count} ta ?'**
+  String dashUnknown(int count);
+
+  /// No description provided for @dashUpcoming.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yaqin to\'lovlar'**
+  String get dashUpcoming;
+
+  /// No description provided for @dashMarkPaid.
+  ///
+  /// In uz, this message translates to:
+  /// **'To\'landi'**
+  String get dashMarkPaid;
+
+  /// No description provided for @dashCategories.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kategoriyalar'**
+  String get dashCategories;
+
+  /// No description provided for @dashIncomeTypes.
+  ///
+  /// In uz, this message translates to:
+  /// **'Daromad turlari'**
+  String get dashIncomeTypes;
+
+  /// No description provided for @dashFund.
+  ///
+  /// In uz, this message translates to:
+  /// **'👤 Shaxsiy fond'**
+  String get dashFund;
+
+  /// No description provided for @dashSavings.
+  ///
+  /// In uz, this message translates to:
+  /// **'🏦 Jamg\'arma'**
+  String get dashSavings;
+
+  /// No description provided for @dashThisMonth.
+  ///
+  /// In uz, this message translates to:
+  /// **'Shu oy'**
+  String get dashThisMonth;
+
+  /// No description provided for @dashAllocated.
+  ///
+  /// In uz, this message translates to:
+  /// **'Ajratilgan'**
+  String get dashAllocated;
+
+  /// No description provided for @dashSpent.
+  ///
+  /// In uz, this message translates to:
+  /// **'Sarflangan'**
+  String get dashSpent;
+
+  /// No description provided for @dashDebts.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qarzlar'**
+  String get dashDebts;
+
+  /// No description provided for @dashIOwe.
+  ///
+  /// In uz, this message translates to:
+  /// **'Men qarzman'**
+  String get dashIOwe;
+
+  /// No description provided for @dashOwedToMe.
+  ///
+  /// In uz, this message translates to:
+  /// **'Menga qarz'**
+  String get dashOwedToMe;
+
+  /// No description provided for @dashMonthly.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oyiga'**
+  String get dashMonthly;
+
+  /// No description provided for @dashGoals.
+  ///
+  /// In uz, this message translates to:
+  /// **'Maqsadlar'**
+  String get dashGoals;
+
+  /// No description provided for @dashForecastTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Prognoz'**
+  String get dashForecastTitle;
+
+  /// No description provided for @dashDays.
+  ///
+  /// In uz, this message translates to:
+  /// **'{elapsed} / {total} kun'**
+  String dashDays(int elapsed, int total);
+
+  /// No description provided for @dashDailySpend.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kunlik sarf'**
+  String get dashDailySpend;
+
+  /// No description provided for @dashMonthEndSpend.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oy oxiri sarfi'**
+  String get dashMonthEndSpend;
+
+  /// No description provided for @dashExpectedIncome.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kutilayotgan daromad'**
+  String get dashExpectedIncome;
+
+  /// No description provided for @dashReceivedSoFar.
+  ///
+  /// In uz, this message translates to:
+  /// **'hozircha kelgani {amount}'**
+  String dashReceivedSoFar(String amount);
+
+  /// No description provided for @dashNotOpened.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oy hali ochilmagan — doimiy to\'lovlar rejaga tushmagan'**
+  String get dashNotOpened;
+
+  /// No description provided for @dashOpenMonth.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oyni ochish'**
+  String get dashOpenMonth;
+
+  /// No description provided for @dashOpenMonthBody.
+  ///
+  /// In uz, this message translates to:
+  /// **'{count} ta reja yaratiladi'**
+  String dashOpenMonthBody(int count);
+
+  /// No description provided for @dashClosed.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yopilgan'**
+  String get dashClosed;
+
+  /// No description provided for @dashEmpty.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bu oyda hali yozuv yo\'q'**
+  String get dashEmpty;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

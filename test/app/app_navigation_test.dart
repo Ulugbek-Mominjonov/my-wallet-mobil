@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:my_wallet/core/config/app_config.dart';
 import 'package:my_wallet/core/widgets/empty_state.dart';
+import 'package:my_wallet/features/dashboard/presentation/dashboard_screen.dart';
 
 import '../support/pump_app.dart';
 
@@ -13,7 +14,7 @@ void main() {
   testWidgets('ilova Xulosa bo‘limida ochiladi', (tester) async {
     await pumpApp(tester);
 
-    expect(tabTitle('Xulosa'), findsOneWidget);
+    expect(find.byType(DashboardScreen), findsOneWidget);
   });
 
   testWidgets('tablar orasida o‘tish', (tester) async {
@@ -40,7 +41,7 @@ void main() {
 
     await tester.tap(find.byType(CloseButton));
     await tester.pumpAndSettle();
-    expect(tabTitle('Xulosa'), findsOneWidget);
+    expect(find.byType(DashboardScreen), findsOneWidget);
   });
 
   testWidgets("noma'lum yo'l — 404 va bosh sahifaga qaytish", (tester) async {
@@ -52,7 +53,7 @@ void main() {
 
     await tester.tap(find.text('Bosh sahifaga'));
     await tester.pumpAndSettle();
-    expect(tabTitle('Xulosa'), findsOneWidget);
+    expect(find.byType(DashboardScreen), findsOneWidget);
   });
 
   testWidgets('dizayn katalogi dev flavorda ochiladi', (tester) async {

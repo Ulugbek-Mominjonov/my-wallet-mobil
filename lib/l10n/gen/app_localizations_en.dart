@@ -634,4 +634,119 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get receiptPending => 'Waiting to upload';
+
+  @override
+  String get dashBalance => 'Balance';
+
+  @override
+  String get dashForecast => 'Projected balance';
+
+  @override
+  String dashMonthEnd(String amount) {
+    return 'By month end ≈ $amount';
+  }
+
+  @override
+  String dashPerDay(String amount) {
+    return 'Per day ≈ $amount';
+  }
+
+  @override
+  String get dashSaved => 'Saved';
+
+  @override
+  String get dashCard => 'Card';
+
+  @override
+  String get dashCash => 'Cash';
+
+  @override
+  String get dashPlan => 'Plan progress';
+
+  @override
+  String dashUnknown(int count) {
+    return '+ $count unknown';
+  }
+
+  @override
+  String get dashUpcoming => 'Upcoming payments';
+
+  @override
+  String get dashMarkPaid => 'Paid';
+
+  @override
+  String get dashCategories => 'Categories';
+
+  @override
+  String get dashIncomeTypes => 'Income types';
+
+  @override
+  String get dashFund => '👤 Personal fund';
+
+  @override
+  String get dashSavings => '🏦 Savings';
+
+  @override
+  String get dashThisMonth => 'This month';
+
+  @override
+  String get dashAllocated => 'Allocated';
+
+  @override
+  String get dashSpent => 'Spent';
+
+  @override
+  String get dashDebts => 'Debts';
+
+  @override
+  String get dashIOwe => 'I owe';
+
+  @override
+  String get dashOwedToMe => 'Owed to me';
+
+  @override
+  String get dashMonthly => 'Monthly';
+
+  @override
+  String get dashGoals => 'Goals';
+
+  @override
+  String get dashForecastTitle => 'Forecast';
+
+  @override
+  String dashDays(int elapsed, int total) {
+    return '$elapsed / $total days';
+  }
+
+  @override
+  String get dashDailySpend => 'Daily spend';
+
+  @override
+  String get dashMonthEndSpend => 'Month-end spend';
+
+  @override
+  String get dashExpectedIncome => 'Expected income';
+
+  @override
+  String dashReceivedSoFar(String amount) {
+    return 'received so far $amount';
+  }
+
+  @override
+  String get dashNotOpened =>
+      'The month isn\'t open yet — recurring payments aren\'t planned';
+
+  @override
+  String get dashOpenMonth => 'Open month';
+
+  @override
+  String dashOpenMonthBody(int count) {
+    return '$count plans will be created';
+  }
+
+  @override
+  String get dashClosed => 'Closed';
+
+  @override
+  String get dashEmpty => 'Nothing recorded this month yet';
 }

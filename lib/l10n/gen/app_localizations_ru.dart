@@ -632,4 +632,119 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get receiptPending => 'Ожидает загрузки';
+
+  @override
+  String get dashBalance => 'Остаток';
+
+  @override
+  String get dashForecast => 'Прогноз остатка';
+
+  @override
+  String dashMonthEnd(String amount) {
+    return 'К концу месяца ≈ $amount';
+  }
+
+  @override
+  String dashPerDay(String amount) {
+    return 'В день ≈ $amount';
+  }
+
+  @override
+  String get dashSaved => 'Отложено';
+
+  @override
+  String get dashCard => 'Карта';
+
+  @override
+  String get dashCash => 'Наличные';
+
+  @override
+  String get dashPlan => 'Выполнение плана';
+
+  @override
+  String dashUnknown(int count) {
+    return '+ $count шт. ?';
+  }
+
+  @override
+  String get dashUpcoming => 'Ближайшие платежи';
+
+  @override
+  String get dashMarkPaid => 'Оплачено';
+
+  @override
+  String get dashCategories => 'Категории';
+
+  @override
+  String get dashIncomeTypes => 'Виды дохода';
+
+  @override
+  String get dashFund => '👤 Личный фонд';
+
+  @override
+  String get dashSavings => '🏦 Накопления';
+
+  @override
+  String get dashThisMonth => 'Этот месяц';
+
+  @override
+  String get dashAllocated => 'Отчислено';
+
+  @override
+  String get dashSpent => 'Потрачено';
+
+  @override
+  String get dashDebts => 'Долги';
+
+  @override
+  String get dashIOwe => 'Я должен';
+
+  @override
+  String get dashOwedToMe => 'Мне должны';
+
+  @override
+  String get dashMonthly => 'В месяц';
+
+  @override
+  String get dashGoals => 'Цели';
+
+  @override
+  String get dashForecastTitle => 'Прогноз';
+
+  @override
+  String dashDays(int elapsed, int total) {
+    return '$elapsed / $total дн.';
+  }
+
+  @override
+  String get dashDailySpend => 'Расход в день';
+
+  @override
+  String get dashMonthEndSpend => 'Расход к концу месяца';
+
+  @override
+  String get dashExpectedIncome => 'Ожидаемый доход';
+
+  @override
+  String dashReceivedSoFar(String amount) {
+    return 'пока поступило $amount';
+  }
+
+  @override
+  String get dashNotOpened =>
+      'Месяц ещё не открыт — постоянные платежи не в плане';
+
+  @override
+  String get dashOpenMonth => 'Открыть месяц';
+
+  @override
+  String dashOpenMonthBody(int count) {
+    return 'Будет создано планов: $count';
+  }
+
+  @override
+  String get dashClosed => 'Закрыт';
+
+  @override
+  String get dashEmpty => 'В этом месяце пока нет записей';
 }

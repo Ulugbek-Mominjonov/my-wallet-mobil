@@ -14582,6 +14582,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   );
   late final LedgerDao ledgerDao = LedgerDao(this as AppDatabase);
   late final DirectoryDao directoryDao = DirectoryDao(this as AppDatabase);
+  late final ReportDao reportDao = ReportDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

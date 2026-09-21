@@ -366,5 +366,85 @@
   "receiptCamera": "Kamera",
   "receiptGallery": "Galereya",
   "receiptTooLarge": "Rasm juda katta — boshqasini tanlang",
-  "receiptPending": "Yuklanishi kutilmoqda"
+  "receiptPending": "Yuklanishi kutilmoqda",
+  "dashBalance": "Qoldiq",
+  "dashForecast": "Prognoz qoldiq",
+  "dashMonthEnd": "Oy oxirida ≈ {amount}",
+  "dashPerDay": "Kuniga ≈ {amount}",
+  "dashSaved": "Orttirgan",
+  "dashCard": "Karta",
+  "dashCash": "Naqd",
+  "dashPlan": "Reja bajarilishi",
+  "dashUnknown": "+ {count} ta ?",
+  "dashUpcoming": "Yaqin to'lovlar",
+  "dashMarkPaid": "To'landi",
+  "dashCategories": "Kategoriyalar",
+  "dashIncomeTypes": "Daromad turlari",
+  "dashFund": "👤 Shaxsiy fond",
+  "dashSavings": "🏦 Jamg'arma",
+  "dashThisMonth": "Shu oy",
+  "dashAllocated": "Ajratilgan",
+  "dashSpent": "Sarflangan",
+  "dashDebts": "Qarzlar",
+  "dashIOwe": "Men qarzman",
+  "dashOwedToMe": "Menga qarz",
+  "dashMonthly": "Oyiga",
+  "dashGoals": "Maqsadlar",
+  "dashForecastTitle": "Prognoz",
+  "dashDays": "{elapsed} / {total} kun",
+  "dashDailySpend": "Kunlik sarf",
+  "dashMonthEndSpend": "Oy oxiri sarfi",
+  "dashExpectedIncome": "Kutilayotgan daromad",
+  "dashReceivedSoFar": "hozircha kelgani {amount}",
+  "dashNotOpened": "Oy hali ochilmagan — doimiy to'lovlar rejaga tushmagan",
+  "dashOpenMonth": "Oyni ochish",
+  "dashOpenMonthBody": "{count} ta reja yaratiladi",
+  "dashClosed": "Yopilgan",
+  "dashEmpty": "Bu oyda hali yozuv yo'q",
+  "@dashMonthEnd": {
+    "description": "Dashboard (E16)",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@dashPerDay": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@dashUnknown": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@dashDays": {
+    "placeholders": {
+      "elapsed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@dashReceivedSoFar": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@dashOpenMonthBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

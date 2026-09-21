@@ -327,18 +327,24 @@
 > **DoD:** dashboard serverga so'rovsiz ochiladi (< 300 ms lokal hisob),
 > raqamlar admin `report_month` bilan bir xil (fixture'lar).
 
-- [ ] **E16-T01** `DashboardController`: drift `month_facts` + umumiy
-  yig'indilar → domen hisoblari; oy almashtirish (swipe + ‹ ›), oy holati
-  (ochilmagan → "Oyni ochish" CTA, 🔒 yopilgan).
-- [ ] **E16-T02** Hero karta: QOLDIQ (manfiy — qizil), prognoz qoldiq,
+- [x] **E16-T01** `MonthReportLoader` (lokal `report_month`): drift
+  `month_facts` + yangi `ReportDao` (kategoriya — server qoidasi bilan:
+  rejasi, fakti yoki limiti bor, ota-kategoriya subkategoriyalar bilan;
+  daromad turlari; ochiq rejalar; daromad rejalari; oy holati) → domen
+  hisoblari; jadvallar o'zgarsa qayta hisoblanadi. Oy almashtirish (surish +
+  ‹ ›), ochilmagan → "Oyni ochish" (preview → tasdiq → `open_month` →
+  sinxron), 🔒 yopilgan. **Parite: 49 fixture holati — lokal hisob =
+  admin `report_month`** (ikki farq topildi va tuzatildi).
+- [x] **E16-T02** Hero karta: QOLDIQ (manfiy — qizil), prognoz qoldiq,
   "Oy oxirida ≈ X", **"Kuniga ≈ Y so'm"** (joriy oy, BR-094), orttirgan %
   halqasi; maxfiylik rejimida `•••`.
-- [ ] **E16-T03** Bloklar: 4 stat (daromad, xarajat, karta, naqd — bosilsa
+- [x] **E16-T03** Bloklar: 4 stat (daromad, xarajat, karta, naqd — bosilsa
   filtrlangan amallar), reja bajarilishi (`X so'm + N ta ?`), yaqin 3 to'lov
-  (bir bosishda "To'landi"), kategoriyalar (limit rangi, `2 000 000 (100%)`),
-  daromad turlari (karta/naqd), 👤 fond va 🏦 jamg'arma **alohida** plitalar,
-  qarz va maqsad qisqacha.
-- [ ] **E16-T04** Prognoz kartasi (BR-093): o'tgan kunlar `16 / 30`, kunlik
+  (bir bosishda "To'landi" — `PayPlanned`, yopilgan oy tasdig'i),
+  kategoriyalar (limit rangi, `2 000 000 (100%)`), daromad turlari
+  (karta/naqd), 👤 fond va 🏦 jamg'arma **alohida** plitalar (BR-005), qarz
+  va maqsad qisqacha.
+- [x] **E16-T04** Prognoz kartasi (BR-093): o'tgan kunlar `16 / 30`, kunlik
   sarf, oy oxiri sarfi, kutilayotgan daromad + "hozircha kelgani …" izohi.
 - [ ] **E16-T05** Yillik ko'rinish: oylar ro'yxati (daromad, xarajat, qoldiq,
   orttirgan %, 🔒), ustun grafik, JAMI; kategoriya tafsiloti (oyma-oy trend,

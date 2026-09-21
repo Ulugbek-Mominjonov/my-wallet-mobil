@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:my_wallet/data/auth/auth_providers.dart';
 import 'package:my_wallet/data/remote/dto.dart';
 import 'package:my_wallet/data/remote/json_read.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
@@ -70,7 +71,9 @@ final class FakeStartupController extends StartupController {
 
   @override
   StartupState build() {
-    // Haqiqiy boshqaruvchi kabi — byudjetni tanlaydi (build'dan keyin).
+    // Haqiqiy boshqaruvchi kabi: foydalanuvchi o'zgarsa qayta quriladi va
+    // byudjetni tanlaydi (build'dan keyin).
+    if (ref.watch(authUserProvider) == null) return initial;
     if (initial case StartupReady(:final household)) {
       unawaited(
         Future.microtask(
