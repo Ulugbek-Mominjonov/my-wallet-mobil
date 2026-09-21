@@ -55,7 +55,7 @@
 | Domen qoidalari + fixture pariteti | `test` | `packages/wallet_domain/test/` |
 | drift DAO, sinxron | `flutter_test` (in-memory SQLite) | `test/data/` |
 | Controller'lar | `flutter_test` + `mocktail` | `test/features/` |
-| Vidjet va golden | `flutter_test` + `alchemist` | `test/features/**/golden/` |
+| Vidjet va golden | `flutter_test` (`matchesGoldenFile`, `@Tags(['golden'])`; yangilash — `flutter test --update-goldens --tags golden`) | `test/features/**/golden/` |
 | Integratsiya (lokal Supabase, host'da — `make integration`) | `flutter_test` | `integration/` |
 
 Test nomida qoida ID si: `BR-040: 02.10 dagi Oylik 2026-09 ga tushadi`.
