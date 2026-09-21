@@ -16,6 +16,7 @@ import 'package:my_wallet/features/household/presentation/join_or_create_screen.
 import 'package:my_wallet/features/lock/presentation/lock_screen.dart';
 import 'package:my_wallet/features/lock/presentation/lock_settings_screen.dart';
 import 'package:my_wallet/features/onboarding/presentation/onboarding_screen.dart';
+import 'package:my_wallet/features/payments/presentation/payments_screen.dart';
 import 'package:my_wallet/features/shell/presentation/app_shell.dart';
 import 'package:my_wallet/features/shell/presentation/not_found_screen.dart';
 import 'package:my_wallet/features/shell/presentation/placeholder_screen.dart';
@@ -122,10 +123,13 @@ final routerProvider = Provider<GoRouter>((ref) {
               ),
             ],
           ),
-          _tab(
-            '/payments',
-            Icons.event_note_outlined,
-            (l10n) => l10n.tabPayments,
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/payments',
+                builder: (context, state) => const PaymentsScreen(),
+              ),
+            ],
           ),
           _tab(
             '/wallet',

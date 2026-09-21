@@ -681,6 +681,12 @@ abstract class AppL10n {
   /// **'Oldingi oy'**
   String get monthPrevious;
 
+  /// No description provided for @monthNext.
+  ///
+  /// In uz, this message translates to:
+  /// **'Keyingi oy'**
+  String get monthNext;
+
   /// No description provided for @fundPercentMode.
   ///
   /// In uz, this message translates to:
@@ -1382,6 +1388,222 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'“+” tugmasi bilan birinchi amalni qo\'shing'**
   String get dashEmptyHint;
+
+  /// No description provided for @fieldDate.
+  ///
+  /// In uz, this message translates to:
+  /// **'Sana'**
+  String get fieldDate;
+
+  /// No description provided for @payTabExpenses.
+  ///
+  /// In uz, this message translates to:
+  /// **'Xarajatlar'**
+  String get payTabExpenses;
+
+  /// No description provided for @payTabIncome.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kutilayotgan daromadlar'**
+  String get payTabIncome;
+
+  /// No description provided for @payUnpaid.
+  ///
+  /// In uz, this message translates to:
+  /// **'To\'lanmagan'**
+  String get payUnpaid;
+
+  /// No description provided for @payIncomePending.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kelishi kutilmoqda'**
+  String get payIncomePending;
+
+  /// No description provided for @paySectionOverdue.
+  ///
+  /// In uz, this message translates to:
+  /// **'⚠️ Kechikkan'**
+  String get paySectionOverdue;
+
+  /// No description provided for @paySectionToday.
+  ///
+  /// In uz, this message translates to:
+  /// **'📌 Bugun'**
+  String get paySectionToday;
+
+  /// To'lovlar (E17)
+  ///
+  /// In uz, this message translates to:
+  /// **'🗓 Yaqin {days} kunda'**
+  String paySectionSoon(int days);
+
+  /// No description provided for @paySectionLater.
+  ///
+  /// In uz, this message translates to:
+  /// **'Keyinroq'**
+  String get paySectionLater;
+
+  /// No description provided for @paySectionPaid.
+  ///
+  /// In uz, this message translates to:
+  /// **'✅ To\'langan'**
+  String get paySectionPaid;
+
+  /// No description provided for @paySectionReceived.
+  ///
+  /// In uz, this message translates to:
+  /// **'✅ Kelgan'**
+  String get paySectionReceived;
+
+  /// No description provided for @paySectionSkipped.
+  ///
+  /// In uz, this message translates to:
+  /// **'⏭ O\'tkazilgan'**
+  String get paySectionSkipped;
+
+  /// No description provided for @payMarkReceived.
+  ///
+  /// In uz, this message translates to:
+  /// **'Keldi'**
+  String get payMarkReceived;
+
+  /// No description provided for @paySkip.
+  ///
+  /// In uz, this message translates to:
+  /// **'O\'tkazib yuborish'**
+  String get paySkip;
+
+  /// No description provided for @payUnskip.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qaytarish'**
+  String get payUnskip;
+
+  /// No description provided for @paySkipped.
+  ///
+  /// In uz, this message translates to:
+  /// **'O\'tkazib yuborildi'**
+  String get paySkipped;
+
+  /// No description provided for @payEditAmount.
+  ///
+  /// In uz, this message translates to:
+  /// **'Shu oy summasi'**
+  String get payEditAmount;
+
+  /// No description provided for @payClose.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yopish'**
+  String get payClose;
+
+  /// No description provided for @payReopen.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qayta ochish'**
+  String get payReopen;
+
+  /// No description provided for @payAmountVaries.
+  ///
+  /// In uz, this message translates to:
+  /// **'Summa o\'zgaruvchi'**
+  String get payAmountVaries;
+
+  /// No description provided for @payAmountRequired.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bu to\'lovning summasi belgilanmagan — qancha to\'laganingizni kiriting'**
+  String get payAmountRequired;
+
+  /// No description provided for @payPartialTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qisman to\'lov'**
+  String get payPartialTitle;
+
+  /// To'lovlar (E17)
+  ///
+  /// In uz, this message translates to:
+  /// **'Qolgan {amount} ni keyin to\'laysizmi?'**
+  String payPartialBody(String amount);
+
+  /// No description provided for @payPartialLater.
+  ///
+  /// In uz, this message translates to:
+  /// **'Keyin to\'layman'**
+  String get payPartialLater;
+
+  /// No description provided for @payAutoPay.
+  ///
+  /// In uz, this message translates to:
+  /// **'Avto to\'lov'**
+  String get payAutoPay;
+
+  /// No description provided for @payEmpty.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bu oyda reja yo\'q'**
+  String get payEmpty;
+
+  /// No description provided for @payEmptyHint.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oyni oching — doimiy to\'lovlardan rejalar yaratiladi'**
+  String get payEmptyHint;
+
+  /// No description provided for @payCalendar.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kalendar'**
+  String get payCalendar;
+
+  /// No description provided for @payList.
+  ///
+  /// In uz, this message translates to:
+  /// **'Ro\'yxat'**
+  String get payList;
+
+  /// No description provided for @payDayEmpty.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bu kunda to\'lov yo\'q'**
+  String get payDayEmpty;
+
+  /// No description provided for @errorPlanPaid.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bu reja allaqachon to\'langan'**
+  String get errorPlanPaid;
+
+  /// No description provided for @errorPlanSkipped.
+  ///
+  /// In uz, this message translates to:
+  /// **'Reja o\'tkazib yuborilgan'**
+  String get errorPlanSkipped;
+
+  /// No description provided for @errorPlanNotFound.
+  ///
+  /// In uz, this message translates to:
+  /// **'Reja topilmadi'**
+  String get errorPlanNotFound;
+
+  /// To'lovlar (E17)
+  ///
+  /// In uz, this message translates to:
+  /// **'Yaratiladi: {count} ta'**
+  String openMonthCreates(int count);
+
+  /// To'lovlar (E17)
+  ///
+  /// In uz, this message translates to:
+  /// **'Allaqachon bor: {count} ta'**
+  String openMonthExisting(int count);
+
+  /// No description provided for @openMonthNothing.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yangi reja yo\'q — hammasi allaqachon bor'**
+  String get openMonthNothing;
 
   /// Yillik ko'rinish (E16-T05)
   ///

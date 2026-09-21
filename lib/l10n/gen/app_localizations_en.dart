@@ -357,6 +357,9 @@ class AppL10nEn extends AppL10n {
   String get monthPrevious => 'Previous month';
 
   @override
+  String get monthNext => 'Next month';
+
+  @override
   String get fundPercentMode => 'Percent';
 
   @override
@@ -752,6 +755,124 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get dashEmptyHint => 'Tap “+” to add the first transaction';
+
+  @override
+  String get fieldDate => 'Date';
+
+  @override
+  String get payTabExpenses => 'Expenses';
+
+  @override
+  String get payTabIncome => 'Expected income';
+
+  @override
+  String get payUnpaid => 'Unpaid';
+
+  @override
+  String get payIncomePending => 'Still expected';
+
+  @override
+  String get paySectionOverdue => '⚠️ Overdue';
+
+  @override
+  String get paySectionToday => '📌 Today';
+
+  @override
+  String paySectionSoon(int days) {
+    return '🗓 Next $days days';
+  }
+
+  @override
+  String get paySectionLater => 'Later';
+
+  @override
+  String get paySectionPaid => '✅ Paid';
+
+  @override
+  String get paySectionReceived => '✅ Received';
+
+  @override
+  String get paySectionSkipped => '⏭ Skipped';
+
+  @override
+  String get payMarkReceived => 'Received';
+
+  @override
+  String get paySkip => 'Skip this month';
+
+  @override
+  String get payUnskip => 'Restore';
+
+  @override
+  String get paySkipped => 'Skipped';
+
+  @override
+  String get payEditAmount => 'Amount this month';
+
+  @override
+  String get payClose => 'Close';
+
+  @override
+  String get payReopen => 'Reopen';
+
+  @override
+  String get payAmountVaries => 'Amount varies';
+
+  @override
+  String get payAmountRequired =>
+      'This payment has no set amount — enter how much you paid';
+
+  @override
+  String get payPartialTitle => 'Partial payment';
+
+  @override
+  String payPartialBody(String amount) {
+    return 'Will you pay the remaining $amount later?';
+  }
+
+  @override
+  String get payPartialLater => 'Pay later';
+
+  @override
+  String get payAutoPay => 'Auto-pay';
+
+  @override
+  String get payEmpty => 'No plans this month';
+
+  @override
+  String get payEmptyHint =>
+      'Open the month to create plans from recurring payments';
+
+  @override
+  String get payCalendar => 'Calendar';
+
+  @override
+  String get payList => 'List';
+
+  @override
+  String get payDayEmpty => 'No payments on this day';
+
+  @override
+  String get errorPlanPaid => 'This plan is already paid';
+
+  @override
+  String get errorPlanSkipped => 'This plan was skipped';
+
+  @override
+  String get errorPlanNotFound => 'Plan not found';
+
+  @override
+  String openMonthCreates(int count) {
+    return 'To be created: $count';
+  }
+
+  @override
+  String openMonthExisting(int count) {
+    return 'Already exist: $count';
+  }
+
+  @override
+  String get openMonthNothing => 'Nothing new — all plans already exist';
 
   @override
   String yearTitle(String year) {

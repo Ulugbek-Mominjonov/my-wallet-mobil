@@ -1,17 +1,16 @@
 import 'package:drift/drift.dart' show TableUpdateQuery;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_wallet/data/local/directory_providers.dart';
-import 'package:my_wallet/data/remote/dto.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
 import 'package:my_wallet/features/dashboard/application/month_report.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
 /// Dashboard'da tanlangan oy (standart — joriy oy, byudjet vaqt zonasida).
-final NotifierProvider<DashboardMonth, MonthKey> dashboardMonthProvider =
-    NotifierProvider(DashboardMonth.new);
+final NotifierProvider<SelectedMonth, MonthKey> dashboardMonthProvider =
+    NotifierProvider(SelectedMonth.new);
 
-final class DashboardMonth extends Notifier<MonthKey> {
+/// Ekranda tanlangan oy (Xulosa, To'lovlar): ‹ › yoki tanlash.
+final class SelectedMonth extends Notifier<MonthKey> {
   @override
   MonthKey build() => ref.watch(clockProvider).today().monthKey;
 
@@ -57,50 +56,3 @@ final StreamProvider<MonthReport?> monthReportProvider = StreamProvider((
     yield await loader.load(month);
   }
 });
-
-/// Dashboard amallari: rejani to'lash (BR-073) va oyni ochish (BR-081).
-final Provider<DashboardActions> dashboardActionsProvider = Provider(
-  DashboardActions.new,
-);
-
-final class DashboardActions {
-  const new(this._ref);
-
-  final Ref _ref;
-
-  /// "To'landi" — qolgan summa bilan (serverdagi `pay_planned` qoidasi).
-  Future<Result<Transaction>> pay(
-    String planId, {
-    bool confirmClosedMonth = false,
-  }) async {
-    final deps = _ref.read(domainDepsProvider);
-    if (deps == null) return const Err(UnauthorizedFailure());
-    return await PayPlanned(deps)(
-      planId,
-      confirmClosedMonth: confirmClosedMonth,
-    );
-  }
-
-  /// Oyni ochish oldidan — yaratiladigan rejalar (server, tarmoq kerak).
-  Future<Result<OpenMonthPreview>> preview(MonthKey month) async {
-    final householdId = _ref.read(currentHouseholdIdProvider);
-    if (householdId == null) return const Err(UnauthorizedFailure());
-    return await _ref
-        .read(remoteApiProvider)
-        .openMonthPreview(householdId, month);
-  }
-
-  /// Oyni ochadi va yangi rejalarni sinxron bilan oladi.
-  Future<Result<OpenMonthResult>> open(MonthKey month) async {
-    final householdId = _ref.read(currentHouseholdIdProvider);
-    if (householdId == null) return const Err(UnauthorizedFailure());
-    final result = await _ref
-        .read(remoteApiProvider)
-        .openMonth(householdId, month);
-    if (result is Ok) {
-      final scheduler = await _ref.read(syncSchedulerProvider.future);
-      await scheduler?.refresh();
-    }
-    return result;
-  }
-}

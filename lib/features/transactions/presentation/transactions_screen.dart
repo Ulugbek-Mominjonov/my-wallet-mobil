@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_wallet/core/design_system/tokens.dart';
-import 'package:my_wallet/core/format/month_format.dart';
 import 'package:my_wallet/core/widgets/empty_state.dart';
 import 'package:my_wallet/core/widgets/money_text.dart';
+import 'package:my_wallet/core/widgets/month_switcher.dart';
 import 'package:my_wallet/data/local/daos/ledger_dao.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/local/directory_providers.dart';
@@ -101,29 +101,9 @@ class _MonthBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final month = this.month;
     if (month == null) return const SizedBox.shrink();
-    final l10n = AppL10n.of(context);
-    final controller = ref.read(transactionListProvider.notifier);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(
-          tooltip: l10n.monthPrevious,
-          icon: const Icon(Icons.chevron_left),
-          onPressed: () => controller.shiftMonth(-1),
-        ),
-        Flexible(
-          child: Text(
-            formatMonthTitle(l10n, year: month.year, month: month.month),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-        ),
-        IconButton(
-          icon: const Icon(Icons.chevron_right),
-          onPressed: () => controller.shiftMonth(1),
-        ),
-      ],
+    return MonthSwitcher(
+      month: month,
+      onShift: ref.read(transactionListProvider.notifier).shiftMonth,
     );
   }
 }

@@ -285,6 +285,20 @@ class LedgerDao extends DatabaseAccessor<AppDatabase> with _$LedgerDaoMixin {
     return Money((await query.getSingle()).read(amount) ?? 0, base);
   }
 
+  /// Oy rejalari (o'chirilmaganlar) — "To'lovlar" ro'yxati va kalendari.
+  /// `planned_items_month` indeksi; reaktiv (to'lov, sinxron).
+  Stream<List<PlannedItemRow>> watchMonthPlans(
+    String householdId,
+    MonthKey month,
+  ) =>
+      (select(plannedItems)..where(
+            (p) =>
+                p.householdId.equals(householdId) &
+                p.budgetMonth.equals(month.toIsoDate()) &
+                p.deletedAt.isNull(),
+          ))
+          .watch();
+
   /// Amallar ro'yxati — yangidan eskiga, keyset sahifalash ([after] —
   /// oldingi sahifaning oxirgi qatori). Reaktiv: yozuv bo'lsa qayta chiqadi.
   Stream<List<TransactionRow>> watchTransactionPage(

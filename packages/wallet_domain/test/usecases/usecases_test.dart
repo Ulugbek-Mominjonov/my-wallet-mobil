@@ -459,6 +459,77 @@ void main() {
     });
   });
 
+  group('BR-073: yopish va BR-083: shu oy summasi', () {
+    test("qisman to'langan reja yopiladi va qayta ochiladi", () async {
+      store.plans['p'] = _plan('p');
+      ok(await PayPlanned(store.deps)('p', amount: const Money(400000)));
+      final closed = ok(await ClosePlan(store.deps)('p'));
+      expect(closed.closedAt, store.now);
+      expect(PlannedStatus.of(closed, store.today), PlannedStatus.paid);
+      final reopened = ok(await ClosePlan(store.deps)('p', closed: false));
+      expect(reopened.closedAt, isNull);
+      expect(PlannedStatus.of(reopened, store.today), PlannedStatus.partial);
+    });
+
+    test("o'tkazilgan reja yopilmaydi", () async {
+      store.plans['p'] = _plan('p').copyWith(skippedAt: store.now);
+      expect(
+        err(await ClosePlan(store.deps)('p')),
+        const ValidationFailure('plan', 'planned_skipped'),
+      );
+    });
+
+    test("summa o'zgaradi; to'langandan kam bo'lsa — to'landi", () async {
+      store.plans['p'] = _plan('p');
+      ok(await PayPlanned(store.deps)('p', amount: const Money(400000)));
+      final edited = ok(
+        await EditPlan(store.deps)(
+          'p',
+          plannedAmount: const Money(300000),
+          dueDate: LocalDate(2026, 10, 20),
+        ),
+      );
+      expect(edited.dueDate, LocalDate(2026, 10, 20));
+      expect(PlannedStatus.of(edited, store.today), PlannedStatus.paid);
+      final unknown = ok(await EditPlan(store.deps)('p', plannedAmount: null));
+      expect(unknown.plannedAmount, isNull);
+      expect(unknown.remaining, isNull);
+    });
+
+    test("noto'g'ri summa; avto to'lov summasiz bo'lmaydi", () async {
+      store.plans['auto'] = _plan('auto').copyWith(autoPay: true);
+      expect(
+        err(await EditPlan(store.deps)('auto', plannedAmount: Money.zero)),
+        const ValidationFailure('amount', 'invalid_amount'),
+      );
+      expect(
+        err(await EditPlan(store.deps)('auto', plannedAmount: null)),
+        const ValidationFailure('amount', 'amount_required'),
+      );
+      expect(
+        err(await EditPlan(store.deps)('x', plannedAmount: null)),
+        const ValidationFailure('plan', 'planned_not_found'),
+      );
+    });
+
+    test("BR-055: yopilgan oy — tasdiq bilan; qat'iy qulfda taqiq", () async {
+      store
+        ..plans['p'] = _plan('p')
+        ..closedMonths.add(MonthKey(2026, 10));
+      expect(
+        err(await SkipPlanned(store.deps)('p')),
+        isA<MonthClosedWarning>().having((w) => w.blocking, 'blocking', false),
+      );
+      expect(store.plans['p']!.skippedAt, isNull);
+      ok(await SkipPlanned(store.deps)('p', confirmClosedMonth: true));
+      store.household = store.household.copyWith(strictMonthLock: true);
+      expect(
+        err(await ClosePlan(store.deps)('p', confirmClosedMonth: true)),
+        isA<MonthClosedWarning>().having((w) => w.blocking, 'blocking', true),
+      );
+    });
+  });
+
   group('tahrirlash', () {
     test("summa o'zgarsa — reja to'lovi ham (qayta ochiladi)", () async {
       store.plans['rent'] = _plan('rent');

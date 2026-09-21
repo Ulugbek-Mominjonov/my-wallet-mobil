@@ -261,16 +261,28 @@ class ReportDao extends DatabaseAccessor<AppDatabase> with _$ReportDaoMixin {
     );
   }
 
-  Future<MonthState> monthState(String householdId, MonthKey month) async {
-    final row =
-        await (select(months)..where(
-              (m) =>
-                  m.householdId.equals(householdId) &
-                  m.month.equals(month.toIsoDate()),
-            ))
-            .getSingleOrNull();
-    return (opened: row?.openedAt != null, closed: row?.closedAt != null);
-  }
+  Future<MonthState> monthState(String householdId, MonthKey month) async =>
+      await _monthState(householdId, month).getSingleOrNull() ?? _notOpened;
+
+  /// Oy holati — reaktiv (oyni ochish/yopish, sinxron).
+  Stream<MonthState> watchMonthState(String householdId, MonthKey month) =>
+      _monthState(
+        householdId,
+        month,
+      ).watchSingleOrNull().map((state) => state ?? _notOpened);
+
+  static const MonthState _notOpened = (opened: false, closed: false);
+
+  Selectable<MonthState> _monthState(String householdId, MonthKey month) =>
+      (select(months)..where(
+            (m) =>
+                m.householdId.equals(householdId) &
+                m.month.equals(month.toIsoDate()),
+          ))
+          .map(
+            (row) =>
+                (opened: row.openedAt != null, closed: row.closedAt != null),
+          );
 
   /// Yilning yopilgan oylari (BR-150).
   Future<Set<MonthKey>> closedMonths(String householdId, int year) async {

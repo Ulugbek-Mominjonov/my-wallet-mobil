@@ -358,6 +358,9 @@ class AppL10nRu extends AppL10n {
   String get monthPrevious => 'Прошлый месяц';
 
   @override
+  String get monthNext => 'Следующий месяц';
+
+  @override
   String get fundPercentMode => 'Процент';
 
   @override
@@ -750,6 +753,124 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get dashEmptyHint => 'Нажмите «+», чтобы добавить первую операцию';
+
+  @override
+  String get fieldDate => 'Дата';
+
+  @override
+  String get payTabExpenses => 'Расходы';
+
+  @override
+  String get payTabIncome => 'Ожидаемые доходы';
+
+  @override
+  String get payUnpaid => 'Не оплачено';
+
+  @override
+  String get payIncomePending => 'Ожидается';
+
+  @override
+  String get paySectionOverdue => '⚠️ Просрочено';
+
+  @override
+  String get paySectionToday => '📌 Сегодня';
+
+  @override
+  String paySectionSoon(int days) {
+    return '🗓 В ближайшие $days дн.';
+  }
+
+  @override
+  String get paySectionLater => 'Позже';
+
+  @override
+  String get paySectionPaid => '✅ Оплачено';
+
+  @override
+  String get paySectionReceived => '✅ Поступило';
+
+  @override
+  String get paySectionSkipped => '⏭ Пропущено';
+
+  @override
+  String get payMarkReceived => 'Поступило';
+
+  @override
+  String get paySkip => 'Пропустить';
+
+  @override
+  String get payUnskip => 'Вернуть';
+
+  @override
+  String get paySkipped => 'Пропущено';
+
+  @override
+  String get payEditAmount => 'Сумма в этом месяце';
+
+  @override
+  String get payClose => 'Закрыть';
+
+  @override
+  String get payReopen => 'Открыть снова';
+
+  @override
+  String get payAmountVaries => 'Сумма меняется';
+
+  @override
+  String get payAmountRequired =>
+      'У этого платежа нет суммы — введите, сколько вы заплатили';
+
+  @override
+  String get payPartialTitle => 'Частичная оплата';
+
+  @override
+  String payPartialBody(String amount) {
+    return 'Оставшиеся $amount оплатите позже?';
+  }
+
+  @override
+  String get payPartialLater => 'Позже';
+
+  @override
+  String get payAutoPay => 'Автоплатёж';
+
+  @override
+  String get payEmpty => 'В этом месяце нет планов';
+
+  @override
+  String get payEmptyHint =>
+      'Откройте месяц — планы создадутся из регулярных платежей';
+
+  @override
+  String get payCalendar => 'Календарь';
+
+  @override
+  String get payList => 'Список';
+
+  @override
+  String get payDayEmpty => 'В этот день платежей нет';
+
+  @override
+  String get errorPlanPaid => 'Этот план уже оплачен';
+
+  @override
+  String get errorPlanSkipped => 'План пропущен';
+
+  @override
+  String get errorPlanNotFound => 'План не найден';
+
+  @override
+  String openMonthCreates(int count) {
+    return 'Будет создано: $count';
+  }
+
+  @override
+  String openMonthExisting(int count) {
+    return 'Уже есть: $count';
+  }
+
+  @override
+  String get openMonthNothing => 'Новых планов нет — все уже есть';
 
   @override
   String yearTitle(String year) {

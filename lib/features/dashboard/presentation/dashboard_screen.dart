@@ -6,17 +6,19 @@ import 'package:go_router/go_router.dart';
 import 'package:my_wallet/core/design_system/tokens.dart';
 import 'package:my_wallet/core/format/format_context.dart';
 import 'package:my_wallet/core/format/money_format.dart';
-import 'package:my_wallet/core/format/month_format.dart';
 import 'package:my_wallet/core/security/privacy_mode.dart';
 import 'package:my_wallet/core/widgets/app_card.dart';
 import 'package:my_wallet/core/widgets/empty_state.dart';
 import 'package:my_wallet/core/widgets/money_text.dart';
+import 'package:my_wallet/core/widgets/month_switcher.dart';
 import 'package:my_wallet/data/local/daos/ledger_dao.dart';
 import 'package:my_wallet/features/dashboard/application/dashboard_controller.dart';
 import 'package:my_wallet/features/dashboard/application/month_report.dart';
 import 'package:my_wallet/features/dashboard/presentation/share_report_screen.dart';
+import 'package:my_wallet/features/payments/application/payments_controller.dart';
+import 'package:my_wallet/features/payments/presentation/open_month_card.dart';
+import 'package:my_wallet/features/payments/presentation/plan_action_runner.dart';
 import 'package:my_wallet/features/transactions/application/transaction_list_controller.dart';
-import 'package:my_wallet/features/transactions/presentation/add_transaction_screen.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
@@ -52,7 +54,7 @@ class DashboardScreen extends ConsumerWidget {
           else ...[
             if (!report.state.opened &&
                 !report.month.isBefore(report.today.monthKey))
-              _OpenMonthCard(month: report.month),
+              OpenMonthCard(month: report.month),
             if (report.isEmpty)
               EmptyState(
                 icon: Icons.insights_outlined,
@@ -131,35 +133,17 @@ class _MonthHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppL10n.of(context);
-    final controller = ref.read(dashboardMonthProvider.notifier);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(
-          tooltip: l10n.monthPrevious,
-          icon: const Icon(Icons.chevron_left),
-          onPressed: () => controller.shift(-1),
-        ),
-        Flexible(
-          child: Text(
-            formatMonthTitle(l10n, year: month.year, month: month.month),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-        ),
-        if (report?.state.closed ?? false) ...[
-          const SizedBox(width: AppSpacing.sm),
-          Chip(
-            avatar: const Icon(Icons.lock, size: 16),
-            label: Text(l10n.dashClosed),
-            visualDensity: VisualDensity.compact,
-          ),
-        ],
-        IconButton(
-          icon: const Icon(Icons.chevron_right),
-          onPressed: () => controller.shift(1),
-        ),
+    return MonthSwitcher(
+      month: month,
+      onShift: ref.read(dashboardMonthProvider.notifier).shift,
+      badge: (report?.state.closed ?? false)
+          ? Chip(
+              avatar: const Icon(Icons.lock, size: 16),
+              label: Text(l10n.dashClosed),
+              visualDensity: VisualDensity.compact,
+            )
+          : null,
+      actions: [
         IconButton(
           tooltip: l10n.yearView,
           icon: const Icon(Icons.calendar_view_month_outlined),
@@ -167,83 +151,6 @@ class _MonthHeader extends ConsumerWidget {
         ),
       ],
     );
-  }
-}
-
-class _OpenMonthCard extends ConsumerWidget {
-  const new({required this.month});
-
-  final MonthKey month;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppL10n.of(context);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.md),
-      // Matn va tugma ustma-ust: tor ekran/katta shriftda matn siqilmaydi.
-      child: AppCard(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Row(
-              children: [
-                const Icon(Icons.event_available_outlined),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(child: Text(l10n.dashNotOpened)),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            FilledButton(
-              onPressed: () => unawaited(_open(context, ref)),
-              child: Text(l10n.dashOpenMonth),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// BR-081: preview → tasdiq → ochish (tarmoq kerak).
-  Future<void> _open(BuildContext context, WidgetRef ref) async {
-    final l10n = AppL10n.of(context);
-    final messenger = ScaffoldMessenger.of(context);
-    final actions = ref.read(dashboardActionsProvider);
-    final preview = await actions.preview(month);
-    if (!context.mounted) return;
-    final count = switch (preview) {
-      Ok(:final value) => value.items.where((i) => !i.exists).length,
-      Err(:final failure) => () {
-        messenger.showSnackBar(
-          SnackBar(content: Text(transactionErrorText(l10n, failure))),
-        );
-        return null;
-      }(),
-    };
-    if (count == null) return;
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.dashOpenMonth),
-        content: Text(l10n.dashOpenMonthBody(count)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n.actionCancel),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(l10n.dashOpenMonth),
-          ),
-        ],
-      ),
-    );
-    if (confirmed != true) return;
-    final result = await actions.open(month);
-    if (result case Err(:final failure)) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(transactionErrorText(l10n, failure))),
-      );
-    }
   }
 }
 
@@ -517,31 +424,14 @@ class _UpcomingCard extends ConsumerWidget {
     );
   }
 
-  Future<void> _pay(
-    BuildContext context,
-    WidgetRef ref,
-    String planId, {
-    bool confirmClosedMonth = false,
-  }) async {
-    final l10n = AppL10n.of(context);
-    final messenger = ScaffoldMessenger.of(context);
-    final result = await ref
-        .read(dashboardActionsProvider)
-        .pay(planId, confirmClosedMonth: confirmClosedMonth);
-    if (!context.mounted) return;
-    switch (result) {
-      case Ok():
-        messenger.showSnackBar(SnackBar(content: Text(l10n.saved)));
-      case Err(failure: MonthClosedWarning(blocking: false)):
-        if (await confirmClosedMonthDialog(context) && context.mounted) {
-          await _pay(context, ref, planId, confirmClosedMonth: true);
-        }
-      case Err(:final failure):
-        messenger.showSnackBar(
-          SnackBar(content: Text(transactionErrorText(l10n, failure))),
-        );
-    }
-  }
+  Future<void> _pay(BuildContext context, WidgetRef ref, String planId) =>
+      runPlanAction(
+        context,
+        ({required confirmClosedMonth}) => ref
+            .read(planActionsProvider)
+            .pay(planId, confirmClosedMonth: confirmClosedMonth),
+        success: AppL10n.of(context).saved,
+      );
 }
 
 /// BR-093: prognoz — o'tgan kunlar, kunlik sarf, oy oxiri, kutilayotgan

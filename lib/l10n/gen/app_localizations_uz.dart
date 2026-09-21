@@ -358,6 +358,9 @@ class AppL10nUz extends AppL10n {
   String get monthPrevious => 'Oldingi oy';
 
   @override
+  String get monthNext => 'Keyingi oy';
+
+  @override
   String get fundPercentMode => 'Foiz';
 
   @override
@@ -752,6 +755,124 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get dashEmptyHint => '“+” tugmasi bilan birinchi amalni qo\'shing';
+
+  @override
+  String get fieldDate => 'Sana';
+
+  @override
+  String get payTabExpenses => 'Xarajatlar';
+
+  @override
+  String get payTabIncome => 'Kutilayotgan daromadlar';
+
+  @override
+  String get payUnpaid => 'To\'lanmagan';
+
+  @override
+  String get payIncomePending => 'Kelishi kutilmoqda';
+
+  @override
+  String get paySectionOverdue => '⚠️ Kechikkan';
+
+  @override
+  String get paySectionToday => '📌 Bugun';
+
+  @override
+  String paySectionSoon(int days) {
+    return '🗓 Yaqin $days kunda';
+  }
+
+  @override
+  String get paySectionLater => 'Keyinroq';
+
+  @override
+  String get paySectionPaid => '✅ To\'langan';
+
+  @override
+  String get paySectionReceived => '✅ Kelgan';
+
+  @override
+  String get paySectionSkipped => '⏭ O\'tkazilgan';
+
+  @override
+  String get payMarkReceived => 'Keldi';
+
+  @override
+  String get paySkip => 'O\'tkazib yuborish';
+
+  @override
+  String get payUnskip => 'Qaytarish';
+
+  @override
+  String get paySkipped => 'O\'tkazib yuborildi';
+
+  @override
+  String get payEditAmount => 'Shu oy summasi';
+
+  @override
+  String get payClose => 'Yopish';
+
+  @override
+  String get payReopen => 'Qayta ochish';
+
+  @override
+  String get payAmountVaries => 'Summa o\'zgaruvchi';
+
+  @override
+  String get payAmountRequired =>
+      'Bu to\'lovning summasi belgilanmagan — qancha to\'laganingizni kiriting';
+
+  @override
+  String get payPartialTitle => 'Qisman to\'lov';
+
+  @override
+  String payPartialBody(String amount) {
+    return 'Qolgan $amount ni keyin to\'laysizmi?';
+  }
+
+  @override
+  String get payPartialLater => 'Keyin to\'layman';
+
+  @override
+  String get payAutoPay => 'Avto to\'lov';
+
+  @override
+  String get payEmpty => 'Bu oyda reja yo\'q';
+
+  @override
+  String get payEmptyHint =>
+      'Oyni oching — doimiy to\'lovlardan rejalar yaratiladi';
+
+  @override
+  String get payCalendar => 'Kalendar';
+
+  @override
+  String get payList => 'Ro\'yxat';
+
+  @override
+  String get payDayEmpty => 'Bu kunda to\'lov yo\'q';
+
+  @override
+  String get errorPlanPaid => 'Bu reja allaqachon to\'langan';
+
+  @override
+  String get errorPlanSkipped => 'Reja o\'tkazib yuborilgan';
+
+  @override
+  String get errorPlanNotFound => 'Reja topilmadi';
+
+  @override
+  String openMonthCreates(int count) {
+    return 'Yaratiladi: $count ta';
+  }
+
+  @override
+  String openMonthExisting(int count) {
+    return 'Allaqachon bor: $count ta';
+  }
+
+  @override
+  String get openMonthNothing => 'Yangi reja yo\'q — hammasi allaqachon bor';
 
   @override
   String yearTitle(String year) {

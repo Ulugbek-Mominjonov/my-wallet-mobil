@@ -87,9 +87,14 @@ final class FakeRemote implements RemoteApi {
     return created ?? (throw UnimplementedError());
   }
 
+  /// `open_month_preview` javobi (E17-T04).
+  Result<OpenMonthPreview>? preview;
+
   @override
-  Future<Result<OpenMonthPreview>> openMonthPreview(String h, MonthKey m) =>
-      throw UnimplementedError();
+  Future<Result<OpenMonthPreview>> openMonthPreview(
+    String h,
+    MonthKey m,
+  ) async => preview ?? (throw UnimplementedError());
 
   /// Onboarding (E14-T03): yuk va ochilgan oylar yozib boriladi.
   Json? appliedPayload;

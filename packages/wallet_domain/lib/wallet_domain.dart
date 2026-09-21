@@ -27,6 +27,7 @@ export 'src/rules/month_facts.dart';
 export 'src/rules/month_summary.dart';
 export 'src/rules/overall_totals.dart';
 export 'src/rules/personal_allocation.dart';
+export 'src/rules/plan_board.dart';
 export 'src/rules/plan_settlement.dart';
 export 'src/rules/planned_status.dart';
 export 'src/rules/reminder_buckets.dart';

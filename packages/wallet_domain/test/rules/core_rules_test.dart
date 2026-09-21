@@ -261,4 +261,78 @@ void main() {
       expect(buckets.today, hasLength(2));
     });
   });
+
+  group("E17: to'lovlar ro'yxati bo'limlari", () {
+    final today = LocalDate(2026, 10, 5);
+    List<String> names(List<PlannedItem> items) => [
+      for (final item in items) item.name,
+    ];
+
+    test("bo'limlar chegaralari: kecha, bugun, N kun, keyinroq", () {
+      final board = PlanBoard.of(
+        [
+          _plan('Kecha', '2026-10-04'),
+          _plan('Bugun', '2026-10-05'),
+          _plan('Ertaga', '2026-10-06'),
+          _plan('Chegara', '2026-10-08'),
+          _plan('Keyin', '2026-10-09'),
+          _plan('Qisman kecha', '2026-10-04', paid: const Money(1)),
+          _plan('Qisman ertaga', '2026-10-06', paid: const Money(1)),
+          _plan('Gaz', '2026-10-01', settledAt: DateTime.utc(2026, 10)),
+          _plan('Kurs', '2026-10-02', skippedAt: DateTime.utc(2026, 10)),
+          _plan('Eski', '2026-10-04', deletedAt: DateTime.utc(2026, 10)),
+        ],
+        today: today,
+        soonDays: 3,
+        base: Currency.uzs,
+      );
+      expect(names(board.overdue), ['Kecha', 'Qisman kecha']);
+      expect(names(board.today), ['Bugun']);
+      expect(names(board.soon), ['Ertaga', 'Qisman ertaga', 'Chegara']);
+      expect(names(board.later), ['Keyin']);
+      expect(names(board.paid), ['Gaz']);
+      expect(names(board.skipped), ['Kurs']);
+      expect(board.isEmpty, isFalse);
+    });
+
+    test("BR-076: sarlavha — to'lanmagan qoldiq + N ta ?", () {
+      final board = PlanBoard.of(
+        [
+          _plan('Ijara', '2026-10-10', planned: const Money(300000000)),
+          _plan(
+            'Kredit',
+            '2026-10-01',
+            planned: const Money(100000000),
+            paid: const Money(40000000),
+          ),
+          _plan('Elektr', '2026-10-07', planned: null),
+          _plan('Suv', '2026-10-01', planned: null),
+          _plan(
+            'Gaz2',
+            '2026-10-01',
+            settledAt: DateTime.utc(2026, 10),
+            planned: const Money(5),
+          ),
+          _plan('Kurs', '2026-10-02', skippedAt: DateTime.utc(2026, 10)),
+        ],
+        today: today,
+        soonDays: 3,
+        base: Currency.uzs,
+      );
+      // 3 000 000 + (1 000 000 − 400 000); to'langan va o'tkazilgan — yo'q.
+      expect(board.unpaid, const Money(360000000));
+      expect(board.unknownCount, 2);
+    });
+
+    test("bo'sh", () {
+      final board = PlanBoard.of(
+        const [],
+        today: today,
+        soonDays: 3,
+        base: Currency.uzs,
+      );
+      expect(board.isEmpty, isTrue);
+      expect(board.unpaid, Money.zero);
+    });
+  });
 }

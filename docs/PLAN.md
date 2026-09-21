@@ -367,23 +367,33 @@
 > **Qoidalar:** BR-070..085, BR-113. **DoD:** eski "⏳ To'lov" bo'limidagi
 > hamma narsa + qisman to'lov, o'tkazib yuborish, kalendar.
 
-- [ ] **E17-T01** Ro'yxat: Xarajatlar / Kutilayotgan daromadlar tablari;
-  bo'limlar ⚠️ kechikkan (qizil) · 📌 bugun · 🗓 yaqin (N kun) · keyinroq ·
-  ✅ to'langan (yig'ilgan) · ⏭ o'tkazilgan; sarlavhada jami `X so'm + N ta ?`.
-- [ ] **E17-T02** Element: nom, kategoriya ikoni, sana, reja (yoki `?`),
-  avto to'lov / qarz belgilari, qisman to'langan progress; summa maydoni +
-  "To'landi" (standart — qolgan summa; `?` bo'lsa summa majburiy); swipe →
-  to'liq to'lash; menyu → o'tkazib yuborish, tahrirlash (shu oy uchun summa).
-- [ ] **E17-T03** Qisman to'lov dialogi (BR-073): "Qolganini keyin
-  to'laysizmi?" → `partial` / "Yopish"; kutilayotgan daromad → "Keldi"
+- [x] **E17-T01** Ro'yxat (`/payments`): Xarajatlar / Kutilayotgan
+  daromadlar tablari; bo'limlar ⚠️ kechikkan · 📌 bugun · 🗓 yaqin (3 kun,
+  BR-160 standarti) · keyinroq · ✅ to'langan / kelgan (yig'ilgan) · ⏭
+  o'tkazilgan; sarlavhada `To'lanmagan: X so'm + N ta ?`. Bo'limlar va jami —
+  domen `PlanBoard` (sof, testlangan); ma'lumot — `watchMonthPlans`
+  (`planned_items_month` indeksi, reaktiv).
+- [x] **E17-T02** `PlanTile`: holat belgisi/rangi, nom, avto to'lov va qarz
+  belgilari, sana · kategoriya, qolgan summa yoki `? · Summa o'zgaruvchi`,
+  qisman progress (`to'langan / reja`); "To'landi"/"Keldi" → varaq (summa —
+  standart qolgan, `?` da majburiy; hisob — fondsiz; sana); swipe → qolgan
+  summa bilan darhol; menyu → shu oy summasi (`EditPlan`, BR-083), yopish /
+  qayta ochish (`ClosePlan`), o'tkazib yuborish (+ bekor qilish).
+- [x] **E17-T03** Qisman to'lov dialogi (BR-073): "Qolgan X ni keyin
+  to'laysizmi?" → qisman / "Yopish" (`settle`); daromad rejasi → "Keldi"
   (daromad amali, tegishli oy — reja oyi).
-- [ ] **E17-T04** "Oyni ochish": preview varag'i (yaratiladigan rejalar,
-  allaqachon borlar soni) → tasdiq → server RPC (onlayn talab qilinadi —
-  oflaynda tushunarli xabar).
-- [ ] **E17-T05** Kalendar ko'rinishi: oy to'ri, kunlarda nuqtalar (holat
-  rangi), kunni bosish → shu kun rejalari.
-- [ ] **E17-T06** Testlar: holat hisoblari (bugun/kecha/ertaga chegaralari),
-  to'lash oqimlari, `?` holati.
+- [x] **E17-T04** "Oyni ochish" (Xulosa va To'lovlarda bitta `OpenMonthCard`):
+  preview varag'i (yaratiladigan rejalar ro'yxati, allaqachon borlar soni) →
+  tasdiq → server RPC → sinxron; oflaynda "Internet yo'q" xabari.
+- [x] **E17-T05** Kalendar: oy to'ri (hafta boshi — lokal), kunlarda holat
+  rangidagi nuqtalar, kun bosilsa — shu kun rejalari.
+- [x] **E17-T06** Testlar: domen — `PlanBoard` chegaralari (kecha/bugun/N
+  kun/keyin), `ClosePlan`/`EditPlan`/`SkipPlanned` (yopilgan oy: tasdiq,
+  qat'iy qulf); vidjet — bo'limlar va jami, qisman → keyin / yopish → qayta
+  ochish, `?` summa majburiy, swipe, o'tkazish + undo, shu oy summasi, "Keldi",
+  kalendar, oyni ochish (onlayn/oflayn); goldenlar (ro'yxat, kalendar/dark).
+  Testlar topgan xatolar: tahrir dialogi eski qiymatni saqlashi (yopilish
+  closure'i), tor ekranda tugmalar/progress toshib ketishi.
 
 ### E18 · Hamyon `[mobile]`
 
@@ -517,3 +527,4 @@
 | 2026-09-20 | E14-T01..T06 | kirish (email kodi, Google + nonce; sessiya shifrlangan xotirada), byudjet yuklash/tanlash va taklif bilan qo'shilish (QR, deep link), sozlash ustasi (`onboarding_apply` + joriy oy), qobiq (almashtirgich, bannerlar, BR-214), ilova qulfi (PIN/PBKDF2, biometrika, avto-qulf, FLAG_SECURE) va maxfiylik rejimi; 221 test (92,6%), 8 integratsiya testi. **E14 yakunlandi** |
 | 2026-09-21 | E15-T01..T08 | "Qo'shish" varag'i (klaviatura, tez tugmalar + undo, kategoriya/hisob/sana/joy/teg/qarz, joyida kategoriya, tegishli oy izohi, fond izohlari, cheklar — siqish, oflayn navbat, Storage), amallar ro'yxati (oy, kunlik jami, filtr, qidiruv, swipe-o'chirish + undo, tahrirlash); lokal sxema v2 (migratsiya testi indeks xatosini ushladi); 264 test (90,9%), goldenlar, 9 integratsiya. **E15 yakunlandi** |
 | 2026-09-21 | E16-T01..T07 | Xulosa lokal bazadan (tarmoqsiz): `MonthReportLoader` + `ReportDao` — `report_month` bilan parite 49/49, `report_year` jami; hero (qoldiq, prognoz, kuniga, orttirgan %), statistika → filtrlangan amallar, rejalar, yaqin to'lovlar (To'landi), prognoz, kategoriyalar (limit rangi), daromad turlari, fond/jamg'arma, qarz, maqsadlar; oyni ochish; yillik ko'rinish + kategoriya trendi; PNG ulashish; bo'sh oy holati; 328 test (89,1%), goldenlar tor ekran xatolarini topdi. **E16 yakunlandi** |
+| 2026-09-21 | E17-T01..T06 | To'lovlar: tablar (xarajat/daromad), holat bo'limlari va `X + N ta ?` jami (`PlanBoard`), to'lash varag'i (qolgan summa, `?` majburiy, hisob/sana), qisman → keyin/yopish, swipe, shu oy summasi, yopish/qayta ochish, o'tkazish + undo, kalendar, oyni ochish preview'i (umumiy `OpenMonthCard`); domen: `ClosePlan`, `EditPlan`, reja o'zgarishlarida yopilgan oy tekshiruvi; umumiy `MonthSwitcher`; 341 test (91,4%), domen 203 (97,8%), goldenlar. **E17 yakunlandi** |

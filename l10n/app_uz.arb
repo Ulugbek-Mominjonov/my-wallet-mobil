@@ -186,6 +186,7 @@
   "fieldAccount": "Hisob",
   "monthThis": "Shu oy",
   "monthPrevious": "Oldingi oy",
+  "monthNext": "Keyingi oy",
   "fundPercentMode": "Foiz",
   "fundFixedMode": "Qat'iy summa",
   "fundPercent": "Daromadning foizi",
@@ -402,6 +403,74 @@
   "dashClosed": "Yopilgan",
   "dashEmpty": "Bu oyda hali yozuv yo'q",
   "dashEmptyHint": "“+” tugmasi bilan birinchi amalni qo'shing",
+  "fieldDate": "Sana",
+  "payTabExpenses": "Xarajatlar",
+  "payTabIncome": "Kutilayotgan daromadlar",
+  "payUnpaid": "To'lanmagan",
+  "payIncomePending": "Kelishi kutilmoqda",
+  "paySectionOverdue": "⚠️ Kechikkan",
+  "paySectionToday": "📌 Bugun",
+  "paySectionSoon": "🗓 Yaqin {days} kunda",
+  "@paySectionSoon": {
+    "description": "To'lovlar (E17)",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "paySectionLater": "Keyinroq",
+  "paySectionPaid": "✅ To'langan",
+  "paySectionReceived": "✅ Kelgan",
+  "paySectionSkipped": "⏭ O'tkazilgan",
+  "payMarkReceived": "Keldi",
+  "paySkip": "O'tkazib yuborish",
+  "payUnskip": "Qaytarish",
+  "paySkipped": "O'tkazib yuborildi",
+  "payEditAmount": "Shu oy summasi",
+  "payClose": "Yopish",
+  "payReopen": "Qayta ochish",
+  "payAmountVaries": "Summa o'zgaruvchi",
+  "payAmountRequired": "Bu to'lovning summasi belgilanmagan — qancha to'laganingizni kiriting",
+  "payPartialTitle": "Qisman to'lov",
+  "payPartialBody": "Qolgan {amount} ni keyin to'laysizmi?",
+  "@payPartialBody": {
+    "description": "To'lovlar (E17)",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "payPartialLater": "Keyin to'layman",
+  "payAutoPay": "Avto to'lov",
+  "payEmpty": "Bu oyda reja yo'q",
+  "payEmptyHint": "Oyni oching — doimiy to'lovlardan rejalar yaratiladi",
+  "payCalendar": "Kalendar",
+  "payList": "Ro'yxat",
+  "payDayEmpty": "Bu kunda to'lov yo'q",
+  "errorPlanPaid": "Bu reja allaqachon to'langan",
+  "errorPlanSkipped": "Reja o'tkazib yuborilgan",
+  "errorPlanNotFound": "Reja topilmadi",
+  "openMonthCreates": "Yaratiladi: {count} ta",
+  "@openMonthCreates": {
+    "description": "To'lovlar (E17)",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openMonthExisting": "Allaqachon bor: {count} ta",
+  "@openMonthExisting": {
+    "description": "To'lovlar (E17)",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openMonthNothing": "Yangi reja yo'q — hammasi allaqachon bor",
   "@dashMonthEnd": {
     "description": "Dashboard (E16)",
     "placeholders": {
