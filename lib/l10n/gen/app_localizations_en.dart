@@ -749,4 +749,44 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get dashEmpty => 'Nothing recorded this month yet';
+
+  @override
+  String yearTitle(String year) {
+    return '$year';
+  }
+
+  @override
+  String get yearTotal => 'TOTAL';
+
+  @override
+  String get yearView => 'Year view';
+
+  @override
+  String get yearEmpty => 'Nothing recorded this year';
+
+  @override
+  String get categoryTrend => 'Month by month';
+
+  @override
+  String get categoryTransactions => 'Show transactions';
+
+  @override
+  String monthShort(String month) {
+    String _temp0 = intl.Intl.selectLogic(month, {
+      '1': 'Jan',
+      '2': 'Feb',
+      '3': 'Mar',
+      '4': 'Apr',
+      '5': 'May',
+      '6': 'Jun',
+      '7': 'Jul',
+      '8': 'Aug',
+      '9': 'Sep',
+      '10': 'Oct',
+      '11': 'Nov',
+      '12': 'Dec',
+      'other': '?',
+    });
+    return '$_temp0';
+  }
 }

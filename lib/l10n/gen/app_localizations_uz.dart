@@ -749,4 +749,44 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get dashEmpty => 'Bu oyda hali yozuv yo\'q';
+
+  @override
+  String yearTitle(String year) {
+    return '$year-yil';
+  }
+
+  @override
+  String get yearTotal => 'JAMI';
+
+  @override
+  String get yearView => 'Yillik ko\'rinish';
+
+  @override
+  String get yearEmpty => 'Bu yilda yozuv yo\'q';
+
+  @override
+  String get categoryTrend => 'Oyma-oy';
+
+  @override
+  String get categoryTransactions => 'Amallarni ko\'rish';
+
+  @override
+  String monthShort(String month) {
+    String _temp0 = intl.Intl.selectLogic(month, {
+      '1': 'Yan',
+      '2': 'Fev',
+      '3': 'Mar',
+      '4': 'Apr',
+      '5': 'May',
+      '6': 'Iyn',
+      '7': 'Iyl',
+      '8': 'Avg',
+      '9': 'Sen',
+      '10': 'Okt',
+      '11': 'Noy',
+      '12': 'Dek',
+      'other': '?',
+    });
+    return '$_temp0';
+  }
 }

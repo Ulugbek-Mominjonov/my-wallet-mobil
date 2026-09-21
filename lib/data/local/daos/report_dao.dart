@@ -271,4 +271,57 @@ class ReportDao extends DatabaseAccessor<AppDatabase> with _$ReportDaoMixin {
             .getSingleOrNull();
     return (opened: row?.openedAt != null, closed: row?.closedAt != null);
   }
+
+  /// Yilning yopilgan oylari (BR-150).
+  Future<Set<MonthKey>> closedMonths(String householdId, int year) async {
+    final rows =
+        await (select(months)..where(
+              (m) =>
+                  m.householdId.equals(householdId) &
+                  m.closedAt.isNotNull() &
+                  m.month.isBetweenValues('$year-01-01', '$year-12-01'),
+            ))
+            .get();
+    return {for (final row in rows) MonthKey.parse(row.month)};
+  }
+
+  /// BR-095: kategoriya (subkategoriyalari bilan) oyma-oy fakti.
+  Future<Map<MonthKey, Money>> categoryTrend(
+    String householdId,
+    String categoryId,
+    MonthKey from,
+    MonthKey to, {
+    Currency base = Currency.uzs,
+  }) async {
+    final rows = await customSelect(
+      '''
+      WITH ids AS (
+        SELECT id FROM categories WHERE id = ?2
+        UNION SELECT id FROM categories WHERE parent_id = ?2
+      )
+      SELECT t.budget_month AS month, SUM(t.amount_base) AS amount
+        FROM transactions t
+        JOIN accounts a ON a.id = t.account_id
+       WHERE t.household_id = ?1 AND t.deleted_at IS NULL
+         AND t.budget_month BETWEEN ?3 AND ?4
+         AND t.category_id IN (SELECT id FROM ids)
+         AND ((t.kind = 'expense' AND a.type <> 'personal_fund')
+              OR t.kind = 'income')
+       GROUP BY t.budget_month''',
+      variables: [
+        Variable.withString(householdId),
+        Variable.withString(categoryId),
+        Variable.withString(from.toIsoDate()),
+        Variable.withString(to.toIsoDate()),
+      ],
+      readsFrom: {transactions, accounts, categories},
+    ).get();
+    return {
+      for (final row in rows)
+        MonthKey.parse(row.read<String>('month')): Money(
+          row.read<int>('amount'),
+          base,
+        ),
+    };
+  }
 }

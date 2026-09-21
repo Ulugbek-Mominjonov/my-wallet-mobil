@@ -102,9 +102,13 @@ class _MonthHeader extends ConsumerWidget {
           icon: const Icon(Icons.chevron_left),
           onPressed: () => controller.shift(-1),
         ),
-        Text(
-          formatMonthTitle(l10n, year: month.year, month: month.month),
-          style: Theme.of(context).textTheme.titleMedium,
+        Flexible(
+          child: Text(
+            formatMonthTitle(l10n, year: month.year, month: month.month),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
         ),
         if (report?.state.closed ?? false) ...[
           const SizedBox(width: AppSpacing.sm),
@@ -117,6 +121,11 @@ class _MonthHeader extends ConsumerWidget {
         IconButton(
           icon: const Icon(Icons.chevron_right),
           onPressed: () => controller.shift(1),
+        ),
+        IconButton(
+          tooltip: l10n.yearView,
+          icon: const Icon(Icons.calendar_view_month_outlined),
+          onPressed: () => context.push('/reports/year'),
         ),
       ],
     );
@@ -549,32 +558,35 @@ class _CategoriesCard extends ConsumerWidget {
       child: Column(
         children: [
           for (final (:line, :status, :ratio) in report.categories)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(child: Text(line.name)),
-                      Text(
-                        _money(context, ref, line.actual) +
-                            (ratio == null
-                                ? ''
-                                : ' (${(ratio * 100).round()}%)'),
-                      ),
-                    ],
-                  ),
-                  if (ratio != null)
-                    LinearProgressIndicator(
-                      value: ratio.clamp(0.0, 1.0),
-                      color: switch (status) {
-                        LimitStatus.over => colors.expense,
-                        LimitStatus.near => colors.warning,
-                        _ => colors.income,
-                      },
+            InkWell(
+              onTap: () => context.push('/reports/category/${line.categoryId}'),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(child: Text(line.name)),
+                        Text(
+                          _money(context, ref, line.actual) +
+                              (ratio == null
+                                  ? ''
+                                  : ' (${(ratio * 100).round()}%)'),
+                        ),
+                      ],
                     ),
-                ],
+                    if (ratio != null)
+                      LinearProgressIndicator(
+                        value: ratio.clamp(0.0, 1.0),
+                        color: switch (status) {
+                          LimitStatus.over => colors.expense,
+                          LimitStatus.near => colors.warning,
+                          _ => colors.income,
+                        },
+                      ),
+                  ],
+                ),
               ),
             ),
         ],
@@ -595,16 +607,21 @@ class _IncomeTypesCard extends ConsumerWidget {
       title: l10n.dashIncomeTypes,
       child: Column(
         children: [
+          // Tor ekranda ham sig'sin: nom ustida, karta/naqd ostida.
           for (final line in report.incomeTypes)
-            Row(
-              children: [
-                Expanded(child: Text(line.name)),
-                Text(
-                  '${l10n.dashCard} ${_money(context, ref, line.card)} · '
-                  '${l10n.dashCash} ${_money(context, ref, line.cash)}',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(line.name),
+                  Text(
+                    '${l10n.dashCard} ${_money(context, ref, line.card)} · '
+                    '${l10n.dashCash} ${_money(context, ref, line.cash)}',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
             ),
         ],
       ),

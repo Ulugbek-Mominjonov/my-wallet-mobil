@@ -2,6 +2,7 @@ import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/features/dashboard/application/month_report.dart';
+import 'package:my_wallet/features/dashboard/application/year_report.dart';
 import 'package:wallet_domain/testing.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
@@ -90,6 +91,45 @@ void main() {
   late AppDatabase db;
   setUp(() => db = AppDatabase(NativeDatabase.memory()));
   tearDown(() => db.close());
+
+  // BR-092: yillik ko'rinish jami = admin `report_year`.
+  group('golden fixture: yillik = report_year', () {
+    for (final testCase in fixtureCases()) {
+      final steps = [
+        for (final step
+            in (testCase['expect']! as List).cast<Map<String, Object?>>())
+          if (step['rpc'] == 'report_year') step,
+      ];
+      if (steps.isEmpty) continue;
+      test('${testCase['file']}: ${testCase['name']}', () async {
+        final ledger = FixtureLedger.load(testCase);
+        await storeFixture(db, ledger);
+        for (final step in steps) {
+          final args = step['args']! as Map<String, Object?>;
+          final report = await YearReportLoader(
+            db,
+            'h',
+            base: Currency.uzs,
+          ).load(args['year']! as int);
+          final totals = report.totals;
+          expect(
+            compareJson(step['result'], {
+              'year': report.year,
+              'totals': {
+                'income': totals.income.minor,
+                'expense': totals.expense.minor,
+                'allocated': totals.allocated.minor,
+                'fund_spent': totals.fundSpent.minor,
+                'balance': totals.summary.balance.minor,
+                'saved': totals.summary.saved.minor,
+              },
+            }, 'report_year'),
+            isEmpty,
+          );
+        }
+      });
+    }
+  });
 
   // E16 DoD: lokal dashboard raqamlari = admin `report_month` (fixture'lar).
   group('golden fixture: lokal oy hisobi = report_month', () {

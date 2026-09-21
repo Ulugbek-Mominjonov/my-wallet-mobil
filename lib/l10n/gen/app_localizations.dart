@@ -1376,6 +1376,48 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Bu oyda hali yozuv yo\'q'**
   String get dashEmpty;
+
+  /// Yillik ko'rinish (E16-T05)
+  ///
+  /// In uz, this message translates to:
+  /// **'{year}-yil'**
+  String yearTitle(String year);
+
+  /// No description provided for @yearTotal.
+  ///
+  /// In uz, this message translates to:
+  /// **'JAMI'**
+  String get yearTotal;
+
+  /// No description provided for @yearView.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yillik ko\'rinish'**
+  String get yearView;
+
+  /// No description provided for @yearEmpty.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bu yilda yozuv yo\'q'**
+  String get yearEmpty;
+
+  /// No description provided for @categoryTrend.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oyma-oy'**
+  String get categoryTrend;
+
+  /// No description provided for @categoryTransactions.
+  ///
+  /// In uz, this message translates to:
+  /// **'Amallarni ko\'rish'**
+  String get categoryTransactions;
+
+  /// No description provided for @monthShort.
+  ///
+  /// In uz, this message translates to:
+  /// **'{month, select, 1{Yan} 2{Fev} 3{Mar} 4{Apr} 5{May} 6{Iyn} 7{Iyl} 8{Avg} 9{Sen} 10{Okt} 11{Noy} 12{Dek} other{?}}'**
+  String monthShort(String month);
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

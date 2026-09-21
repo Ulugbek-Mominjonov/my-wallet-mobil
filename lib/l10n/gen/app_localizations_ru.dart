@@ -747,4 +747,44 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get dashEmpty => 'В этом месяце пока нет записей';
+
+  @override
+  String yearTitle(String year) {
+    return '$year год';
+  }
+
+  @override
+  String get yearTotal => 'ИТОГО';
+
+  @override
+  String get yearView => 'Годовой обзор';
+
+  @override
+  String get yearEmpty => 'В этом году нет записей';
+
+  @override
+  String get categoryTrend => 'По месяцам';
+
+  @override
+  String get categoryTransactions => 'Показать операции';
+
+  @override
+  String monthShort(String month) {
+    String _temp0 = intl.Intl.selectLogic(month, {
+      '1': 'Янв',
+      '2': 'Фев',
+      '3': 'Мар',
+      '4': 'Апр',
+      '5': 'Май',
+      '6': 'Июн',
+      '7': 'Июл',
+      '8': 'Авг',
+      '9': 'Сен',
+      '10': 'Окт',
+      '11': 'Ноя',
+      '12': 'Дек',
+      'other': '?',
+    });
+    return '$_temp0';
+  }
 }

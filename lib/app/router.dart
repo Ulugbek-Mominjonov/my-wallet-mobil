@@ -6,7 +6,9 @@ import 'package:my_wallet/core/di/app_providers.dart';
 import 'package:my_wallet/core/security/app_lock.dart';
 import 'package:my_wallet/data/auth/auth_providers.dart';
 import 'package:my_wallet/features/auth/presentation/sign_in_screen.dart';
+import 'package:my_wallet/features/dashboard/presentation/category_trend_screen.dart';
 import 'package:my_wallet/features/dashboard/presentation/dashboard_screen.dart';
+import 'package:my_wallet/features/dashboard/presentation/year_screen.dart';
 import 'package:my_wallet/features/dev/design_catalog_screen.dart';
 import 'package:my_wallet/features/household/application/invite_links.dart';
 import 'package:my_wallet/features/household/presentation/invite_scan_screen.dart';
@@ -140,6 +142,16 @@ final routerProvider = Provider<GoRouter>((ref) {
           fullscreenDialog: true,
           child: AddTransactionScreen(),
         ),
+      ),
+      // Hisobotlar (E16-T05): yillik ko'rinish va kategoriya trendi.
+      GoRoute(
+        path: '/reports/year',
+        builder: (context, state) => const YearScreen(),
+      ),
+      GoRoute(
+        path: '/reports/category/:id',
+        builder: (context, state) =>
+            CategoryTrendScreen(categoryId: state.pathParameters['id']!),
       ),
       // Amalni tahrirlash (E15-T06) — ro'yxatdan.
       GoRoute(

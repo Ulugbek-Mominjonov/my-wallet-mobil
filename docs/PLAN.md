@@ -346,9 +346,12 @@
   va maqsad qisqacha.
 - [x] **E16-T04** Prognoz kartasi (BR-093): o'tgan kunlar `16 / 30`, kunlik
   sarf, oy oxiri sarfi, kutilayotgan daromad + "hozircha kelgani …" izohi.
-- [ ] **E16-T05** Yillik ko'rinish: oylar ro'yxati (daromad, xarajat, qoldiq,
-  orttirgan %, 🔒), ustun grafik, JAMI; kategoriya tafsiloti (oyma-oy trend,
-  shu kategoriya amallari).
+- [x] **E16-T05** Yillik ko'rinish (`/reports/year`): oylar ro'yxati
+  (daromad, xarajat, qoldiq, orttirgan %, 🔒), ustun grafik (`MonthBars`,
+  CustomPaint), JAMI — `report_year` fixture'i bilan parite; oy bosilsa —
+  o'sha oy Xulosasi. Kategoriya tafsiloti (`/reports/category/:id`): 12 oylik
+  trend (subkategoriyalar bilan), shu kategoriya amallariga o'tish. Tor
+  ekranda toshib ketish xatolari tuzatildi (test topdi).
 - [ ] **E16-T06** Oylik hisobotni ulashish: rasm (vidjetni PNG ga) yoki PDF.
 - [ ] **E16-T07** Testlar: fixture'lar bilan controller testlari; golden:
   hero karta (musbat/manfiy/maxfiy), bo'sh oy holati.

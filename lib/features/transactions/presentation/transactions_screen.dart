@@ -111,9 +111,13 @@ class _MonthBar extends ConsumerWidget {
           icon: const Icon(Icons.chevron_left),
           onPressed: () => controller.shiftMonth(-1),
         ),
-        Text(
-          formatMonthTitle(l10n, year: month.year, month: month.month),
-          style: Theme.of(context).textTheme.titleMedium,
+        Flexible(
+          child: Text(
+            formatMonthTitle(l10n, year: month.year, month: month.month),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
         ),
         IconButton(
           icon: const Icon(Icons.chevron_right),
