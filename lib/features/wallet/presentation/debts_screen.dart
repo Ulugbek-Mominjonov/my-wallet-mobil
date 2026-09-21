@@ -250,7 +250,8 @@ class DebtStatusChip extends StatelessWidget {
     final (label, color) = switch (status) {
       DebtStatus.paying => (l10n.debtStatusPaying, scheme.primary),
       DebtStatus.pending => (l10n.debtStatusPending, colors.warning),
-      DebtStatus.unlinked => (l10n.debtStatusUnlinked, scheme.outline),
+      // Matn — kontrast ≥ 4.5 (outline rangi matnga yetmaydi).
+      DebtStatus.unlinked => (l10n.debtStatusUnlinked, scheme.onSurfaceVariant),
       DebtStatus.closed => (l10n.debtStatusClosed, colors.income),
     };
     return Chip(

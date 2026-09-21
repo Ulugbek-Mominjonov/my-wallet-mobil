@@ -1365,4 +1365,22 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get settingsLicenses => 'Лицензии';
+
+  @override
+  String get amountHidden => 'Сумма скрыта';
+
+  @override
+  String get statusOverdue => 'Просрочено';
+
+  @override
+  String get statusPartial => 'Оплачено частично';
+
+  @override
+  String get statusPaid => 'Оплачено';
+
+  @override
+  String get statusSkipped => 'Пропущено';
+
+  @override
+  String get statusPending => 'Ожидается';
 }

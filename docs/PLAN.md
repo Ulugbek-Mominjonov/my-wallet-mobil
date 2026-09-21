@@ -481,12 +481,23 @@
 > **DoD:** v1.0 reliz nomzodi: Crashlytics'da 7 kun crash yo'q (testerlar),
 > sovuq start < 2 s, e2e yashil, APK avtomatik tarqatiladi.
 
-- [ ] **E20-T01** Ikon va splash (flavor ranglari), ilova nomi 3 tilda,
-  Android adaptiv ikon, monoxrom ikon (Android 13+).
+- [x] **E20-T01** Ikon va splash: vektor belgi (hamyon + karta) — adaptiv,
+  monoxrom (Android 13+), Android 12+ tizim splash'i va eski splash; flavor
+  ranglari (dev — to'q sariq, staging — zangori-yashil, prod — brend
+  indigo); eski qurilmalar uchun PNG'lar `tool/render_launcher_icons.py`
+  bilan vektordan. Ilova nomi — brend "My Wallet", tarjima qilinmaydi.
 - [ ] **E20-T02** Ishlash: sovuq start o'lchovi (`--profile`), kechiktirilgan
   init, ro'yxatlar 60 fps (DevTools), rasm keshi; natija `docs/PERF.md`.
-- [ ] **E20-T03** Qulaylik (a11y): semantika (summalar o'qiladi), kontrast,
-  200% matn, TalkBack bilan asosiy oqimlar.
+- [x] **E20-T03** Qulaylik (a11y): avtomatik tekshiruvlar —
+  `test/a11y/`: 12 ekran 200% matnda haqiqiy Roboto bilan (toshib ketmaydi),
+  Android qo'llanmalari (bosish joyi ≥ 48 dp, nomli, matn kontrasti) 8
+  ekranda, WCAG AA semantik ranglar (`contrast_test`), TalkBack nomlari
+  (yashirin summa, reja holati). Topilgan va tuzatilganlar: yorug' temada
+  daromad/xarajat/ogohlantirish ranglari AA'dan past, byudjet
+  almashtirgichi bosish joyi 25 dp, pastki navigatsiya 200% da toshishi va
+  11sp kulrang yorliq, "Bog'lanmagan" chip matni, kalkulyator amal tugmalari,
+  jamg'arma/yillik qatorlari va orttirgan halqasi katta shriftda. TalkBack
+  bilan qo'lda sinov — reliz nomzodida (E20-T08).
 - [ ] **E20-T04** E2E (patrol, emulyator): onboarding → xarajat → to'lov →
   dashboard; oflayn → onlayn sinxron. CI: har kecha (KVM'li Linux runner).
 - [ ] 🔑 **E20-T05** Imzolash: upload keystore (sirlar — `DEPLOY.md`),

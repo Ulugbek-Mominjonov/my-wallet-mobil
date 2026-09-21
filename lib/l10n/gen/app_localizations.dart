@@ -2480,6 +2480,42 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Litsenziyalar'**
   String get settingsLicenses;
+
+  /// No description provided for @amountHidden.
+  ///
+  /// In uz, this message translates to:
+  /// **'Summa yashirin'**
+  String get amountHidden;
+
+  /// No description provided for @statusOverdue.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kechikkan'**
+  String get statusOverdue;
+
+  /// No description provided for @statusPartial.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qisman to\'langan'**
+  String get statusPartial;
+
+  /// No description provided for @statusPaid.
+  ///
+  /// In uz, this message translates to:
+  /// **'To\'langan'**
+  String get statusPaid;
+
+  /// No description provided for @statusSkipped.
+  ///
+  /// In uz, this message translates to:
+  /// **'O\'tkazilgan'**
+  String get statusSkipped;
+
+  /// No description provided for @statusPending.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kutilmoqda'**
+  String get statusPending;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

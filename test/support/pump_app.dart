@@ -55,6 +55,10 @@ Future<GoRouter> pumpApp(
   /// Saqlangan ilova sozlamalari (tema, til).
   Map<String, Object> preferences = const {},
 
+  /// Ilova versiyasi (plagin testda yo'q — Riverpod qayta urinish taymeri
+  /// qolmasin).
+  String appVersion = '1.0.0',
+
   /// Lokal eslatmalar rejalashtiruvchisi (E19-T02) — debounce taymeri
   /// boshqa testlarda "pending timer" bo'lmasin, standart o'chiq.
   bool localReminders = false,
@@ -91,6 +95,7 @@ Future<GoRouter> pumpApp(
       appDatabaseProvider.overrideWithValue(db),
       localNotifierProvider.overrideWithValue(notifier ?? FakeLocalNotifier()),
       sharedPreferencesProvider.overrideWithValue(prefs),
+      appVersionProvider.overrideWith((ref) async => appVersion),
       if (!localReminders) localRemindersProvider.overrideWith((ref) {}),
       ...overrides,
     ],

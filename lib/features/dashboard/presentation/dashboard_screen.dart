@@ -231,15 +231,22 @@ class _SavedRing extends StatelessWidget {
               backgroundColor: theme.colorScheme.surfaceContainerHighest,
             ),
           ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '${(ratio * 100).round()}%',
-                style: theme.textTheme.titleMedium,
+          // Katta shriftda halqa ichida kichrayadi (toshib ketmaydi).
+          Padding(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '${(ratio * 100).round()}%',
+                    style: theme.textTheme.titleMedium,
+                  ),
+                  Text(label, style: theme.textTheme.labelSmall),
+                ],
               ),
-              Text(label, style: theme.textTheme.labelSmall),
-            ],
+            ),
           ),
         ],
       ),

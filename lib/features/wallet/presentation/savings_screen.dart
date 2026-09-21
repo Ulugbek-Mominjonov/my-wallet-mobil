@@ -150,8 +150,10 @@ class _MonthsTable extends StatelessWidget {
                   if (row.isCurrent) '⏳',
                 ].join(' '),
               ),
+              // Katta shriftda ham sig'sin: hammasi o'raladigan qatorlarda.
               subtitle: Wrap(
                 spacing: AppSpacing.sm,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   MoneyText(
                     row.income.minor,
@@ -168,14 +170,8 @@ class _MonthsTable extends StatelessWidget {
                     currency: row.balance.currency.code,
                     signed: true,
                   ),
-                ],
-              ),
-              trailing: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
                   Text(
-                    l10n.savingsAccumulated,
+                    '${l10n.savingsAccumulated}:',
                     style: theme.textTheme.labelSmall,
                   ),
                   MoneyText(

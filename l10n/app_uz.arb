@@ -806,5 +806,11 @@
       }
     }
   },
-  "settingsLicenses": "Litsenziyalar"
+  "settingsLicenses": "Litsenziyalar",
+  "amountHidden": "Summa yashirin",
+  "statusOverdue": "Kechikkan",
+  "statusPartial": "Qisman to'langan",
+  "statusPaid": "To'langan",
+  "statusSkipped": "O'tkazilgan",
+  "statusPending": "Kutilmoqda"
 }

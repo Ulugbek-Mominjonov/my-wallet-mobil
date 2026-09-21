@@ -33,11 +33,13 @@ final class AppColors extends ThemeExtension<AppColors> {
     required this.onWarning,
   });
 
+  /// WCAG AA (≥ 4.5) — sahifa va karta foni ustidagi matn uchun
+  /// (`test/core/design_system/contrast_test.dart`).
   static const light = AppColors(
-    income: Color(0xFF15803D),
-    expense: Color(0xFFDC2626),
-    warning: Color(0xFFD97706),
-    onWarning: Color(0xFF3B2A06),
+    income: Color(0xFF166534),
+    expense: Color(0xFFB91C1C),
+    warning: Color(0xFFA04E0A),
+    onWarning: Color(0xFFFFFFFF),
   );
 
   static const dark = AppColors(

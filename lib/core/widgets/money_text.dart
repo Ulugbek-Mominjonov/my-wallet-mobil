@@ -4,6 +4,7 @@ import 'package:my_wallet/core/design_system/tokens.dart';
 import 'package:my_wallet/core/format/format_context.dart';
 import 'package:my_wallet/core/format/money_format.dart';
 import 'package:my_wallet/core/security/privacy_mode.dart';
+import 'package:my_wallet/l10n/gen/app_localizations.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
 /// Summa rangi: `auto` — manfiy qizil, musbat yashil (qoldiq uchun).
@@ -45,6 +46,10 @@ class MoneyText extends ConsumerWidget {
 
     return Text(
       text,
+      // TalkBack "•••" ni belgi-belgi o'qimasin.
+      semanticsLabel: hidden
+          ? Localizations.of<AppL10n>(context, AppL10n)?.amountHidden
+          : null,
       maxLines: 1,
       softWrap: false,
       style: base.copyWith(

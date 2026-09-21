@@ -146,7 +146,13 @@ void main() {
 
   Future<void> tapKeys(WidgetTester tester, List<String> keys) async {
     for (final key in keys) {
-      await tester.tap(find.widgetWithText(TextButton, key));
+      await tester.tap(
+        find.ancestor(
+          of: find.text(key),
+          // Raqamlar — TextButton, amallar — FilledButton.tonal.
+          matching: find.byWidgetPredicate((w) => w is ButtonStyleButton),
+        ),
+      );
       await tester.pumpAndSettle();
     }
   }

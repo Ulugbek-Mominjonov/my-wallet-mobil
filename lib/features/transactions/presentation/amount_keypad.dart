@@ -91,6 +91,12 @@ class _Key extends StatelessWidget {
   final AmountKey entryKey;
   final ValueChanged<AmountKey> onKey;
 
+  static const Set<AmountKey> _operators = {
+    AmountKey.plus,
+    AmountKey.minus,
+    AmountKey.equals,
+  };
+
   static const Map<AmountKey, String> _labels = {
     AmountKey.tripleZero: '000',
     AmountKey.plus: '+',
@@ -111,6 +117,18 @@ class _Key extends StatelessWidget {
                 onPressed: _press,
                 icon: const Icon(Icons.backspace_outlined),
                 tooltip: '⌫',
+              )
+            : _operators.contains(entryKey)
+            // Amallar — to'q fonli tugma, qalin belgi (ingichka "−" ham
+            // aniq ko'rinsin).
+            ? FilledButton.tonal(
+                onPressed: _press,
+                child: Text(
+                  label,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               )
             : TextButton(
                 onPressed: _press,

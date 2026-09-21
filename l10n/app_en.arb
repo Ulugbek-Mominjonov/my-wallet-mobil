@@ -396,5 +396,11 @@
   "deleteAccountLastOwner": "You are the only owner of a budget with other members — transfer ownership first",
   "settingsAbout": "About",
   "settingsVersion": "Version {version}",
-  "settingsLicenses": "Licenses"
+  "settingsLicenses": "Licenses",
+  "amountHidden": "Amount hidden",
+  "statusOverdue": "Overdue",
+  "statusPartial": "Partly paid",
+  "statusPaid": "Paid",
+  "statusSkipped": "Skipped",
+  "statusPending": "Pending"
 }

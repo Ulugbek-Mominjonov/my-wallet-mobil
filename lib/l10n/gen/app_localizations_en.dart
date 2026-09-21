@@ -1366,4 +1366,22 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get settingsLicenses => 'Licenses';
+
+  @override
+  String get amountHidden => 'Amount hidden';
+
+  @override
+  String get statusOverdue => 'Overdue';
+
+  @override
+  String get statusPartial => 'Partly paid';
+
+  @override
+  String get statusPaid => 'Paid';
+
+  @override
+  String get statusSkipped => 'Skipped';
+
+  @override
+  String get statusPending => 'Pending';
 }

@@ -113,20 +113,12 @@ class _MonthRow extends ConsumerWidget {
       contentPadding: EdgeInsets.zero,
       leading: month.closed ? const Icon(Icons.lock, size: 18) : null,
       title: Text(formatMonthTitle(l10n, year: key.year, month: key.month)),
-      subtitle: Wrap(
-        children: [
-          MoneyText(month.facts.income.minor, tone: MoneyTone.income),
-          const Text(' / '),
-          MoneyText(month.facts.expense.minor, tone: MoneyTone.expense),
-        ],
-      ),
-      trailing: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          MoneyText(month.summary.balance.minor, tone: MoneyTone.auto),
-          Text('${(month.summary.savedRatio * 100).round()}%'),
-        ],
+      // Katta shriftda ham sig'sin: hammasi o'raladigan qatorda.
+      subtitle: _Figures(
+        income: month.facts.income.minor,
+        expense: month.facts.expense.minor,
+        balance: month.summary.balance.minor,
+        savedRatio: month.summary.savedRatio,
       ),
       onTap: () {
         ref.read(dashboardMonthProvider.notifier).select(key);
@@ -151,21 +143,41 @@ class _TotalRow extends StatelessWidget {
         l10n.yearTotal,
         style: Theme.of(context).textTheme.titleSmall,
       ),
-      subtitle: Wrap(
-        children: [
-          MoneyText(totals.income.minor, tone: MoneyTone.income),
-          const Text(' / '),
-          MoneyText(totals.expense.minor, tone: MoneyTone.expense),
-        ],
-      ),
-      trailing: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          MoneyText(totals.summary.balance.minor, tone: MoneyTone.auto),
-          Text('${(totals.summary.savedRatio * 100).round()}%'),
-        ],
+      subtitle: _Figures(
+        income: totals.income.minor,
+        expense: totals.expense.minor,
+        balance: totals.summary.balance.minor,
+        savedRatio: totals.summary.savedRatio,
       ),
     );
   }
+}
+
+/// Daromad / xarajat · qoldiq (orttirgan %) — o'raladigan qator.
+class _Figures extends StatelessWidget {
+  const new({
+    required this.income,
+    required this.expense,
+    required this.balance,
+    required this.savedRatio,
+  });
+
+  final int income;
+  final int expense;
+  final int balance;
+  final double savedRatio;
+
+  @override
+  Widget build(BuildContext context) => Wrap(
+    spacing: AppSpacing.xs,
+    crossAxisAlignment: WrapCrossAlignment.center,
+    children: [
+      MoneyText(income, tone: MoneyTone.income),
+      const Text('/'),
+      MoneyText(expense, tone: MoneyTone.expense),
+      const Text('·'),
+      MoneyText(balance, tone: MoneyTone.auto),
+      Text('(${(savedRatio * 100).round()}%)'),
+    ],
+  );
 }

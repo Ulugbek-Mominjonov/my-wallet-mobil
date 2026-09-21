@@ -161,14 +161,17 @@ class PlanStatusIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppL10n.of(context);
     final color = planStatusColor(context, status);
-    return Icon(switch (status) {
-      PlannedStatus.overdue => Icons.warning_amber,
-      PlannedStatus.partial => Icons.timelapse,
-      PlannedStatus.paid => Icons.check_circle,
-      PlannedStatus.skipped => Icons.skip_next,
-      PlannedStatus.pending => Icons.event,
-    }, color: color);
+    final (icon, label) = switch (status) {
+      PlannedStatus.overdue => (Icons.warning_amber, l10n.statusOverdue),
+      PlannedStatus.partial => (Icons.timelapse, l10n.statusPartial),
+      PlannedStatus.paid => (Icons.check_circle, l10n.statusPaid),
+      PlannedStatus.skipped => (Icons.skip_next, l10n.statusSkipped),
+      PlannedStatus.pending => (Icons.event, l10n.statusPending),
+    };
+    // Holat faqat rang/ikon bilan emas — TalkBack uchun nom ham.
+    return Icon(icon, color: color, semanticLabel: label);
   }
 }
 

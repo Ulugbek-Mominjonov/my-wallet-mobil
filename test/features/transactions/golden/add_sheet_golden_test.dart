@@ -91,7 +91,13 @@ void main() {
       await tester.tap(find.byTooltip("Amal qo'shish"));
       await tester.pumpAndSettle();
       for (final key in ['4', '5', '000']) {
-        await tester.tap(find.widgetWithText(TextButton, key));
+        await tester.tap(
+          find.ancestor(
+            of: find.text(key),
+            // Raqamlar — TextButton, amallar — FilledButton.tonal.
+            matching: find.byWidgetPredicate((w) => w is ButtonStyleButton),
+          ),
+        );
       }
       await tester.tap(find.widgetWithText(ChoiceChip, 'Oziq-ovqat'));
       await tester.pumpAndSettle();

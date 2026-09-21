@@ -62,28 +62,36 @@ class AppShell extends ConsumerWidget {
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
-        child: Row(
-          children: [
-            for (final (index, (icon, selectedIcon, label))
-                in items.indexed) ...[
-              // O'rtada "＋" tugmasi uchun joy.
-              if (index == 2) const SizedBox(width: 72),
-              Expanded(
-                child: _NavItem(
-                  icon: icon,
-                  selectedIcon: selectedIcon,
-                  label: label,
-                  selected: navigationShell.currentIndex == index,
-                  onTap: () => _goBranch(index),
+        // Balandligi qat'iy: yorliqlar katta shriftda ham sig'sin (Material
+        // NavigationBar kabi cheklangan kattalashuv, nom qisqaradi).
+        child: MediaQuery.withClampedTextScaling(
+          maxScaleFactor: _navMaxTextScale,
+          child: Row(
+            children: [
+              for (final (index, (icon, selectedIcon, label))
+                  in items.indexed) ...[
+                // O'rtada "＋" tugmasi uchun joy.
+                if (index == 2) const SizedBox(width: 72),
+                Expanded(
+                  child: _NavItem(
+                    icon: icon,
+                    selectedIcon: selectedIcon,
+                    label: label,
+                    selected: navigationShell.currentIndex == index,
+                    onTap: () => _goBranch(index),
+                  ),
                 ),
-              ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
   }
 }
+
+/// Pastki navigatsiya yorliqlari uchun eng katta shrift koeffitsiyenti.
+const double _navMaxTextScale = 1.3;
 
 /// Joriy byudjet nomi; bosilganda — ro'yxat (BR-011 roli bilan).
 class _HouseholdSwitcher extends ConsumerWidget {
@@ -95,14 +103,24 @@ class _HouseholdSwitcher extends ConsumerWidget {
     if (state is! StartupReady) return const SizedBox.shrink();
     return InkWell(
       onTap: () => unawaited(_show(context, ref, state)),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Flexible(
-            child: Text(state.household.name, overflow: TextOverflow.ellipsis),
-          ),
-          if (state.boot.households.length > 1) const Icon(Icons.expand_more),
-        ],
+      // Barmoq uchun kamida 48 dp (a11y) — qisqa nomda ham.
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          minWidth: kMinInteractiveDimension,
+          minHeight: kMinInteractiveDimension,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: Text(
+                state.household.name,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            if (state.boot.households.length > 1) const Icon(Icons.expand_more),
+          ],
+        ),
       ),
     );
   }
@@ -294,7 +312,9 @@ class _NavItem extends StatelessWidget {
                 label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.labelSmall
+                // M3 NavigationBar yorlig'i (12sp, o'rta qalinlik) — kichik
+                // kulrang matn ham o'qiladi (kontrast).
+                style: Theme.of(context).textTheme.labelMedium
                     ?.copyWith(color: color),
               ),
             ],

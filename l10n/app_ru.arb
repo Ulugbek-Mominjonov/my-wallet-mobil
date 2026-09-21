@@ -396,5 +396,11 @@
   "deleteAccountLastOwner": "Вы единственный владелец бюджета с другими участниками — сначала передайте владение",
   "settingsAbout": "О приложении",
   "settingsVersion": "Версия {version}",
-  "settingsLicenses": "Лицензии"
+  "settingsLicenses": "Лицензии",
+  "amountHidden": "Сумма скрыта",
+  "statusOverdue": "Просрочено",
+  "statusPartial": "Оплачено частично",
+  "statusPaid": "Оплачено",
+  "statusSkipped": "Пропущено",
+  "statusPending": "Ожидается"
 }

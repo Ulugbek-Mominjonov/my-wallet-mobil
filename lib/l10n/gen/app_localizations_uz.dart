@@ -1365,4 +1365,22 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get settingsLicenses => 'Litsenziyalar';
+
+  @override
+  String get amountHidden => 'Summa yashirin';
+
+  @override
+  String get statusOverdue => 'Kechikkan';
+
+  @override
+  String get statusPartial => 'Qisman to\'langan';
+
+  @override
+  String get statusPaid => 'To\'langan';
+
+  @override
+  String get statusSkipped => 'O\'tkazilgan';
+
+  @override
+  String get statusPending => 'Kutilmoqda';
 }

@@ -6,7 +6,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:my_wallet/app/router.dart';
 import 'package:my_wallet/data/remote/settings_api.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
-import 'package:my_wallet/features/startup/application/startup_controller.dart';
 
 import '../../../data/sync/fake_remote.dart';
 import '../../../support/fake_settings_api.dart';
@@ -30,7 +29,6 @@ void main() {
           settingsApiProvider.overrideWithValue(FakeSettingsApi()),
           remoteApiProvider.overrideWithValue(FakeRemote()),
           syncSchedulerProvider.overrideWith((ref) async => null),
-          appVersionProvider.overrideWith((ref) async => '1.0.0'),
         ],
       );
       router.go(path);
