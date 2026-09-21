@@ -11,6 +11,9 @@ final class DomainDeps {
     required this.plans,
     required this.transactions,
     required this.quickActions,
+    required this.debts,
+    required this.goals,
+    required this.limits,
     required this.transactor,
     required this.ids,
     required this.clock,
@@ -22,6 +25,9 @@ final class DomainDeps {
   final PlannedItemRepository plans;
   final TransactionRepository transactions;
   final QuickActionRepository quickActions;
+  final DebtRepository debts;
+  final GoalRepository goals;
+  final CategoryLimitRepository limits;
   final Transactor transactor;
   final IdGenerator ids;
   final Clock clock;

@@ -655,7 +655,7 @@ class _GoalsCard extends ConsumerWidget {
       title: l10n.dashGoals,
       child: Column(
         children: [
-          for (final (goal, progress) in report.goals)
+          for (final (:goal, :progress) in report.goals)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
               child: Column(

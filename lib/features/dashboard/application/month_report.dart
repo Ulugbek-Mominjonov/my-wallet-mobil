@@ -1,8 +1,7 @@
-import 'package:drift/drift.dart' show BooleanExpressionOperators;
 import 'package:meta/meta.dart';
 import 'package:my_wallet/data/local/daos/report_dao.dart';
 import 'package:my_wallet/data/local/database.dart';
-import 'package:my_wallet/data/local/mappers.dart';
+import 'package:my_wallet/features/wallet/application/wallet_reports.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
 /// Kategoriya qatori + limit holati (BR-130, BR-131).
@@ -49,7 +48,7 @@ final class MonthReport {
   final Money fundBalance;
   final MonthSavings savings;
   final DebtTotals debts;
-  final List<(Goal, GoalProgress)> goals;
+  final List<GoalLine> goals;
 
   bool get isCurrent => month == today.monthKey;
 
@@ -80,8 +79,14 @@ final class MonthReportLoader {
   Future<MonthReport> load(MonthKey month) async {
     final reports = _db.reportDao;
     final ledger = _db.ledgerDao;
+    final wallet = WalletReportLoader(
+      _db,
+      _householdId,
+      base: base,
+      today: today,
+    );
     final current = today.monthKey;
-    final first = await reports.firstRecordMonth(_householdId) ?? month;
+    final first = (await reports.recordMonths(_householdId))?.first ?? month;
     final from = first.isBefore(month) ? first : month;
     final to = month.isAfter(current) ? month : current;
 
@@ -145,72 +150,14 @@ final class MonthReportLoader {
           ? Money(0, base)
           : balances[fund.id] ?? Money(0, base),
       savings: MonthSavings.of(withRecords, month),
-      debts: await _debts(month),
-      goals: await _goals(withRecords, balances),
+      debts: (await wallet.debts(paidIn: month)).totals,
+      // Maqsadlar — joriy holat (o'rtacha orttirish joriy oygacha, BR-092).
+      goals: (await wallet.goals(
+        history: [
+          for (final f in withRecords)
+            if (!f.month.isAfter(current)) f,
+        ],
+      )).lines,
     );
-  }
-
-  Future<DebtTotals> _debts(MonthKey month) async {
-    final activity = await _db.ledgerDao.debtActivity(_householdId);
-    final rows =
-        await (_db.select(_db.debts)..where(
-              (d) => d.householdId.equals(_householdId) & d.deletedAt.isNull(),
-            ))
-            .get();
-    final current = today.monthKey;
-    return DebtTotals.of(
-      [
-        for (final row in rows)
-          if (row.toDomain() case final debt)
-            (
-              debt,
-              DebtProgress.of(
-                debt,
-                paidInApp:
-                    activity[debt.id]?.paidInApp ??
-                    Money(0, debt.total.currency),
-                paymentCount: activity[debt.id]?.paymentCount ?? 0,
-                pendingAmount:
-                    activity[debt.id]?.pendingAmount ??
-                    Money(0, debt.total.currency),
-                pendingCount: activity[debt.id]?.pendingCount ?? 0,
-                currentMonth: current,
-              ),
-            ),
-      ],
-      baseCurrency: base,
-      paidThisMonth: await _db.ledgerDao.debtPaymentsIn(
-        _householdId,
-        month,
-        base: base,
-      ),
-    );
-  }
-
-  Future<List<(Goal, GoalProgress)>> _goals(
-    List<MonthFacts> history,
-    Map<String, Money> balances,
-  ) async {
-    final rows =
-        await (_db.select(_db.goals)..where(
-              (g) => g.householdId.equals(_householdId) & g.deletedAt.isNull(),
-            ))
-            .get();
-    final totals = OverallTotals.of(history);
-    return [
-      for (final row in rows)
-        if (row.toDomain() case final goal)
-          (
-            goal,
-            GoalProgress.of(
-              goal,
-              avgMonthlySaved: totals.avgMonthlySaved,
-              currentMonth: today.monthKey,
-              accountBalance: goal.accountId == null
-                  ? null
-                  : balances[goal.accountId],
-            ),
-          ),
-    ];
   }
 }

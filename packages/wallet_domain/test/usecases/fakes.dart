@@ -1,4 +1,17 @@
+import 'package:test/test.dart';
 import 'package:wallet_domain/wallet_domain.dart';
+
+/// Natija qiymati (xato bo'lsa — test yiqiladi).
+T ok<T>(Result<T> result) => switch (result) {
+  Ok(:final value) => value,
+  Err(:final failure) => fail('Ok kutilgan, $failure keldi'),
+};
+
+/// Natija xatosi (qiymat bo'lsa — test yiqiladi).
+Failure err<T>(Result<T> result) => switch (result) {
+  Ok(:final value) => fail('Err kutilgan, $value keldi'),
+  Err(:final failure) => failure,
+};
 
 /// Xotiradagi byudjet — E13 dagi drift implementatsiyasi o'rnida. Har
 /// repository — shu umumiy holat ustidagi kichik adapter.
@@ -48,6 +61,9 @@ final class FakeStore {
   final Map<String, PlannedItem> plans = {};
   final Map<String, Transaction> transactions = {};
   final Map<String, QuickAction> quickActions = {};
+  final Map<String, Debt> debts = {};
+  final Map<String, Goal> goals = {};
+  final Map<String, CategoryLimit> limits = {};
 
   /// Nechta lokal tranzaksiya ochilgan (yozuvlar birga bo'lishi uchun).
   int transactorRuns = 0;
@@ -60,6 +76,9 @@ final class FakeStore {
     plans: _Plans(this),
     transactions: _Transactions(this),
     quickActions: _QuickActions(this),
+    debts: _Debts(this),
+    goals: _Goals(this),
+    limits: _Limits(this),
     transactor: _Transactor(this),
     ids: _Ids(this),
     clock: _Clock(this),
@@ -147,6 +166,60 @@ final class _QuickActions implements QuickActionRepository {
 
   @override
   Future<QuickAction?> byId(String id) async => _store.quickActions[id];
+}
+
+final class _Debts implements DebtRepository {
+  const new(this._store);
+  final FakeStore _store;
+
+  @override
+  Future<Debt?> byId(String id) async => _store.debts[id];
+
+  @override
+  Future<Debt?> byName(String name) async => _store.debts.values
+      .where(
+        (d) =>
+            d.deletedAt == null && normalizeName(d.name) == normalizeName(name),
+      )
+      .firstOrNull;
+
+  @override
+  Future<void> save(Debt debt) async => _store.debts[debt.id] = debt;
+}
+
+final class _Goals implements GoalRepository {
+  const new(this._store);
+  final FakeStore _store;
+
+  @override
+  Future<Goal?> byId(String id) async => _store.goals[id];
+
+  @override
+  Future<Goal?> byName(String name) async => _store.goals.values
+      .where(
+        (g) =>
+            g.deletedAt == null && normalizeName(g.name) == normalizeName(name),
+      )
+      .firstOrNull;
+
+  @override
+  Future<void> save(Goal goal) async => _store.goals[goal.id] = goal;
+}
+
+final class _Limits implements CategoryLimitRepository {
+  const new(this._store);
+  final FakeStore _store;
+
+  @override
+  Future<CategoryLimit?> forCategory(String categoryId) async => _store
+      .limits
+      .values
+      .where((l) => l.categoryId == categoryId && l.deletedAt == null)
+      .firstOrNull;
+
+  @override
+  Future<void> save(CategoryLimit limit) async =>
+      _store.limits[limit.id] = limit;
 }
 
 final class _Transactor implements Transactor {

@@ -1,7 +1,9 @@
 import 'package:wallet_domain/src/entities/account.dart';
 import 'package:wallet_domain/src/entities/category.dart';
+import 'package:wallet_domain/src/entities/debt.dart';
 import 'package:wallet_domain/src/entities/directory_items.dart';
 import 'package:wallet_domain/src/entities/enums.dart';
+import 'package:wallet_domain/src/entities/goal.dart';
 import 'package:wallet_domain/src/entities/household.dart';
 import 'package:wallet_domain/src/entities/planned_item.dart';
 import 'package:wallet_domain/src/entities/transaction.dart';
@@ -51,6 +53,28 @@ abstract interface class TransactionRepository {
 
 abstract interface class QuickActionRepository {
   Future<QuickAction?> byId(String id);
+}
+
+abstract interface class DebtRepository {
+  Future<Debt?> byId(String id);
+
+  /// BR-003: o'chirilmagan, normallashtirilgan nomi bir xil qarz.
+  Future<Debt?> byName(String name);
+  Future<void> save(Debt debt);
+}
+
+abstract interface class GoalRepository {
+  Future<Goal?> byId(String id);
+
+  /// BR-003: o'chirilmagan, normallashtirilgan nomi bir xil maqsad.
+  Future<Goal?> byName(String name);
+  Future<void> save(Goal goal);
+}
+
+abstract interface class CategoryLimitRepository {
+  /// Kategoriyaning amaldagi (o'chirilmagan) limiti — bittadan (BR-130).
+  Future<CategoryLimit?> forCategory(String categoryId);
+  Future<void> save(CategoryLimit limit);
 }
 
 /// Bir nechta yozuv — bitta lokal tranzaksiyada (hammasi yoki hech biri).

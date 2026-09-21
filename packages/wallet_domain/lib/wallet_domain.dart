@@ -36,6 +36,7 @@ export 'src/usecases/deps.dart';
 export 'src/usecases/directory_usecases.dart';
 export 'src/usecases/plan_usecases.dart';
 export 'src/usecases/transaction_usecases.dart';
+export 'src/usecases/wallet_usecases.dart';
 export 'src/value_objects/currency.dart';
 export 'src/value_objects/local_date.dart';
 export 'src/value_objects/money.dart';

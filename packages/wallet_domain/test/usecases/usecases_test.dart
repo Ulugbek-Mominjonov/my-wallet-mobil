@@ -3,18 +3,6 @@ import 'package:wallet_domain/wallet_domain.dart';
 
 import 'fakes.dart';
 
-/// Natija `Ok` bo'lishi shart — qiymatini qaytaradi.
-T ok<T>(Result<T> result) => switch (result) {
-  Ok(:final value) => value,
-  Err(:final failure) => fail('Ok kutilgan, $failure keldi'),
-};
-
-/// Natija `Err` bo'lishi shart — sababini qaytaradi.
-Failure err<T>(Result<T> result) => switch (result) {
-  Ok(:final value) => fail('Err kutilgan, $value keldi'),
-  Err(:final failure) => failure,
-};
-
 PlannedItem _plan(
   String id, {
   PlanKind kind = PlanKind.expense,

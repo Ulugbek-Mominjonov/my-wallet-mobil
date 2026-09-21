@@ -26,6 +26,9 @@ DomainDeps localDomainDeps(
     plans: DriftPlannedItemRepository(db, householdId, outbox),
     transactions: DriftTransactionRepository(db, householdId, outbox),
     quickActions: DriftQuickActionRepository(db, householdId),
+    debts: DriftDebtRepository(db, householdId, outbox),
+    goals: DriftGoalRepository(db, householdId, outbox),
+    limits: DriftCategoryLimitRepository(db, householdId, outbox),
     transactor: DriftTransactor(db),
     ids: ids,
     clock: clock,
@@ -261,6 +264,120 @@ final class DriftTransactionRepository implements TransactionRepository {
         .insertOnConflictUpdate(transaction.toCompanion());
     await _outbox.enqueue(
       table: 'transactions',
+      householdId: _householdId,
+      row: await query.getSingle(),
+      before: before,
+    );
+  });
+}
+
+final class DriftDebtRepository implements DebtRepository {
+  const new(this._db, this._householdId, this._outbox);
+  final AppDatabase _db;
+  final String _householdId;
+  final OutboxWriter _outbox;
+
+  @override
+  Future<Debt?> byId(String id) async =>
+      (await (_db.select(_db.debts)..where(
+                (d) => d.householdId.equals(_householdId) & d.id.equals(id),
+              ))
+              .getSingleOrNull())
+          ?.toDomain();
+
+  @override
+  Future<Debt?> byName(String name) async =>
+      (await (_db.select(_db.debts)..where(
+                (d) =>
+                    d.householdId.equals(_householdId) &
+                    d.deletedAt.isNull() &
+                    d.name.lower().equals(normalizeName(name)),
+              ))
+              .getSingleOrNull())
+          ?.toDomain();
+
+  @override
+  Future<void> save(Debt debt) => _db.transaction(() async {
+    final query = _db.select(_db.debts)..where((d) => d.id.equals(debt.id));
+    final before = await query.getSingleOrNull();
+    await _db.into(_db.debts).insertOnConflictUpdate(debt.toCompanion());
+    await _outbox.enqueue(
+      table: 'debts',
+      householdId: _householdId,
+      row: await query.getSingle(),
+      before: before,
+    );
+  });
+}
+
+final class DriftGoalRepository implements GoalRepository {
+  const new(this._db, this._householdId, this._outbox);
+  final AppDatabase _db;
+  final String _householdId;
+  final OutboxWriter _outbox;
+
+  @override
+  Future<Goal?> byId(String id) async =>
+      (await (_db.select(_db.goals)..where(
+                (g) => g.householdId.equals(_householdId) & g.id.equals(id),
+              ))
+              .getSingleOrNull())
+          ?.toDomain();
+
+  @override
+  Future<Goal?> byName(String name) async =>
+      (await (_db.select(_db.goals)..where(
+                (g) =>
+                    g.householdId.equals(_householdId) &
+                    g.deletedAt.isNull() &
+                    g.name.lower().equals(normalizeName(name)),
+              ))
+              .getSingleOrNull())
+          ?.toDomain();
+
+  @override
+  Future<void> save(Goal goal) => _db.transaction(() async {
+    final query = _db.select(_db.goals)..where((g) => g.id.equals(goal.id));
+    final before = await query.getSingleOrNull();
+    await _db.into(_db.goals).insertOnConflictUpdate(goal.toCompanion());
+    await _outbox.enqueue(
+      table: 'goals',
+      householdId: _householdId,
+      row: await query.getSingle(),
+      before: before,
+    );
+  });
+}
+
+final class DriftCategoryLimitRepository implements CategoryLimitRepository {
+  const new(this._db, this._householdId, this._outbox);
+  final AppDatabase _db;
+  final String _householdId;
+  final OutboxWriter _outbox;
+
+  @override
+  Future<CategoryLimit?> forCategory(String categoryId) async {
+    final row =
+        await (_db.select(_db.categoryLimits)..where(
+              (l) =>
+                  l.householdId.equals(_householdId) &
+                  l.categoryId.equals(categoryId) &
+                  l.deletedAt.isNull(),
+            ))
+            .getSingleOrNull();
+    return row?.toDomain(await _baseCurrency(_db, _householdId));
+  }
+
+  @override
+  Future<void> save(CategoryLimit limit) => _db.transaction(() async {
+    final query = _db.select(_db.categoryLimits)
+      ..where((l) => l.id.equals(limit.id));
+    final before = await query.getSingleOrNull();
+    await _db
+        .into(_db.categoryLimits)
+        .insertOnConflictUpdate(limit.toCompanion());
+    await _outbox.enqueue(
+      table: 'category_limits',
       householdId: _householdId,
       row: await query.getSingle(),
       before: before,

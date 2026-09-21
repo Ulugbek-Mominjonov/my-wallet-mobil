@@ -49,22 +49,28 @@ typedef MonthState = ({bool opened, bool closed});
 class ReportDao extends DatabaseAccessor<AppDatabase> with _$ReportDaoMixin {
   new(super.attachedDatabase);
 
-  /// Birinchi yozuv oyi (amal yoki reja) — prognoz va jamg'arma tarixi uchun.
-  Future<MonthKey?> firstRecordMonth(String householdId) async {
+  /// Birinchi va oxirgi yozuv oyi (amal yoki reja) — prognoz, jamg'arma va
+  /// fond tarixi uchun; yozuv yo'q — null.
+  Future<({MonthKey first, MonthKey last})?> recordMonths(
+    String householdId,
+  ) async {
     final row = await customSelect(
       '''
-      SELECT MIN(month) AS month FROM (
-        SELECT MIN(budget_month) AS month FROM transactions
+      SELECT MIN(first) AS first, MAX(last) AS last FROM (
+        SELECT MIN(budget_month) AS first, MAX(budget_month) AS last
+          FROM transactions
          WHERE household_id = ?1 AND deleted_at IS NULL
         UNION ALL
-        SELECT MIN(budget_month) FROM planned_items
+        SELECT MIN(budget_month), MAX(budget_month) FROM planned_items
          WHERE household_id = ?1 AND deleted_at IS NULL AND skipped_at IS NULL
       )''',
       variables: [Variable.withString(householdId)],
       readsFrom: {transactions, plannedItems},
     ).getSingle();
-    final month = row.read<String?>('month');
-    return month == null ? null : MonthKey.parse(month);
+    final first = row.read<String?>('first');
+    final last = row.read<String?>('last');
+    if (first == null || last == null) return null;
+    return (first: MonthKey.parse(first), last: MonthKey.parse(last));
   }
 
   /// BR-090, BR-131 (serverdagi `report_month.by_category`): xarajat va
