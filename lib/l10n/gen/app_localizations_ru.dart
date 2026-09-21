@@ -1177,4 +1177,21 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get limitMonthly => 'Месячный лимит';
+
+  @override
+  String get onboardingNotifyTitle => '🔔 Напоминания';
+
+  @override
+  String get onboardingNotifyBody =>
+      'Напомним о днях платежей, лимитах и месячном отчёте';
+
+  @override
+  String get onboardingNotifyAllow => 'Включить';
+
+  @override
+  String get onboardingNotifyOn => 'Включено';
+
+  @override
+  String get onboardingNotifyDenied =>
+      'Не разрешено — можно включить позже в настройках';
 }

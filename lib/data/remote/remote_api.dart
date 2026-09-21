@@ -59,6 +59,9 @@ abstract interface class RemoteApi {
     String platform,
     String? appVersion,
   });
+
+  /// Chiqishda — shu qurilmaga push yuborilmasin.
+  Future<Result<void>> unregisterDevice(String token);
 }
 
 final class RpcRemoteApi implements RemoteApi {
@@ -170,6 +173,10 @@ final class RpcRemoteApi implements RemoteApi {
     'p_platform': platform,
     'p_app_version': appVersion,
   }, (_) {});
+
+  @override
+  Future<Result<void>> unregisterDevice(String token) =>
+      _call('unregister_device', {'p_token': token}, (_) {});
 
   Future<Result<T>> _call<T>(
     String function,

@@ -338,5 +338,10 @@
   "limitNone": "Без лимита",
   "limitRemove": "Убрать лимит",
   "limitsReadOnly": "Лимиты меняют только владелец или администратор",
-  "limitMonthly": "Месячный лимит"
+  "limitMonthly": "Месячный лимит",
+  "onboardingNotifyTitle": "🔔 Напоминания",
+  "onboardingNotifyBody": "Напомним о днях платежей, лимитах и месячном отчёте",
+  "onboardingNotifyAllow": "Включить",
+  "onboardingNotifyOn": "Включено",
+  "onboardingNotifyDenied": "Не разрешено — можно включить позже в настройках"
 }

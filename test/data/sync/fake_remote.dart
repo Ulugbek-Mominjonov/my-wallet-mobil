@@ -128,10 +128,23 @@ final class FakeRemote implements RemoteApi {
   Future<Result<TelegramLinkToken>> telegramLinkToken() =>
       throw UnimplementedError();
 
+  /// Ro'yxatdan o'tgan / chiqarilgan push tokenlari (E19).
+  final devices = <String>[];
+  final unregistered = <String>[];
+
   @override
   Future<Result<void>> registerDevice(
     String token, {
     String platform = 'android',
     String? appVersion,
-  }) => throw UnimplementedError();
+  }) async {
+    devices.add(token);
+    return const Ok(null);
+  }
+
+  @override
+  Future<Result<void>> unregisterDevice(String token) async {
+    unregistered.add(token);
+    return const Ok(null);
+  }
 }

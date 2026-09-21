@@ -1178,4 +1178,21 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get limitMonthly => 'Monthly limit';
+
+  @override
+  String get onboardingNotifyTitle => '🔔 Reminders';
+
+  @override
+  String get onboardingNotifyBody =>
+      'We\'ll remind you about payment days, limits and the monthly report';
+
+  @override
+  String get onboardingNotifyAllow => 'Turn on';
+
+  @override
+  String get onboardingNotifyOn => 'Turned on';
+
+  @override
+  String get onboardingNotifyDenied =>
+      'Not allowed — you can turn it on later in settings';
 }

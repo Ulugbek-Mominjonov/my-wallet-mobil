@@ -2132,6 +2132,36 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Oylik limit'**
   String get limitMonthly;
+
+  /// No description provided for @onboardingNotifyTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'🔔 Eslatmalar'**
+  String get onboardingNotifyTitle;
+
+  /// No description provided for @onboardingNotifyBody.
+  ///
+  /// In uz, this message translates to:
+  /// **'To\'lov kunlari, limitlar va oylik hisobot haqida xabar beramiz'**
+  String get onboardingNotifyBody;
+
+  /// No description provided for @onboardingNotifyAllow.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yoqish'**
+  String get onboardingNotifyAllow;
+
+  /// No description provided for @onboardingNotifyOn.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yoqildi'**
+  String get onboardingNotifyOn;
+
+  /// No description provided for @onboardingNotifyDenied.
+  ///
+  /// In uz, this message translates to:
+  /// **'Ruxsat berilmadi — keyin sozlamalardan yoqish mumkin'**
+  String get onboardingNotifyDenied;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

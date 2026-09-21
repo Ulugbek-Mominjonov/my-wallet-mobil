@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Supabase (release build ham — debug/profile manifestlarida bor edi). -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Push va lokal eslatmalar (Android 13+ — so'raladi, E19). -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <!-- Qayta yuklangach rejali eslatmalar tiklanadi (BR-168). -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <!-- allowBackup=false: sessiya Keystore kaliti bilan shifrlangan — boshqa
          qurilmaga tiklangan zaxirani ochib bo'lmaydi; lokal baza esa server
          nusxasi (qayta kirishda yuklanadi). -->
@@ -40,6 +44,16 @@
                 <data android:scheme="${deepLinkScheme}" android:host="auth-callback"/>
             </intent-filter>
         </activity>
+        <!-- Rejali lokal eslatmalar (flutter_local_notifications, BR-168). -->
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
@@ -55,6 +69,11 @@
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
+        </intent>
+        <!-- Telegram botini ulash havolasi (url_launcher, BR-163). -->
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <data android:scheme="https"/>
         </intent>
     </queries>
 </manifest>

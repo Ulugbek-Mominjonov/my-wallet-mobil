@@ -8,6 +8,7 @@ import 'package:my_wallet/app/app.dart';
 import 'package:my_wallet/app/router.dart';
 import 'package:my_wallet/core/config/app_config.dart';
 import 'package:my_wallet/core/di/app_providers.dart';
+import 'package:my_wallet/core/notifications/local_notifier.dart';
 import 'package:my_wallet/data/auth/auth_providers.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
@@ -15,6 +16,7 @@ import 'package:my_wallet/features/household/application/invite_links.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 
 import 'fake_auth.dart';
+import 'fake_notifier.dart';
 import 'fake_startup.dart';
 import 'test_database.dart';
 
@@ -43,6 +45,9 @@ Future<GoRouter> pumpApp(
 
   /// Lokal baza (standart — bo'sh xotiradagi baza).
   AppDatabase? database,
+
+  /// Qurilma bildirishnomalari (standart — yozib boruvchi soxta).
+  FakeLocalNotifier? notifier,
 }) async {
   tester.platformDispatcher.localesTestValue = const [Locale('uz')];
   addTearDown(tester.platformDispatcher.clearLocalesTestValue);
@@ -71,6 +76,7 @@ Future<GoRouter> pumpApp(
       ),
       // Lokal baza — xotirada (testda haqiqiy fayl ochilmaydi).
       appDatabaseProvider.overrideWithValue(db),
+      localNotifierProvider.overrideWithValue(notifier ?? FakeLocalNotifier()),
       ...overrides,
     ],
   );

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_wallet/app/router.dart';
 import 'package:my_wallet/core/design_system/app_theme.dart';
 import 'package:my_wallet/core/l10n/locale_resolution.dart';
+import 'package:my_wallet/features/notifications/application/notification_controller.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
 
 /// Ilova ildizi: tema, lokalizatsiya va marshrutlash.
@@ -11,6 +12,14 @@ class MyWalletApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Bildirishnomalar (E19): ro'yxatdan o'tish, ilova ochiq paytidagi push,
+    // bosilganda — tegishli ekran.
+    ref
+      ..listen(pushRegistrationProvider, (_, _) {})
+      ..listen(foregroundPushProvider, (_, _) {})
+      ..listen(notificationTapsProvider, (_, next) {
+        if (next.value case final route?) ref.read(routerProvider).go(route);
+      });
     return MaterialApp.router(
       onGenerateTitle: (context) => AppL10n.of(context).appName,
       theme: buildAppTheme(Brightness.light),

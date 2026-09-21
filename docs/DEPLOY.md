@@ -68,8 +68,11 @@ keytool -list -v -keystore upload.jks -alias upload   # SHA-1 va SHA-256
 `mywallet-stg`, `mywallet` — taklif havolasi `<sxema>://invite/<kod>` va auth
 qaytishi (`AUTH_REDIRECT`). Bir telefonda uchala versiya aralashmaydi.
 
-`google-services.json` — flavor papkalarida
-(`android/app/src/staging/`, `android/app/src/prod/`); CI sirlardan yozadi.
+**Push (FCM, E19):** `google-services.json` va Gradle plagini ishlatilmaydi —
+Firebase Dart'dan env qiymatlari bilan ishga tushadi: `FIREBASE_API_KEY`,
+`FIREBASE_APP_ID`, `FIREBASE_MESSAGING_SENDER_ID`, `FIREBASE_PROJECT_ID`
+(Firebase → Project settings → Android ilova, flavor'ning `applicationId`si
+bilan). Bo'sh qoldirilsa (dev) — push o'chiq, lokal eslatmalar ishlaydi.
 
 ---
 

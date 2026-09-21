@@ -338,5 +338,10 @@
   "limitNone": "No limit",
   "limitRemove": "Remove limit",
   "limitsReadOnly": "Only the owner or an admin can change limits",
-  "limitMonthly": "Monthly limit"
+  "limitMonthly": "Monthly limit",
+  "onboardingNotifyTitle": "🔔 Reminders",
+  "onboardingNotifyBody": "We'll remind you about payment days, limits and the monthly report",
+  "onboardingNotifyAllow": "Turn on",
+  "onboardingNotifyOn": "Turned on",
+  "onboardingNotifyDenied": "Not allowed — you can turn it on later in settings"
 }

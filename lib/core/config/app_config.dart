@@ -15,6 +15,7 @@ final class AppConfig {
     required this.googleWebClientId,
     required this.authRedirect,
     required this.telegramBotUsername,
+    this.firebase,
   });
 
   /// Qiymatlarni o'qiydi va tekshiradi. Noto'g'ri env fayl bilan ishga
@@ -48,6 +49,7 @@ final class AppConfig {
       telegramBotUsername: const String.fromEnvironment(
         'TELEGRAM_BOT_USERNAME',
       ),
+      firebase: FirebaseSettings.fromEnvironment(),
     );
   }
 
@@ -57,4 +59,42 @@ final class AppConfig {
   final String googleWebClientId;
   final String authRedirect;
   final String telegramBotUsername;
+
+  /// Push (FCM, E19) — sozlanmagan bo'lsa (dev, testlar) null: push o'chiq.
+  final FirebaseSettings? firebase;
+}
+
+/// Firebase ilova identifikatorlari (sir emas, lekin build env'idan —
+/// `google-services.json` va Gradle plagini kerak emas).
+@immutable
+final class FirebaseSettings {
+  const new({
+    required this.apiKey,
+    required this.appId,
+    required this.messagingSenderId,
+    required this.projectId,
+  });
+
+  /// Hammasi berilgan bo'lsa — sozlama, aks holda null (qisman sozlama
+  /// ham o'chiq hisoblanadi).
+  static FirebaseSettings? fromEnvironment() {
+    const apiKey = String.fromEnvironment('FIREBASE_API_KEY');
+    const appId = String.fromEnvironment('FIREBASE_APP_ID');
+    const senderId = String.fromEnvironment('FIREBASE_MESSAGING_SENDER_ID');
+    const projectId = String.fromEnvironment('FIREBASE_PROJECT_ID');
+    if ([apiKey, appId, senderId, projectId].any((v) => v.isEmpty)) {
+      return null;
+    }
+    return const FirebaseSettings(
+      apiKey: apiKey,
+      appId: appId,
+      messagingSenderId: senderId,
+      projectId: projectId,
+    );
+  }
+
+  final String apiKey;
+  final String appId;
+  final String messagingSenderId;
+  final String projectId;
 }

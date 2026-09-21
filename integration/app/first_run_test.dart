@@ -1,6 +1,7 @@
 // E14-T06: yangi foydalanuvchining birinchi ochilishi — haqiqiy lokal
 // Supabase bilan: email kodi → byudjet yuklanishi → sozlash ustasi →
 // dashboard. Ilovaning o'zi (router, ekranlar, sinxron) ishlaydi.
+
 import 'dart:io';
 
 import 'package:drift/drift.dart' show driftRuntimeOptions;
@@ -13,6 +14,7 @@ import 'package:http/io_client.dart';
 import 'package:my_wallet/app/app.dart';
 import 'package:my_wallet/core/config/app_config.dart';
 import 'package:my_wallet/core/di/app_providers.dart';
+import 'package:my_wallet/core/notifications/local_notifier.dart';
 import 'package:my_wallet/core/security/secure_screen.dart';
 import 'package:my_wallet/data/auth/auth_gateway.dart';
 import 'package:my_wallet/data/auth/auth_providers.dart';
@@ -24,6 +26,7 @@ import 'package:my_wallet/data/sync/sync_providers.dart';
 import 'package:my_wallet/features/household/application/invite_links.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 
+import '../../test/support/fake_notifier.dart';
 import '../support/local_supabase.dart';
 
 final class _NoGoogle implements GoogleIdTokenSource {
@@ -96,6 +99,8 @@ void main() {
           ),
           // Versiya tekshiruvi (BR-214) — plagin host'da yo'q.
           appVersionProvider.overrideWith((ref) async => '9.9.9'),
+          // Bildirishnomalar plagini host'da yo'q (E19).
+          localNotifierProvider.overrideWithValue(FakeLocalNotifier()),
         ],
         child: const MyWalletApp(),
       ),
@@ -125,7 +130,7 @@ void main() {
     await _settle(tester);
 
     // Maosh jadvali: birinchi daromad turini yoqamiz.
-    expect(find.text('Maosh jadvali'), findsOneWidget);
+    await _until(tester, find.text('Maosh jadvali'));
     await tester.tap(find.byType(Switch).first);
     await _settle(tester);
     await tester.enterText(
@@ -138,7 +143,7 @@ void main() {
       await tester.tap(find.text('Davom etish'));
       await _settle(tester);
     }
-    expect(find.text('Tayyor!'), findsOneWidget);
+    await _until(tester, find.text('Tayyor!'));
 
     // 3. Yakun: onboarding_apply + joriy oy → dashboard.
     await tester.tap(find.text('Boshlash'));
@@ -146,9 +151,10 @@ void main() {
 
     expect(find.text('Xulosa'), findsWidgets);
 
-    expect(
-      await tester.runAsync(() => db.select(db.accounts).get()),
-      isNotEmpty,
+    // Spravochniklar sinxrondan keladi — sekin CI'da dashboard'dan keyin.
+    await _untilTrue(
+      tester,
+      () async => (await db.select(db.accounts).get()).isNotEmpty,
       reason: 'spravochniklar sinxrondan keldi',
     );
     // Ochilgan oy rejalari serverda — `integration/onboarding` tekshiradi.
@@ -177,6 +183,21 @@ Future<void> _tick(WidgetTester tester) async {
     () => Future<void>.delayed(const Duration(milliseconds: 50)),
   );
   await tester.pump();
+}
+
+/// Shart bajarilguncha kutadi (masalan sinxron natijasi lokal bazada).
+Future<void> _untilTrue(
+  WidgetTester tester,
+  Future<bool> Function() check, {
+  required String reason,
+  Duration timeout = const Duration(seconds: 30),
+}) async {
+  final deadline = DateTime.now().add(timeout);
+  while (DateTime.now().isBefore(deadline)) {
+    if (await tester.runAsync(check) ?? false) return;
+    await _tick(tester);
+  }
+  fail('shart bajarilmadi: $reason');
 }
 
 /// Element chiqquncha kutadi (tarmoq — haqiqiy).

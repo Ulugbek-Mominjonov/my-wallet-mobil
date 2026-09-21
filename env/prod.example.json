@@ -4,5 +4,9 @@
   "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_xxx",
   "GOOGLE_WEB_CLIENT_ID": "",
   "AUTH_REDIRECT": "mywallet://auth-callback",
-  "TELEGRAM_BOT_USERNAME": "MyWalletUzBot"
+  "TELEGRAM_BOT_USERNAME": "MyWalletUzBot",
+  "FIREBASE_API_KEY": "",
+  "FIREBASE_APP_ID": "",
+  "FIREBASE_MESSAGING_SENDER_ID": "",
+  "FIREBASE_PROJECT_ID": ""
 }

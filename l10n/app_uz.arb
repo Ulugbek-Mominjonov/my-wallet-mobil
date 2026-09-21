@@ -705,5 +705,10 @@
   "limitNone": "Limit yo'q",
   "limitRemove": "Limitni olib tashlash",
   "limitsReadOnly": "Limitlarni faqat ega yoki admin o'zgartiradi",
-  "limitMonthly": "Oylik limit"
+  "limitMonthly": "Oylik limit",
+  "onboardingNotifyTitle": "🔔 Eslatmalar",
+  "onboardingNotifyBody": "To'lov kunlari, limitlar va oylik hisobot haqida xabar beramiz",
+  "onboardingNotifyAllow": "Yoqish",
+  "onboardingNotifyOn": "Yoqildi",
+  "onboardingNotifyDenied": "Ruxsat berilmadi — keyin sozlamalardan yoqish mumkin"
 }

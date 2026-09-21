@@ -438,9 +438,13 @@
 
 > **Qoidalar:** BR-015, BR-160..168, BR-211..214. Bog'liqlik: E11 (admin).
 
-- [ ] **E19-T01** FCM: ruxsat so'rash (onboarding'da), token → `register_device`,
-  token yangilanishi, foreground ko'rsatish, bildirishnomani bosish → tegishli
-  ekran (deep link: to'lovlar / oylik hisobot / limit kategoriyasi).
+- [x] **E19-T01** FCM: Firebase Dart'dan env bilan ishga tushadi
+  (`FIREBASE_*`, `google-services.json`siz; sozlanmasa — push o'chiq),
+  `PushService` abstraksiyasi; ruxsat — onboarding yakunida (🔔 karta),
+  token → `register_device` (yangilanganda ham), chiqishda
+  `unregister_device` + lokal eslatmalar o'chadi; ilova ochiq paytidagi push —
+  lokal bildirishnoma; bosilganda `data.type` → oq ro'yxatdagi marshrut
+  (`/payments`, `/wallet/limits`, `/`), boshqasi e'tiborsiz.
 - [ ] **E19-T02** Lokal eslatmalar (BR-168): yaqin 14 kun rejalari uchun
   qurilmada `zonedSchedule` (eslatma soati), ma'lumot o'zgarsa qayta
   rejalashtirish, ≤ 30 ta.

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:my_wallet/core/notifications/local_notifier.dart';
+import 'package:my_wallet/core/notifications/push_service.dart';
 import 'package:my_wallet/data/auth/auth_providers.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/local/mappers.dart';
@@ -10,7 +12,9 @@ import 'package:my_wallet/features/auth/presentation/sign_out_dialog.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
+import '../../data/sync/fake_remote.dart';
 import '../../support/fake_auth.dart';
+import '../../support/fake_notifier.dart';
 import '../../support/test_database.dart';
 
 void main() {
@@ -54,11 +58,25 @@ void main() {
     "chiqish: sessiya va foydalanuvchi ma'lumoti; qurilma ID si qoladi",
     () async {
       await addPending(2);
-      final signOut = SignOut(auth, db);
+      final push = FakePushService();
+      final remote = FakeRemote();
+      final notifier = FakeLocalNotifier();
+      final signOut = SignOut(
+        auth,
+        db,
+        push: push,
+        remote: remote,
+        notifier: notifier,
+      );
       expect(await signOut.unsentChanges(), 2);
 
       await signOut();
       expect(auth.calls, ['signOut']);
+      // E19: qurilma push'dan chiqariladi, lokal eslatmalar o'chadi.
+      expect(remote.unregistered, ['token-1']);
+      expect(push.deleted, isTrue);
+      expect(notifier.replaceCalls, 1);
+      expect(notifier.scheduled, isEmpty);
       expect(await db.select(db.households).get(), isEmpty);
       expect(await db.select(db.outbox).get(), isEmpty);
       expect(await db.deviceId(newId: () => 'new'), 'device-1');
@@ -85,6 +103,9 @@ void main() {
           overrides: [
             authGatewayProvider.overrideWithValue(auth),
             appDatabaseProvider.overrideWithValue(db),
+            pushServiceProvider.overrideWithValue(FakePushService()),
+            remoteApiProvider.overrideWithValue(FakeRemote()),
+            localNotifierProvider.overrideWithValue(FakeLocalNotifier()),
           ],
           child: MaterialApp(
             locale: const Locale('uz'),

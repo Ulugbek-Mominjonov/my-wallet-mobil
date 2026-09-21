@@ -1177,4 +1177,21 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get limitMonthly => 'Oylik limit';
+
+  @override
+  String get onboardingNotifyTitle => '🔔 Eslatmalar';
+
+  @override
+  String get onboardingNotifyBody =>
+      'To\'lov kunlari, limitlar va oylik hisobot haqida xabar beramiz';
+
+  @override
+  String get onboardingNotifyAllow => 'Yoqish';
+
+  @override
+  String get onboardingNotifyOn => 'Yoqildi';
+
+  @override
+  String get onboardingNotifyDenied =>
+      'Ruxsat berilmadi — keyin sozlamalardan yoqish mumkin';
 }

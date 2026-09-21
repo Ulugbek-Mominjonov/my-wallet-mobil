@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_wallet/core/design_system/tokens.dart';
+import 'package:my_wallet/core/notifications/local_notifier.dart';
 import 'package:my_wallet/core/widgets/app_card.dart';
 import 'package:my_wallet/core/widgets/money_field.dart';
 import 'package:my_wallet/features/onboarding/application/onboarding_controller.dart';
@@ -124,7 +125,11 @@ class OnboardingScreen extends ConsumerWidget {
       OnboardingStep.fund => [
         _FundCard(fund: state.fund, accounts: accounts, currency: currency),
       ],
-      OnboardingStep.done => [_Summary(state: state)],
+      OnboardingStep.done => [
+        _Summary(state: state),
+        const SizedBox(height: AppSpacing.md),
+        const _NotificationsCard(),
+      ],
     };
   }
 
@@ -449,6 +454,52 @@ class _Summary extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+/// E19-T01: bildirishnoma ruxsati (Android 13+) — push va lokal eslatmalar.
+class _NotificationsCard extends ConsumerStatefulWidget {
+  const new();
+
+  @override
+  ConsumerState<_NotificationsCard> createState() => _NotificationsCardState();
+}
+
+class _NotificationsCardState extends ConsumerState<_NotificationsCard> {
+  /// null — hali so'ralmagan.
+  bool? _granted;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppL10n.of(context);
+    final theme = Theme.of(context);
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l10n.onboardingNotifyTitle, style: theme.textTheme.titleSmall),
+          const SizedBox(height: AppSpacing.xs),
+          Text(l10n.onboardingNotifyBody),
+          const SizedBox(height: AppSpacing.sm),
+          switch (_granted) {
+            null => FilledButton.tonal(
+              onPressed: () => unawaited(_request()),
+              child: Text(l10n.onboardingNotifyAllow),
+            ),
+            true => Text('✅ ${l10n.onboardingNotifyOn}'),
+            false => Text(
+              l10n.onboardingNotifyDenied,
+              style: theme.textTheme.bodySmall,
+            ),
+          },
+        ],
+      ),
+    );
+  }
+
+  Future<void> _request() async {
+    final granted = await ref.read(localNotifierProvider).requestPermission();
+    if (mounted) setState(() => _granted = granted);
   }
 }
 
