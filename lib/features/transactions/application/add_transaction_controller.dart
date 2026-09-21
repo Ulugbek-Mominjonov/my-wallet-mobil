@@ -166,6 +166,19 @@ base class AddTransactionController extends Notifier<AddTransactionState> {
 
   void setNote(String note) => state = state.copyWith(note: note);
 
+  /// BR-141: uzoq bosilgan tez tugma — forma shu qiymatlar bilan to'ladi
+  /// (summani o'zgartirib saqlash uchun).
+  void prefill(QuickAction action) => state = state.copyWith(
+    kind: TransactionKind.expense,
+    entry: AmountEntry(
+      digits: '${action.amount.minor ~/ action.amount.currency.minorPerMajor}',
+    ),
+    accountId: action.accountId,
+    categoryId: action.categoryId,
+    payee: action.payee,
+    clearManualMonth: true,
+  );
+
   void toggleTag(String tagId) => state = state.copyWith(
     tagIds: state.tagIds.contains(tagId)
         ? ({...state.tagIds}..remove(tagId))

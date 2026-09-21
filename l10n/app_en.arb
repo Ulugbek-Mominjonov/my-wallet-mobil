@@ -156,5 +156,8 @@
   "monthRelationManual": "chosen manually",
   "monthQuestion": "Which month's budget?",
   "monthByDate": "By date",
-  "monthChoose": "Choose"
+  "monthChoose": "Choose",
+  "quickSaved": "{name} — {amount} recorded",
+  "actionUndo": "Undo",
+  "quickHint": "Tap to record, hold to edit"
 }

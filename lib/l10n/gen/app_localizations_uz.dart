@@ -548,4 +548,15 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get monthChoose => 'Tanlash';
+
+  @override
+  String quickSaved(String name, String amount) {
+    return '$name — $amount yozildi';
+  }
+
+  @override
+  String get actionUndo => 'Bekor qilish';
+
+  @override
+  String get quickHint => 'Bosing — darhol yoziladi, bosib turing — tahrirlash';
 }

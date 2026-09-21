@@ -1040,6 +1040,24 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Tanlash'**
   String get monthChoose;
+
+  /// BR-141 tez tugma (E15-T04)
+  ///
+  /// In uz, this message translates to:
+  /// **'{name} — {amount} yozildi'**
+  String quickSaved(String name, String amount);
+
+  /// No description provided for @actionUndo.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bekor qilish'**
+  String get actionUndo;
+
+  /// No description provided for @quickHint.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bosing — darhol yoziladi, bosib turing — tahrirlash'**
+  String get quickHint;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

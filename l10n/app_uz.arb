@@ -312,5 +312,19 @@
         "type": "String"
       }
     }
+  },
+  "quickSaved": "{name} — {amount} yozildi",
+  "actionUndo": "Bekor qilish",
+  "quickHint": "Bosing — darhol yoziladi, bosib turing — tahrirlash",
+  "@quickSaved": {
+    "description": "BR-141 tez tugma (E15-T04)",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
   }
 }

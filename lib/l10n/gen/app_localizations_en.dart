@@ -547,4 +547,15 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get monthChoose => 'Choose';
+
+  @override
+  String quickSaved(String name, String amount) {
+    return '$name — $amount recorded';
+  }
+
+  @override
+  String get actionUndo => 'Undo';
+
+  @override
+  String get quickHint => 'Tap to record, hold to edit';
 }

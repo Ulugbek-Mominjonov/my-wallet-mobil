@@ -9,6 +9,7 @@ mixin _$DirectoryDaoMixin on DatabaseAccessor<AppDatabase> {
   $TransactionsTable get transactions => attachedDatabase.transactions;
   $TagsTable get tags => attachedDatabase.tags;
   $DebtsTable get debts => attachedDatabase.debts;
+  $QuickActionsTable get quickActions => attachedDatabase.quickActions;
   DirectoryDaoManager get managers => DirectoryDaoManager(this);
 }
 
@@ -25,4 +26,6 @@ class DirectoryDaoManager {
       $$TagsTableTableManager(_db.attachedDatabase, _db.tags);
   $$DebtsTableTableManager get debts =>
       $$DebtsTableTableManager(_db.attachedDatabase, _db.debts);
+  $$QuickActionsTableTableManager get quickActions =>
+      $$QuickActionsTableTableManager(_db.attachedDatabase, _db.quickActions);
 }

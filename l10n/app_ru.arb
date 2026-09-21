@@ -156,5 +156,8 @@
   "monthRelationManual": "выбран вручную",
   "monthQuestion": "В бюджет какого месяца?",
   "monthByDate": "По дате",
-  "monthChoose": "Выбрать"
+  "monthChoose": "Выбрать",
+  "quickSaved": "{name} — {amount} записано",
+  "actionUndo": "Отменить",
+  "quickHint": "Нажмите — запишется сразу, удерживайте — изменить"
 }

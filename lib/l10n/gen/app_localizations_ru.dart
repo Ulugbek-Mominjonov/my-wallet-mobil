@@ -547,4 +547,15 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get monthChoose => 'Выбрать';
+
+  @override
+  String quickSaved(String name, String amount) {
+    return '$name — $amount записано';
+  }
+
+  @override
+  String get actionUndo => 'Отменить';
+
+  @override
+  String get quickHint => 'Нажмите — запишется сразу, удерживайте — изменить';
 }

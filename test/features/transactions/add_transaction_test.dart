@@ -40,6 +40,16 @@ void main() {
               rowVersion: 1,
             ).toCompanion(),
         ])
+        ..insertAll(db.quickActions, [
+          const QuickAction(
+            id: 'q1',
+            householdId: 'h1',
+            name: 'Taksi',
+            amount: Money(2000000),
+            categoryId: 'c1',
+            accountId: 'a1',
+          ).toCompanion(),
+        ])
         ..insertAll(db.tags, [
           const Tag(id: 't1', householdId: 'h1', name: 'Safar').toCompanion(),
           const Tag(id: 't2', householdId: 'h1', name: 'Bola').toCompanion(),
@@ -335,6 +345,47 @@ void main() {
         find.text('→ Oktabr 2026 oyining byudjetiga (shu oy)'),
         findsOneWidget,
       );
+    });
+  });
+
+  group('BR-141: tez tugma', () {
+    testWidgets('bosish — darhol yoziladi, varaq yopiladi, bekor qilinadi', (
+      tester,
+    ) async {
+      await openSheet(tester);
+      await tester.tap(find.textContaining('Taksi'));
+      await tester.pumpAndSettle();
+
+      final saved = await db.select(db.transactions).getSingle();
+      expect(
+        (saved.amount, saved.source, saved.categoryId),
+        (2000000, 'quick_action', 'c1'),
+      );
+      expect(find.text('Yangi amal'), findsNothing, reason: 'varaq yopildi');
+      expect(find.textContaining('Taksi — 20'), findsOneWidget);
+
+      await tester.tap(find.text('Bekor qilish'));
+      await tester.pumpAndSettle();
+      // Serverga yetmagan yangi amal — navbatdan ham chiqadi.
+      final after = await db.select(db.transactions).getSingle();
+      expect(after.deletedAt, isNotNull);
+      expect(await db.select(db.outbox).get(), isEmpty);
+    });
+
+    testWidgets("uzoq bosish — forma to'ldiriladi (summa o'zgartiriladi)", (
+      tester,
+    ) async {
+      await openSheet(tester);
+      await tester.longPress(find.textContaining('Taksi'));
+      await tester.pumpAndSettle();
+      expect(find.text("20\u00a0000\u00a0so'm"), findsOneWidget);
+      expect(
+        tester
+            .widget<ChoiceChip>(find.widgetWithText(ChoiceChip, 'Oziq-ovqat'))
+            .selected,
+        isTrue,
+      );
+      expect(await db.select(db.transactions).get(), isEmpty);
     });
   });
 

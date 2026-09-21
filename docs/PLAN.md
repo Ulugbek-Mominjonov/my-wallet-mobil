@@ -285,8 +285,11 @@
   kategoriyasi siljishi bilan), "Qaysi oyning byudjetiga?" chiplari (Sana
   bo'yicha / Oldingi oy / Tanlash — 12 oy ro'yxati); daromadda ham (BR-042).
   Tanlangan oy `manual` bo'lib saqlanadi; tur o'zgarsa bekor. 4 holat testi.
-- [ ] **E15-T04** Tez tugmalar qatori: bosish → darhol saqlash + 5 s undo
-  snackbar; uzoq bosish → to'ldirilgan forma (BR-141).
+- [x] **E15-T04** Tez tugmalar qatori (xarajat varag'i tepasida, hisob
+  valyutasida summa): bosish → darhol saqlash (`source = quick_action`),
+  varaq yopiladi + 5 s "Bekor qilish" (serverga yetmagan bo'lsa navbatdan
+  ham chiqadi); uzoq bosish → to'ldirilgan forma (BR-141). Yopilgan oy —
+  tasdiq bilan.
 - [ ] **E15-T05** O'tkazma: manba/manzil hisob, summa (valyutalar farq qilsa
   ikkinchi summa — E29), 👤 fondga o'tkazma bo'lsa "Bu ajratma sifatida
   hisoblanadi" izohi (BR-061).

@@ -28,6 +28,18 @@ final StreamProvider<List<Debt>> debtsProvider = StreamProvider((ref) {
   return ref.watch(appDatabaseProvider).directoryDao.watchDebts(householdId);
 });
 
+/// BR-140: tez tugmalar.
+final StreamProvider<List<QuickAction>> quickActionsProvider = StreamProvider((
+  ref,
+) {
+  final householdId = ref.watch(currentHouseholdIdProvider);
+  if (householdId == null) return const Stream.empty();
+  return ref
+      .watch(appDatabaseProvider)
+      .directoryDao
+      .watchQuickActions(householdId);
+});
+
 /// Turi bo'yicha kategoriyalar.
 final StreamProviderFamily<List<Category>, CategoryKind> categoriesProvider =
     StreamProvider.family((ref, kind) {

@@ -9,7 +9,9 @@ part 'directory_dao.g.dart';
 /// Spravochnik ro'yxatlari (hisoblar, kategoriyalar) — ekranlar uchun
 /// jonli oqim. O'chirilganlar (tombstone) chiqmaydi; tartib — serverdagi
 /// `sort_order`, keyin nom.
-@DriftAccessor(tables: [Accounts, Categories, Transactions, Tags, Debts])
+@DriftAccessor(
+  tables: [Accounts, Categories, Transactions, Tags, Debts, QuickActions],
+)
 class DirectoryDao extends DatabaseAccessor<AppDatabase>
     with _$DirectoryDaoMixin {
   new(super.attachedDatabase);
@@ -91,4 +93,28 @@ class DirectoryDao extends DatabaseAccessor<AppDatabase>
             ..orderBy([(d) => OrderingTerm.asc(d.name)]))
           .map((row) => row.toDomain())
           .watch();
+
+  /// BR-140: tez tugmalar (hisob valyutasi bilan — summa to'g'ri ko'rinsin).
+  Stream<List<QuickAction>> watchQuickActions(String householdId) {
+    final query =
+        select(quickActions).join([
+            innerJoin(accounts, accounts.id.equalsExp(quickActions.accountId)),
+          ])
+          ..where(
+            quickActions.householdId.equals(householdId) &
+                quickActions.deletedAt.isNull(),
+          )
+          ..orderBy([
+            OrderingTerm.asc(quickActions.sortOrder),
+            OrderingTerm.asc(quickActions.name),
+          ]);
+    return query.watch().map(
+      (rows) => [
+        for (final row in rows)
+          row
+              .readTable(quickActions)
+              .toDomain(currencyOfCode(row.readTable(accounts).currency)),
+      ],
+    );
+  }
 }

@@ -8,6 +8,7 @@ import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:my_wallet/features/transactions/application/add_transaction_controller.dart';
 import 'package:my_wallet/features/transactions/presentation/amount_keypad.dart';
 import 'package:my_wallet/features/transactions/presentation/month_attribution_field.dart';
+import 'package:my_wallet/features/transactions/presentation/quick_actions_bar.dart';
 import 'package:my_wallet/features/transactions/presentation/transaction_fields.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
 import 'package:wallet_domain/wallet_domain.dart';
@@ -51,6 +52,14 @@ class AddTransactionScreen extends ConsumerWidget {
                     controller.selectKind(selection.first),
               ),
             ),
+            if (state.kind == TransactionKind.expense)
+              Padding(
+                padding: const EdgeInsets.only(top: AppSpacing.sm),
+                child: QuickActionsBar(
+                  onSaved: () => context.pop(),
+                  onEdit: controller.prefill,
+                ),
+              ),
             AmountDisplay(entry: state.entry, currency: state.currency),
             // Qisqa forma — hammasi birdan quriladi (dangasa ro'yxat emas).
             Expanded(
