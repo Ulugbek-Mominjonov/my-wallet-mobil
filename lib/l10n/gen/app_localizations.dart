@@ -1142,6 +1142,36 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Tahrirlash'**
   String get editTitle;
+
+  /// No description provided for @receipt.
+  ///
+  /// In uz, this message translates to:
+  /// **'Chek'**
+  String get receipt;
+
+  /// No description provided for @receiptCamera.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kamera'**
+  String get receiptCamera;
+
+  /// No description provided for @receiptGallery.
+  ///
+  /// In uz, this message translates to:
+  /// **'Galereya'**
+  String get receiptGallery;
+
+  /// No description provided for @receiptTooLarge.
+  ///
+  /// In uz, this message translates to:
+  /// **'Rasm juda katta — boshqasini tanlang'**
+  String get receiptTooLarge;
+
+  /// No description provided for @receiptPending.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yuklanishi kutilmoqda'**
+  String get receiptPending;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

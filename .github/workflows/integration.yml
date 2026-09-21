@@ -1,6 +1,6 @@
 name: Integratsiya
 
-# E13-T07, E14: sinxron va kirish — haqiqiy lokal Supabase bilan. Server contracts.lock dagi
+# E13-T07, E14, E15: sinxron, kirish va cheklar — haqiqiy lokal Supabase bilan. Server contracts.lock dagi
 # admin commit'idan ko'tariladi (mobil tekshirgan shartnoma bilan bir xil).
 on:
   pull_request:
@@ -49,12 +49,13 @@ jobs:
       - name: Admin bog'liqliklari (Supabase CLI)
         working-directory: admin
         run: pnpm install --frozen-lockfile
-      # Kerak: Postgres, PostgREST, GoTrue, Kong va Mailpit (email kodi).
+      # Kerak: Postgres, PostgREST, GoTrue, Kong, Mailpit (email kodi) va
+      # Storage (chek rasmlari).
       - name: Lokal Supabase
         working-directory: admin
         run: >-
           pnpm exec supabase start -x
-          studio,imgproxy,logflare,vector,supavisor,edge-runtime,realtime,storage-api
+          studio,imgproxy,logflare,vector,supavisor,edge-runtime,realtime
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}

@@ -619,4 +619,19 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get editTitle => 'Tahrirlash';
+
+  @override
+  String get receipt => 'Chek';
+
+  @override
+  String get receiptCamera => 'Kamera';
+
+  @override
+  String get receiptGallery => 'Galereya';
+
+  @override
+  String get receiptTooLarge => 'Rasm juda katta — boshqasini tanlang';
+
+  @override
+  String get receiptPending => 'Yuklanishi kutilmoqda';
 }

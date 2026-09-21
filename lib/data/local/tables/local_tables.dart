@@ -86,6 +86,25 @@ class SyncIssues extends Table {
   DateTimeColumn get resolvedAt => dateTime().nullable()();
 }
 
+/// BR-201: yuklanmagan chek rasmlari (siqilgan fayl qurilmada). Tarmoq
+/// bo'lganda Storage'ga yuklanadi, so'ng `attachments` qatori yoziladi.
+@DataClassName('PendingUploadRow')
+@TableIndex(name: 'pending_uploads_household', columns: {#householdId, #id})
+class PendingUploads extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get householdId => text()();
+  TextColumn get transactionId => text()();
+
+  /// `attachments.id` (UUIDv7) — Storage yo'lida ham ishlatiladi.
+  TextColumn get attachmentId => text().unique()();
+  TextColumn get localPath => text()();
+  TextColumn get mime => text()();
+  IntColumn get sizeBytes => integer()();
+  IntColumn get attempts => integer().withDefault(const Constant(0))();
+  TextColumn get lastError => text().nullable()();
+  DateTimeColumn get createdAt => dateTime()();
+}
+
 /// Qurilma sozlamalari (kalit → qiymat): qurilma ID si va h.k.
 @DataClassName('AppSettingRow')
 class AppSettings extends Table {

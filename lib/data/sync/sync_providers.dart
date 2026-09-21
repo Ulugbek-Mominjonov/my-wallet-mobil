@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_wallet/data/auth/auth_providers.dart';
 import 'package:my_wallet/data/local/database.dart';
+import 'package:my_wallet/data/receipts/receipt_providers.dart';
 import 'package:my_wallet/data/remote/remote_api.dart';
 import 'package:my_wallet/data/repositories/local_ledger.dart';
 import 'package:my_wallet/data/sync/sync_engine.dart';
@@ -72,7 +73,13 @@ final syncSchedulerProvider = FutureProvider<SyncScheduler?>((ref) async {
   final householdId = ref.watch(currentHouseholdIdProvider);
   if (householdId == null) return null;
   final engine = await ref.watch(syncEngineProvider.future);
-  final scheduler = SyncScheduler(() => engine.sync(householdId));
+  final receipts = ref.watch(receiptQueueProvider);
+  final scheduler = SyncScheduler(() async {
+    // BR-201: avval navbatdagi cheklar (attachments qatorlari shu push'ga
+    // tushadi); yuklash xatosi sinxronni to'xtatmaydi.
+    await receipts.flush(householdId);
+    return await engine.sync(householdId);
+  });
   ref
     ..onDispose(scheduler.dispose)
     ..listen(connectivityProvider, (previous, next) {

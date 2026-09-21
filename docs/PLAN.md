@@ -305,8 +305,16 @@
   (o'sha forma, tur o'zgarmaydi; qo'lda oy saqlanadi); yopilgan oy banneri
   va tasdig'i (BR-055). A'zo filtri — E30 (a'zolar ro'yxati sinxronda yo'q).
   Testlar: 6 filtr (DAO) + 4 ekran.
-- [ ] **E15-T07** Chek rasmi: kamera/galereya, siqish ≤ 1 MB, lokal navbat
-  (oflaynda saqlanadi), fon yuklash Storage'ga, ko'rish (zoom).
+- [x] **E15-T07** Chek rasmi (BR-201): kamera/galereya (`image_picker`),
+  JPEG'ga siqish ≤ 1 MB (sifat/o'lcham bosqichma-bosqich; sig'masa — xabar),
+  lokal navbat — `pending_uploads` jadvali (sxema v2, migratsiya testi:
+  jadval + indeks, ma'lumot saqlanadi), fayl ilova hujjatlarida; yuklash har
+  sinxron siklida push'dan oldin (`{household}/{tx}/{id}.{ext}`), so'ng
+  `attachments` qatori outbox orqali; tarmoq yo'q — navbatda qoladi.
+  Tahrirlashda mavjud cheklar (Storage — vaqtinchalik havola) va navbatdagilar
+  ko'rinadi, o'chirish/bekor qilish; ko'rish — `InteractiveViewer` (zoom).
+  Testlar: 7 navbat/siqish + 2 forma; integratsiya — haqiqiy Storage'ga
+  yuklash, `attachments` serverda, fayl qayta o'qiladi (CI'da Storage yoqildi).
 - [ ] **E15-T08** Testlar: forma validatsiyasi, tegishli oy izohi (4
   holat), undo, tez tugma; golden: qo'shish varag'i light/dark.
 

@@ -1,19 +1,26 @@
-import 'package:drift/native.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/local/mappers.dart';
+import 'package:my_wallet/data/local/outbox_writer.dart';
+import 'package:my_wallet/data/receipts/receipt_providers.dart';
+import 'package:my_wallet/data/receipts/receipt_queue.dart';
 import 'package:my_wallet/data/repositories/local_ledger.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
 import '../../support/pump_app.dart';
+import '../../support/test_database.dart';
 
 void main() {
   late AppDatabase db;
 
   setUp(() async {
-    db = AppDatabase(NativeDatabase.memory());
+    db = testDatabase();
     await db.batch((batch) {
       batch
         ..insert(
@@ -439,6 +446,82 @@ void main() {
     });
   });
 
+  group('BR-201: chek rasmi', () {
+    testWidgets("galereyadan — ko'rinadi, saqlanganda navbatga tushadi", (
+      tester,
+    ) async {
+      final dir = await tester.runAsync(
+        () => Directory.systemTemp.createTemp('receipts'),
+      );
+      addTearDown(() => dir!.delete(recursive: true));
+      final queue = ReceiptQueue(
+        db,
+        _NoStorage(),
+        OutboxWriter(db, newId: const UuidV7Ids().newId, now: DateTime.now),
+        directory: () async => dir!,
+        newId: const UuidV7Ids().newId,
+        now: DateTime.now,
+      );
+      await pumpApp(
+        tester,
+        database: db,
+        overrides: [
+          receiptPickerProvider.overrideWithValue(
+            ({required camera}) async => (bytes: _pixel, mime: 'image/jpeg'),
+          ),
+          receiptQueueProvider.overrideWithValue(queue),
+        ],
+      );
+      await tester.tap(find.byTooltip("Amal qo'shish"));
+      await tester.pumpAndSettle();
+      await tapKeys(tester, ['1', '000']);
+      await tapChip(tester, 'Oziq-ovqat');
+
+      final chip = find.widgetWithText(ActionChip, 'Chek');
+      await tester.ensureVisible(chip);
+      await tester.tap(chip);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Galereya'));
+      await tester.pumpAndSettle();
+      expect(find.byType(Image), findsOneWidget);
+
+      await tester.runAsync(() async {
+        await tester.tap(find.widgetWithText(FilledButton, 'Saqlash'));
+        await Future<void>.delayed(const Duration(milliseconds: 200));
+      });
+      await tester.pumpAndSettle();
+      final pending = await tester.runAsync(
+        () => db.select(db.pendingUploads).get(),
+      );
+      final saved = await tester.runAsync(
+        () => db.select(db.transactions).getSingle(),
+      );
+      expect(pending!.single.transactionId, saved!.id);
+      expect(pending.single.sizeBytes, _pixel.length);
+    });
+
+    testWidgets("rasm sig'masa — xabar", (tester) async {
+      await pumpApp(
+        tester,
+        database: db,
+        overrides: [
+          receiptPickerProvider.overrideWithValue(
+            ({required camera}) async => null,
+          ),
+        ],
+      );
+      await tester.tap(find.byTooltip("Amal qo'shish"));
+      await tester.pumpAndSettle();
+      final chip = find.widgetWithText(ActionChip, 'Chek');
+      await tester.ensureVisible(chip);
+      await tester.tap(chip);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Kamera'));
+      await tester.pumpAndSettle();
+      expect(find.text('Rasm juda katta — boshqasini tanlang'), findsOneWidget);
+    });
+  });
+
   testWidgets('kategoriyasiz xarajat — aniq xabar', (tester) async {
     await openSheet(tester);
     await tapKeys(tester, ['1', '000']);
@@ -461,3 +544,19 @@ void main() {
     expect(find.text("500 so'm"), findsOneWidget);
   });
 }
+
+final class _NoStorage implements ReceiptStorage {
+  @override
+  Future<void> upload(String path, Uint8List bytes, {required String mime}) =>
+      throw StateError('testda yuklanmaydi');
+
+  @override
+  Future<String> signedUrl(String path) =>
+      throw StateError("testda havola yo'q");
+}
+
+/// 1×1 PNG — rasm sifatida ochiladi.
+final Uint8List _pixel = base64Decode(
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA'
+  '60e6kgAAAABJRU5ErkJggg==',
+);

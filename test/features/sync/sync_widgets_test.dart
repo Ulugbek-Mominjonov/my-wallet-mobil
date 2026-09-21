@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
@@ -20,6 +19,7 @@ import 'package:my_wallet/l10n/gen/app_localizations.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
 import '../../support/fake_auth.dart';
+import '../../support/test_database.dart';
 
 SyncIssueRow issue(int id, String status, {String? code}) => SyncIssueRow(
   id: id,
@@ -121,7 +121,7 @@ void main() {
 
   group('SyncStatusScreen', () {
     late AppDatabase db;
-    setUp(() => db = AppDatabase(NativeDatabase.memory()));
+    setUp(() => db = testDatabase());
     tearDown(() => db.close());
 
     testWidgets(

@@ -17,6 +17,8 @@ import 'package:my_wallet/core/security/secure_screen.dart';
 import 'package:my_wallet/data/auth/auth_gateway.dart';
 import 'package:my_wallet/data/auth/auth_providers.dart';
 import 'package:my_wallet/data/local/database.dart';
+import 'package:my_wallet/data/receipts/receipt_platform.dart';
+import 'package:my_wallet/data/receipts/receipt_providers.dart';
 import 'package:my_wallet/data/remote/remote_api.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
 import 'package:my_wallet/features/household/application/invite_links.dart';
@@ -84,6 +86,9 @@ void main() {
             RpcRemoteApi(supabaseTransport(client)),
           ),
           secureScreenProvider.overrideWithValue(_NoSecureScreen()),
+          receiptStorageProvider.overrideWithValue(
+            SupabaseReceiptStorage(client),
+          ),
           // Plaginlar host'da yo'q — tarmoq bor deb hisoblaymiz.
           connectivityProvider.overrideWith((ref) => Stream.value(true)),
           inviteLinksProvider.overrideWith(

@@ -1,7 +1,7 @@
-import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_wallet/app/app.dart';
@@ -16,6 +16,7 @@ import 'package:my_wallet/features/startup/application/startup_controller.dart';
 
 import 'fake_auth.dart';
 import 'fake_startup.dart';
+import 'test_database.dart';
 
 AppConfig testConfig({AppEnv env = AppEnv.dev}) => AppConfig(
   env: env,
@@ -51,7 +52,9 @@ Future<GoRouter> pumpApp(
       const FakeAccessibilityFeatures(disableAnimations: true);
   addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
 
-  final db = database ?? AppDatabase(NativeDatabase.memory());
+  // Keystore yo'q — ilova qulfi (PIN) xotiradagi soxta xotiradan o'qiydi.
+  FlutterSecureStorage.setMockInitialValues({});
+  final db = database ?? testDatabase();
   if (database == null) addTearDown(db.close);
   final container = ProviderContainer.test(
     overrides: [

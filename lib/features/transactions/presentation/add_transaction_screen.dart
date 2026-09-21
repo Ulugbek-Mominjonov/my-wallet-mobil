@@ -9,6 +9,7 @@ import 'package:my_wallet/features/transactions/application/add_transaction_cont
 import 'package:my_wallet/features/transactions/presentation/amount_keypad.dart';
 import 'package:my_wallet/features/transactions/presentation/month_attribution_field.dart';
 import 'package:my_wallet/features/transactions/presentation/quick_actions_bar.dart';
+import 'package:my_wallet/features/transactions/presentation/receipt_field.dart';
 import 'package:my_wallet/features/transactions/presentation/transaction_fields.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
 import 'package:wallet_domain/wallet_domain.dart';
@@ -108,6 +109,7 @@ class AddTransactionScreen extends ConsumerWidget {
                     ],
                     TagChips(selected: state.tagIds),
                     const NoteField(),
+                    ReceiptField(state: state),
                   ],
                 ),
               ),

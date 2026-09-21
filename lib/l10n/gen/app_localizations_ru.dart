@@ -617,4 +617,19 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get editTitle => 'Редактирование';
+
+  @override
+  String get receipt => 'Чек';
+
+  @override
+  String get receiptCamera => 'Камера';
+
+  @override
+  String get receiptGallery => 'Галерея';
+
+  @override
+  String get receiptTooLarge => 'Изображение слишком большое — выберите другое';
+
+  @override
+  String get receiptPending => 'Ожидает загрузки';
 }

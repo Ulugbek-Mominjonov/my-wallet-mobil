@@ -173,5 +173,10 @@
   "filterClear": "Сбросить фильтр",
   "monthClosedBanner": "Месяц закрыт — изменения с подтверждением",
   "deleted": "Удалено",
-  "editTitle": "Редактирование"
+  "editTitle": "Редактирование",
+  "receipt": "Чек",
+  "receiptCamera": "Камера",
+  "receiptGallery": "Галерея",
+  "receiptTooLarge": "Изображение слишком большое — выберите другое",
+  "receiptPending": "Ожидает загрузки"
 }

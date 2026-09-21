@@ -1,4 +1,3 @@
-import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:my_wallet/data/local/database.dart';
@@ -8,6 +7,7 @@ import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
 import '../../support/pump_app.dart';
+import '../../support/test_database.dart';
 
 void main() {
   late AppDatabase db;
@@ -35,7 +35,7 @@ void main() {
   );
 
   setUp(() async {
-    db = AppDatabase(NativeDatabase.memory());
+    db = testDatabase();
     await db.batch((b) {
       b
         ..insert(

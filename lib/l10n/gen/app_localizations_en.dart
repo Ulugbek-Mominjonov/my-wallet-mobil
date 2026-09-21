@@ -619,4 +619,19 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get editTitle => 'Edit';
+
+  @override
+  String get receipt => 'Receipt';
+
+  @override
+  String get receiptCamera => 'Camera';
+
+  @override
+  String get receiptGallery => 'Gallery';
+
+  @override
+  String get receiptTooLarge => 'The image is too large — pick another';
+
+  @override
+  String get receiptPending => 'Waiting to upload';
 }

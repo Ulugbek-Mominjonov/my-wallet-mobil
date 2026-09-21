@@ -30,6 +30,7 @@ part 'database.g.dart';
     SyncState,
     SyncIssues,
     AppSettings,
+    PendingUploads,
   ],
   daos: [LedgerDao, DirectoryDao],
 )
@@ -40,11 +41,19 @@ class AppDatabase extends _$AppDatabase {
   factory open() => AppDatabase(driftDatabase(name: 'my_wallet'));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
-  MigrationStrategy get migration =>
-      MigrationStrategy(onCreate: (migrator) => migrator.createAll());
+  MigrationStrategy get migration => MigrationStrategy(
+    onCreate: (migrator) => migrator.createAll(),
+    onUpgrade: (migrator, from, to) async {
+      // v2 (E15-T07): chek rasmlari navbati (jadval va indeksi).
+      if (from < 2) {
+        await migrator.createTable(pendingUploads);
+        await migrator.createIndex(pendingUploadsHousehold);
+      }
+    },
+  );
 
   static const _deviceIdKey = 'device_id';
   static const _ownerKey = 'owner_user_id';

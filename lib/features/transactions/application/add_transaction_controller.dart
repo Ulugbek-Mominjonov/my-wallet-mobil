@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meta/meta.dart';
 import 'package:my_wallet/data/local/directory_providers.dart';
+import 'package:my_wallet/data/receipts/receipt_providers.dart';
+import 'package:my_wallet/data/receipts/receipt_queue.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:my_wallet/features/transactions/application/amount_entry.dart';
 import 'package:wallet_domain/wallet_domain.dart';
@@ -22,6 +24,7 @@ final class AddTransactionState {
     this.debtId,
     this.manualMonth,
     this.editing,
+    this.receipts = const [],
     this.saving = false,
     this.failure,
   });
@@ -51,6 +54,9 @@ final class AddTransactionState {
   final Transaction? editing;
 
   bool get isEditing => editing != null;
+
+  /// Yangi chek rasmlari (saqlanganda navbatga tushadi — BR-201).
+  final List<CompressedImage> receipts;
   final bool saving;
   final Failure? failure;
 
@@ -79,6 +85,7 @@ final class AddTransactionState {
     String? debtId,
     MonthKey? manualMonth,
     Transaction? editing,
+    List<CompressedImage>? receipts,
     bool? saving,
     Failure? failure,
     bool clearCategory = false,
@@ -99,6 +106,7 @@ final class AddTransactionState {
     debtId: clearDebt ? null : (debtId ?? this.debtId),
     manualMonth: clearManualMonth ? null : (manualMonth ?? this.manualMonth),
     editing: editing ?? this.editing,
+    receipts: receipts ?? this.receipts,
     saving: saving ?? this.saving,
     failure: clearFailure ? null : (failure ?? this.failure),
   );
@@ -186,6 +194,12 @@ base class AddTransactionController extends Notifier<AddTransactionState> {
 
   void setNote(String note) => state = state.copyWith(note: note);
 
+  void addReceipt(CompressedImage image) =>
+      state = state.copyWith(receipts: [...state.receipts, image]);
+
+  void removeReceipt(int index) =>
+      state = state.copyWith(receipts: [...state.receipts]..removeAt(index));
+
   /// Tahrirlash uchun forma amal bilan to'ladi (tur o'zgarmaydi).
   void load(Transaction tx) => state = AddTransactionState(
     kind: tx.kind,
@@ -256,8 +270,20 @@ base class AddTransactionController extends Notifier<AddTransactionState> {
       return saved;
     });
 
+    // BR-201: cheklar navbatga (fayl — qurilmada, yuklash — sinxronda).
+    if (result case Ok(:final value) when state.receipts.isNotEmpty) {
+      final queue = ref.read(receiptQueueProvider);
+      for (final image in state.receipts) {
+        await queue.enqueue(
+          householdId: value.householdId,
+          transactionId: value.id,
+          image: image,
+        );
+      }
+    }
+
     state = switch (result) {
-      Ok() => state.copyWith(saving: false),
+      Ok() => state.copyWith(saving: false, receipts: const []),
       Err(:final failure) => state.copyWith(saving: false, failure: failure),
     };
     return result;

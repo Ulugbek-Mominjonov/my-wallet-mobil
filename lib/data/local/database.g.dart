@@ -13854,6 +13854,620 @@ class AppSettingsCompanion extends UpdateCompanion<AppSettingRow> {
   }
 }
 
+class $PendingUploadsTable extends PendingUploads
+    with TableInfo<$PendingUploadsTable, PendingUploadRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PendingUploadsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _householdIdMeta = const VerificationMeta(
+    'householdId',
+  );
+  @override
+  late final GeneratedColumn<String> householdId = GeneratedColumn<String>(
+    'household_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _transactionIdMeta = const VerificationMeta(
+    'transactionId',
+  );
+  @override
+  late final GeneratedColumn<String> transactionId = GeneratedColumn<String>(
+    'transaction_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _attachmentIdMeta = const VerificationMeta(
+    'attachmentId',
+  );
+  @override
+  late final GeneratedColumn<String> attachmentId = GeneratedColumn<String>(
+    'attachment_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+  );
+  static const VerificationMeta _localPathMeta = const VerificationMeta(
+    'localPath',
+  );
+  @override
+  late final GeneratedColumn<String> localPath = GeneratedColumn<String>(
+    'local_path',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _mimeMeta = const VerificationMeta('mime');
+  @override
+  late final GeneratedColumn<String> mime = GeneratedColumn<String>(
+    'mime',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sizeBytesMeta = const VerificationMeta(
+    'sizeBytes',
+  );
+  @override
+  late final GeneratedColumn<int> sizeBytes = GeneratedColumn<int>(
+    'size_bytes',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _attemptsMeta = const VerificationMeta(
+    'attempts',
+  );
+  @override
+  late final GeneratedColumn<int> attempts = GeneratedColumn<int>(
+    'attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastErrorMeta = const VerificationMeta(
+    'lastError',
+  );
+  @override
+  late final GeneratedColumn<String> lastError = GeneratedColumn<String>(
+    'last_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    householdId,
+    transactionId,
+    attachmentId,
+    localPath,
+    mime,
+    sizeBytes,
+    attempts,
+    lastError,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'pending_uploads';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PendingUploadRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('household_id')) {
+      context.handle(
+        _householdIdMeta,
+        householdId.isAcceptableOrUnknown(
+          data['household_id']!,
+          _householdIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_householdIdMeta);
+    }
+    if (data.containsKey('transaction_id')) {
+      context.handle(
+        _transactionIdMeta,
+        transactionId.isAcceptableOrUnknown(
+          data['transaction_id']!,
+          _transactionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_transactionIdMeta);
+    }
+    if (data.containsKey('attachment_id')) {
+      context.handle(
+        _attachmentIdMeta,
+        attachmentId.isAcceptableOrUnknown(
+          data['attachment_id']!,
+          _attachmentIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_attachmentIdMeta);
+    }
+    if (data.containsKey('local_path')) {
+      context.handle(
+        _localPathMeta,
+        localPath.isAcceptableOrUnknown(data['local_path']!, _localPathMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_localPathMeta);
+    }
+    if (data.containsKey('mime')) {
+      context.handle(
+        _mimeMeta,
+        mime.isAcceptableOrUnknown(data['mime']!, _mimeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_mimeMeta);
+    }
+    if (data.containsKey('size_bytes')) {
+      context.handle(
+        _sizeBytesMeta,
+        sizeBytes.isAcceptableOrUnknown(data['size_bytes']!, _sizeBytesMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sizeBytesMeta);
+    }
+    if (data.containsKey('attempts')) {
+      context.handle(
+        _attemptsMeta,
+        attempts.isAcceptableOrUnknown(data['attempts']!, _attemptsMeta),
+      );
+    }
+    if (data.containsKey('last_error')) {
+      context.handle(
+        _lastErrorMeta,
+        lastError.isAcceptableOrUnknown(data['last_error']!, _lastErrorMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PendingUploadRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PendingUploadRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      householdId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}household_id'],
+      )!,
+      transactionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}transaction_id'],
+      )!,
+      attachmentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}attachment_id'],
+      )!,
+      localPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}local_path'],
+      )!,
+      mime: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}mime'],
+      )!,
+      sizeBytes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}size_bytes'],
+      )!,
+      attempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}attempts'],
+      )!,
+      lastError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_error'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $PendingUploadsTable createAlias(String alias) {
+    return $PendingUploadsTable(attachedDatabase, alias);
+  }
+}
+
+class PendingUploadRow extends DataClass
+    implements Insertable<PendingUploadRow> {
+  final int id;
+  final String householdId;
+  final String transactionId;
+
+  /// `attachments.id` (UUIDv7) — Storage yo'lida ham ishlatiladi.
+  final String attachmentId;
+  final String localPath;
+  final String mime;
+  final int sizeBytes;
+  final int attempts;
+  final String? lastError;
+  final DateTime createdAt;
+  const PendingUploadRow({
+    required this.id,
+    required this.householdId,
+    required this.transactionId,
+    required this.attachmentId,
+    required this.localPath,
+    required this.mime,
+    required this.sizeBytes,
+    required this.attempts,
+    this.lastError,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['household_id'] = Variable<String>(householdId);
+    map['transaction_id'] = Variable<String>(transactionId);
+    map['attachment_id'] = Variable<String>(attachmentId);
+    map['local_path'] = Variable<String>(localPath);
+    map['mime'] = Variable<String>(mime);
+    map['size_bytes'] = Variable<int>(sizeBytes);
+    map['attempts'] = Variable<int>(attempts);
+    if (!nullToAbsent || lastError != null) {
+      map['last_error'] = Variable<String>(lastError);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  PendingUploadsCompanion toCompanion(bool nullToAbsent) {
+    return PendingUploadsCompanion(
+      id: Value(id),
+      householdId: Value(householdId),
+      transactionId: Value(transactionId),
+      attachmentId: Value(attachmentId),
+      localPath: Value(localPath),
+      mime: Value(mime),
+      sizeBytes: Value(sizeBytes),
+      attempts: Value(attempts),
+      lastError: lastError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastError),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory PendingUploadRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PendingUploadRow(
+      id: serializer.fromJson<int>(json['id']),
+      householdId: serializer.fromJson<String>(json['household_id']),
+      transactionId: serializer.fromJson<String>(json['transaction_id']),
+      attachmentId: serializer.fromJson<String>(json['attachment_id']),
+      localPath: serializer.fromJson<String>(json['local_path']),
+      mime: serializer.fromJson<String>(json['mime']),
+      sizeBytes: serializer.fromJson<int>(json['size_bytes']),
+      attempts: serializer.fromJson<int>(json['attempts']),
+      lastError: serializer.fromJson<String?>(json['last_error']),
+      createdAt: serializer.fromJson<DateTime>(json['created_at']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'household_id': serializer.toJson<String>(householdId),
+      'transaction_id': serializer.toJson<String>(transactionId),
+      'attachment_id': serializer.toJson<String>(attachmentId),
+      'local_path': serializer.toJson<String>(localPath),
+      'mime': serializer.toJson<String>(mime),
+      'size_bytes': serializer.toJson<int>(sizeBytes),
+      'attempts': serializer.toJson<int>(attempts),
+      'last_error': serializer.toJson<String?>(lastError),
+      'created_at': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  PendingUploadRow copyWith({
+    int? id,
+    String? householdId,
+    String? transactionId,
+    String? attachmentId,
+    String? localPath,
+    String? mime,
+    int? sizeBytes,
+    int? attempts,
+    Value<String?> lastError = const Value.absent(),
+    DateTime? createdAt,
+  }) => PendingUploadRow(
+    id: id ?? this.id,
+    householdId: householdId ?? this.householdId,
+    transactionId: transactionId ?? this.transactionId,
+    attachmentId: attachmentId ?? this.attachmentId,
+    localPath: localPath ?? this.localPath,
+    mime: mime ?? this.mime,
+    sizeBytes: sizeBytes ?? this.sizeBytes,
+    attempts: attempts ?? this.attempts,
+    lastError: lastError.present ? lastError.value : this.lastError,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  PendingUploadRow copyWithCompanion(PendingUploadsCompanion data) {
+    return PendingUploadRow(
+      id: data.id.present ? data.id.value : this.id,
+      householdId: data.householdId.present
+          ? data.householdId.value
+          : this.householdId,
+      transactionId: data.transactionId.present
+          ? data.transactionId.value
+          : this.transactionId,
+      attachmentId: data.attachmentId.present
+          ? data.attachmentId.value
+          : this.attachmentId,
+      localPath: data.localPath.present ? data.localPath.value : this.localPath,
+      mime: data.mime.present ? data.mime.value : this.mime,
+      sizeBytes: data.sizeBytes.present ? data.sizeBytes.value : this.sizeBytes,
+      attempts: data.attempts.present ? data.attempts.value : this.attempts,
+      lastError: data.lastError.present ? data.lastError.value : this.lastError,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PendingUploadRow(')
+          ..write('id: $id, ')
+          ..write('householdId: $householdId, ')
+          ..write('transactionId: $transactionId, ')
+          ..write('attachmentId: $attachmentId, ')
+          ..write('localPath: $localPath, ')
+          ..write('mime: $mime, ')
+          ..write('sizeBytes: $sizeBytes, ')
+          ..write('attempts: $attempts, ')
+          ..write('lastError: $lastError, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    householdId,
+    transactionId,
+    attachmentId,
+    localPath,
+    mime,
+    sizeBytes,
+    attempts,
+    lastError,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PendingUploadRow &&
+          other.id == this.id &&
+          other.householdId == this.householdId &&
+          other.transactionId == this.transactionId &&
+          other.attachmentId == this.attachmentId &&
+          other.localPath == this.localPath &&
+          other.mime == this.mime &&
+          other.sizeBytes == this.sizeBytes &&
+          other.attempts == this.attempts &&
+          other.lastError == this.lastError &&
+          other.createdAt == this.createdAt);
+}
+
+class PendingUploadsCompanion extends UpdateCompanion<PendingUploadRow> {
+  final Value<int> id;
+  final Value<String> householdId;
+  final Value<String> transactionId;
+  final Value<String> attachmentId;
+  final Value<String> localPath;
+  final Value<String> mime;
+  final Value<int> sizeBytes;
+  final Value<int> attempts;
+  final Value<String?> lastError;
+  final Value<DateTime> createdAt;
+  const PendingUploadsCompanion({
+    this.id = const Value.absent(),
+    this.householdId = const Value.absent(),
+    this.transactionId = const Value.absent(),
+    this.attachmentId = const Value.absent(),
+    this.localPath = const Value.absent(),
+    this.mime = const Value.absent(),
+    this.sizeBytes = const Value.absent(),
+    this.attempts = const Value.absent(),
+    this.lastError = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  PendingUploadsCompanion.insert({
+    this.id = const Value.absent(),
+    required String householdId,
+    required String transactionId,
+    required String attachmentId,
+    required String localPath,
+    required String mime,
+    required int sizeBytes,
+    this.attempts = const Value.absent(),
+    this.lastError = const Value.absent(),
+    required DateTime createdAt,
+  }) : householdId = Value(householdId),
+       transactionId = Value(transactionId),
+       attachmentId = Value(attachmentId),
+       localPath = Value(localPath),
+       mime = Value(mime),
+       sizeBytes = Value(sizeBytes),
+       createdAt = Value(createdAt);
+  static Insertable<PendingUploadRow> custom({
+    Expression<int>? id,
+    Expression<String>? householdId,
+    Expression<String>? transactionId,
+    Expression<String>? attachmentId,
+    Expression<String>? localPath,
+    Expression<String>? mime,
+    Expression<int>? sizeBytes,
+    Expression<int>? attempts,
+    Expression<String>? lastError,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (householdId != null) 'household_id': householdId,
+      if (transactionId != null) 'transaction_id': transactionId,
+      if (attachmentId != null) 'attachment_id': attachmentId,
+      if (localPath != null) 'local_path': localPath,
+      if (mime != null) 'mime': mime,
+      if (sizeBytes != null) 'size_bytes': sizeBytes,
+      if (attempts != null) 'attempts': attempts,
+      if (lastError != null) 'last_error': lastError,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  PendingUploadsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? householdId,
+    Value<String>? transactionId,
+    Value<String>? attachmentId,
+    Value<String>? localPath,
+    Value<String>? mime,
+    Value<int>? sizeBytes,
+    Value<int>? attempts,
+    Value<String?>? lastError,
+    Value<DateTime>? createdAt,
+  }) {
+    return PendingUploadsCompanion(
+      id: id ?? this.id,
+      householdId: householdId ?? this.householdId,
+      transactionId: transactionId ?? this.transactionId,
+      attachmentId: attachmentId ?? this.attachmentId,
+      localPath: localPath ?? this.localPath,
+      mime: mime ?? this.mime,
+      sizeBytes: sizeBytes ?? this.sizeBytes,
+      attempts: attempts ?? this.attempts,
+      lastError: lastError ?? this.lastError,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (householdId.present) {
+      map['household_id'] = Variable<String>(householdId.value);
+    }
+    if (transactionId.present) {
+      map['transaction_id'] = Variable<String>(transactionId.value);
+    }
+    if (attachmentId.present) {
+      map['attachment_id'] = Variable<String>(attachmentId.value);
+    }
+    if (localPath.present) {
+      map['local_path'] = Variable<String>(localPath.value);
+    }
+    if (mime.present) {
+      map['mime'] = Variable<String>(mime.value);
+    }
+    if (sizeBytes.present) {
+      map['size_bytes'] = Variable<int>(sizeBytes.value);
+    }
+    if (attempts.present) {
+      map['attempts'] = Variable<int>(attempts.value);
+    }
+    if (lastError.present) {
+      map['last_error'] = Variable<String>(lastError.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PendingUploadsCompanion(')
+          ..write('id: $id, ')
+          ..write('householdId: $householdId, ')
+          ..write('transactionId: $transactionId, ')
+          ..write('attachmentId: $attachmentId, ')
+          ..write('localPath: $localPath, ')
+          ..write('mime: $mime, ')
+          ..write('sizeBytes: $sizeBytes, ')
+          ..write('attempts: $attempts, ')
+          ..write('lastError: $lastError, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -13877,6 +14491,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $SyncStateTable syncState = $SyncStateTable(this);
   late final $SyncIssuesTable syncIssues = $SyncIssuesTable(this);
   late final $AppSettingsTable appSettings = $AppSettingsTable(this);
+  late final $PendingUploadsTable pendingUploads = $PendingUploadsTable(this);
   late final Index accountsHousehold = Index(
     'accounts_household',
     'CREATE INDEX accounts_household ON accounts (household_id)',
@@ -13961,6 +14576,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'sync_issues_open',
     'CREATE INDEX sync_issues_open ON sync_issues (household_id, resolved_at)',
   );
+  late final Index pendingUploadsHousehold = Index(
+    'pending_uploads_household',
+    'CREATE INDEX pending_uploads_household ON pending_uploads (household_id, id)',
+  );
   late final LedgerDao ledgerDao = LedgerDao(this as AppDatabase);
   late final DirectoryDao directoryDao = DirectoryDao(this as AppDatabase);
   @override
@@ -13986,6 +14605,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     syncState,
     syncIssues,
     appSettings,
+    pendingUploads,
     accountsHousehold,
     categoriesHousehold,
     recurringRulesHousehold,
@@ -14007,6 +14627,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     outboxPendingRecord,
     outboxOrder,
     syncIssuesOpen,
+    pendingUploadsHousehold,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -20598,6 +21219,316 @@ typedef $$AppSettingsTableProcessedTableManager =
       AppSettingRow,
       PrefetchHooks Function()
     >;
+typedef $$PendingUploadsTableCreateCompanionBuilder =
+    PendingUploadsCompanion Function({
+      Value<int> id,
+      required String householdId,
+      required String transactionId,
+      required String attachmentId,
+      required String localPath,
+      required String mime,
+      required int sizeBytes,
+      Value<int> attempts,
+      Value<String?> lastError,
+      required DateTime createdAt,
+    });
+typedef $$PendingUploadsTableUpdateCompanionBuilder =
+    PendingUploadsCompanion Function({
+      Value<int> id,
+      Value<String> householdId,
+      Value<String> transactionId,
+      Value<String> attachmentId,
+      Value<String> localPath,
+      Value<String> mime,
+      Value<int> sizeBytes,
+      Value<int> attempts,
+      Value<String?> lastError,
+      Value<DateTime> createdAt,
+    });
+
+class $$PendingUploadsTableFilterComposer
+    extends Composer<_$AppDatabase, $PendingUploadsTable> {
+  $$PendingUploadsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get householdId => $composableBuilder(
+    column: $table.householdId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get transactionId => $composableBuilder(
+    column: $table.transactionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get attachmentId => $composableBuilder(
+    column: $table.attachmentId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get localPath => $composableBuilder(
+    column: $table.localPath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get mime => $composableBuilder(
+    column: $table.mime,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sizeBytes => $composableBuilder(
+    column: $table.sizeBytes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get attempts => $composableBuilder(
+    column: $table.attempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastError => $composableBuilder(
+    column: $table.lastError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$PendingUploadsTableOrderingComposer
+    extends Composer<_$AppDatabase, $PendingUploadsTable> {
+  $$PendingUploadsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get householdId => $composableBuilder(
+    column: $table.householdId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get transactionId => $composableBuilder(
+    column: $table.transactionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get attachmentId => $composableBuilder(
+    column: $table.attachmentId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get localPath => $composableBuilder(
+    column: $table.localPath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get mime => $composableBuilder(
+    column: $table.mime,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sizeBytes => $composableBuilder(
+    column: $table.sizeBytes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get attempts => $composableBuilder(
+    column: $table.attempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastError => $composableBuilder(
+    column: $table.lastError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$PendingUploadsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PendingUploadsTable> {
+  $$PendingUploadsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get householdId => $composableBuilder(
+    column: $table.householdId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get transactionId => $composableBuilder(
+    column: $table.transactionId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get attachmentId => $composableBuilder(
+    column: $table.attachmentId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get localPath =>
+      $composableBuilder(column: $table.localPath, builder: (column) => column);
+
+  GeneratedColumn<String> get mime =>
+      $composableBuilder(column: $table.mime, builder: (column) => column);
+
+  GeneratedColumn<int> get sizeBytes =>
+      $composableBuilder(column: $table.sizeBytes, builder: (column) => column);
+
+  GeneratedColumn<int> get attempts =>
+      $composableBuilder(column: $table.attempts, builder: (column) => column);
+
+  GeneratedColumn<String> get lastError =>
+      $composableBuilder(column: $table.lastError, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+}
+
+class $$PendingUploadsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PendingUploadsTable,
+          PendingUploadRow,
+          $$PendingUploadsTableFilterComposer,
+          $$PendingUploadsTableOrderingComposer,
+          $$PendingUploadsTableAnnotationComposer,
+          $$PendingUploadsTableCreateCompanionBuilder,
+          $$PendingUploadsTableUpdateCompanionBuilder,
+          (
+            PendingUploadRow,
+            BaseReferences<
+              _$AppDatabase,
+              $PendingUploadsTable,
+              PendingUploadRow
+            >,
+          ),
+          PendingUploadRow,
+          PrefetchHooks Function()
+        > {
+  $$PendingUploadsTableTableManager(
+    _$AppDatabase db,
+    $PendingUploadsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PendingUploadsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PendingUploadsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PendingUploadsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> householdId = const Value.absent(),
+                Value<String> transactionId = const Value.absent(),
+                Value<String> attachmentId = const Value.absent(),
+                Value<String> localPath = const Value.absent(),
+                Value<String> mime = const Value.absent(),
+                Value<int> sizeBytes = const Value.absent(),
+                Value<int> attempts = const Value.absent(),
+                Value<String?> lastError = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+              }) => PendingUploadsCompanion(
+                id: id,
+                householdId: householdId,
+                transactionId: transactionId,
+                attachmentId: attachmentId,
+                localPath: localPath,
+                mime: mime,
+                sizeBytes: sizeBytes,
+                attempts: attempts,
+                lastError: lastError,
+                createdAt: createdAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String householdId,
+                required String transactionId,
+                required String attachmentId,
+                required String localPath,
+                required String mime,
+                required int sizeBytes,
+                Value<int> attempts = const Value.absent(),
+                Value<String?> lastError = const Value.absent(),
+                required DateTime createdAt,
+              }) => PendingUploadsCompanion.insert(
+                id: id,
+                householdId: householdId,
+                transactionId: transactionId,
+                attachmentId: attachmentId,
+                localPath: localPath,
+                mime: mime,
+                sizeBytes: sizeBytes,
+                attempts: attempts,
+                lastError: lastError,
+                createdAt: createdAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$PendingUploadsTable, PendingUploadRow>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $PendingUploadsTable,
+                    PendingUploadRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$PendingUploadsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PendingUploadsTable,
+      PendingUploadRow,
+      $$PendingUploadsTableFilterComposer,
+      $$PendingUploadsTableOrderingComposer,
+      $$PendingUploadsTableAnnotationComposer,
+      $$PendingUploadsTableCreateCompanionBuilder,
+      $$PendingUploadsTableUpdateCompanionBuilder,
+      (
+        PendingUploadRow,
+        BaseReferences<_$AppDatabase, $PendingUploadsTable, PendingUploadRow>,
+      ),
+      PendingUploadRow,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -20637,4 +21568,6 @@ class $AppDatabaseManager {
       $$SyncIssuesTableTableManager(_db, _db.syncIssues);
   $$AppSettingsTableTableManager get appSettings =>
       $$AppSettingsTableTableManager(_db, _db.appSettings);
+  $$PendingUploadsTableTableManager get pendingUploads =>
+      $$PendingUploadsTableTableManager(_db, _db.pendingUploads);
 }

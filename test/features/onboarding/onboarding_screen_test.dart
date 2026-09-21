@@ -1,4 +1,3 @@
-import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:my_wallet/data/local/database.dart';
@@ -9,13 +8,14 @@ import 'package:wallet_domain/wallet_domain.dart';
 import '../../data/sync/fake_remote.dart';
 import '../../support/fake_startup.dart';
 import '../../support/pump_app.dart';
+import '../../support/test_database.dart';
 
 void main() {
   late AppDatabase db;
   late FakeRemote remote;
 
   setUp(() async {
-    db = AppDatabase(NativeDatabase.memory());
+    db = testDatabase();
     remote = FakeRemote();
     await db.batch((batch) {
       batch

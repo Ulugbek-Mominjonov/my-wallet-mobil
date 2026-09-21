@@ -1,4 +1,3 @@
-import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,13 +11,14 @@ import 'package:my_wallet/l10n/gen/app_localizations.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
 import '../../support/fake_auth.dart';
+import '../../support/test_database.dart';
 
 void main() {
   late AppDatabase db;
   late FakeAuthGateway auth;
 
   setUp(() async {
-    db = AppDatabase(NativeDatabase.memory());
+    db = testDatabase();
     auth = FakeAuthGateway(currentUserId: 'user-1');
     await db
         .into(db.households)

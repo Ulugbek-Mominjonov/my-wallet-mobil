@@ -173,5 +173,10 @@
   "filterClear": "Clear filters",
   "monthClosedBanner": "The month is closed — changes need confirmation",
   "deleted": "Deleted",
-  "editTitle": "Edit"
+  "editTitle": "Edit",
+  "receipt": "Receipt",
+  "receiptCamera": "Camera",
+  "receiptGallery": "Gallery",
+  "receiptTooLarge": "The image is too large — pick another",
+  "receiptPending": "Waiting to upload"
 }
