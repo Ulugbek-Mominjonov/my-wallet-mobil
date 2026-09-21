@@ -280,9 +280,11 @@
   amal bilan bitta tranzaksiyada, outbox), qarz bog'lash. Xatolar maydon
   bo'yicha aniq matn; yopilgan oy (BR-055) — qat'iy bo'lmasa tasdiq bilan
   yoziladi. Saqlash oflaynda ishlaydi (lokal + outbox).
-- [ ] **E15-T03** Tegishli oy: jonli izoh ("→ Avgust 2026 oyining daromadi
-  sifatida yoziladi (oldingi oy)"), xarajatda "Qaysi oyning byudjetiga?"
-  chiplari (Sana bo'yicha / Oldingi oy / Tanlash) — BR-045.
+- [x] **E15-T03** Tegishli oy: jonli izoh ("→ Sentabr 2026 oyining daromadi
+  sifatida yoziladi (oldingi oy)" — domen `attributeBudgetMonth`, daromad
+  kategoriyasi siljishi bilan), "Qaysi oyning byudjetiga?" chiplari (Sana
+  bo'yicha / Oldingi oy / Tanlash — 12 oy ro'yxati); daromadda ham (BR-042).
+  Tanlangan oy `manual` bo'lib saqlanadi; tur o'zgarsa bekor. 4 holat testi.
 - [ ] **E15-T04** Tez tugmalar qatori: bosish → darhol saqlash + 5 s undo
   snackbar; uzoq bosish → to'ldirilgan forma (BR-141).
 - [ ] **E15-T05** O'tkazma: manba/manzil hisob, summa (valyutalar farq qilsa

@@ -147,5 +147,14 @@
   "errorAmountRequired": "Введите сумму",
   "monthClosedConfirmTitle": "Месяц закрыт",
   "monthClosedConfirmBody": "Операция попадёт в закрытый месяц. Всё равно записать?",
-  "actionRecord": "Записать"
+  "actionRecord": "Записать",
+  "monthHintIncome": "→ будет записано как доход за {month} ({relation})",
+  "monthHintExpense": "→ в бюджет за {month} ({relation})",
+  "monthRelationSame": "этот месяц",
+  "monthRelationPrevious": "прошлый месяц",
+  "monthRelationNext": "следующий месяц",
+  "monthRelationManual": "выбран вручную",
+  "monthQuestion": "В бюджет какого месяца?",
+  "monthByDate": "По дате",
+  "monthChoose": "Выбрать"
 }

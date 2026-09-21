@@ -986,6 +986,60 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Yozish'**
   String get actionRecord;
+
+  /// BR-045 (E15-T03)
+  ///
+  /// In uz, this message translates to:
+  /// **'→ {month} oyining daromadi sifatida yoziladi ({relation})'**
+  String monthHintIncome(String month, String relation);
+
+  /// No description provided for @monthHintExpense.
+  ///
+  /// In uz, this message translates to:
+  /// **'→ {month} oyining byudjetiga ({relation})'**
+  String monthHintExpense(String month, String relation);
+
+  /// No description provided for @monthRelationSame.
+  ///
+  /// In uz, this message translates to:
+  /// **'shu oy'**
+  String get monthRelationSame;
+
+  /// No description provided for @monthRelationPrevious.
+  ///
+  /// In uz, this message translates to:
+  /// **'oldingi oy'**
+  String get monthRelationPrevious;
+
+  /// No description provided for @monthRelationNext.
+  ///
+  /// In uz, this message translates to:
+  /// **'keyingi oy'**
+  String get monthRelationNext;
+
+  /// No description provided for @monthRelationManual.
+  ///
+  /// In uz, this message translates to:
+  /// **'qo\'lda tanlangan'**
+  String get monthRelationManual;
+
+  /// No description provided for @monthQuestion.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qaysi oyning byudjetiga?'**
+  String get monthQuestion;
+
+  /// No description provided for @monthByDate.
+  ///
+  /// In uz, this message translates to:
+  /// **'Sana bo\'yicha'**
+  String get monthByDate;
+
+  /// No description provided for @monthChoose.
+  ///
+  /// In uz, this message translates to:
+  /// **'Tanlash'**
+  String get monthChoose;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

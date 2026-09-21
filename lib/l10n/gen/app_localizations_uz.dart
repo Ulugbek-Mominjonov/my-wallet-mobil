@@ -517,4 +517,35 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get actionRecord => 'Yozish';
+
+  @override
+  String monthHintIncome(String month, String relation) {
+    return '→ $month oyining daromadi sifatida yoziladi ($relation)';
+  }
+
+  @override
+  String monthHintExpense(String month, String relation) {
+    return '→ $month oyining byudjetiga ($relation)';
+  }
+
+  @override
+  String get monthRelationSame => 'shu oy';
+
+  @override
+  String get monthRelationPrevious => 'oldingi oy';
+
+  @override
+  String get monthRelationNext => 'keyingi oy';
+
+  @override
+  String get monthRelationManual => 'qo\'lda tanlangan';
+
+  @override
+  String get monthQuestion => 'Qaysi oyning byudjetiga?';
+
+  @override
+  String get monthByDate => 'Sana bo\'yicha';
+
+  @override
+  String get monthChoose => 'Tanlash';
 }

@@ -516,4 +516,35 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get actionRecord => 'Record';
+
+  @override
+  String monthHintIncome(String month, String relation) {
+    return '→ recorded as income for $month ($relation)';
+  }
+
+  @override
+  String monthHintExpense(String month, String relation) {
+    return '→ goes to the $month budget ($relation)';
+  }
+
+  @override
+  String get monthRelationSame => 'this month';
+
+  @override
+  String get monthRelationPrevious => 'previous month';
+
+  @override
+  String get monthRelationNext => 'next month';
+
+  @override
+  String get monthRelationManual => 'chosen manually';
+
+  @override
+  String get monthQuestion => 'Which month\'s budget?';
+
+  @override
+  String get monthByDate => 'By date';
+
+  @override
+  String get monthChoose => 'Choose';
 }

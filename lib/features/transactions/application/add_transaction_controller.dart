@@ -20,6 +20,7 @@ final class AddTransactionState {
     this.note,
     this.tagIds = const {},
     this.debtId,
+    this.manualMonth,
     this.saving = false,
     this.failure,
   });
@@ -41,6 +42,9 @@ final class AddTransactionState {
 
   /// BR-112: qarz to'lovi/olinishi shu qarzga bog'lanadi.
   final String? debtId;
+
+  /// BR-041, BR-042: qo'lda tanlangan tegishli oy (`null` — qoida bo'yicha).
+  final MonthKey? manualMonth;
   final bool saving;
   final Failure? failure;
 
@@ -67,10 +71,12 @@ final class AddTransactionState {
     String? note,
     Set<String>? tagIds,
     String? debtId,
+    MonthKey? manualMonth,
     bool? saving,
     Failure? failure,
     bool clearCategory = false,
     bool clearDebt = false,
+    bool clearManualMonth = false,
     bool clearFailure = false,
   }) => AddTransactionState(
     kind: kind ?? this.kind,
@@ -84,6 +90,7 @@ final class AddTransactionState {
     note: note ?? this.note,
     tagIds: tagIds ?? this.tagIds,
     debtId: clearDebt ? null : (debtId ?? this.debtId),
+    manualMonth: clearManualMonth ? null : (manualMonth ?? this.manualMonth),
     saving: saving ?? this.saving,
     failure: clearFailure ? null : (failure ?? this.failure),
   );
@@ -113,9 +120,12 @@ base class AddTransactionController extends Notifier<AddTransactionState> {
         : state.copyWith(accountId: defaultAccount.id);
   }
 
-  /// Tur o'zgarsa kategoriya boshqa turdan bo'lib qolmasin.
-  void selectKind(TransactionKind kind) =>
-      state = state.copyWith(kind: kind, clearCategory: true);
+  /// Tur o'zgarsa kategoriya va qo'lda tanlangan oy qaytadan tanlanadi.
+  void selectKind(TransactionKind kind) => state = state.copyWith(
+    kind: kind,
+    clearCategory: true,
+    clearManualMonth: true,
+  );
 
   void press(AmountKey key) =>
       state = state.copyWith(entry: state.entry.press(key));
@@ -161,6 +171,11 @@ base class AddTransactionController extends Notifier<AddTransactionState> {
         ? ({...state.tagIds}..remove(tagId))
         : {...state.tagIds, tagId},
   );
+
+  /// BR-045: `null` — qoida bo'yicha (sana oyi / daromad siljishi).
+  void selectMonth(MonthKey? month) => state = month == null
+      ? state.copyWith(clearManualMonth: true)
+      : state.copyWith(manualMonth: month);
 
   void selectDebt(String? debtId) => state = debtId == null
       ? state.copyWith(clearDebt: true)
@@ -216,6 +231,7 @@ base class AddTransactionController extends Notifier<AddTransactionState> {
             amount: state.amount,
             categoryId: state.categoryId,
             occurredOn: state.occurredOn,
+            manualMonth: state.manualMonth,
             payee: _trimmed(state.payee),
             note: _trimmed(state.note),
             debtId: state.debtId,

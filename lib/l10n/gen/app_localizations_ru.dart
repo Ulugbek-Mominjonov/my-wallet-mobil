@@ -516,4 +516,35 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get actionRecord => 'Записать';
+
+  @override
+  String monthHintIncome(String month, String relation) {
+    return '→ будет записано как доход за $month ($relation)';
+  }
+
+  @override
+  String monthHintExpense(String month, String relation) {
+    return '→ в бюджет за $month ($relation)';
+  }
+
+  @override
+  String get monthRelationSame => 'этот месяц';
+
+  @override
+  String get monthRelationPrevious => 'прошлый месяц';
+
+  @override
+  String get monthRelationNext => 'следующий месяц';
+
+  @override
+  String get monthRelationManual => 'выбран вручную';
+
+  @override
+  String get monthQuestion => 'В бюджет какого месяца?';
+
+  @override
+  String get monthByDate => 'По дате';
+
+  @override
+  String get monthChoose => 'Выбрать';
 }

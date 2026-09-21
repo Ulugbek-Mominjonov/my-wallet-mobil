@@ -282,5 +282,35 @@
   "errorAmountRequired": "Summani kiriting",
   "monthClosedConfirmTitle": "Oy yopilgan",
   "monthClosedConfirmBody": "Bu amal yopilgan oyga tushadi. Baribir yozilsinmi?",
-  "actionRecord": "Yozish"
+  "actionRecord": "Yozish",
+  "monthHintIncome": "→ {month} oyining daromadi sifatida yoziladi ({relation})",
+  "monthHintExpense": "→ {month} oyining byudjetiga ({relation})",
+  "monthRelationSame": "shu oy",
+  "monthRelationPrevious": "oldingi oy",
+  "monthRelationNext": "keyingi oy",
+  "monthRelationManual": "qo'lda tanlangan",
+  "monthQuestion": "Qaysi oyning byudjetiga?",
+  "monthByDate": "Sana bo'yicha",
+  "monthChoose": "Tanlash",
+  "@monthHintIncome": {
+    "description": "BR-045 (E15-T03)",
+    "placeholders": {
+      "month": {
+        "type": "String"
+      },
+      "relation": {
+        "type": "String"
+      }
+    }
+  },
+  "@monthHintExpense": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      },
+      "relation": {
+        "type": "String"
+      }
+    }
+  }
 }

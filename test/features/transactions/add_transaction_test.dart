@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/local/mappers.dart';
+import 'package:my_wallet/data/repositories/local_ledger.dart';
+import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
 import '../../support/pump_app.dart';
@@ -66,13 +68,28 @@ void main() {
             name: 'Oylik',
             monthShift: -1,
           ).toCompanion(),
+          const Category(
+            id: 'c3',
+            householdId: 'h1',
+            kind: CategoryKind.income,
+            name: 'Avans',
+          ).toCompanion(),
         ]);
     });
   });
   tearDown(() => db.close());
 
   Future<void> openSheet(WidgetTester tester) async {
-    await pumpApp(tester, database: db);
+    await pumpApp(
+      tester,
+      database: db,
+      overrides: [
+        // 5-oktabr 2026, Toshkent — oy izohlari barqaror bo'lsin.
+        clockProvider.overrideWithValue(
+          TzClock('Asia/Tashkent', utcNow: () => DateTime.utc(2026, 10, 5, 4)),
+        ),
+      ],
+    );
     await tester.tap(find.byTooltip("Amal qo'shish"));
     await tester.pumpAndSettle();
   }
@@ -256,6 +273,69 @@ void main() {
       'transaction_tags',
       'transactions',
     ]);
+  });
+
+  group('BR-045: tegishli oy izohi', () {
+    testWidgets('xarajat — sana oyi', (tester) async {
+      await openSheet(tester);
+      expect(
+        find.text('→ Oktabr 2026 oyining byudjetiga (shu oy)'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('daromad "Oylik" (−1) — oldingi oy; "Avans" (0) — shu oy', (
+      tester,
+    ) async {
+      await openSheet(tester);
+      await tester.tap(find.text('Daromad'));
+      await tester.pumpAndSettle();
+      await tapChip(tester, 'Oylik');
+      expect(
+        find.text(
+          '→ Sentabr 2026 oyining daromadi sifatida yoziladi (oldingi oy)',
+        ),
+        findsOneWidget,
+      );
+      await tapChip(tester, 'Avans');
+      expect(
+        find.text('→ Oktabr 2026 oyining daromadi sifatida yoziladi (shu oy)'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('"Oldingi oy" — qo\'lda; saqlanganda oy o\'shanday', (
+      tester,
+    ) async {
+      await openSheet(tester);
+      await tapKeys(tester, ['3', '000']);
+      await tapChip(tester, 'Oziq-ovqat');
+      await tapChip(tester, 'Oldingi oy');
+      expect(
+        find.text("→ Sentabr 2026 oyining byudjetiga (qo'lda tanlangan)"),
+        findsOneWidget,
+      );
+      await tester.tap(find.widgetWithText(FilledButton, 'Saqlash'));
+      await tester.pumpAndSettle();
+      final saved = await db.select(db.transactions).getSingle();
+      expect(
+        (saved.occurredOn, saved.budgetMonth, saved.budgetMonthSource),
+        ('2026-10-05', '2026-09-01', 'manual'),
+      );
+    });
+
+    testWidgets("kecha (30-sentabr) — oy ham o'zgaradi", (tester) async {
+      await openSheet(tester);
+      final yesterday = find.widgetWithText(ChoiceChip, 'Kecha');
+      await tester.ensureVisible(yesterday);
+      await tester.tap(yesterday);
+      await tester.pumpAndSettle();
+      // 5-oktabrdan kecha — 4-oktabr: oy o'zgarmaydi.
+      expect(
+        find.text('→ Oktabr 2026 oyining byudjetiga (shu oy)'),
+        findsOneWidget,
+      );
+    });
   });
 
   testWidgets('kategoriyasiz xarajat — aniq xabar', (tester) async {

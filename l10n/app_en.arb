@@ -147,5 +147,14 @@
   "errorAmountRequired": "Enter an amount",
   "monthClosedConfirmTitle": "The month is closed",
   "monthClosedConfirmBody": "This goes into a closed month. Record it anyway?",
-  "actionRecord": "Record"
+  "actionRecord": "Record",
+  "monthHintIncome": "→ recorded as income for {month} ({relation})",
+  "monthHintExpense": "→ goes to the {month} budget ({relation})",
+  "monthRelationSame": "this month",
+  "monthRelationPrevious": "previous month",
+  "monthRelationNext": "next month",
+  "monthRelationManual": "chosen manually",
+  "monthQuestion": "Which month's budget?",
+  "monthByDate": "By date",
+  "monthChoose": "Choose"
 }

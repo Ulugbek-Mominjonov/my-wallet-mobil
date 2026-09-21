@@ -7,6 +7,7 @@ import 'package:my_wallet/core/design_system/tokens.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:my_wallet/features/transactions/application/add_transaction_controller.dart';
 import 'package:my_wallet/features/transactions/presentation/amount_keypad.dart';
+import 'package:my_wallet/features/transactions/presentation/month_attribution_field.dart';
 import 'package:my_wallet/features/transactions/presentation/transaction_fields.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
 import 'package:wallet_domain/wallet_domain.dart';
@@ -85,6 +86,7 @@ class AddTransactionScreen extends ConsumerWidget {
                       selected: state.occurredOn,
                       onSelected: controller.selectDate,
                     ),
+                    MonthAttributionField(state: state),
                     if (!state.isTransfer) ...[
                       PayeeField(state: state),
                       DebtChips(selectedId: state.debtId),
