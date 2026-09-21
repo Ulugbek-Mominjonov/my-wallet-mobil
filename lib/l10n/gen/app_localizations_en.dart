@@ -751,6 +751,9 @@ class AppL10nEn extends AppL10n {
   String get dashEmpty => 'Nothing recorded this month yet';
 
   @override
+  String get dashEmptyHint => 'Tap “+” to add the first transaction';
+
+  @override
   String yearTitle(String year) {
     return '$year';
   }

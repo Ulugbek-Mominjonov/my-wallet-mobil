@@ -9,6 +9,7 @@ import 'package:my_wallet/core/format/money_format.dart';
 import 'package:my_wallet/core/format/month_format.dart';
 import 'package:my_wallet/core/security/privacy_mode.dart';
 import 'package:my_wallet/core/widgets/app_card.dart';
+import 'package:my_wallet/core/widgets/empty_state.dart';
 import 'package:my_wallet/core/widgets/money_text.dart';
 import 'package:my_wallet/data/local/daos/ledger_dao.dart';
 import 'package:my_wallet/features/dashboard/application/dashboard_controller.dart';
@@ -27,6 +28,7 @@ class DashboardScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
     final report = ref.watch(monthReportProvider).value;
     final month = ref.watch(dashboardMonthProvider);
     final controller = ref.read(dashboardMonthProvider.notifier);
@@ -51,24 +53,34 @@ class DashboardScreen extends ConsumerWidget {
             if (!report.state.opened &&
                 !report.month.isBefore(report.today.monthKey))
               _OpenMonthCard(month: report.month),
-            _HeroCard(report: report),
-            const SizedBox(height: AppSpacing.md),
-            _StatsGrid(report: report),
-            const SizedBox(height: AppSpacing.md),
-            if (report.facts.planned.isPositive ||
-                report.facts.unknownCount > 0)
-              _PlanCard(report: report),
-            if (report.upcomingPayments.isNotEmpty)
-              _UpcomingCard(report: report),
-            if (report.isCurrent) _ForecastCard(report: report),
-            if (report.categories.isNotEmpty) _CategoriesCard(report: report),
-            if (report.incomeTypes.isNotEmpty) _IncomeTypesCard(report: report),
+            if (report.isEmpty)
+              EmptyState(
+                icon: Icons.insights_outlined,
+                title: l10n.dashEmpty,
+                message: l10n.dashEmptyHint,
+              )
+            else ...[
+              _HeroCard(report: report),
+              const SizedBox(height: AppSpacing.md),
+              _StatsGrid(report: report),
+              const SizedBox(height: AppSpacing.md),
+              if (report.facts.planned.isPositive ||
+                  report.facts.unknownCount > 0)
+                _PlanCard(report: report),
+              if (report.upcomingPayments.isNotEmpty)
+                _UpcomingCard(report: report),
+              if (report.isCurrent) _ForecastCard(report: report),
+              if (report.categories.isNotEmpty) _CategoriesCard(report: report),
+              if (report.incomeTypes.isNotEmpty)
+                _IncomeTypesCard(report: report),
+            ],
+            // Fond, jamg'arma, qarz va maqsadlar — oyga bog'liq emas.
             _FundSavingsRow(report: report),
             if (report.debts.iOwe.isPositive ||
                 report.debts.owedToMe.isPositive)
               _DebtsCard(report: report),
             if (report.goals.isNotEmpty) _GoalsCard(report: report),
-            _ShareButton(report: report),
+            if (!report.isEmpty) _ShareButton(report: report),
           ],
         ],
       ),
@@ -168,13 +180,19 @@ class _OpenMonthCard extends ConsumerWidget {
     final l10n = AppL10n.of(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.md),
+      // Matn va tugma ustma-ust: tor ekran/katta shriftda matn siqilmaydi.
       child: AppCard(
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            const Icon(Icons.event_available_outlined),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(child: Text(l10n.dashNotOpened)),
-            const SizedBox(width: AppSpacing.sm),
+            Row(
+              children: [
+                const Icon(Icons.event_available_outlined),
+                const SizedBox(width: AppSpacing.md),
+                Expanded(child: Text(l10n.dashNotOpened)),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.sm),
             FilledButton(
               onPressed: () => unawaited(_open(context, ref)),
               child: Text(l10n.dashOpenMonth),

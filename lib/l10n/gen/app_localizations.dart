@@ -1377,6 +1377,12 @@ abstract class AppL10n {
   /// **'Bu oyda hali yozuv yo\'q'**
   String get dashEmpty;
 
+  /// No description provided for @dashEmptyHint.
+  ///
+  /// In uz, this message translates to:
+  /// **'“+” tugmasi bilan birinchi amalni qo\'shing'**
+  String get dashEmptyHint;
+
   /// Yillik ko'rinish (E16-T05)
   ///
   /// In uz, this message translates to:

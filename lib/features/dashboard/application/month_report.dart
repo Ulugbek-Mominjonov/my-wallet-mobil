@@ -53,6 +53,9 @@ final class MonthReport {
 
   bool get isCurrent => month == today.monthKey;
 
+  /// Oyda amal ham, reja ham yo'q (BR-092).
+  bool get isEmpty => !facts.hasRecords;
+
   /// Dashboard "yaqin to'lovlar": xarajat/ajratma rejalari, muddati bo'yicha.
   List<PlanReport> get upcomingPayments => [
     for (final plan in openPlans)

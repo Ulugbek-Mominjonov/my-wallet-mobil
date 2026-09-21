@@ -751,6 +751,9 @@ class AppL10nUz extends AppL10n {
   String get dashEmpty => 'Bu oyda hali yozuv yo\'q';
 
   @override
+  String get dashEmptyHint => '“+” tugmasi bilan birinchi amalni qo\'shing';
+
+  @override
   String yearTitle(String year) {
     return '$year-yil';
   }

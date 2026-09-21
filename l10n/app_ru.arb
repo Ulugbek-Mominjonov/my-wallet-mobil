@@ -213,6 +213,7 @@
   "dashOpenMonthBody": "Будет создано планов: {count}",
   "dashClosed": "Закрыт",
   "dashEmpty": "В этом месяце пока нет записей",
+  "dashEmptyHint": "Нажмите «+», чтобы добавить первую операцию",
   "yearTitle": "{year} год",
   "yearTotal": "ИТОГО",
   "yearView": "Годовой обзор",

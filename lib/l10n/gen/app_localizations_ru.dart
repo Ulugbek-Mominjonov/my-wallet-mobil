@@ -749,6 +749,9 @@ class AppL10nRu extends AppL10n {
   String get dashEmpty => 'В этом месяце пока нет записей';
 
   @override
+  String get dashEmptyHint => 'Нажмите «+», чтобы добавить первую операцию';
+
+  @override
   String yearTitle(String year) {
     return '$year год';
   }

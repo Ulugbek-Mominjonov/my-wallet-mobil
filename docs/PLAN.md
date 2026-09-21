@@ -356,8 +356,11 @@
   (`RepaintBoundary` → 360 px karta ×3 = 1080 px; `share_plus`). Karta —
   qoldiq, orttirgan %, daromad/xarajat, karta/naqd, eng katta 5 xarajat;
   maxfiylik rejimida `•••`. PDF — kerak emas (rasm messenjerda qulayroq).
-- [ ] **E16-T07** Testlar: fixture'lar bilan controller testlari; golden:
-  hero karta (musbat/manfiy/maxfiy), bo'sh oy holati.
+- [x] **E16-T07** Testlar: controller — `report_month`/`report_year`
+  fixture'lari bilan parite (T01, T05); golden: hero (musbat, manfiy/dark,
+  maxfiy), bo'sh oy (yangi `EmptyState` — oyga bog'liq bo'lmagan fond/qarz/
+  maqsadlar qoladi), ulashish kartasi. Golden "oyni ochish" kartasida tor
+  ekranda matn siqilishini ko'rsatdi — ustma-ust joylashuvga o'tkazildi.
 
 ### E17 · To'lovlar (rejalar) `[mobile]`
 
@@ -510,6 +513,7 @@
 | 2026-09-18 | E04-T07 | mobil CI (dart + android job'lari), qoplama chegarasi skripti (88,4% ≥ 70%) |
 | 2026-09-18 | E04-T08 | contracts/ admin 5f95b9a dan olindi, lock + yaxlitlik tekshiruvi. **E04 yakunlandi** |
 | 2026-09-19 | E12-T01..T06 | `wallet_domain`: value object'lar, 12 entity, 14 qoida moduli, 9 use-case; golden fixture pariteti 51/51 (mutatsiya testi bilan). **E12 yakunlandi** |
-| 2026-09-21 | E15-T01..T08 | "Qo'shish" varag'i (klaviatura, tez tugmalar + undo, kategoriya/hisob/sana/joy/teg/qarz, joyida kategoriya, tegishli oy izohi, fond izohlari, cheklar — siqish, oflayn navbat, Storage), amallar ro'yxati (oy, kunlik jami, filtr, qidiruv, swipe-o'chirish + undo, tahrirlash); lokal sxema v2 (migratsiya testi indeks xatosini ushladi); 264 test (90,9%), goldenlar, 9 integratsiya. **E15 yakunlandi** |
-| 2026-09-20 | E14-T01..T06 | kirish (email kodi, Google + nonce; sessiya shifrlangan xotirada), byudjet yuklash/tanlash va taklif bilan qo'shilish (QR, deep link), sozlash ustasi (`onboarding_apply` + joriy oy), qobiq (almashtirgich, bannerlar, BR-214), ilova qulfi (PIN/PBKDF2, biometrika, avto-qulf, FLAG_SECURE) va maxfiylik rejimi; 221 test (92,6%), 8 integratsiya testi. **E14 yakunlandi** |
 | 2026-09-19 | E13-T01..T07 | drift sxemasi (14 jadval + outbox/kursor/muammolar), `LedgerDao` (oy yig'indisi SQL'da — domen bilan parite 52/52), `RemoteApi`, repository'lar (qator + outbox atomar), `SyncEngine`/`SyncScheduler`, WorkManager, holat nishoni va ekrani; 155 test (qoplama 92,5%), domen 192 (97,7%); lokal Supabase bilan 4 integratsiya testi — drift upsert NULL xatosini topdi. **E13 yakunlandi** |
+| 2026-09-20 | E14-T01..T06 | kirish (email kodi, Google + nonce; sessiya shifrlangan xotirada), byudjet yuklash/tanlash va taklif bilan qo'shilish (QR, deep link), sozlash ustasi (`onboarding_apply` + joriy oy), qobiq (almashtirgich, bannerlar, BR-214), ilova qulfi (PIN/PBKDF2, biometrika, avto-qulf, FLAG_SECURE) va maxfiylik rejimi; 221 test (92,6%), 8 integratsiya testi. **E14 yakunlandi** |
+| 2026-09-21 | E15-T01..T08 | "Qo'shish" varag'i (klaviatura, tez tugmalar + undo, kategoriya/hisob/sana/joy/teg/qarz, joyida kategoriya, tegishli oy izohi, fond izohlari, cheklar — siqish, oflayn navbat, Storage), amallar ro'yxati (oy, kunlik jami, filtr, qidiruv, swipe-o'chirish + undo, tahrirlash); lokal sxema v2 (migratsiya testi indeks xatosini ushladi); 264 test (90,9%), goldenlar, 9 integratsiya. **E15 yakunlandi** |
+| 2026-09-21 | E16-T01..T07 | Xulosa lokal bazadan (tarmoqsiz): `MonthReportLoader` + `ReportDao` — `report_month` bilan parite 49/49, `report_year` jami; hero (qoldiq, prognoz, kuniga, orttirgan %), statistika → filtrlangan amallar, rejalar, yaqin to'lovlar (To'landi), prognoz, kategoriyalar (limit rangi), daromad turlari, fond/jamg'arma, qarz, maqsadlar; oyni ochish; yillik ko'rinish + kategoriya trendi; PNG ulashish; bo'sh oy holati; 328 test (89,1%), goldenlar tor ekran xatolarini topdi. **E16 yakunlandi** |

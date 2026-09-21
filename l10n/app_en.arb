@@ -213,6 +213,7 @@
   "dashOpenMonthBody": "{count} plans will be created",
   "dashClosed": "Closed",
   "dashEmpty": "Nothing recorded this month yet",
+  "dashEmptyHint": "Tap “+” to add the first transaction",
   "yearTitle": "{year}",
   "yearTotal": "TOTAL",
   "yearView": "Year view",

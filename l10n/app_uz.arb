@@ -401,6 +401,7 @@
   "dashOpenMonthBody": "{count} ta reja yaratiladi",
   "dashClosed": "Yopilgan",
   "dashEmpty": "Bu oyda hali yozuv yo'q",
+  "dashEmptyHint": "“+” tugmasi bilan birinchi amalni qo'shing",
   "@dashMonthEnd": {
     "description": "Dashboard (E16)",
     "placeholders": {
