@@ -8,10 +8,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_wallet/core/design_system/tokens.dart';
 import 'package:my_wallet/core/format/month_format.dart';
 import 'package:my_wallet/core/logging/app_log.dart';
+import 'package:my_wallet/core/share/file_sharer.dart';
 import 'package:my_wallet/core/widgets/money_text.dart';
 import 'package:my_wallet/data/local/daos/report_dao.dart';
 import 'package:my_wallet/features/dashboard/application/month_report.dart';
-import 'package:my_wallet/features/dashboard/application/report_sharer.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
@@ -67,8 +67,8 @@ class _ShareReportState extends ConsumerState<ShareReportScreen> {
     final month = widget.report.month;
     setState(() => _busy = true);
     try {
-      await ref.read(reportSharerProvider)(
-        await _capture(),
+      await ref.read(fileSharerProvider)(
+        XFile.fromData(await _capture(), mimeType: 'image/png'),
         fileName: 'my-wallet-$month.png',
         text: formatMonthTitle(l10n, year: month.year, month: month.month),
       );

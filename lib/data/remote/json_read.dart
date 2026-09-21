@@ -22,3 +22,11 @@ Json asObject(Object? value) {
   if (value is Map<String, Object?>) return value;
   throw FormatException('obyekt kutilgan', value);
 }
+
+/// Obyektlar massivi (javobning o'zi massiv bo'lsa).
+List<Json> asObjects(Object? value) {
+  if (value is! List<Object?>) {
+    throw FormatException('obyektlar massivi kutilgan', value);
+  }
+  return [for (final item in value) asObject(item)];
+}

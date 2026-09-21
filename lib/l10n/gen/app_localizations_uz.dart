@@ -1207,4 +1207,162 @@ class AppL10nUz extends AppL10n {
   String reminderBodyUnknown(String name) {
     return '$name — summa o\'zgaruvchi';
   }
+
+  @override
+  String get settingsTitle => 'Sozlamalar';
+
+  @override
+  String get notifTitle => 'Bildirishnomalar';
+
+  @override
+  String get notifChannels => 'Kanallar';
+
+  @override
+  String get notifPush => 'Push-bildirishnomalar';
+
+  @override
+  String get notifTelegram => 'Telegram';
+
+  @override
+  String get notifEmail => 'Email';
+
+  @override
+  String get notifSchedule => 'Eslatmalar';
+
+  @override
+  String get notifReminderHour => 'Eslatma soati';
+
+  @override
+  String get notifDaysAhead => 'Necha kun oldin';
+
+  @override
+  String notifDays(int days) {
+    return '$days kun';
+  }
+
+  @override
+  String get notifMonthlyReport => 'Oylik hisobot';
+
+  @override
+  String get notifReportDay => 'Hisobot kuni';
+
+  @override
+  String get notifLimitAlerts => 'Limit ogohlantirishlari';
+
+  @override
+  String get notifIncomeMissing => 'Kechikkan daromad eslatmasi';
+
+  @override
+  String get notifTelegramLinked => 'Ulangan';
+
+  @override
+  String get notifTelegramNotLinked => 'Ulanmagan';
+
+  @override
+  String get notifTelegramLink => 'Ulash';
+
+  @override
+  String get notifTelegramUnlink => 'Uzish';
+
+  @override
+  String get notifTest => 'Sinov xabari yuborish';
+
+  @override
+  String get notifQueued => 'yuborildi';
+
+  @override
+  String get notifReasonDisabled => 'sozlamada o\'chiq';
+
+  @override
+  String get notifReasonNoDevice => 'qurilma ro\'yxatda yo\'q';
+
+  @override
+  String get notifReasonNotLinked => 'ulanmagan';
+
+  @override
+  String get notifReasonNotConfigured => 'serverda sozlanmagan';
+
+  @override
+  String get notifPermission => 'Qurilma ruxsati';
+
+  @override
+  String get notifPermissionAllow => 'Ruxsat berish';
+
+  @override
+  String get notifOffline => 'Sozlamalar uchun internet kerak';
+
+  @override
+  String get settingsProfile => 'Profil';
+
+  @override
+  String get settingsHousehold => 'Byudjet';
+
+  @override
+  String get settingsAppearance => 'Ko\'rinish';
+
+  @override
+  String get settingsTheme => 'Tema';
+
+  @override
+  String get themeSystem => 'Tizim';
+
+  @override
+  String get themeLight => 'Och';
+
+  @override
+  String get themeDark => 'To\'q';
+
+  @override
+  String get settingsLanguage => 'Til';
+
+  @override
+  String get languageSystem => 'Qurilma tili';
+
+  @override
+  String get settingsSecurity => 'Xavfsizlik';
+
+  @override
+  String get settingsData => 'Ma\'lumotlar';
+
+  @override
+  String get settingsExport => 'Eksport (JSON)';
+
+  @override
+  String get settingsExportText => 'My Wallet eksporti';
+
+  @override
+  String get settingsExportFailed => 'Eksport qilib bo\'lmadi';
+
+  @override
+  String get settingsAccount => 'Akkaunt';
+
+  @override
+  String get deleteAccount => 'Akkauntni o\'chirish';
+
+  @override
+  String get deleteAccountBody =>
+      'Faqat siz a\'zo bo\'lgan byudjetlar va ularning ma\'lumotlari o\'chiriladi, boshqa byudjetlardan chiqasiz. Bu amalni qaytarib bo\'lmaydi.';
+
+  @override
+  String deleteAccountConfirm(String word) {
+    return 'Tasdiqlash uchun «$word» deb yozing';
+  }
+
+  @override
+  String get deleteAccountWord => 'O\'CHIRISH';
+
+  @override
+  String get deleteAccountLastOwner =>
+      'Siz boshqa a\'zolari bor byudjetning yagona egasisiz — avval egalikni boshqa a\'zoga o\'tkazing';
+
+  @override
+  String get settingsAbout => 'Ilova haqida';
+
+  @override
+  String settingsVersion(String version) {
+    return 'Versiya $version';
+  }
+
+  @override
+  String get settingsLicenses => 'Litsenziyalar';
 }

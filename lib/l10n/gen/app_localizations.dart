@@ -2180,6 +2180,306 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'{name} — summa o\'zgaruvchi'**
   String reminderBodyUnknown(String name);
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Sozlamalar'**
+  String get settingsTitle;
+
+  /// No description provided for @notifTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bildirishnomalar'**
+  String get notifTitle;
+
+  /// No description provided for @notifChannels.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kanallar'**
+  String get notifChannels;
+
+  /// No description provided for @notifPush.
+  ///
+  /// In uz, this message translates to:
+  /// **'Push-bildirishnomalar'**
+  String get notifPush;
+
+  /// No description provided for @notifTelegram.
+  ///
+  /// In uz, this message translates to:
+  /// **'Telegram'**
+  String get notifTelegram;
+
+  /// No description provided for @notifEmail.
+  ///
+  /// In uz, this message translates to:
+  /// **'Email'**
+  String get notifEmail;
+
+  /// No description provided for @notifSchedule.
+  ///
+  /// In uz, this message translates to:
+  /// **'Eslatmalar'**
+  String get notifSchedule;
+
+  /// No description provided for @notifReminderHour.
+  ///
+  /// In uz, this message translates to:
+  /// **'Eslatma soati'**
+  String get notifReminderHour;
+
+  /// No description provided for @notifDaysAhead.
+  ///
+  /// In uz, this message translates to:
+  /// **'Necha kun oldin'**
+  String get notifDaysAhead;
+
+  /// Sozlamalar (E19)
+  ///
+  /// In uz, this message translates to:
+  /// **'{days} kun'**
+  String notifDays(int days);
+
+  /// No description provided for @notifMonthlyReport.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oylik hisobot'**
+  String get notifMonthlyReport;
+
+  /// No description provided for @notifReportDay.
+  ///
+  /// In uz, this message translates to:
+  /// **'Hisobot kuni'**
+  String get notifReportDay;
+
+  /// No description provided for @notifLimitAlerts.
+  ///
+  /// In uz, this message translates to:
+  /// **'Limit ogohlantirishlari'**
+  String get notifLimitAlerts;
+
+  /// No description provided for @notifIncomeMissing.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kechikkan daromad eslatmasi'**
+  String get notifIncomeMissing;
+
+  /// No description provided for @notifTelegramLinked.
+  ///
+  /// In uz, this message translates to:
+  /// **'Ulangan'**
+  String get notifTelegramLinked;
+
+  /// No description provided for @notifTelegramNotLinked.
+  ///
+  /// In uz, this message translates to:
+  /// **'Ulanmagan'**
+  String get notifTelegramNotLinked;
+
+  /// No description provided for @notifTelegramLink.
+  ///
+  /// In uz, this message translates to:
+  /// **'Ulash'**
+  String get notifTelegramLink;
+
+  /// No description provided for @notifTelegramUnlink.
+  ///
+  /// In uz, this message translates to:
+  /// **'Uzish'**
+  String get notifTelegramUnlink;
+
+  /// No description provided for @notifTest.
+  ///
+  /// In uz, this message translates to:
+  /// **'Sinov xabari yuborish'**
+  String get notifTest;
+
+  /// No description provided for @notifQueued.
+  ///
+  /// In uz, this message translates to:
+  /// **'yuborildi'**
+  String get notifQueued;
+
+  /// No description provided for @notifReasonDisabled.
+  ///
+  /// In uz, this message translates to:
+  /// **'sozlamada o\'chiq'**
+  String get notifReasonDisabled;
+
+  /// No description provided for @notifReasonNoDevice.
+  ///
+  /// In uz, this message translates to:
+  /// **'qurilma ro\'yxatda yo\'q'**
+  String get notifReasonNoDevice;
+
+  /// No description provided for @notifReasonNotLinked.
+  ///
+  /// In uz, this message translates to:
+  /// **'ulanmagan'**
+  String get notifReasonNotLinked;
+
+  /// No description provided for @notifReasonNotConfigured.
+  ///
+  /// In uz, this message translates to:
+  /// **'serverda sozlanmagan'**
+  String get notifReasonNotConfigured;
+
+  /// No description provided for @notifPermission.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qurilma ruxsati'**
+  String get notifPermission;
+
+  /// No description provided for @notifPermissionAllow.
+  ///
+  /// In uz, this message translates to:
+  /// **'Ruxsat berish'**
+  String get notifPermissionAllow;
+
+  /// No description provided for @notifOffline.
+  ///
+  /// In uz, this message translates to:
+  /// **'Sozlamalar uchun internet kerak'**
+  String get notifOffline;
+
+  /// No description provided for @settingsProfile.
+  ///
+  /// In uz, this message translates to:
+  /// **'Profil'**
+  String get settingsProfile;
+
+  /// No description provided for @settingsHousehold.
+  ///
+  /// In uz, this message translates to:
+  /// **'Byudjet'**
+  String get settingsHousehold;
+
+  /// No description provided for @settingsAppearance.
+  ///
+  /// In uz, this message translates to:
+  /// **'Ko\'rinish'**
+  String get settingsAppearance;
+
+  /// No description provided for @settingsTheme.
+  ///
+  /// In uz, this message translates to:
+  /// **'Tema'**
+  String get settingsTheme;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In uz, this message translates to:
+  /// **'Tizim'**
+  String get themeSystem;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In uz, this message translates to:
+  /// **'Och'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In uz, this message translates to:
+  /// **'To\'q'**
+  String get themeDark;
+
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In uz, this message translates to:
+  /// **'Til'**
+  String get settingsLanguage;
+
+  /// No description provided for @languageSystem.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qurilma tili'**
+  String get languageSystem;
+
+  /// No description provided for @settingsSecurity.
+  ///
+  /// In uz, this message translates to:
+  /// **'Xavfsizlik'**
+  String get settingsSecurity;
+
+  /// No description provided for @settingsData.
+  ///
+  /// In uz, this message translates to:
+  /// **'Ma\'lumotlar'**
+  String get settingsData;
+
+  /// No description provided for @settingsExport.
+  ///
+  /// In uz, this message translates to:
+  /// **'Eksport (JSON)'**
+  String get settingsExport;
+
+  /// No description provided for @settingsExportText.
+  ///
+  /// In uz, this message translates to:
+  /// **'My Wallet eksporti'**
+  String get settingsExportText;
+
+  /// No description provided for @settingsExportFailed.
+  ///
+  /// In uz, this message translates to:
+  /// **'Eksport qilib bo\'lmadi'**
+  String get settingsExportFailed;
+
+  /// No description provided for @settingsAccount.
+  ///
+  /// In uz, this message translates to:
+  /// **'Akkaunt'**
+  String get settingsAccount;
+
+  /// No description provided for @deleteAccount.
+  ///
+  /// In uz, this message translates to:
+  /// **'Akkauntni o\'chirish'**
+  String get deleteAccount;
+
+  /// No description provided for @deleteAccountBody.
+  ///
+  /// In uz, this message translates to:
+  /// **'Faqat siz a\'zo bo\'lgan byudjetlar va ularning ma\'lumotlari o\'chiriladi, boshqa byudjetlardan chiqasiz. Bu amalni qaytarib bo\'lmaydi.'**
+  String get deleteAccountBody;
+
+  /// Sozlamalar (E19-T04)
+  ///
+  /// In uz, this message translates to:
+  /// **'Tasdiqlash uchun «{word}» deb yozing'**
+  String deleteAccountConfirm(String word);
+
+  /// No description provided for @deleteAccountWord.
+  ///
+  /// In uz, this message translates to:
+  /// **'O\'CHIRISH'**
+  String get deleteAccountWord;
+
+  /// No description provided for @deleteAccountLastOwner.
+  ///
+  /// In uz, this message translates to:
+  /// **'Siz boshqa a\'zolari bor byudjetning yagona egasisiz — avval egalikni boshqa a\'zoga o\'tkazing'**
+  String get deleteAccountLastOwner;
+
+  /// No description provided for @settingsAbout.
+  ///
+  /// In uz, this message translates to:
+  /// **'Ilova haqida'**
+  String get settingsAbout;
+
+  /// Sozlamalar (E19-T04)
+  ///
+  /// In uz, this message translates to:
+  /// **'Versiya {version}'**
+  String settingsVersion(String version);
+
+  /// No description provided for @settingsLicenses.
+  ///
+  /// In uz, this message translates to:
+  /// **'Litsenziyalar'**
+  String get settingsLicenses;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

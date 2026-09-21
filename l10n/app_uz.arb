@@ -732,5 +732,79 @@
         "type": "String"
       }
     }
-  }
+  },
+  "settingsTitle": "Sozlamalar",
+  "notifTitle": "Bildirishnomalar",
+  "notifChannels": "Kanallar",
+  "notifPush": "Push-bildirishnomalar",
+  "notifTelegram": "Telegram",
+  "notifEmail": "Email",
+  "notifSchedule": "Eslatmalar",
+  "notifReminderHour": "Eslatma soati",
+  "notifDaysAhead": "Necha kun oldin",
+  "notifDays": "{days} kun",
+  "@notifDays": {
+    "description": "Sozlamalar (E19)",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "notifMonthlyReport": "Oylik hisobot",
+  "notifReportDay": "Hisobot kuni",
+  "notifLimitAlerts": "Limit ogohlantirishlari",
+  "notifIncomeMissing": "Kechikkan daromad eslatmasi",
+  "notifTelegramLinked": "Ulangan",
+  "notifTelegramNotLinked": "Ulanmagan",
+  "notifTelegramLink": "Ulash",
+  "notifTelegramUnlink": "Uzish",
+  "notifTest": "Sinov xabari yuborish",
+  "notifQueued": "yuborildi",
+  "notifReasonDisabled": "sozlamada o'chiq",
+  "notifReasonNoDevice": "qurilma ro'yxatda yo'q",
+  "notifReasonNotLinked": "ulanmagan",
+  "notifReasonNotConfigured": "serverda sozlanmagan",
+  "notifPermission": "Qurilma ruxsati",
+  "notifPermissionAllow": "Ruxsat berish",
+  "notifOffline": "Sozlamalar uchun internet kerak",
+  "settingsProfile": "Profil",
+  "settingsHousehold": "Byudjet",
+  "settingsAppearance": "Ko'rinish",
+  "settingsTheme": "Tema",
+  "themeSystem": "Tizim",
+  "themeLight": "Och",
+  "themeDark": "To'q",
+  "settingsLanguage": "Til",
+  "languageSystem": "Qurilma tili",
+  "settingsSecurity": "Xavfsizlik",
+  "settingsData": "Ma'lumotlar",
+  "settingsExport": "Eksport (JSON)",
+  "settingsExportText": "My Wallet eksporti",
+  "settingsExportFailed": "Eksport qilib bo'lmadi",
+  "settingsAccount": "Akkaunt",
+  "deleteAccount": "Akkauntni o'chirish",
+  "deleteAccountBody": "Faqat siz a'zo bo'lgan byudjetlar va ularning ma'lumotlari o'chiriladi, boshqa byudjetlardan chiqasiz. Bu amalni qaytarib bo'lmaydi.",
+  "deleteAccountConfirm": "Tasdiqlash uchun «{word}» deb yozing",
+  "@deleteAccountConfirm": {
+    "description": "Sozlamalar (E19-T04)",
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteAccountWord": "O'CHIRISH",
+  "deleteAccountLastOwner": "Siz boshqa a'zolari bor byudjetning yagona egasisiz — avval egalikni boshqa a'zoga o'tkazing",
+  "settingsAbout": "Ilova haqida",
+  "settingsVersion": "Versiya {version}",
+  "@settingsVersion": {
+    "description": "Sozlamalar (E19-T04)",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsLicenses": "Litsenziyalar"
 }

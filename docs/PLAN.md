@@ -452,15 +452,29 @@
   Rejalashtiruvchi sof funksiya (`planLocalReminders`, qotirilgan soat bilan
   testlangan). Tema va til sozlamasi (SharedPreferences, bootstrap'da
   yuklanadi) shu bosqichda qo'shildi.
-- [ ] **E19-T03** Bildirishnoma sozlamalari: push, Telegram (ulash:
-  `telegram_link_token` → `t.me/<bot>?start=…` ochish, holat), email, soat,
-  necha kun oldin, oylik hisobot kuni, limit ogohlantirishlari.
-- [ ] **E19-T04** Sozlamalar ekrani: profil, byudjetlar, tema (tizim/och/
-  to'q), til, ilova qulfi, maxfiylik rejimi, sinxron holati, eksport (JSON
-  ulashish), "Akkauntni o'chirish" (`delete-account`, ikki bosqichli tasdiq),
-  ilova haqida (versiya, litsenziyalar).
-- [ ] **E19-T05** Testlar: deep link marshrutlari, lokal eslatma
-  rejalashtiruvchisi (fake clock).
+- [x] **E19-T03** Bildirishnoma sozlamalari (`/settings/notifications`):
+  push/Telegram/email, eslatma soati, necha kun oldin, oylik hisobot va kuni,
+  limit va kechikkan daromad — o'zgarish darhol saqlanadi (rad etilsa —
+  qaytadi + xabar), soat lokal eslatmalar uchun keshlanadi; Telegram ulash
+  (`telegram_link_token` → `t.me/<bot>?start=…`, `url_launcher`) va uzish;
+  qurilma ruxsati; sinov xabari — kanal natijalari (BR-164); oflaynda —
+  qayta urinish. Server bilan aloqa — `SettingsApi` (PostgREST + Edge
+  Function), xatolar umumiy `guardRemote` orqali.
+- [x] **E19-T04** Sozlamalar (`/settings`, profil menyusidan): profil,
+  byudjet, tema (tizim/och/to'q) va til (qurilma/uz/ru/en —
+  SharedPreferences, darhol), ilova qulfi, maxfiylik, bildirishnomalar,
+  sinxron holati, eksport (JSON — jadvallar `rowid` keyset bo'laklari bilan
+  faylga oqim, `FileSharer`), chiqish, akkauntni o'chirish (ikki bosqich:
+  tushuntirish + tasdiq so'zi; `last_owner` — tushunarli xabar), ilova haqida
+  (versiya, litsenziyalar).
+- [x] **E19-T05** Testlar: push turi → marshrut oq ro'yxati, token
+  ro'yxati/yangilanishi, bosilgan push/lokal eslatma → ekran (ro'yxatda
+  yo'q marshrut e'tiborsiz), lokal eslatma rejasi (qotirilgan soat: 9:00,
+  o'tgan vaqt, daromad/to'langan, ≤ 30), ilovada qayta rejalashtirish,
+  sozlamalar (saqlash/rad/oflayn/Telegram/sinov), tema/til, eksport JSON,
+  akkaunt o'chirish; goldenlar. Testlar topgan xatolar: `XFile.fromData`
+  nomni saqlamasligi (ulashilgan fayl nomsiz), tanlangan tilning platforma
+  tili bilan nomuvofiqligi.
 
 ### E20 · Sifat, sayqal, reliz konveyeri `[mobile]`
 
@@ -550,3 +564,4 @@
 | 2026-09-21 | E16-T01..T07 | Xulosa lokal bazadan (tarmoqsiz): `MonthReportLoader` + `ReportDao` — `report_month` bilan parite 49/49, `report_year` jami; hero (qoldiq, prognoz, kuniga, orttirgan %), statistika → filtrlangan amallar, rejalar, yaqin to'lovlar (To'landi), prognoz, kategoriyalar (limit rangi), daromad turlari, fond/jamg'arma, qarz, maqsadlar; oyni ochish; yillik ko'rinish + kategoriya trendi; PNG ulashish; bo'sh oy holati; 328 test (89,1%), goldenlar tor ekran xatolarini topdi. **E16 yakunlandi** |
 | 2026-09-21 | E17-T01..T06 | To'lovlar: tablar (xarajat/daromad), holat bo'limlari va `X + N ta ?` jami (`PlanBoard`), to'lash varag'i (qolgan summa, `?` majburiy, hisob/sana), qisman → keyin/yopish, swipe, shu oy summasi, yopish/qayta ochish, o'tkazish + undo, kalendar, oyni ochish preview'i (umumiy `OpenMonthCard`); domen: `ClosePlan`, `EditPlan`, reja o'zgarishlarida yopilgan oy tekshiruvi; umumiy `MonthSwitcher`; 341 test (91,4%), domen 203 (97,8%), goldenlar. **E17 yakunlandi** |
 | 2026-09-21 | E18-T01..T07 | Hamyon: hisoblar (fondsiz jami, manfiy naqd), 👤 fond (jonli ajratma), 🏦 jamg'arma (chiziq, jadval), 💳 qarzlar (jamlar, holatlar, tafsilot, forma, arxiv), 🎯 maqsadlar (prognoz, tabrik, forma), 📊 limitlar (rol bo'yicha); `WalletReportLoader` — 4 hisobot pariteti 5/5 (Xulosa ham shu loader'dan); domen: qarz/maqsad/limit use-case'lari + drift repo'lari; `/add` oldindan tanlash; 365 test (92,0%), domen 212 (97,7%). **E18 yakunlandi** |
+| 2026-09-21 | E19-T01..T05 | Bildirishnomalar: FCM (env bilan, sozlanmasa o'chiq), ro'yxat/chiqish, bosilganda oq ro'yxatdagi ekran, ochiq paytidagi push; lokal eslatmalar (14 kun, ≤ 30, debounce); onboarding'da ruxsat; bildirishnoma sozlamalari (server, Telegram, sinov); Sozlamalar (tema, til, eksport, akkaunt o'chirish, ilova haqida); integratsiya testi CI'dagi sekinlikka chidamli qilindi (E18 qizil CI sababi); 386 test (90,0%), dev APK ✅, 9 integratsiya. **E19 yakunlandi** |

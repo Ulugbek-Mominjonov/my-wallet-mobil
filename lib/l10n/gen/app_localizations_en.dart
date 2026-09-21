@@ -1208,4 +1208,162 @@ class AppL10nEn extends AppL10n {
   String reminderBodyUnknown(String name) {
     return '$name — amount varies';
   }
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get notifTitle => 'Notifications';
+
+  @override
+  String get notifChannels => 'Channels';
+
+  @override
+  String get notifPush => 'Push notifications';
+
+  @override
+  String get notifTelegram => 'Telegram';
+
+  @override
+  String get notifEmail => 'Email';
+
+  @override
+  String get notifSchedule => 'Reminders';
+
+  @override
+  String get notifReminderHour => 'Reminder time';
+
+  @override
+  String get notifDaysAhead => 'Days ahead';
+
+  @override
+  String notifDays(int days) {
+    return '$days days';
+  }
+
+  @override
+  String get notifMonthlyReport => 'Monthly report';
+
+  @override
+  String get notifReportDay => 'Report day';
+
+  @override
+  String get notifLimitAlerts => 'Limit alerts';
+
+  @override
+  String get notifIncomeMissing => 'Late income reminder';
+
+  @override
+  String get notifTelegramLinked => 'Linked';
+
+  @override
+  String get notifTelegramNotLinked => 'Not linked';
+
+  @override
+  String get notifTelegramLink => 'Link';
+
+  @override
+  String get notifTelegramUnlink => 'Unlink';
+
+  @override
+  String get notifTest => 'Send a test message';
+
+  @override
+  String get notifQueued => 'sent';
+
+  @override
+  String get notifReasonDisabled => 'turned off in settings';
+
+  @override
+  String get notifReasonNoDevice => 'no registered device';
+
+  @override
+  String get notifReasonNotLinked => 'not linked';
+
+  @override
+  String get notifReasonNotConfigured => 'not configured on the server';
+
+  @override
+  String get notifPermission => 'Device permission';
+
+  @override
+  String get notifPermissionAllow => 'Allow';
+
+  @override
+  String get notifOffline => 'Settings need an internet connection';
+
+  @override
+  String get settingsProfile => 'Profile';
+
+  @override
+  String get settingsHousehold => 'Budget';
+
+  @override
+  String get settingsAppearance => 'Appearance';
+
+  @override
+  String get settingsTheme => 'Theme';
+
+  @override
+  String get themeSystem => 'System';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get settingsLanguage => 'Language';
+
+  @override
+  String get languageSystem => 'Device language';
+
+  @override
+  String get settingsSecurity => 'Security';
+
+  @override
+  String get settingsData => 'Data';
+
+  @override
+  String get settingsExport => 'Export (JSON)';
+
+  @override
+  String get settingsExportText => 'My Wallet export';
+
+  @override
+  String get settingsExportFailed => 'Export failed';
+
+  @override
+  String get settingsAccount => 'Account';
+
+  @override
+  String get deleteAccount => 'Delete account';
+
+  @override
+  String get deleteAccountBody =>
+      'Budgets where you are the only member and their data will be deleted, and you will leave other budgets. This cannot be undone.';
+
+  @override
+  String deleteAccountConfirm(String word) {
+    return 'Type “$word” to confirm';
+  }
+
+  @override
+  String get deleteAccountWord => 'DELETE';
+
+  @override
+  String get deleteAccountLastOwner =>
+      'You are the only owner of a budget with other members — transfer ownership first';
+
+  @override
+  String get settingsAbout => 'About';
+
+  @override
+  String settingsVersion(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get settingsLicenses => 'Licenses';
 }

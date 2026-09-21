@@ -182,29 +182,41 @@ final class RpcRemoteApi implements RemoteApi {
     String function,
     Map<String, Object?> params,
     T Function(Object? json) parse,
-  ) async {
-    try {
-      final json = await _transport(function, params).timeout(timeout);
-      return Ok(parse(json));
-    } on PostgrestException catch (error) {
-      return Err(_postgrestFailure(error));
-    } on AuthException {
-      return const Err(UnauthorizedFailure());
-    } on SocketException {
-      return const Err(OfflineFailure());
-    } on ClientException {
-      return const Err(OfflineFailure());
-    } on TimeoutException {
-      return const Err(OfflineFailure());
-    } on FormatException catch (error, stackTrace) {
-      // Server javobi shartnomaga mos emas — xato yashirilmaydi.
-      AppLog.error(
-        'RPC javobi shartnomaga mos emas: $function',
-        error,
-        stackTrace,
-      );
-      return Err(RejectedFailure('invalid_response', error.message));
-    }
+  ) => guardRemote(
+    function,
+    () async => parse(await _transport(function, params)),
+    timeout: timeout,
+  );
+}
+
+/// Server so'rovi → `Result`: tarmoq/vaqt — oflayn, sessiya — ruxsat yo'q,
+/// PostgREST — biznes kodi, shartnomaga mos kelmagan javob — log bilan rad
+/// etish ([label] — logda qaysi so'rov).
+Future<Result<T>> guardRemote<T>(
+  String label,
+  Future<T> Function() request, {
+  Duration timeout = RpcRemoteApi.defaultTimeout,
+}) async {
+  try {
+    return Ok(await request().timeout(timeout));
+  } on PostgrestException catch (error) {
+    return Err(_postgrestFailure(error));
+  } on AuthException {
+    return const Err(UnauthorizedFailure());
+  } on SocketException {
+    return const Err(OfflineFailure());
+  } on ClientException {
+    return const Err(OfflineFailure());
+  } on TimeoutException {
+    return const Err(OfflineFailure());
+  } on FormatException catch (error, stackTrace) {
+    // Server javobi shartnomaga mos emas — xato yashirilmaydi.
+    AppLog.error(
+      'Server javobi shartnomaga mos emas: $label',
+      error,
+      stackTrace,
+    );
+    return Err(RejectedFailure('invalid_response', error.message));
   }
 }
 

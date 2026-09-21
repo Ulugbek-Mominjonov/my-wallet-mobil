@@ -179,6 +179,10 @@ class _AccountMenu extends ConsumerWidget {
       icon: const Icon(Icons.account_circle_outlined),
       itemBuilder: (context) => [
         PopupMenuItem(
+          onTap: () => unawaited(context.push(settingsPath)),
+          child: Text(l10n.settingsTitle),
+        ),
+        PopupMenuItem(
           onTap: () => unawaited(context.push(lockSettingsPath)),
           child: Text(l10n.lockTitle),
         ),

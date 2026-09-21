@@ -1207,4 +1207,162 @@ class AppL10nRu extends AppL10n {
   String reminderBodyUnknown(String name) {
     return '$name — сумма меняется';
   }
+
+  @override
+  String get settingsTitle => 'Настройки';
+
+  @override
+  String get notifTitle => 'Уведомления';
+
+  @override
+  String get notifChannels => 'Каналы';
+
+  @override
+  String get notifPush => 'Push-уведомления';
+
+  @override
+  String get notifTelegram => 'Telegram';
+
+  @override
+  String get notifEmail => 'Email';
+
+  @override
+  String get notifSchedule => 'Напоминания';
+
+  @override
+  String get notifReminderHour => 'Время напоминания';
+
+  @override
+  String get notifDaysAhead => 'За сколько дней';
+
+  @override
+  String notifDays(int days) {
+    return '$days дн.';
+  }
+
+  @override
+  String get notifMonthlyReport => 'Месячный отчёт';
+
+  @override
+  String get notifReportDay => 'День отчёта';
+
+  @override
+  String get notifLimitAlerts => 'Предупреждения о лимитах';
+
+  @override
+  String get notifIncomeMissing => 'Напоминание о задержке дохода';
+
+  @override
+  String get notifTelegramLinked => 'Подключён';
+
+  @override
+  String get notifTelegramNotLinked => 'Не подключён';
+
+  @override
+  String get notifTelegramLink => 'Подключить';
+
+  @override
+  String get notifTelegramUnlink => 'Отключить';
+
+  @override
+  String get notifTest => 'Отправить тестовое сообщение';
+
+  @override
+  String get notifQueued => 'отправлено';
+
+  @override
+  String get notifReasonDisabled => 'выключено в настройках';
+
+  @override
+  String get notifReasonNoDevice => 'нет зарегистрированного устройства';
+
+  @override
+  String get notifReasonNotLinked => 'не подключено';
+
+  @override
+  String get notifReasonNotConfigured => 'не настроено на сервере';
+
+  @override
+  String get notifPermission => 'Разрешение устройства';
+
+  @override
+  String get notifPermissionAllow => 'Разрешить';
+
+  @override
+  String get notifOffline => 'Для настроек нужен интернет';
+
+  @override
+  String get settingsProfile => 'Профиль';
+
+  @override
+  String get settingsHousehold => 'Бюджет';
+
+  @override
+  String get settingsAppearance => 'Оформление';
+
+  @override
+  String get settingsTheme => 'Тема';
+
+  @override
+  String get themeSystem => 'Системная';
+
+  @override
+  String get themeLight => 'Светлая';
+
+  @override
+  String get themeDark => 'Тёмная';
+
+  @override
+  String get settingsLanguage => 'Язык';
+
+  @override
+  String get languageSystem => 'Язык устройства';
+
+  @override
+  String get settingsSecurity => 'Безопасность';
+
+  @override
+  String get settingsData => 'Данные';
+
+  @override
+  String get settingsExport => 'Экспорт (JSON)';
+
+  @override
+  String get settingsExportText => 'Экспорт My Wallet';
+
+  @override
+  String get settingsExportFailed => 'Не удалось экспортировать';
+
+  @override
+  String get settingsAccount => 'Аккаунт';
+
+  @override
+  String get deleteAccount => 'Удалить аккаунт';
+
+  @override
+  String get deleteAccountBody =>
+      'Бюджеты, где вы единственный участник, и их данные будут удалены, из остальных вы выйдете. Это нельзя отменить.';
+
+  @override
+  String deleteAccountConfirm(String word) {
+    return 'Введите «$word» для подтверждения';
+  }
+
+  @override
+  String get deleteAccountWord => 'УДАЛИТЬ';
+
+  @override
+  String get deleteAccountLastOwner =>
+      'Вы единственный владелец бюджета с другими участниками — сначала передайте владение';
+
+  @override
+  String get settingsAbout => 'О приложении';
+
+  @override
+  String settingsVersion(String version) {
+    return 'Версия $version';
+  }
+
+  @override
+  String get settingsLicenses => 'Лицензии';
 }

@@ -15,8 +15,10 @@ import 'package:my_wallet/features/household/presentation/invite_scan_screen.dar
 import 'package:my_wallet/features/household/presentation/join_or_create_screen.dart';
 import 'package:my_wallet/features/lock/presentation/lock_screen.dart';
 import 'package:my_wallet/features/lock/presentation/lock_settings_screen.dart';
+import 'package:my_wallet/features/notifications/presentation/notification_settings_screen.dart';
 import 'package:my_wallet/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:my_wallet/features/payments/presentation/payments_screen.dart';
+import 'package:my_wallet/features/settings/presentation/settings_screen.dart';
 import 'package:my_wallet/features/shell/presentation/app_shell.dart';
 import 'package:my_wallet/features/shell/presentation/not_found_screen.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
@@ -52,6 +54,10 @@ const updatePath = '/update';
 /// BR-211: ilova qulfi ekrani va uning sozlamalari.
 const lockPath = '/lock';
 const lockSettingsPath = '/settings/lock';
+
+/// Sozlamalar (E19-T04) va bildirishnoma sozlamalari (E19-T03).
+const settingsPath = '/settings';
+const notificationSettingsPath = '/settings/notifications';
 
 /// Marshrutlar. Kirilmagan — faqat kirish ekrani; kirilgan — undan
 /// bosh sahifaga (sessiya eskirsa ham avtomatik).
@@ -91,6 +97,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const UpdateRequiredScreen(),
       ),
       GoRoute(path: lockPath, builder: (context, state) => const LockScreen()),
+      GoRoute(
+        path: settingsPath,
+        builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: notificationSettingsPath,
+        builder: (context, state) => const NotificationSettingsScreen(),
+      ),
       GoRoute(
         path: lockSettingsPath,
         builder: (context, state) => const LockSettingsScreen(),

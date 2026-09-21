@@ -2,8 +2,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:my_wallet/core/share/file_sharer.dart';
 import 'package:my_wallet/data/local/database.dart';
-import 'package:my_wallet/features/dashboard/application/report_sharer.dart';
 
 import '../../support/test_database.dart';
 import 'dashboard_harness.dart';
@@ -64,12 +64,12 @@ void main() {
   });
 
   group('ulashish (E16-T06)', () {
-    Future<void> openShare(WidgetTester tester, ReportSharer sharer) async {
+    Future<void> openShare(WidgetTester tester, FileSharer sharer) async {
       await seedMonth(db, income: 1000000000, expense: 200000000);
       await pumpDashboard(
         tester,
         db,
-        overrides: [reportSharerProvider.overrideWithValue(sharer)],
+        overrides: [fileSharerProvider.overrideWithValue(sharer)],
       );
       await tester.tap(find.text('Hisobotni ulashish'));
       await tester.pumpAndSettle();
@@ -89,8 +89,12 @@ void main() {
       tester,
     ) async {
       ({Uint8List png, String fileName, String text})? shared;
-      await openShare(tester, (png, {required fileName, required text}) async {
-        shared = (png: png, fileName: fileName, text: text);
+      await openShare(tester, (file, {required fileName, required text}) async {
+        shared = (
+          png: await file.readAsBytes(),
+          fileName: fileName,
+          text: text,
+        );
       });
       expect(find.text('Eng katta xarajatlar'), findsOneWidget);
       expect(find.text('Oziq-ovqat'), findsOneWidget);
@@ -105,7 +109,7 @@ void main() {
 
     testWidgets("xato bo'lsa — xabar", (tester) async {
       var calls = 0;
-      await openShare(tester, (png, {required fileName, required text}) async {
+      await openShare(tester, (file, {required fileName, required text}) async {
         calls++;
         throw StateError('no share target');
       });
