@@ -290,9 +290,12 @@
   varaq yopiladi + 5 s "Bekor qilish" (serverga yetmagan bo'lsa navbatdan
   ham chiqadi); uzoq bosish → to'ldirilgan forma (BR-141). Yopilgan oy —
   tasdiq bilan.
-- [ ] **E15-T05** O'tkazma: manba/manzil hisob, summa (valyutalar farq qilsa
-  ikkinchi summa — E29), 👤 fondga o'tkazma bo'lsa "Bu ajratma sifatida
-  hisoblanadi" izohi (BR-061).
+- [x] **E15-T05** O'tkazma: manba/manzil hisob (manzilda manba yo'q),
+  👤 izohlari: fondga — "ajratma sifatida hisoblanadi", fonddan — "ajratmaning
+  qaytishi" (BR-061), fonddan xarajat — "oylik qoldiqqa ta'sir qilmaydi",
+  kategoriyasiz bo'lsa "O'zim uchun" (BR-062); daromadda fond hisobi
+  ko'rsatilmaydi (BR-063). Turli valyutali o'tkazma (ikkinchi summa) — E29,
+  hozircha aniq xabar.
 - [ ] **E15-T06** Amallar ro'yxati: kun bo'yicha guruh + kunlik jami, oy
   filtri, qidiruv (nom/izoh/summa), filtr chiplari (turi, kategoriya, hisob,
   a'zo, teg), keyset sahifalash, swipe → o'chirish + undo (BR-009), bosish →

@@ -70,6 +70,7 @@ class AddTransactionScreen extends ConsumerWidget {
                   children: [
                     AccountChips(
                       selectedId: state.accountId,
+                      excludeFund: state.kind == TransactionKind.income,
                       onSelected: controller.selectAccount,
                     ),
                     if (state.isTransfer)
@@ -95,6 +96,7 @@ class AddTransactionScreen extends ConsumerWidget {
                       selected: state.occurredOn,
                       onSelected: controller.selectDate,
                     ),
+                    FundHint(state: state),
                     MonthAttributionField(state: state),
                     if (!state.isTransfer) ...[
                       PayeeField(state: state),
@@ -186,6 +188,8 @@ String transactionErrorText(AppL10n l10n, Failure failure) => switch (failure) {
   ValidationFailure(code: 'category_required') => l10n.errorCategoryRequired,
   ValidationFailure(field: 'category') => l10n.errorCategoryInvalid,
   ValidationFailure(field: 'to_account') => l10n.errorTargetAccount,
+  // Turli valyutali o'tkazma — E29 (ko'p valyuta).
+  ValidationFailure(field: 'to_amount') => l10n.errorCurrencyMismatch,
   ValidationFailure(field: 'account') => l10n.errorAccountRequired,
   ValidationFailure(field: 'amount') => l10n.errorAmountRequired,
   MonthClosedWarning() => l10n.errorMonthClosed,

@@ -559,4 +559,20 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get quickHint => 'Bosing — darhol yoziladi, bosib turing — tahrirlash';
+
+  @override
+  String get fundAllocationHint =>
+      '👤 Bu ajratma sifatida hisoblanadi — oy qoldig\'ini kamaytiradi';
+
+  @override
+  String get fundReturnHint =>
+      '👤 Ajratmaning qaytishi — oy qoldig\'ini oshiradi';
+
+  @override
+  String get fundSpendHint =>
+      '👤 Fonddan sarf — oylik qoldiqqa ta\'sir qilmaydi';
+
+  @override
+  String get errorCurrencyMismatch =>
+      'Hisoblar valyutasi har xil — bunday o\'tkazma keyinroq qo\'shiladi';
 }

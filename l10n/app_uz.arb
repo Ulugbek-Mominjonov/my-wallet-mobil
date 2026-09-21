@@ -326,5 +326,9 @@
         "type": "String"
       }
     }
-  }
+  },
+  "fundAllocationHint": "👤 Bu ajratma sifatida hisoblanadi — oy qoldig'ini kamaytiradi",
+  "fundReturnHint": "👤 Ajratmaning qaytishi — oy qoldig'ini oshiradi",
+  "fundSpendHint": "👤 Fonddan sarf — oylik qoldiqqa ta'sir qilmaydi",
+  "errorCurrencyMismatch": "Hisoblar valyutasi har xil — bunday o'tkazma keyinroq qo'shiladi"
 }

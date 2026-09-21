@@ -558,4 +558,19 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get quickHint => 'Нажмите — запишется сразу, удерживайте — изменить';
+
+  @override
+  String get fundAllocationHint =>
+      '👤 Это считается отчислением — уменьшает остаток месяца';
+
+  @override
+  String get fundReturnHint =>
+      '👤 Возврат отчисления — увеличивает остаток месяца';
+
+  @override
+  String get fundSpendHint => '👤 Трата из фонда — не влияет на остаток месяца';
+
+  @override
+  String get errorCurrencyMismatch =>
+      'У счетов разные валюты — такой перевод появится позже';
 }

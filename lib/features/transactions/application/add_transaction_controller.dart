@@ -120,12 +120,24 @@ base class AddTransactionController extends Notifier<AddTransactionState> {
         : state.copyWith(accountId: defaultAccount.id);
   }
 
-  /// Tur o'zgarsa kategoriya va qo'lda tanlangan oy qaytadan tanlanadi.
-  void selectKind(TransactionKind kind) => state = state.copyWith(
-    kind: kind,
-    clearCategory: true,
-    clearManualMonth: true,
-  );
+  /// Tur o'zgarsa kategoriya va qo'lda tanlangan oy qaytadan tanlanadi;
+  /// daromadda fond hisobi bo'lmaydi (BR-063) — standart hisobga qaytadi.
+  void selectKind(TransactionKind kind) {
+    final accounts = ref.read(accountsProvider).value ?? const <Account>[];
+    final onFund = accounts.any(
+      (a) => a.id == state.accountId && a.type == AccountType.personalFund,
+    );
+    final fallback = accounts
+        .where((a) => a.type != AccountType.personalFund)
+        .firstOrNull
+        ?.id;
+    state = state.copyWith(
+      kind: kind,
+      accountId: kind == TransactionKind.income && onFund ? fallback : null,
+      clearCategory: true,
+      clearManualMonth: true,
+    );
+  }
 
   void press(AmountKey key) =>
       state = state.copyWith(entry: state.entry.press(key));

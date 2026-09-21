@@ -17,6 +17,7 @@ class AccountChips extends ConsumerWidget {
     required this.onSelected,
     this.label,
     this.excludeId,
+    this.excludeFund = false,
     super.key,
   });
 
@@ -27,12 +28,17 @@ class AccountChips extends ConsumerWidget {
   /// O'tkazmada manba hisob ro'yxatdan chiqariladi.
   final String? excludeId;
 
+  /// BR-063: fondga daromad yozilmaydi.
+  final bool excludeFund;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final accounts = ref.watch(accountsProvider).value ?? const <Account>[];
     final visible = [
       for (final account in accounts)
-        if (account.id != excludeId) account,
+        if (account.id != excludeId &&
+            !(excludeFund && account.type == AccountType.personalFund))
+          account,
     ];
     return _Section(
       label: label,
@@ -236,6 +242,39 @@ class PayeeField extends ConsumerWidget {
               decoration: InputDecoration(labelText: l10n.fieldPayee),
               onChanged: controller.setPayee,
             ),
+      ),
+    );
+  }
+}
+
+/// 👤 fond bilan bog'liq izoh (BR-061, BR-062): ajratma, qaytish yoki
+/// fonddan sarf — oy qoldig'iga ta'siri tushunarli bo'lsin.
+class FundHint extends ConsumerWidget {
+  const new({required this.state, super.key});
+
+  final AddTransactionState state;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    final accounts = ref.watch(accountsProvider).value ?? const <Account>[];
+    bool isFund(String? id) =>
+        accounts.any((a) => a.id == id && a.type == AccountType.personalFund);
+    final text = switch (state.kind) {
+      TransactionKind.transfer when isFund(state.toAccountId) =>
+        l10n.fundAllocationHint,
+      TransactionKind.transfer when isFund(state.accountId) =>
+        l10n.fundReturnHint,
+      TransactionKind.expense when isFund(state.accountId) =>
+        l10n.fundSpendHint,
+      _ => null,
+    };
+    if (text == null) return const SizedBox.shrink();
+    return _Section(
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.bodyMedium
+            ?.copyWith(color: Theme.of(context).colorScheme.tertiary),
       ),
     );
   }

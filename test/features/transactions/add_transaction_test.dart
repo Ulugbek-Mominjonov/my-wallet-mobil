@@ -84,6 +84,13 @@ void main() {
             kind: CategoryKind.income,
             name: 'Avans',
           ).toCompanion(),
+          const Category(
+            id: 'self',
+            householdId: 'h1',
+            kind: CategoryKind.expense,
+            name: "O'zim uchun",
+            systemCode: SystemCode.personalAllocation,
+          ).toCompanion(),
         ]);
     });
   });
@@ -386,6 +393,49 @@ void main() {
         isTrue,
       );
       expect(await db.select(db.transactions).get(), isEmpty);
+    });
+  });
+
+  group('👤 fond (BR-061..063)', () {
+    testWidgets("byudjetdan fondga o'tkazma — ajratma izohi", (tester) async {
+      await openSheet(tester);
+      await tester.tap(find.text("O'tkazma"));
+      await tester.pumpAndSettle();
+      await tapChip(tester, 'Shaxsiy fond', last: true);
+      expect(find.textContaining('ajratma sifatida'), findsOneWidget);
+
+      await tapChip(tester, 'Shaxsiy fond');
+      await tapChip(tester, 'Naqd', last: true);
+      expect(find.textContaining('qaytishi'), findsOneWidget);
+    });
+
+    testWidgets("fonddan sarf — izoh; kategoriyasiz — \"O'zim uchun\"", (
+      tester,
+    ) async {
+      await openSheet(tester);
+      await tapKeys(tester, ['5', '000']);
+      await tapChip(tester, 'Shaxsiy fond');
+      expect(find.textContaining('Fonddan sarf'), findsOneWidget);
+      await tester.tap(find.widgetWithText(FilledButton, 'Saqlash'));
+      await tester.pumpAndSettle();
+      final saved = await db.select(db.transactions).getSingle();
+      expect((saved.accountId, saved.categoryId), ('a3', 'self'));
+    });
+
+    testWidgets("daromadda fond hisobi yo'q, tanlangan bo'lsa almashadi", (
+      tester,
+    ) async {
+      await openSheet(tester);
+      await tapChip(tester, 'Shaxsiy fond');
+      await tester.tap(find.text('Daromad'));
+      await tester.pumpAndSettle();
+      expect(find.widgetWithText(ChoiceChip, 'Shaxsiy fond'), findsNothing);
+      expect(
+        tester
+            .widget<ChoiceChip>(find.widgetWithText(ChoiceChip, 'Naqd'))
+            .selected,
+        isTrue,
+      );
     });
   });
 

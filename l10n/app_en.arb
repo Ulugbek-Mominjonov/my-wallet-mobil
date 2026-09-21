@@ -159,5 +159,9 @@
   "monthChoose": "Choose",
   "quickSaved": "{name} — {amount} recorded",
   "actionUndo": "Undo",
-  "quickHint": "Tap to record, hold to edit"
+  "quickHint": "Tap to record, hold to edit",
+  "fundAllocationHint": "👤 Counts as an allocation — reduces the month's balance",
+  "fundReturnHint": "👤 Allocation return — increases the month's balance",
+  "fundSpendHint": "👤 Spending from the fund — doesn't affect the month's balance",
+  "errorCurrencyMismatch": "The accounts use different currencies — coming later"
 }

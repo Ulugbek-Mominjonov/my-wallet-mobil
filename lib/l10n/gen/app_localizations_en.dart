@@ -558,4 +558,20 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get quickHint => 'Tap to record, hold to edit';
+
+  @override
+  String get fundAllocationHint =>
+      '👤 Counts as an allocation — reduces the month\'s balance';
+
+  @override
+  String get fundReturnHint =>
+      '👤 Allocation return — increases the month\'s balance';
+
+  @override
+  String get fundSpendHint =>
+      '👤 Spending from the fund — doesn\'t affect the month\'s balance';
+
+  @override
+  String get errorCurrencyMismatch =>
+      'The accounts use different currencies — coming later';
 }

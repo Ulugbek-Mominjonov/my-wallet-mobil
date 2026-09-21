@@ -1058,6 +1058,30 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Bosing — darhol yoziladi, bosib turing — tahrirlash'**
   String get quickHint;
+
+  /// No description provided for @fundAllocationHint.
+  ///
+  /// In uz, this message translates to:
+  /// **'👤 Bu ajratma sifatida hisoblanadi — oy qoldig\'ini kamaytiradi'**
+  String get fundAllocationHint;
+
+  /// No description provided for @fundReturnHint.
+  ///
+  /// In uz, this message translates to:
+  /// **'👤 Ajratmaning qaytishi — oy qoldig\'ini oshiradi'**
+  String get fundReturnHint;
+
+  /// No description provided for @fundSpendHint.
+  ///
+  /// In uz, this message translates to:
+  /// **'👤 Fonddan sarf — oylik qoldiqqa ta\'sir qilmaydi'**
+  String get fundSpendHint;
+
+  /// No description provided for @errorCurrencyMismatch.
+  ///
+  /// In uz, this message translates to:
+  /// **'Hisoblar valyutasi har xil — bunday o\'tkazma keyinroq qo\'shiladi'**
+  String get errorCurrencyMismatch;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {
