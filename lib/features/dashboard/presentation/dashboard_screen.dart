@@ -13,6 +13,7 @@ import 'package:my_wallet/core/widgets/money_text.dart';
 import 'package:my_wallet/data/local/daos/ledger_dao.dart';
 import 'package:my_wallet/features/dashboard/application/dashboard_controller.dart';
 import 'package:my_wallet/features/dashboard/application/month_report.dart';
+import 'package:my_wallet/features/dashboard/presentation/share_report_screen.dart';
 import 'package:my_wallet/features/transactions/application/transaction_list_controller.dart';
 import 'package:my_wallet/features/transactions/presentation/add_transaction_screen.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
@@ -67,11 +68,36 @@ class DashboardScreen extends ConsumerWidget {
                 report.debts.owedToMe.isPositive)
               _DebtsCard(report: report),
             if (report.goals.isNotEmpty) _GoalsCard(report: report),
+            _ShareButton(report: report),
           ],
         ],
       ),
     );
   }
+}
+
+/// E16-T06: oy hisobini rasm sifatida ulashish (oldindan ko'rish bilan).
+class _ShareButton extends StatelessWidget {
+  const new({required this.report});
+
+  final MonthReport report;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(top: AppSpacing.md),
+    child: Center(
+      child: TextButton.icon(
+        icon: const Icon(Icons.share_outlined),
+        label: Text(AppL10n.of(context).shareReport),
+        onPressed: () => Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute<void>(
+            fullscreenDialog: true,
+            builder: (_) => ShareReportScreen(report: report),
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 /// Summani matn sifatida (maxfiylik rejimi — `•••`, BR-212).

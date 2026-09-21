@@ -789,4 +789,16 @@ class AppL10nEn extends AppL10n {
     });
     return '$_temp0';
   }
+
+  @override
+  String get shareReport => 'Share report';
+
+  @override
+  String get shareAction => 'Share';
+
+  @override
+  String get shareFailed => 'Couldn\'t share';
+
+  @override
+  String get shareTopExpenses => 'Top expenses';
 }

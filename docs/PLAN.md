@@ -352,7 +352,10 @@
   o'sha oy Xulosasi. Kategoriya tafsiloti (`/reports/category/:id`): 12 oylik
   trend (subkategoriyalar bilan), shu kategoriya amallariga o'tish. Tor
   ekranda toshib ketish xatolari tuzatildi (test topdi).
-- [ ] **E16-T06** Oylik hisobotni ulashish: rasm (vidjetni PNG ga) yoki PDF.
+- [x] **E16-T06** Oylik hisobotni ulashish: oldindan ko'rish + PNG
+  (`RepaintBoundary` → 360 px karta ×3 = 1080 px; `share_plus`). Karta —
+  qoldiq, orttirgan %, daromad/xarajat, karta/naqd, eng katta 5 xarajat;
+  maxfiylik rejimida `•••`. PDF — kerak emas (rasm messenjerda qulayroq).
 - [ ] **E16-T07** Testlar: fixture'lar bilan controller testlari; golden:
   hero karta (musbat/manfiy/maxfiy), bo'sh oy holati.
 

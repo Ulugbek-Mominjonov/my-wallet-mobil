@@ -1418,6 +1418,30 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'{month, select, 1{Yan} 2{Fev} 3{Mar} 4{Apr} 5{May} 6{Iyn} 7{Iyl} 8{Avg} 9{Sen} 10{Okt} 11{Noy} 12{Dek} other{?}}'**
   String monthShort(String month);
+
+  /// No description provided for @shareReport.
+  ///
+  /// In uz, this message translates to:
+  /// **'Hisobotni ulashish'**
+  String get shareReport;
+
+  /// No description provided for @shareAction.
+  ///
+  /// In uz, this message translates to:
+  /// **'Ulashish'**
+  String get shareAction;
+
+  /// No description provided for @shareFailed.
+  ///
+  /// In uz, this message translates to:
+  /// **'Ulashib bo\'lmadi'**
+  String get shareFailed;
+
+  /// No description provided for @shareTopExpenses.
+  ///
+  /// In uz, this message translates to:
+  /// **'Eng katta xarajatlar'**
+  String get shareTopExpenses;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

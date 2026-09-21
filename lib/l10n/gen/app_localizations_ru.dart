@@ -787,4 +787,16 @@ class AppL10nRu extends AppL10n {
     });
     return '$_temp0';
   }
+
+  @override
+  String get shareReport => 'Поделиться отчётом';
+
+  @override
+  String get shareAction => 'Поделиться';
+
+  @override
+  String get shareFailed => 'Не удалось поделиться';
+
+  @override
+  String get shareTopExpenses => 'Крупнейшие расходы';
 }

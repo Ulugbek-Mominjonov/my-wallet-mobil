@@ -789,4 +789,16 @@ class AppL10nUz extends AppL10n {
     });
     return '$_temp0';
   }
+
+  @override
+  String get shareReport => 'Hisobotni ulashish';
+
+  @override
+  String get shareAction => 'Ulashish';
+
+  @override
+  String get shareFailed => 'Ulashib bo\'lmadi';
+
+  @override
+  String get shareTopExpenses => 'Eng katta xarajatlar';
 }

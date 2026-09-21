@@ -1,9 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/local/mappers.dart';
 import 'package:my_wallet/data/repositories/local_ledger.dart';
+import 'package:my_wallet/features/dashboard/application/report_sharer.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
@@ -155,6 +158,71 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Oyma-oy'), findsOneWidget);
     expect(find.text("Amallarni ko'rish"), findsOneWidget);
+  });
+
+  group('ulashish (E16-T06)', () {
+    Future<void> openShare(WidgetTester tester, ReportSharer sharer) async {
+      await seed(income: 1000000000, expense: 200000000);
+      tester.view
+        ..physicalSize = const Size(1080, 6000)
+        ..devicePixelRatio = 3;
+      addTearDown(tester.view.reset);
+      await pumpApp(
+        tester,
+        database: db,
+        overrides: [
+          clockProvider.overrideWithValue(
+            TzClock(
+              'Asia/Tashkent',
+              utcNow: () => DateTime.utc(2026, 10, 10, 4),
+            ),
+          ),
+          reportSharerProvider.overrideWithValue(sharer),
+        ],
+      );
+      await tester.tap(find.text('Hisobotni ulashish'));
+      await tester.pumpAndSettle();
+    }
+
+    /// PNG kodlash — haqiqiy asinxron (dvigatel) ish.
+    Future<void> waitFor(WidgetTester tester, bool Function() done) async {
+      for (var i = 0; i < 100 && !done(); i++) {
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 10)),
+        );
+        await tester.pump();
+      }
+    }
+
+    testWidgets("karta ko'rinadi; PNG oy nomi bilan ulashiladi", (
+      tester,
+    ) async {
+      ({Uint8List png, String fileName, String text})? shared;
+      await openShare(tester, (png, {required fileName, required text}) async {
+        shared = (png: png, fileName: fileName, text: text);
+      });
+      expect(find.text('Eng katta xarajatlar'), findsOneWidget);
+      expect(find.text('Oziq-ovqat'), findsOneWidget);
+
+      await tester.tap(find.byTooltip('Ulashish'));
+      await waitFor(tester, () => shared != null);
+      expect(shared?.fileName, 'my-wallet-2026-10.png');
+      expect(shared?.text, 'Oktabr 2026');
+      // PNG imzosi.
+      expect(shared?.png.take(4), [0x89, 0x50, 0x4E, 0x47]);
+    });
+
+    testWidgets("xato bo'lsa — xabar", (tester) async {
+      var calls = 0;
+      await openShare(tester, (png, {required fileName, required text}) async {
+        calls++;
+        throw StateError('no share target');
+      });
+      await tester.tap(find.byTooltip('Ulashish'));
+      await waitFor(tester, () => calls > 0);
+      await tester.pumpAndSettle();
+      expect(find.text("Ulashib bo'lmadi"), findsOneWidget);
+    });
   });
 
   testWidgets("oy almashtirish; bo'sh oy", (tester) async {
