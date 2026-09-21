@@ -1082,6 +1082,66 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Hisoblar valyutasi har xil — bunday o\'tkazma keyinroq qo\'shiladi'**
   String get errorCurrencyMismatch;
+
+  /// Hafta kuni (1 — dushanba), kichik harf (E15-T06)
+  ///
+  /// In uz, this message translates to:
+  /// **'{day, select, 1{dushanba} 2{seshanba} 3{chorshanba} 4{payshanba} 5{juma} 6{shanba} 7{yakshanba} other{?}}'**
+  String weekdayName(String day);
+
+  /// No description provided for @dayTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'{day}-{month}, {weekday}'**
+  String dayTitle(int day, String month, String weekday);
+
+  /// No description provided for @transactionsEmpty.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bu oyda amal yo\'q'**
+  String get transactionsEmpty;
+
+  /// No description provided for @transactionsEmptyFiltered.
+  ///
+  /// In uz, this message translates to:
+  /// **'Filtrga mos amal yo\'q'**
+  String get transactionsEmptyFiltered;
+
+  /// No description provided for @searchHint.
+  ///
+  /// In uz, this message translates to:
+  /// **'Joy, izoh yoki summa'**
+  String get searchHint;
+
+  /// No description provided for @filterAll.
+  ///
+  /// In uz, this message translates to:
+  /// **'Hammasi'**
+  String get filterAll;
+
+  /// No description provided for @filterClear.
+  ///
+  /// In uz, this message translates to:
+  /// **'Filtrni tozalash'**
+  String get filterClear;
+
+  /// No description provided for @monthClosedBanner.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oy yopilgan — o\'zgartirish tasdiq bilan'**
+  String get monthClosedBanner;
+
+  /// No description provided for @deleted.
+  ///
+  /// In uz, this message translates to:
+  /// **'O\'chirildi'**
+  String get deleted;
+
+  /// No description provided for @editTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Tahrirlash'**
+  String get editTitle;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

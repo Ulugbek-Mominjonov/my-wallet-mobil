@@ -163,5 +163,15 @@
   "fundAllocationHint": "👤 Counts as an allocation — reduces the month's balance",
   "fundReturnHint": "👤 Allocation return — increases the month's balance",
   "fundSpendHint": "👤 Spending from the fund — doesn't affect the month's balance",
-  "errorCurrencyMismatch": "The accounts use different currencies — coming later"
+  "errorCurrencyMismatch": "The accounts use different currencies — coming later",
+  "weekdayName": "{day, select, 1{Monday} 2{Tuesday} 3{Wednesday} 4{Thursday} 5{Friday} 6{Saturday} 7{Sunday} other{?}}",
+  "dayTitle": "{month} {day}, {weekday}",
+  "transactionsEmpty": "No transactions this month",
+  "transactionsEmptyFiltered": "Nothing matches the filter",
+  "searchHint": "Payee, note or amount",
+  "filterAll": "All",
+  "filterClear": "Clear filters",
+  "monthClosedBanner": "The month is closed — changes need confirmation",
+  "deleted": "Deleted",
+  "editTitle": "Edit"
 }

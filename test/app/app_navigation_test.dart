@@ -21,7 +21,8 @@ void main() {
 
     await tester.tap(find.bySemanticsLabel('Amallar'));
     await tester.pumpAndSettle();
-    expect(tabTitle('Amallar'), findsOneWidget);
+    // Amallar bo'limi (E15-T06): bo'sh oy — mos xabar.
+    expect(find.text("Bu oyda amal yo'q"), findsOneWidget);
 
     await tester.tap(find.bySemanticsLabel('Hamyon'));
     await tester.pumpAndSettle();

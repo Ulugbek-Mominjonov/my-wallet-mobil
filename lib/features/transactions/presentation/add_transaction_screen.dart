@@ -26,7 +26,9 @@ class AddTransactionScreen extends ConsumerWidget {
     final today = ref.watch(clockProvider).today();
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.addTitle)),
+      appBar: AppBar(
+        title: Text(state.isEditing ? l10n.editTitle : l10n.addTitle),
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -48,11 +50,13 @@ class AddTransactionScreen extends ConsumerWidget {
                   ),
                 ],
                 selected: {state.kind},
-                onSelectionChanged: (selection) =>
-                    controller.selectKind(selection.first),
+                // Tahrirlashda tur o'zgarmaydi (domen qoidasi).
+                onSelectionChanged: state.isEditing
+                    ? null
+                    : (selection) => controller.selectKind(selection.first),
               ),
             ),
-            if (state.kind == TransactionKind.expense)
+            if (state.kind == TransactionKind.expense && !state.isEditing)
               Padding(
                 padding: const EdgeInsets.only(top: AppSpacing.sm),
                 child: QuickActionsBar(

@@ -573,4 +573,48 @@ class AppL10nRu extends AppL10n {
   @override
   String get errorCurrencyMismatch =>
       'У счетов разные валюты — такой перевод появится позже';
+
+  @override
+  String weekdayName(String day) {
+    String _temp0 = intl.Intl.selectLogic(day, {
+      '1': 'понедельник',
+      '2': 'вторник',
+      '3': 'среда',
+      '4': 'четверг',
+      '5': 'пятница',
+      '6': 'суббота',
+      '7': 'воскресенье',
+      'other': '?',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String dayTitle(int day, String month, String weekday) {
+    return '$day $month, $weekday';
+  }
+
+  @override
+  String get transactionsEmpty => 'В этом месяце нет операций';
+
+  @override
+  String get transactionsEmptyFiltered => 'Нет операций по фильтру';
+
+  @override
+  String get searchHint => 'Место, комментарий или сумма';
+
+  @override
+  String get filterAll => 'Все';
+
+  @override
+  String get filterClear => 'Сбросить фильтр';
+
+  @override
+  String get monthClosedBanner => 'Месяц закрыт — изменения с подтверждением';
+
+  @override
+  String get deleted => 'Удалено';
+
+  @override
+  String get editTitle => 'Редактирование';
 }

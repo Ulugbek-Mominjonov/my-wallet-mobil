@@ -574,4 +574,49 @@ class AppL10nEn extends AppL10n {
   @override
   String get errorCurrencyMismatch =>
       'The accounts use different currencies — coming later';
+
+  @override
+  String weekdayName(String day) {
+    String _temp0 = intl.Intl.selectLogic(day, {
+      '1': 'Monday',
+      '2': 'Tuesday',
+      '3': 'Wednesday',
+      '4': 'Thursday',
+      '5': 'Friday',
+      '6': 'Saturday',
+      '7': 'Sunday',
+      'other': '?',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String dayTitle(int day, String month, String weekday) {
+    return '$month $day, $weekday';
+  }
+
+  @override
+  String get transactionsEmpty => 'No transactions this month';
+
+  @override
+  String get transactionsEmptyFiltered => 'Nothing matches the filter';
+
+  @override
+  String get searchHint => 'Payee, note or amount';
+
+  @override
+  String get filterAll => 'All';
+
+  @override
+  String get filterClear => 'Clear filters';
+
+  @override
+  String get monthClosedBanner =>
+      'The month is closed — changes need confirmation';
+
+  @override
+  String get deleted => 'Deleted';
+
+  @override
+  String get editTitle => 'Edit';
 }

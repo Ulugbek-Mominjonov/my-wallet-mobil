@@ -21,6 +21,7 @@ final class AddTransactionState {
     this.tagIds = const {},
     this.debtId,
     this.manualMonth,
+    this.editing,
     this.saving = false,
     this.failure,
   });
@@ -45,6 +46,11 @@ final class AddTransactionState {
 
   /// BR-041, BR-042: qo'lda tanlangan tegishli oy (`null` — qoida bo'yicha).
   final MonthKey? manualMonth;
+
+  /// Tahrirlanayotgan amal (E15-T06); `null` — yangi amal.
+  final Transaction? editing;
+
+  bool get isEditing => editing != null;
   final bool saving;
   final Failure? failure;
 
@@ -72,6 +78,7 @@ final class AddTransactionState {
     Set<String>? tagIds,
     String? debtId,
     MonthKey? manualMonth,
+    Transaction? editing,
     bool? saving,
     Failure? failure,
     bool clearCategory = false,
@@ -91,6 +98,7 @@ final class AddTransactionState {
     tagIds: tagIds ?? this.tagIds,
     debtId: clearDebt ? null : (debtId ?? this.debtId),
     manualMonth: clearManualMonth ? null : (manualMonth ?? this.manualMonth),
+    editing: editing ?? this.editing,
     saving: saving ?? this.saving,
     failure: clearFailure ? null : (failure ?? this.failure),
   );
@@ -178,6 +186,26 @@ base class AddTransactionController extends Notifier<AddTransactionState> {
 
   void setNote(String note) => state = state.copyWith(note: note);
 
+  /// Tahrirlash uchun forma amal bilan to'ladi (tur o'zgarmaydi).
+  void load(Transaction tx) => state = AddTransactionState(
+    kind: tx.kind,
+    entry: AmountEntry(
+      digits: '${tx.amount.minor ~/ tx.amount.currency.minorPerMajor}',
+    ),
+    currency: tx.amount.currency,
+    accountId: tx.accountId,
+    toAccountId: tx.toAccountId,
+    categoryId: tx.categoryId,
+    occurredOn: tx.occurredOn,
+    payee: tx.payee,
+    note: tx.note,
+    debtId: tx.debtId,
+    manualMonth: tx.budgetMonthSource == BudgetMonthSource.manual
+        ? tx.budgetMonth
+        : null,
+    editing: tx,
+  );
+
   /// BR-141: uzoq bosilgan tez tugma — forma shu qiymatlar bilan to'ladi
   /// (summani o'zgartirib saqlash uchun).
   void prefill(QuickAction action) => state = state.copyWith(
@@ -236,6 +264,34 @@ base class AddTransactionController extends Notifier<AddTransactionState> {
   }
 
   Future<Result<Transaction>> _saveTransaction(
+    DomainDeps deps, {
+    required bool confirmClosedMonth,
+  }) async {
+    final editing = state.editing;
+    if (editing != null) {
+      return await EditTransaction(deps)(
+        editing.id,
+        (current) => current.copyWith(
+          accountId: state.accountId!,
+          toAccountId: state.toAccountId,
+          amount: state.amount,
+          categoryId: state.categoryId,
+          occurredOn: state.occurredOn ?? current.occurredOn,
+          payee: _trimmed(state.payee),
+          note: _trimmed(state.note),
+          debtId: state.debtId,
+          budgetMonthSource: state.manualMonth == null
+              ? BudgetMonthSource.auto
+              : BudgetMonthSource.manual,
+          budgetMonth: state.manualMonth ?? current.budgetMonth,
+        ),
+        confirmClosedMonth: confirmClosedMonth,
+      );
+    }
+    return await _add(deps, confirmClosedMonth: confirmClosedMonth);
+  }
+
+  Future<Result<Transaction>> _add(
     DomainDeps deps, {
     required bool confirmClosedMonth,
   }) async => state.isTransfer

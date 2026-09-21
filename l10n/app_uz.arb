@@ -330,5 +330,36 @@
   "fundAllocationHint": "👤 Bu ajratma sifatida hisoblanadi — oy qoldig'ini kamaytiradi",
   "fundReturnHint": "👤 Ajratmaning qaytishi — oy qoldig'ini oshiradi",
   "fundSpendHint": "👤 Fonddan sarf — oylik qoldiqqa ta'sir qilmaydi",
-  "errorCurrencyMismatch": "Hisoblar valyutasi har xil — bunday o'tkazma keyinroq qo'shiladi"
+  "errorCurrencyMismatch": "Hisoblar valyutasi har xil — bunday o'tkazma keyinroq qo'shiladi",
+  "weekdayName": "{day, select, 1{dushanba} 2{seshanba} 3{chorshanba} 4{payshanba} 5{juma} 6{shanba} 7{yakshanba} other{?}}",
+  "dayTitle": "{day}-{month}, {weekday}",
+  "transactionsEmpty": "Bu oyda amal yo'q",
+  "transactionsEmptyFiltered": "Filtrga mos amal yo'q",
+  "searchHint": "Joy, izoh yoki summa",
+  "filterAll": "Hammasi",
+  "filterClear": "Filtrni tozalash",
+  "monthClosedBanner": "Oy yopilgan — o'zgartirish tasdiq bilan",
+  "deleted": "O'chirildi",
+  "editTitle": "Tahrirlash",
+  "@weekdayName": {
+    "description": "Hafta kuni (1 — dushanba), kichik harf (E15-T06)",
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "@dayTitle": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      },
+      "month": {
+        "type": "String"
+      },
+      "weekday": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -575,4 +575,48 @@ class AppL10nUz extends AppL10n {
   @override
   String get errorCurrencyMismatch =>
       'Hisoblar valyutasi har xil — bunday o\'tkazma keyinroq qo\'shiladi';
+
+  @override
+  String weekdayName(String day) {
+    String _temp0 = intl.Intl.selectLogic(day, {
+      '1': 'dushanba',
+      '2': 'seshanba',
+      '3': 'chorshanba',
+      '4': 'payshanba',
+      '5': 'juma',
+      '6': 'shanba',
+      '7': 'yakshanba',
+      'other': '?',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String dayTitle(int day, String month, String weekday) {
+    return '$day-$month, $weekday';
+  }
+
+  @override
+  String get transactionsEmpty => 'Bu oyda amal yo\'q';
+
+  @override
+  String get transactionsEmptyFiltered => 'Filtrga mos amal yo\'q';
+
+  @override
+  String get searchHint => 'Joy, izoh yoki summa';
+
+  @override
+  String get filterAll => 'Hammasi';
+
+  @override
+  String get filterClear => 'Filtrni tozalash';
+
+  @override
+  String get monthClosedBanner => 'Oy yopilgan — o\'zgartirish tasdiq bilan';
+
+  @override
+  String get deleted => 'O\'chirildi';
+
+  @override
+  String get editTitle => 'Tahrirlash';
 }

@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:meta/meta.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/local/mappers.dart';
 import 'package:my_wallet/data/local/tables/sync_tables.dart';
@@ -17,6 +18,72 @@ typedef DebtActivity = ({
   Money pendingAmount,
   int pendingCount,
 });
+
+/// BR-202: amallar ro'yxati filtri (bo'sh maydon — cheklov yo'q).
+@immutable
+final class TransactionFilter {
+  const new({
+    this.month,
+    this.kind,
+    this.categoryId,
+    this.accountId,
+    this.tagId,
+    this.search = '',
+  });
+
+  /// Tegishli oy (`budget_month`, BR-040) — hisobotlar bilan bir xil.
+  final MonthKey? month;
+  final TransactionKind? kind;
+  final String? categoryId;
+
+  /// Manba yoki manzil hisob (o'tkazma ikkala tomonda ko'rinadi).
+  final String? accountId;
+  final String? tagId;
+
+  /// Joy nomi yoki izoh ichida; raqam bo'lsa — summa (asosiy birlikda) ham.
+  final String search;
+
+  bool get isEmpty =>
+      kind == null &&
+      categoryId == null &&
+      accountId == null &&
+      tagId == null &&
+      search.trim().isEmpty;
+
+  TransactionFilter copyWith({
+    MonthKey? month,
+    TransactionKind? kind,
+    String? categoryId,
+    String? accountId,
+    String? tagId,
+    String? search,
+    bool clearKind = false,
+    bool clearCategory = false,
+    bool clearAccount = false,
+    bool clearTag = false,
+  }) => TransactionFilter(
+    month: month ?? this.month,
+    kind: clearKind ? null : (kind ?? this.kind),
+    categoryId: clearCategory ? null : (categoryId ?? this.categoryId),
+    accountId: clearAccount ? null : (accountId ?? this.accountId),
+    tagId: clearTag ? null : (tagId ?? this.tagId),
+    search: search ?? this.search,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      other is TransactionFilter &&
+      other.month == month &&
+      other.kind == kind &&
+      other.categoryId == categoryId &&
+      other.accountId == accountId &&
+      other.tagId == tagId &&
+      other.search == search;
+
+  @override
+  int get hashCode =>
+      Object.hash(month, kind, categoryId, accountId, tagId, search);
+}
 
 /// BR-056: joy nomi — oxirgi ishlatilgan kategoriya va hisob bilan.
 typedef PayeeSuggestion = ({
@@ -224,11 +291,13 @@ class LedgerDao extends DatabaseAccessor<AppDatabase> with _$LedgerDaoMixin {
     String householdId, {
     TransactionCursor? after,
     int limit = pageSize,
+    TransactionFilter filter = const TransactionFilter(),
   }) {
     final query = select(transactions)
       ..where((t) {
         var condition =
             t.householdId.equals(householdId) & t.deletedAt.isNull();
+        condition &= _filterCondition(t, filter);
         if (after != null) {
           condition &=
               t.occurredOn.isSmallerThanValue(after.occurredOn) |
@@ -243,6 +312,51 @@ class LedgerDao extends DatabaseAccessor<AppDatabase> with _$LedgerDaoMixin {
       ])
       ..limit(limit);
     return query.watch();
+  }
+
+  /// Filtr sharti; oy — `transactions_month` indeksi, teg — `EXISTS`.
+  Expression<bool> _filterCondition(
+    $TransactionsTable t,
+    TransactionFilter filter,
+  ) {
+    Expression<bool> condition = const Constant(true);
+    if (filter.month case final month?) {
+      condition &= t.budgetMonth.equals(month.toIsoDate());
+    }
+    if (filter.kind case final kind?) {
+      condition &= t.kind.equals(kind.wire);
+    }
+    if (filter.categoryId case final id?) {
+      condition &= t.categoryId.equals(id);
+    }
+    if (filter.accountId case final id?) {
+      condition &= t.accountId.equals(id) | t.toAccountId.equals(id);
+    }
+    if (filter.tagId case final id?) {
+      final links = attachedDatabase.transactionTags;
+      condition &= existsQuery(
+        select(links)..where(
+          (l) =>
+              l.transactionId.equalsExp(t.id) &
+              l.tagId.equals(id) &
+              l.deletedAt.isNull(),
+        ),
+      );
+    }
+    final search = filter.search.trim();
+    if (search.isNotEmpty) {
+      final pattern = '%${_escapeLike(search.toLowerCase())}%';
+      var match =
+          t.payee.lower().like(pattern, escapeChar: r'\') |
+          t.note.lower().like(pattern, escapeChar: r'\');
+      // Raqam — summa (asosiy birlikda, masalan "45000").
+      final major = int.tryParse(search.replaceAll(RegExp(r'[\s,.]'), ''));
+      if (major != null) {
+        match |= t.amount.equals(major * 100);
+      }
+      condition &= match;
+    }
+    return condition;
   }
 
   /// BR-056: joy nomi avto-to'ldirish — [prefix] bilan boshlanadigan,

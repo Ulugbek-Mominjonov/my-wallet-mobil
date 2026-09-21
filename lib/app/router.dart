@@ -21,6 +21,8 @@ import 'package:my_wallet/features/startup/presentation/splash_screen.dart';
 import 'package:my_wallet/features/startup/presentation/update_required_screen.dart';
 import 'package:my_wallet/features/sync/presentation/sync_status_screen.dart';
 import 'package:my_wallet/features/transactions/presentation/add_transaction_screen.dart';
+import 'package:my_wallet/features/transactions/presentation/edit_transaction_screen.dart';
+import 'package:my_wallet/features/transactions/presentation/transactions_screen.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
 
 /// Kirish ekrani manzili.
@@ -102,10 +104,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state, shell) => AppShell(navigationShell: shell),
         branches: [
           _tab('/', Icons.space_dashboard_outlined, (l10n) => l10n.tabHome),
-          _tab(
-            '/transactions',
-            Icons.receipt_long_outlined,
-            (l10n) => l10n.tabTransactions,
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/transactions',
+                builder: (context, state) => const TransactionsScreen(),
+              ),
+            ],
           ),
           _tab(
             '/payments',
@@ -126,6 +131,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) => const MaterialPage(
           fullscreenDialog: true,
           child: AddTransactionScreen(),
+        ),
+      ),
+      // Amalni tahrirlash (E15-T06) — ro'yxatdan.
+      GoRoute(
+        path: '/transaction/:id',
+        pageBuilder: (context, state) => MaterialPage(
+          fullscreenDialog: true,
+          child: EditTransactionScreen(id: state.pathParameters['id']!),
         ),
       ),
       // Sinxron holati (E13-T06) — SyncStatusBadge'dan.

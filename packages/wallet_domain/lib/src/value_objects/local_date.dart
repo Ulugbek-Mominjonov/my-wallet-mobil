@@ -53,6 +53,9 @@ final class LocalDate implements Comparable<LocalDate> {
 
   DateTime get _utc => DateTime.utc(year, month, day);
 
+  /// Hafta kuni: 1 — dushanba … 7 — yakshanba (ISO 8601).
+  int get weekday => _utc.weekday;
+
   @override
   int compareTo(LocalDate other) => _ordinal.compareTo(other._ordinal);
 

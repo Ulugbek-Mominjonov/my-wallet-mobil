@@ -296,10 +296,15 @@
   kategoriyasiz bo'lsa "O'zim uchun" (BR-062); daromadda fond hisobi
   ko'rsatilmaydi (BR-063). Turli valyutali o'tkazma (ikkinchi summa) — E29,
   hozircha aniq xabar.
-- [ ] **E15-T06** Amallar ro'yxati: kun bo'yicha guruh + kunlik jami, oy
-  filtri, qidiruv (nom/izoh/summa), filtr chiplari (turi, kategoriya, hisob,
-  a'zo, teg), keyset sahifalash, swipe → o'chirish + undo (BR-009), bosish →
-  tahrirlash; yopilgan oy ogohlantirishi (BR-055).
+- [x] **E15-T06** Amallar ro'yxati: oy almashtirgich (tegishli oy bo'yicha —
+  `transactions_month` indeksi, EXPLAIN bilan tekshirilgan), kun bo'yicha
+  guruh + kunlik daromad/xarajat (bir o'tishda), qidiruv (joy/izoh
+  registrsiz, raqam — summa), filtr chiplari (turi, kategoriya, hisob —
+  o'tkazmaning ikkala tomoni, teg — `EXISTS`), sahifalash (LIMIT oshadi,
+  reaktiv), swipe → o'chirish + 5 s undo (BR-009), bosish → tahrirlash
+  (o'sha forma, tur o'zgarmaydi; qo'lda oy saqlanadi); yopilgan oy banneri
+  va tasdig'i (BR-055). A'zo filtri — E30 (a'zolar ro'yxati sinxronda yo'q).
+  Testlar: 6 filtr (DAO) + 4 ekran.
 - [ ] **E15-T07** Chek rasmi: kamera/galereya, siqish ≤ 1 MB, lokal navbat
   (oflaynda saqlanadi), fon yuklash Storage'ga, ko'rish (zoom).
 - [ ] **E15-T08** Testlar: forma validatsiyasi, tegishli oy izohi (4
