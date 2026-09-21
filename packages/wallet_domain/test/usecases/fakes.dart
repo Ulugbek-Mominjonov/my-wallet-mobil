@@ -100,6 +100,22 @@ final class _Categories implements CategoryRepository {
   @override
   Future<Category> allocationCategory() async =>
       _store.categories.values.firstWhere((category) => category.isSystem);
+
+  @override
+  Future<Category?> byName(CategoryKind kind, String name) async => _store
+      .categories
+      .values
+      .where(
+        (c) =>
+            c.kind == kind &&
+            c.deletedAt == null &&
+            normalizeName(c.name) == normalizeName(name),
+      )
+      .firstOrNull;
+
+  @override
+  Future<void> save(Category category) async =>
+      _store.categories[category.id] = category;
 }
 
 final class _Plans implements PlannedItemRepository {

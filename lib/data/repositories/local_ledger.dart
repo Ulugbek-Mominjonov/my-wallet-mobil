@@ -22,7 +22,7 @@ DomainDeps localDomainDeps(
   return DomainDeps(
     households: DriftHouseholdRepository(db, householdId),
     accounts: DriftAccountRepository(db, householdId),
-    categories: DriftCategoryRepository(db, householdId),
+    categories: DriftCategoryRepository(db, householdId, outbox),
     plans: DriftPlannedItemRepository(db, householdId, outbox),
     transactions: DriftTransactionRepository(db, householdId, outbox),
     quickActions: DriftQuickActionRepository(db, householdId),
@@ -138,9 +138,10 @@ final class DriftAccountRepository implements AccountRepository {
 }
 
 final class DriftCategoryRepository implements CategoryRepository {
-  const new(this._db, this._householdId);
+  const new(this._db, this._householdId, this._outbox);
   final AppDatabase _db;
   final String _householdId;
+  final OutboxWriter _outbox;
 
   @override
   Future<Category?> byId(String id) async =>
@@ -159,6 +160,34 @@ final class DriftCategoryRepository implements CategoryRepository {
               ))
               .getSingle())
           .toDomain();
+
+  @override
+  Future<Category?> byName(CategoryKind kind, String name) async =>
+      (await (_db.select(_db.categories)..where(
+                (c) =>
+                    c.householdId.equals(_householdId) &
+                    c.kind.equals(kind.wire) &
+                    c.deletedAt.isNull() &
+                    c.name.lower().equals(normalizeName(name)),
+              ))
+              .getSingleOrNull())
+          ?.toDomain();
+
+  @override
+  Future<void> save(Category category) => _db.transaction(() async {
+    final query = _db.select(_db.categories)
+      ..where((c) => c.id.equals(category.id));
+    final before = await query.getSingleOrNull();
+    await _db
+        .into(_db.categories)
+        .insertOnConflictUpdate(category.toCompanion());
+    await _outbox.enqueue(
+      table: 'categories',
+      householdId: _householdId,
+      row: await query.getSingle(),
+      before: before,
+    );
+  });
 }
 
 final class DriftPlannedItemRepository implements PlannedItemRepository {

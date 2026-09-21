@@ -32,6 +32,7 @@ export 'src/rules/planned_status.dart';
 export 'src/rules/reminder_buckets.dart';
 export 'src/rules/savings.dart';
 export 'src/usecases/deps.dart';
+export 'src/usecases/directory_usecases.dart';
 export 'src/usecases/plan_usecases.dart';
 export 'src/usecases/transaction_usecases.dart';
 export 'src/value_objects/currency.dart';

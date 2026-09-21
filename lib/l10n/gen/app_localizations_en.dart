@@ -452,4 +452,68 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get kindTransfer => 'Transfer';
+
+  @override
+  String get fieldCategory => 'Category';
+
+  @override
+  String get fieldPayee => 'Payee';
+
+  @override
+  String get fieldNote => 'Note';
+
+  @override
+  String get fieldTo => 'To';
+
+  @override
+  String get dateToday => 'Today';
+
+  @override
+  String get dateYesterday => 'Yesterday';
+
+  @override
+  String get dateChoose => 'Date';
+
+  @override
+  String get categorySearch => 'Search category';
+
+  @override
+  String get saved => 'Saved';
+
+  @override
+  String get errorMonthClosed => 'The month is closed — can\'t record';
+
+  @override
+  String get categoryNew => 'New category';
+
+  @override
+  String get fieldTags => 'Tags';
+
+  @override
+  String get fieldDebt => 'Link to a debt';
+
+  @override
+  String get errorCategoryRequired => 'Choose a category';
+
+  @override
+  String get errorCategoryInvalid => 'This category can\'t be used';
+
+  @override
+  String get errorAccountRequired => 'Choose an account';
+
+  @override
+  String get errorTargetAccount => 'Choose a different account';
+
+  @override
+  String get errorAmountRequired => 'Enter an amount';
+
+  @override
+  String get monthClosedConfirmTitle => 'The month is closed';
+
+  @override
+  String get monthClosedConfirmBody =>
+      'This goes into a closed month. Record it anyway?';
+
+  @override
+  String get actionRecord => 'Record';
 }

@@ -1,6 +1,7 @@
 import 'package:wallet_domain/src/entities/account.dart';
 import 'package:wallet_domain/src/entities/category.dart';
 import 'package:wallet_domain/src/entities/directory_items.dart';
+import 'package:wallet_domain/src/entities/enums.dart';
 import 'package:wallet_domain/src/entities/household.dart';
 import 'package:wallet_domain/src/entities/planned_item.dart';
 import 'package:wallet_domain/src/entities/transaction.dart';
@@ -30,6 +31,12 @@ abstract interface class CategoryRepository {
 
   /// "O'zim uchun" tizim kategoriyasi (BR-033).
   Future<Category> allocationCategory();
+
+  /// BR-003: shu turdagi, o'chirilmagan, normallashtirilgan nomi bir xil
+  /// kategoriya (`trim + lowercase`).
+  Future<Category?> byName(CategoryKind kind, String name);
+
+  Future<void> save(Category category);
 }
 
 abstract interface class PlannedItemRepository {

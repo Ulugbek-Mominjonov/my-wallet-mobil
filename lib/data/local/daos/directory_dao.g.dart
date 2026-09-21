@@ -6,6 +6,9 @@ part of 'directory_dao.dart';
 mixin _$DirectoryDaoMixin on DatabaseAccessor<AppDatabase> {
   $AccountsTable get accounts => attachedDatabase.accounts;
   $CategoriesTable get categories => attachedDatabase.categories;
+  $TransactionsTable get transactions => attachedDatabase.transactions;
+  $TagsTable get tags => attachedDatabase.tags;
+  $DebtsTable get debts => attachedDatabase.debts;
   DirectoryDaoManager get managers => DirectoryDaoManager(this);
 }
 
@@ -16,4 +19,10 @@ class DirectoryDaoManager {
       $$AccountsTableTableManager(_db.attachedDatabase, _db.accounts);
   $$CategoriesTableTableManager get categories =>
       $$CategoriesTableTableManager(_db.attachedDatabase, _db.categories);
+  $$TransactionsTableTableManager get transactions =>
+      $$TransactionsTableTableManager(_db.attachedDatabase, _db.transactions);
+  $$TagsTableTableManager get tags =>
+      $$TagsTableTableManager(_db.attachedDatabase, _db.tags);
+  $$DebtsTableTableManager get debts =>
+      $$DebtsTableTableManager(_db.attachedDatabase, _db.debts);
 }

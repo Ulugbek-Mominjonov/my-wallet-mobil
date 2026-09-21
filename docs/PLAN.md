@@ -272,10 +272,14 @@
   `AmountKeypad` (`000`, `⌫`, oddiy `+ −` hisob, haptic), summa jonli
   formatlanadi (byudjet valyutasida). Kiritish mantiqi — sof `AmountEntry`
   (5 test), varaq — 3 vidjet testi.
-- [ ] **E15-T02** Maydonlar: kategoriya to'ri (oxirgi 8 tasi oldinda,
-  qidiruv, joyida yangi kategoriya — BR-035), hisob chiplari, sana
-  (Bugun/Kecha/kalendar), payee avto-to'ldirish + oxirgi kategoriya/hisob
-  taklifi (BR-056), izoh, teglar, qarz bog'lash.
+- [x] **E15-T02** Maydonlar: kategoriya to'ri (oxirgi 8 tasi oldinda,
+  8 dan ko'p bo'lsa qidiruv, joyida yangi kategoriya — BR-035, domen
+  `CreateCategory`: nom 1–60, shu nomlisi bo'lsa o'sha — BR-003), hisob
+  chiplari, sana (Bugun/Kecha/kalendar), payee avto-to'ldirish + oxirgi
+  kategoriya/hisob taklifi (BR-056), izoh, teglar (`transaction_tags` —
+  amal bilan bitta tranzaksiyada, outbox), qarz bog'lash. Xatolar maydon
+  bo'yicha aniq matn; yopilgan oy (BR-055) — qat'iy bo'lmasa tasdiq bilan
+  yoziladi. Saqlash oflaynda ishlaydi (lokal + outbox).
 - [ ] **E15-T03** Tegishli oy: jonli izoh ("→ Avgust 2026 oyining daromadi
   sifatida yoziladi (oldingi oy)"), xarajatda "Qaysi oyning byudjetiga?"
   chiplari (Sana bo'yicha / Oldingi oy / Tanlash) — BR-045.

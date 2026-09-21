@@ -860,6 +860,132 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'O\'tkazma'**
   String get kindTransfer;
+
+  /// Amal qo'shish maydonlari (E15-T02)
+  ///
+  /// In uz, this message translates to:
+  /// **'Kategoriya'**
+  String get fieldCategory;
+
+  /// No description provided for @fieldPayee.
+  ///
+  /// In uz, this message translates to:
+  /// **'Joy / kimga'**
+  String get fieldPayee;
+
+  /// No description provided for @fieldNote.
+  ///
+  /// In uz, this message translates to:
+  /// **'Izoh'**
+  String get fieldNote;
+
+  /// No description provided for @fieldTo.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qayerga'**
+  String get fieldTo;
+
+  /// No description provided for @dateToday.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bugun'**
+  String get dateToday;
+
+  /// No description provided for @dateYesterday.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kecha'**
+  String get dateYesterday;
+
+  /// No description provided for @dateChoose.
+  ///
+  /// In uz, this message translates to:
+  /// **'Sana'**
+  String get dateChoose;
+
+  /// No description provided for @categorySearch.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kategoriya qidirish'**
+  String get categorySearch;
+
+  /// No description provided for @saved.
+  ///
+  /// In uz, this message translates to:
+  /// **'Saqlandi'**
+  String get saved;
+
+  /// No description provided for @errorMonthClosed.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oy yopilgan — yozib bo\'lmaydi'**
+  String get errorMonthClosed;
+
+  /// No description provided for @categoryNew.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yangi kategoriya'**
+  String get categoryNew;
+
+  /// No description provided for @fieldTags.
+  ///
+  /// In uz, this message translates to:
+  /// **'Teglar'**
+  String get fieldTags;
+
+  /// No description provided for @fieldDebt.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qarzga bog\'lash'**
+  String get fieldDebt;
+
+  /// No description provided for @errorCategoryRequired.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kategoriyani tanlang'**
+  String get errorCategoryRequired;
+
+  /// No description provided for @errorCategoryInvalid.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bu kategoriyani tanlab bo\'lmaydi'**
+  String get errorCategoryInvalid;
+
+  /// No description provided for @errorAccountRequired.
+  ///
+  /// In uz, this message translates to:
+  /// **'Hisobni tanlang'**
+  String get errorAccountRequired;
+
+  /// No description provided for @errorTargetAccount.
+  ///
+  /// In uz, this message translates to:
+  /// **'Boshqa hisobni tanlang'**
+  String get errorTargetAccount;
+
+  /// No description provided for @errorAmountRequired.
+  ///
+  /// In uz, this message translates to:
+  /// **'Summani kiriting'**
+  String get errorAmountRequired;
+
+  /// No description provided for @monthClosedConfirmTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oy yopilgan'**
+  String get monthClosedConfirmTitle;
+
+  /// No description provided for @monthClosedConfirmBody.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bu amal yopilgan oyga tushadi. Baribir yozilsinmi?'**
+  String get monthClosedConfirmBody;
+
+  /// No description provided for @actionRecord.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yozish'**
+  String get actionRecord;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

@@ -452,4 +452,68 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get kindTransfer => 'Перевод';
+
+  @override
+  String get fieldCategory => 'Категория';
+
+  @override
+  String get fieldPayee => 'Место / кому';
+
+  @override
+  String get fieldNote => 'Комментарий';
+
+  @override
+  String get fieldTo => 'Куда';
+
+  @override
+  String get dateToday => 'Сегодня';
+
+  @override
+  String get dateYesterday => 'Вчера';
+
+  @override
+  String get dateChoose => 'Дата';
+
+  @override
+  String get categorySearch => 'Поиск категории';
+
+  @override
+  String get saved => 'Сохранено';
+
+  @override
+  String get errorMonthClosed => 'Месяц закрыт — запись невозможна';
+
+  @override
+  String get categoryNew => 'Новая категория';
+
+  @override
+  String get fieldTags => 'Теги';
+
+  @override
+  String get fieldDebt => 'Привязать к долгу';
+
+  @override
+  String get errorCategoryRequired => 'Выберите категорию';
+
+  @override
+  String get errorCategoryInvalid => 'Эту категорию нельзя выбрать';
+
+  @override
+  String get errorAccountRequired => 'Выберите счёт';
+
+  @override
+  String get errorTargetAccount => 'Выберите другой счёт';
+
+  @override
+  String get errorAmountRequired => 'Введите сумму';
+
+  @override
+  String get monthClosedConfirmTitle => 'Месяц закрыт';
+
+  @override
+  String get monthClosedConfirmBody =>
+      'Операция попадёт в закрытый месяц. Всё равно записать?';
+
+  @override
+  String get actionRecord => 'Записать';
 }

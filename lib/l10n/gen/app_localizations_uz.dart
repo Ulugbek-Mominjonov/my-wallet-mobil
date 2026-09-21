@@ -453,4 +453,68 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get kindTransfer => 'O\'tkazma';
+
+  @override
+  String get fieldCategory => 'Kategoriya';
+
+  @override
+  String get fieldPayee => 'Joy / kimga';
+
+  @override
+  String get fieldNote => 'Izoh';
+
+  @override
+  String get fieldTo => 'Qayerga';
+
+  @override
+  String get dateToday => 'Bugun';
+
+  @override
+  String get dateYesterday => 'Kecha';
+
+  @override
+  String get dateChoose => 'Sana';
+
+  @override
+  String get categorySearch => 'Kategoriya qidirish';
+
+  @override
+  String get saved => 'Saqlandi';
+
+  @override
+  String get errorMonthClosed => 'Oy yopilgan — yozib bo\'lmaydi';
+
+  @override
+  String get categoryNew => 'Yangi kategoriya';
+
+  @override
+  String get fieldTags => 'Teglar';
+
+  @override
+  String get fieldDebt => 'Qarzga bog\'lash';
+
+  @override
+  String get errorCategoryRequired => 'Kategoriyani tanlang';
+
+  @override
+  String get errorCategoryInvalid => 'Bu kategoriyani tanlab bo\'lmaydi';
+
+  @override
+  String get errorAccountRequired => 'Hisobni tanlang';
+
+  @override
+  String get errorTargetAccount => 'Boshqa hisobni tanlang';
+
+  @override
+  String get errorAmountRequired => 'Summani kiriting';
+
+  @override
+  String get monthClosedConfirmTitle => 'Oy yopilgan';
+
+  @override
+  String get monthClosedConfirmBody =>
+      'Bu amal yopilgan oyga tushadi. Baribir yozilsinmi?';
+
+  @override
+  String get actionRecord => 'Yozish';
 }

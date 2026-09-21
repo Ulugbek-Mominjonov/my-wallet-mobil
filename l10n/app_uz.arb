@@ -258,5 +258,29 @@
   "kindTransfer": "O'tkazma",
   "@kindExpense": {
     "description": "Amal turi (E15-T01)"
-  }
+  },
+  "fieldCategory": "Kategoriya",
+  "fieldPayee": "Joy / kimga",
+  "fieldNote": "Izoh",
+  "fieldTo": "Qayerga",
+  "dateToday": "Bugun",
+  "dateYesterday": "Kecha",
+  "dateChoose": "Sana",
+  "categorySearch": "Kategoriya qidirish",
+  "saved": "Saqlandi",
+  "errorMonthClosed": "Oy yopilgan — yozib bo'lmaydi",
+  "@fieldCategory": {
+    "description": "Amal qo'shish maydonlari (E15-T02)"
+  },
+  "categoryNew": "Yangi kategoriya",
+  "fieldTags": "Teglar",
+  "fieldDebt": "Qarzga bog'lash",
+  "errorCategoryRequired": "Kategoriyani tanlang",
+  "errorCategoryInvalid": "Bu kategoriyani tanlab bo'lmaydi",
+  "errorAccountRequired": "Hisobni tanlang",
+  "errorTargetAccount": "Boshqa hisobni tanlang",
+  "errorAmountRequired": "Summani kiriting",
+  "monthClosedConfirmTitle": "Oy yopilgan",
+  "monthClosedConfirmBody": "Bu amal yopilgan oyga tushadi. Baribir yozilsinmi?",
+  "actionRecord": "Yozish"
 }

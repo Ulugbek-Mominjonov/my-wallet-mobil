@@ -8,17 +8,56 @@ import 'package:my_wallet/core/format/money_format.dart';
 import 'package:my_wallet/features/transactions/application/amount_entry.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
-/// Summa klaviaturasi (BR-140): katta summa, `000`, `⌫` va oddiy `+ −`.
-class AmountKeypad extends StatelessWidget {
-  const new({
-    required this.entry,
-    required this.currency,
-    required this.onKey,
-    super.key,
-  });
+/// Kiritilayotgan summa (katta, tabular raqamlar bilan).
+class AmountDisplay extends StatelessWidget {
+  const new({required this.entry, required this.currency, super.key});
 
   final AmountEntry entry;
   final Currency currency;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    String format(int major) => formatMoney(
+      major * currency.minorPerMajor,
+      currency: currency.code,
+      locale: appLocaleOf(context),
+    );
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (entry.pending != null) ...[
+            Text(
+              '${format(entry.left ?? 0)} ${entry.pending}',
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(width: AppSpacing.sm),
+          ],
+          Flexible(
+            child: Text(
+              format(entry.display),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.displaySmall?.copyWith(
+                fontFeatures: const [FontFeature.tabularFigures()],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Summa klaviaturasi (BR-140): `000`, `⌫` va oddiy `+ −`.
+class AmountKeypad extends StatelessWidget {
+  const new({required this.onKey, super.key});
+
   final ValueChanged<AmountKey> onKey;
 
   static const List<List<AmountKey>> _rows = [
@@ -28,50 +67,15 @@ class AmountKeypad extends StatelessWidget {
     [AmountKey.tripleZero, AmountKey.zero, AmountKey.equals],
   ];
 
-  String _format(BuildContext context, int major) => formatMoney(
-    major * currency.minorPerMajor,
-    currency: currency.code,
-    locale: appLocaleOf(context),
-  );
-
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (entry.pending != null) ...[
-                Text(
-                  '${_format(context, entry.left ?? 0)} ${entry.pending}',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.sm),
-              ],
-              Flexible(
-                child: Text(
-                  _format(context, entry.display),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.displaySmall?.copyWith(
-                    fontFeatures: const [FontFeature.tabularFigures()],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
         for (final row in _rows)
           Row(
             children: [
               for (final key in row)
                 Expanded(
-                  flex: key == AmountKey.tripleZero ? 1 : 1,
                   child: _Key(entryKey: key, onKey: onKey),
                 ),
             ],
