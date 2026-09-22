@@ -34,6 +34,9 @@ jobs:
         run: make lint
       - name: Testlar va qoplama chegarasi
         run: make coverage
+      - name: Yiqilgan testlar — annotatsiyalar (loglarsiz ham ko'rinadi)
+        if: failure()
+        run: dart run tool/test_annotations.dart build/test-report.json
 
   android:
     name: android — dev APK build

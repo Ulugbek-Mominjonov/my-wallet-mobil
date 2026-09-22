@@ -36,3 +36,6 @@ env/*.json
 
 # patrol generatsiya qiladi (E20-T04)
 patrol_test/test_bundle.dart
+
+# Golden test yiqilganda yaratiladigan farq rasmlari (flutter_test)
+**/golden/failures/

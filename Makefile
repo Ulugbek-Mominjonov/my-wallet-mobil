@@ -39,7 +39,7 @@ gen-check: gen ## Generatsiya qilingan kod va sxema snapshot'i commit qilinganig
 	@test -z "$$(git status --porcelain -- $(GENERATED))" || { echo "Commit qilinmagan generatsiya fayllari:"; git status --porcelain -- $(GENERATED); exit 1; }
 
 coverage: ## Testlar + qoplama chegarasi (ilova ≥ 70%, domen paketi ≥ 95%)
-	flutter test --coverage
+	flutter test --coverage --file-reporter json:build/test-report.json
 	dart run tool/check_coverage.dart coverage/lcov.info lib=70
 	cd $(DOMAIN) && dart test --coverage-path=coverage/lcov.info
 	cd $(DOMAIN) && dart run ../../tool/check_coverage.dart coverage/lcov.info lib=95
