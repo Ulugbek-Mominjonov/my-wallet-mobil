@@ -33,3 +33,6 @@ env/*.json
 .vscode/*
 !.vscode/extensions.json
 *.log
+
+# patrol generatsiya qiladi (E20-T04)
+patrol_test/test_bundle.dart

@@ -1,0 +1,99 @@
+name: E2E
+
+# E20-T04: patrol — Android emulyatorda haqiqiy ilova va lokal Supabase
+# (admin contracts.lock commit'idan): kirish → sozlash → xarajat → daromad →
+# oflayn sinxron. Har kecha (KVM'li Linux runner) va qo'lda.
+on:
+  schedule:
+    - cron: '0 2 * * *' # har kecha (Toshkent 07:00)
+  workflow_dispatch:
+
+concurrency:
+  group: e2e
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  FLUTTER_VERSION: 3.47.4
+  PATROL_CLI_VERSION: 4.8.0
+
+jobs:
+  android:
+    name: patrol — Android emulyator
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: mobil
+      - name: Shartnomadagi admin commit
+        id: lock
+        run: echo "admin_commit=$(sed -n 's/^admin_commit=//p' mobil/contracts.lock)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ github.repository_owner }}/my-wallet-admin
+          ref: ${{ steps.lock.outputs.admin_commit }}
+          path: admin
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          package_json_file: admin/package.json
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: admin/pnpm-lock.yaml
+      - name: Lokal Supabase
+        working-directory: admin
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm exec supabase start -x studio,imgproxy,logflare,vector,supavisor,edge-runtime,realtime
+          pnpm exec supabase status -o env \
+            | sed -n 's/^PUBLISHABLE_KEY="\(.*\)"/\1/p' > "$RUNNER_TEMP/publishable"
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - name: Patrol CLI va dev muhiti (emulyatordan — 10.0.2.2)
+        working-directory: mobil
+        run: |
+          dart pub global activate patrol_cli "$PATROL_CLI_VERSION"
+          echo "${PUB_CACHE:-$HOME/.pub-cache}/bin" >> "$GITHUB_PATH"
+          flutter pub get
+          python3 - "$(cat "$RUNNER_TEMP/publishable")" > env/dev.json <<'PY'
+          import json, sys
+          print(json.dumps({
+              "APP_ENV": "dev",
+              "SUPABASE_URL": "http://10.0.2.2:54321",
+              "SUPABASE_PUBLISHABLE_KEY": sys.argv[1],
+              "GOOGLE_WEB_CLIENT_ID": "",
+              "AUTH_REDIRECT": "mywallet-dev://auth-callback",
+              "TELEGRAM_BOT_USERNAME": "",
+          }))
+          PY
+      - name: KVM (emulyator tezlashtirish)
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
+            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: ReactiveCircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.38.0
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          working-directory: mobil
+          # Qurilma aniq ko'rsatiladi: bir nechta qurilma bo'lsa patrol
+          # interaktiv tanlov so'raydi va CI osilib qoladi.
+          script: >-
+            patrol test --device emulator-5554
+            --dart-define-from-file=env/dev.json
+            --dart-define=MAILPIT_URL=http://10.0.2.2:54324

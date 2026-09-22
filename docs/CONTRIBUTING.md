@@ -57,5 +57,6 @@
 | Controller'lar | `flutter_test` + `mocktail` | `test/features/` |
 | Vidjet va golden | `flutter_test` (`matchesGoldenFile`, `@Tags(['golden'])`; yangilash — `flutter test --update-goldens --tags golden`) | `test/features/**/golden/` |
 | Integratsiya (lokal Supabase, host'da — `make integration`) | `flutter_test` | `integration/` |
+| E2E — emulyatorda haqiqiy ilova (`patrol test --device emulator-5554 --dart-define-from-file=env/dev.json`; CI — har kecha, `e2e.yml`) | `patrol` | `patrol_test/` |
 
 Test nomida qoida ID si: `BR-040: 02.10 dagi Oylik 2026-09 ga tushadi`.

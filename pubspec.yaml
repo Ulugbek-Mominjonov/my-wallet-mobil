@@ -55,8 +55,17 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.5
+  patrol: ^4.10.0
   very_good_analysis: ^11.0.0
 
 flutter:
   uses-material-design: true
   generate: true
+
+# E2E (E20-T04): `patrol test` — dev flavor, lokal Supabase (10.0.2.2).
+patrol:
+  app_name: My Wallet Dev
+  flavor: dev
+  test_directory: patrol_test
+  android:
+    package_name: uz.mywallet.app.dev

@@ -5,6 +5,7 @@ analyzer:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
     - "lib/l10n/gen/**"
+    - patrol_test/test_bundle.dart
     - "packages/**"
     - build/**
     - android/**

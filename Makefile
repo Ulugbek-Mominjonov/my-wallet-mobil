@@ -11,9 +11,11 @@ help: ## Buyruqlar ro'yxati
 check: lint test ## Barcha tekshiruvlar (PR'dan oldin majburiy)
 
 DOMAIN := packages/wallet_domain
+# patrol_test/test_bundle.dart — patrol har ishga tushirishda generatsiya qiladi.
+E2E := $(filter-out patrol_test/test_bundle.dart,$(wildcard patrol_test/*.dart))
 
 lint: contracts-check ## Format, analiz (ilova + domen paketi) va shartnoma yaxlitligi
-	dart format --output=none --set-exit-if-changed lib test integration tool $(DOMAIN)
+	dart format --output=none --set-exit-if-changed lib test integration $(E2E) tool $(DOMAIN)
 	flutter analyze --fatal-infos
 	cd $(DOMAIN) && dart analyze --fatal-infos
 
@@ -22,7 +24,7 @@ test: ## Barcha testlar (ilova + domen paketi)
 	cd $(DOMAIN) && dart test
 
 fmt: ## Kodni formatlash
-	dart format lib test integration tool $(DOMAIN)
+	dart format lib test integration $(E2E) tool $(DOMAIN)
 
 GENERATED := lib $(DOMAIN)/lib drift_schemas
 
