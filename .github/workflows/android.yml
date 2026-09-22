@@ -1,0 +1,83 @@
+# E20-T06: main → imzolangan staging APK → Firebase App Distribution
+# ("testers" guruhi) + artefakt; build raqami = run_number.
+#
+# ANDROID_RELEASE_ENABLED=true bo'lmaguncha (keystore va Firebase sirlari
+# sozlanmaguncha — DEPLOY.md 2 va 4-bo'limlar) ishlamaydi; har PR/push'da dev
+# APK build'ni CI (ci.yml) baribir tekshiradi.
+name: Android staging
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: android-staging
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  FLUTTER_VERSION: 3.47.4
+  FIREBASE_TOOLS_VERSION: 15.30.2
+
+jobs:
+  staging:
+    if: vars.ANDROID_RELEASE_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: staging
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Imzo va muhit fayllari (sirlardan, repoga tushmaydi)
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
+          GOOGLE_WEB_CLIENT_ID: ${{ vars.GOOGLE_WEB_CLIENT_ID }}
+          TELEGRAM_BOT_USERNAME: ${{ vars.TELEGRAM_BOT_USERNAME }}
+          FIREBASE_API_KEY: ${{ vars.FIREBASE_API_KEY }}
+          FIREBASE_APP_ID: ${{ vars.FIREBASE_APP_ID_ANDROID }}
+          FIREBASE_MESSAGING_SENDER_ID: ${{ vars.FIREBASE_MESSAGING_SENDER_ID }}
+          FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
+        run: tool/ci_release_files.sh staging
+
+      - name: Imzolangan staging APK
+        run: >-
+          flutter build apk --release --flavor staging -t lib/main_staging.dart
+          --dart-define-from-file=env/staging.json
+          --build-number=${{ github.run_number }}
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: my-wallet-staging-${{ github.run_number }}
+          path: build/app/outputs/flutter-apk/app-staging-release.apk
+          retention-days: 30
+
+      - name: Firebase App Distribution — testerlar
+        env:
+          FIREBASE_APPDIST_SA: ${{ secrets.FIREBASE_APPDIST_SA }}
+          FIREBASE_APP_ID: ${{ vars.FIREBASE_APP_ID_ANDROID }}
+        run: |
+          echo "$FIREBASE_APPDIST_SA" | base64 -d > "$RUNNER_TEMP/appdist.json"
+          GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/appdist.json" \
+            npx --yes "firebase-tools@$FIREBASE_TOOLS_VERSION" \
+            appdistribution:distribute build/app/outputs/flutter-apk/app-staging-release.apk \
+            --app "$FIREBASE_APP_ID" --groups testers \
+            --release-notes "main ${GITHUB_SHA::7} (#${{ github.run_number }})"
+          rm -f "$RUNNER_TEMP/appdist.json"

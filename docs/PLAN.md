@@ -500,13 +500,19 @@
   bilan qo'lda sinov — reliz nomzodida (E20-T08).
 - [ ] **E20-T04** E2E (patrol, emulyator): onboarding → xarajat → to'lov →
   dashboard; oflayn → onlayn sinxron. CI: har kecha (KVM'li Linux runner).
-- [ ] 🔑 **E20-T05** Imzolash: upload keystore (sirlar — `DEPLOY.md`),
-  `key.properties` CI'da yaratiladi; ProGuard/R8 qoidalari.
-- [ ] 🔑 **E20-T06** `android.yml`: `main` → staging APK → Firebase App
-  Distribution ("testers" guruhi) + artefakt; build raqami = `run_number`.
-- [ ] 🔑 **E20-T07** `release.yml`: `v*` teg → prod APK + AAB → GitHub Release
-  (CHANGELOG bilan) + App Distribution; ixtiyoriy: Google Play internal track
-  (Play akkaunti bo'lsa).
+- [x] **E20-T05** Imzolash: `build.gradle.kts` — `android/key.properties`
+  bo'lsa reliz kaliti, bo'lmasa debug; R8 (kod + resurs qisqartirish,
+  `proguard-rules.pro`, bildirishnoma belgisi `keep.xml` bilan) — release
+  APK build ✅. CI fayllari `tool/ci_release_files.sh` (sirlardan, logsiz).
+  Crashlytics: `AppLog` xatolari release'da (Firebase sozlangan bo'lsa).
+  🔑 Keystore yaratish va sirlarni qo'yish — foydalanuvchi (DEPLOY.md 2, 4).
+- [x] **E20-T06** `android.yml`: `main` → imzolangan staging APK → Firebase
+  App Distribution (`testers`) + artefakt; build raqami = `run_number`.
+  🔑 `ANDROID_RELEASE_ENABLED=true` va sirlar qo'yilgach ishlaydi.
+- [x] **E20-T07** `release.yml`: `v*` teg (pubspec versiyasi bilan mos) →
+  prod APK + AAB → GitHub Release (`CHANGELOG.md` bo'limi —
+  `tool/changelog_section.sh`, `-rc` — prerelease) + App Distribution.
+  💲 Google Play — ixtiyoriy (DEPLOY.md 5). 🔑 `ANDROID_RELEASE_ENABLED`.
 - [ ] **E20-T08** Reliz nomzodi `v1.0.0-rc.1` → testerlar → `v1.0.0` (E28).
 
 ---

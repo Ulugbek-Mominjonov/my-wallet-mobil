@@ -84,7 +84,8 @@ final class PluginLocalNotifier implements LocalNotifier {
   Future<void> _init() => _ready ??= _plugin
       .initialize(
         settings: const InitializationSettings(
-          android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+          // Oq monoxrom belgi (`res/drawable/ic_notification.xml`).
+          android: AndroidInitializationSettings('ic_notification'),
         ),
         onDidReceiveNotificationResponse: (response) {
           if (response.payload case final payload?) _taps.add(payload);

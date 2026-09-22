@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- R8 resurs qisqartirishi bildirishnoma belgisini o'chirmasin: plagin uni
+     nom bo'yicha (ish vaqtida) topadi. -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@drawable/ic_notification" />

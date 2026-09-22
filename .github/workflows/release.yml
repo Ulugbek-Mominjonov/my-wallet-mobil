@@ -1,0 +1,94 @@
+# E20-T07: `v*` teg → imzolangan prod APK + AAB → GitHub Release (CHANGELOG
+# bo'limi bilan) + Firebase App Distribution. Google Play (ixtiyoriy) —
+# DEPLOY.md 5-bo'lim.
+#
+# ANDROID_RELEASE_ENABLED=true bo'lmaguncha ishlamaydi (DEPLOY.md 2 va 4).
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+env:
+  FLUTTER_VERSION: 3.47.4
+  FIREBASE_TOOLS_VERSION: 15.30.2
+
+jobs:
+  android:
+    if: vars.ANDROID_RELEASE_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    environment: production
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Teg va pubspec versiyasi mos
+        run: |
+          version="$(sed -n 's/^version: \([^+]*\).*/\1/p' pubspec.yaml)"
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "Teg $GITHUB_REF_NAME, pubspec esa $version" >&2
+            exit 1
+          fi
+
+      - name: Imzo va muhit fayllari (sirlardan, repoga tushmaydi)
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
+          GOOGLE_WEB_CLIENT_ID: ${{ vars.GOOGLE_WEB_CLIENT_ID }}
+          TELEGRAM_BOT_USERNAME: ${{ vars.TELEGRAM_BOT_USERNAME }}
+          FIREBASE_API_KEY: ${{ vars.FIREBASE_API_KEY }}
+          FIREBASE_APP_ID: ${{ vars.FIREBASE_APP_ID_ANDROID }}
+          FIREBASE_MESSAGING_SENDER_ID: ${{ vars.FIREBASE_MESSAGING_SENDER_ID }}
+          FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
+        run: tool/ci_release_files.sh prod
+
+      - name: Prod APK va AAB
+        run: |
+          flutter build apk --release --flavor prod -t lib/main_prod.dart \
+            --dart-define-from-file=env/prod.json --build-number=${{ github.run_number }}
+          flutter build appbundle --release --flavor prod -t lib/main_prod.dart \
+            --dart-define-from-file=env/prod.json --build-number=${{ github.run_number }}
+          mkdir -p dist
+          cp build/app/outputs/flutter-apk/app-prod-release.apk "dist/my-wallet-$GITHUB_REF_NAME.apk"
+          cp build/app/outputs/bundle/prodRelease/app-prod-release.aab "dist/my-wallet-$GITHUB_REF_NAME.aab"
+
+      - name: GitHub Release (CHANGELOG bo'limi bilan)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tool/changelog_section.sh "${GITHUB_REF_NAME#v}" > "$RUNNER_TEMP/notes.md"
+          prerelease=""
+          case "$GITHUB_REF_NAME" in *-*) prerelease="--prerelease" ;; esac
+          gh release create "$GITHUB_REF_NAME" dist/* \
+            --title "My Wallet $GITHUB_REF_NAME" \
+            --notes-file "$RUNNER_TEMP/notes.md" $prerelease
+
+      - name: Firebase App Distribution — testerlar
+        env:
+          FIREBASE_APPDIST_SA: ${{ secrets.FIREBASE_APPDIST_SA }}
+          FIREBASE_APP_ID: ${{ vars.FIREBASE_APP_ID_ANDROID }}
+        run: |
+          echo "$FIREBASE_APPDIST_SA" | base64 -d > "$RUNNER_TEMP/appdist.json"
+          GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/appdist.json" \
+            npx --yes "firebase-tools@$FIREBASE_TOOLS_VERSION" \
+            appdistribution:distribute "dist/my-wallet-$GITHUB_REF_NAME.apk" \
+            --app "$FIREBASE_APP_ID" --groups testers \
+            --release-notes-file "$RUNNER_TEMP/notes.md"
+          rm -f "$RUNNER_TEMP/appdist.json"

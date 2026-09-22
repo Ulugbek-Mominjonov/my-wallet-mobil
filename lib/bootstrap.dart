@@ -1,13 +1,15 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_wallet/app/app.dart';
 import 'package:my_wallet/core/config/app_config.dart';
 import 'package:my_wallet/core/di/app_providers.dart';
 import 'package:my_wallet/core/logging/app_log.dart';
+import 'package:my_wallet/core/logging/crashlytics_reporter.dart';
 import 'package:my_wallet/core/notifications/push_service.dart';
 import 'package:my_wallet/core/settings/app_settings.dart';
 import 'package:my_wallet/data/auth/secure_session_storage.dart';
@@ -43,6 +45,9 @@ Future<void> bootstrap({required AppEnv env}) async {
   await initSupabase(config);
   if (Platform.isAndroid) await registerBackgroundSync();
   final firebaseReady = await _initFirebase(config.firebase);
+  if (firebaseReady && !kDebugMode) {
+    AppLog.reporter = CrashlyticsReporter(FirebaseCrashlytics.instance);
+  }
   final preferences = await SharedPreferences.getInstance();
 
   runApp(

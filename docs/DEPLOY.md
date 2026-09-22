@@ -84,11 +84,17 @@ bilan). Bo'sh qoldirilsa (dev) — push o'chiq, lokal eslatmalar ishlaydi.
 | `ANDROID_KEYSTORE_PASSWORD` / `ANDROID_KEY_ALIAS` / `ANDROID_KEY_PASSWORD` | secret | repo | 2-qadam |
 | `SUPABASE_URL` / `SUPABASE_PUBLISHABLE_KEY` | variable | staging / production | admin `DEPLOY.md` 2.2 |
 | `GOOGLE_WEB_CLIENT_ID` | variable | repo | admin `DEPLOY.md` 3 |
-| `GOOGLE_SERVICES_JSON` (base64) | secret | staging / production | admin `DEPLOY.md` 6.2 |
+| `FIREBASE_API_KEY` / `FIREBASE_MESSAGING_SENDER_ID` / `FIREBASE_PROJECT_ID` | variable | staging / production | Firebase → Project settings → Android ilova (push va Crashlytics; bo'sh bo'lsa — o'chiq) |
 | `FIREBASE_APP_ID_ANDROID` | variable | staging / production | Firebase → Project settings → Android app ID |
 | `FIREBASE_APPDIST_SA` (base64) | secret | staging / production | admin `DEPLOY.md` 6.4 |
 | `TELEGRAM_BOT_USERNAME` | variable | staging / production | admin `DEPLOY.md` 7 |
 | `ADMIN_REPO_TOKEN` | secret | repo | admin `DEPLOY.md` 1.4 (contracts + integratsiya testlari) |
+| `ANDROID_RELEASE_ENABLED` | variable | repo | `true` — yuqoridagilar sozlangach; `android.yml` (staging) va `release.yml` (prod) shundan keyin ishlaydi |
+
+CI fayllarni `tool/ci_release_files.sh` bilan yaratadi (`android/key.properties`,
+`env/<flavor>.json`) — qiymatlar logga chiqmaydi, repoga tushmaydi. Lokal
+imzolangan build uchun ham shu fayllar (`key.properties` bo'lmasa release
+build debug kalit bilan imzolanadi).
 
 ---
 
@@ -99,7 +105,9 @@ staging APK → Firebase App Distribution (`testers`) → testerlarga email
 (birinchi marta "App Tester" ilovasini o'rnatish taklif qilinadi).
 
 **Production:**
-1. `CHANGELOG.md` yangilangan, `pubspec.yaml` versiyasi (`1.2.0+<build>`).
+1. `CHANGELOG.md` — `[Unreleased]` bo'limi `[1.2.0] — <sana>` deb nomlangan,
+   `pubspec.yaml` versiyasi `1.2.0` (build raqami CI'da — `run_number`;
+   teg va versiya mos kelmasa reliz to'xtaydi).
 2. `git tag v1.2.0 && git push --tags` → `release.yml`:
    prod APK + AAB → **GitHub Release** (APK biriktirilgan) + App Distribution.
 3. Telefonga o'rnatish: GitHub Release'dan APK → "Noma'lum manbalardan
@@ -123,5 +131,5 @@ vazifa sifatida qo'shiladi.
 - [ ] Google bilan kirish staging APK'da ishlaydi (SHA-1 to'g'ri).
 - [ ] App Distribution'dan o'rnatilgan ilova staging backendga ulanadi.
 - [ ] Push (FCM) test xabari keladi.
-- [ ] Crashlytics'da test crash ko'rinadi (Sozlamalar → Diagnostika → "Test crash", faqat staging).
+- [ ] Crashlytics'da xato ko'rinadi (release/profil build, Firebase sozlangan — `AppLog.error` Crashlytics'ga boradi).
 - [ ] Prod APK GitHub Release'da, versiya raqami to'g'ri.
