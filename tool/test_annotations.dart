@@ -21,7 +21,7 @@ void main(List<String> args) {
   }
   final report = File(args.single);
   if (!report.existsSync()) {
-    stderr.writeln('Hisobot yo\'q: ${report.path}');
+    stderr.writeln("Hisobot yo'q: ${report.path}");
     exit(2);
   }
 
