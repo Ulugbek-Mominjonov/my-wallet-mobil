@@ -486,8 +486,12 @@
   ranglari (dev — to'q sariq, staging — zangori-yashil, prod — brend
   indigo); eski qurilmalar uchun PNG'lar `tool/render_launcher_icons.py`
   bilan vektordan. Ilova nomi — brend "My Wallet", tarjima qilinmaydi.
-- [ ] **E20-T02** Ishlash: sovuq start o'lchovi (`--profile`), kechiktirilgan
+- [x] **E20-T02** Ishlash: sovuq start o'lchovi (`--profile`), kechiktirilgan
   init, ro'yxatlar 60 fps (DevTools), rasm keshi; natija `docs/PERF.md`.
+  Emulyatorda birinchi kadr ~1,5 s (< 2 s ✅, `tool/measure_startup.sh`);
+  parallel init o'lchanadigan yutuq bermadi (halol qayd); chek kichik
+  rasmlari ekran o'lchamida dekodlanadi, imzolangan havola 50 daq qayta
+  ishlatiladi. 60 fps — haqiqiy qurilmada DevTools bilan (E20-T08).
 - [x] **E20-T03** Qulaylik (a11y): avtomatik tekshiruvlar —
   `test/a11y/`: 12 ekran 200% matnda haqiqiy Roboto bilan (toshib ketmaydi),
   Android qo'llanmalari (bosish joyi ≥ 48 dp, nomli, matn kontrasti) 8
@@ -498,8 +502,11 @@
   11sp kulrang yorliq, "Bog'lanmagan" chip matni, kalkulyator amal tugmalari,
   jamg'arma/yillik qatorlari va orttirgan halqasi katta shriftda. TalkBack
   bilan qo'lda sinov — reliz nomzodida (E20-T08).
-- [ ] **E20-T04** E2E (patrol, emulyator): onboarding → xarajat → to'lov →
+- [x] **E20-T04** E2E (patrol, emulyator): onboarding → xarajat → to'lov →
   dashboard; oflayn → onlayn sinxron. CI: har kecha (KVM'li Linux runner).
+  Lokal emulyatorda yashil (1 daq); **topilgan xato**: har onlayn reja
+  to'lovidan keyin sinxron conflict (reja hosila maydonlari navbatga
+  tushardi) — tuzatildi, integratsiya testi bilan himoyalangan.
 - [x] **E20-T05** Imzolash: `build.gradle.kts` — `android/key.properties`
   bo'lsa reliz kaliti, bo'lmasa debug; R8 (kod + resurs qisqartirish,
   `proguard-rules.pro`, bildirishnoma belgisi `keep.xml` bilan) — release
@@ -582,3 +589,4 @@
 | 2026-09-21 | E17-T01..T06 | To'lovlar: tablar (xarajat/daromad), holat bo'limlari va `X + N ta ?` jami (`PlanBoard`), to'lash varag'i (qolgan summa, `?` majburiy, hisob/sana), qisman → keyin/yopish, swipe, shu oy summasi, yopish/qayta ochish, o'tkazish + undo, kalendar, oyni ochish preview'i (umumiy `OpenMonthCard`); domen: `ClosePlan`, `EditPlan`, reja o'zgarishlarida yopilgan oy tekshiruvi; umumiy `MonthSwitcher`; 341 test (91,4%), domen 203 (97,8%), goldenlar. **E17 yakunlandi** |
 | 2026-09-21 | E18-T01..T07 | Hamyon: hisoblar (fondsiz jami, manfiy naqd), 👤 fond (jonli ajratma), 🏦 jamg'arma (chiziq, jadval), 💳 qarzlar (jamlar, holatlar, tafsilot, forma, arxiv), 🎯 maqsadlar (prognoz, tabrik, forma), 📊 limitlar (rol bo'yicha); `WalletReportLoader` — 4 hisobot pariteti 5/5 (Xulosa ham shu loader'dan); domen: qarz/maqsad/limit use-case'lari + drift repo'lari; `/add` oldindan tanlash; 365 test (92,0%), domen 212 (97,7%). **E18 yakunlandi** |
 | 2026-09-21 | E19-T01..T05 | Bildirishnomalar: FCM (env bilan, sozlanmasa o'chiq), ro'yxat/chiqish, bosilganda oq ro'yxatdagi ekran, ochiq paytidagi push; lokal eslatmalar (14 kun, ≤ 30, debounce); onboarding'da ruxsat; bildirishnoma sozlamalari (server, Telegram, sinov); Sozlamalar (tema, til, eksport, akkaunt o'chirish, ilova haqida); integratsiya testi CI'dagi sekinlikka chidamli qilindi (E18 qizil CI sababi); 386 test (90,0%), dev APK ✅, 9 integratsiya. **E19 yakunlandi** |
+| 2026-09-22 | E20-T02, T04 | E2E (patrol) emulyatorda: kirish → sozlash → xarajat → "Keldi" → Xulosa → oflayn → sinxron — yashil; nightly `e2e.yml`. E2E topgan xato: reja to'lovidan keyin har safar sinxron conflict (`planned_items` hosila maydonlari navbatga tushardi, amal trigger'i versiyani oshirardi) — navbat hosila maydonlarsiz, "yopish" amaldan oldin, rad etilgan amalda reja lokal qayta hisoblanadi; 2 integratsiya testi (tuzatishsiz yiqiladi). Sovuq start ~1,5 s (emulyator, profil); chek rasmlari keshi. 418 test, domen 212, 11 integratsiya. E20-T08 (reliz nomzodi) — 🔑 keystore va testerlar |
