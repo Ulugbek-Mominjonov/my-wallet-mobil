@@ -239,4 +239,66 @@ void main() {
       expect((await b.transaction(tx.id))!.deletedAt, isNull);
     },
   );
+
+  group("BR-073: reja to'lovi sinxronda (E20-T04 e2e topgan xato)", () {
+    /// Serverda joriy oy rejasi (PostgREST) → qurilmaga pull.
+    Future<String> serverPlan(Device device) async {
+      final id = const UuidV7Ids().newId();
+      final today = TzClock('Asia/Tashkent').today();
+      final month = MonthKey(today.year, today.month);
+      await device.client.from('planned_items').insert({
+        'id': id,
+        'household_id': device.householdId,
+        'kind': 'expense',
+        'name': 'Ijara',
+        'category_id': await device.categoryId('Oziq-ovqat'),
+        'account_id': await device.accountId('card'),
+        'planned_amount': 30000000,
+        'due_date': month.firstDay.toString(),
+        'budget_month': month.firstDay.toString(),
+      });
+      await device.sync();
+      return id;
+    }
+
+    Future<Map<String, dynamic>> serverRow(Device device, String id) => device
+        .client
+        .from('planned_items')
+        .select('paid_amount, settled_at, closed_at')
+        .eq('id', id)
+        .single();
+
+    test("to'liq to'lov — conflict yo'q, reja serverda to'langan", () async {
+      final plan = await serverPlan(a);
+      ok(await PayPlanned(a.deps)(plan));
+
+      final report = await a.sync();
+
+      expect((report.pushed, report.conflicts, report.rejected), (1, 0, 0));
+      expect(await a.db.select(a.db.syncIssues).get(), isEmpty);
+      final row = await serverRow(a, plan);
+      expect(row['paid_amount'], 30000000);
+      expect(row['settled_at'], isNotNull);
+    });
+
+    test("qisman to'lab yopish — reja va amal, conflict yo'q", () async {
+      final plan = await serverPlan(a);
+      ok(
+        await PayPlanned(a.deps)(
+          plan,
+          amount: const Money(10000000),
+          settle: true,
+        ),
+      );
+
+      final report = await a.sync();
+
+      expect((report.pushed, report.conflicts, report.rejected), (2, 0, 0));
+      expect(await a.db.select(a.db.syncIssues).get(), isEmpty);
+      final row = await serverRow(a, plan);
+      expect(row['paid_amount'], 10000000);
+      expect(row['closed_at'], isNotNull);
+      expect(row['settled_at'], isNotNull);
+    });
+  });
 }

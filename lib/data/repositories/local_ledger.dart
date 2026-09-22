@@ -196,6 +196,40 @@ final class DriftCategoryRepository implements CategoryRepository {
   });
 }
 
+/// Sinxronda rad etilgan amal qaytarilgach bog'langan rejalarning lokal
+/// to'langan summasi va holati lokal amallardan qayta hisoblanadi (server
+/// `validate_planned_item` qoidasi — domen `settlePlan`). Server rejasi
+/// o'zgarmagan — pull uni qaytarmaydi; hosila maydonlar navbatga yozilmaydi.
+Future<void> recomputeLocalPlanPayments(
+  AppDatabase db,
+  String householdId,
+  Iterable<String> planIds, {
+  required DateTime now,
+}) async {
+  final base = await _baseCurrency(db, householdId);
+  final paid = db.transactions.amountBase.sum();
+  for (final id in planIds.toSet()) {
+    final row = await (db.select(
+      db.plannedItems,
+    )..where((p) => p.id.equals(id))).getSingleOrNull();
+    if (row == null) continue;
+    final total =
+        await (db.selectOnly(db.transactions)
+              ..addColumns([paid])
+              ..where(
+                db.transactions.plannedItemId.equals(id) &
+                    db.transactions.deletedAt.isNull(),
+              ))
+            .map((r) => r.read(paid) ?? 0)
+            .getSingle();
+    final plan = settlePlan(
+      row.toDomain(base).copyWith(paidAmount: Money(total, base)),
+      now: now,
+    );
+    await db.into(db.plannedItems).insertOnConflictUpdate(plan.toCompanion());
+  }
+}
+
 final class DriftPlannedItemRepository implements PlannedItemRepository {
   const new(this._db, this._householdId, this._outbox);
   final AppDatabase _db;

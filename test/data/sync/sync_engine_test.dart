@@ -246,6 +246,49 @@ void main() {
       },
     );
 
+    test(
+      "rejected reja to'lovi — rejaning lokal to'lov holati ham qaytadi",
+      () async {
+        await db
+            .into(db.plannedItems)
+            .insert(
+              PlannedItem(
+                id: 'rent',
+                householdId: 'h',
+                kind: PlanKind.expense,
+                name: 'Ijara',
+                dueDate: LocalDate(2026, 10, 5),
+                budgetMonth: MonthKey(2026, 10),
+                categoryId: 'food',
+                accountId: 'card',
+                plannedAmount: const Money(300000),
+                rowVersion: 3,
+              ).toCompanion(),
+            );
+        ok(await PayPlanned(deps)('rent'));
+        expect((await deps.plans.byId('rent'))!.settledAt, isNotNull);
+        remote.onPush = (mutations) async => Ok([
+          for (final m in mutations)
+            SyncPushResult.fromJson({
+              'mutation_id': m.mutationId,
+              'status': 'rejected',
+              'code': 'month_closed',
+              'message': 'oy yopilgan',
+            }),
+        ]);
+
+        final report = await engine.push('h');
+
+        // Faqat amal yuborilgan (reja hosilasi navbatda yo'q).
+        expect(remote.pushes.single.single.table, 'transactions');
+        expect(report.rejected, 1);
+        final plan = (await deps.plans.byId('rent'))!;
+        expect(plan.paidAmount.isZero, isTrue);
+        expect(plan.settledAt, isNull);
+        expect(plan.rowVersion, 3);
+      },
+    );
+
     test('paketlar: ≤ 100 mutatsiya, hammasi yuboriladi', () async {
       for (var i = 0; i < 150; i++) {
         await addExpense(amount: 1000 + i);

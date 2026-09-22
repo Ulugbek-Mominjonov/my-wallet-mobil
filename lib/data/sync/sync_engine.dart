@@ -8,6 +8,7 @@ import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/remote/dto.dart';
 import 'package:my_wallet/data/remote/json_read.dart';
 import 'package:my_wallet/data/remote/remote_api.dart';
+import 'package:my_wallet/data/repositories/local_ledger.dart';
 import 'package:my_wallet/data/sync/sync_tables.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
@@ -278,12 +279,25 @@ final class SyncEngine {
     List<OutboxRow> later,
   ) async {
     final baseRow = mutation.baseRow;
-    if (baseRow == null) {
+    final restored = baseRow == null ? null : asObject(jsonDecode(baseRow));
+    if (restored == null) {
       await _tables.deleteRow(mutation.targetTable, mutation.recordId);
     } else {
-      await _tables.upsert(mutation.targetTable, asObject(jsonDecode(baseRow)));
+      await _tables.upsert(mutation.targetTable, restored);
     }
     await _deleteMutations([mutation, ...later]);
+    if (mutation.targetTable == 'transactions') {
+      // Amal rejaga bog'langan bo'lsa — rejaning lokal to'lov holati ham
+      // qaytadi (u navbatga yozilmagan, serverdagisi o'zgarmagan).
+      final plans = [
+        for (final data in [
+          restored,
+          for (final m in [mutation, ...later]) asObject(jsonDecode(m.data)),
+        ])
+          if (data?['planned_item_id'] case final String id) id,
+      ];
+      await recomputeLocalPlanPayments(_db, householdId, plans, now: now());
+    }
     await _addIssue(
       householdId,
       mutation,

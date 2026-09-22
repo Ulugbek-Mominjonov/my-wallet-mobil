@@ -28,6 +28,16 @@ final class OutboxWriter {
     'updated_at',
   };
 
+  /// Server hisoblaydigan, klient yozmaydigan maydonlar (contracts/api.md —
+  /// "Server hisoblaydigan maydonlar"). Lokal nusxa darhol ko'rsatish uchun
+  /// yangilanadi, lekin yuborilmaydi — server qiymati sinxronda keladi.
+  /// Faqat shular o'zgargan yozuv mutatsiya yaratmaydi: bog'langan amal
+  /// trigger'i serverda `row_version`ni oshiradi va bunday mutatsiya har
+  /// safar conflict bo'lardi (E20-T04 e2e topdi).
+  static const _derivedFields = {
+    'planned_items': {'paid_amount', 'settled_at'},
+  };
+
   /// Push JSON'ida vaqtlar ISO matn (server `timestamptz`).
   static const _serializer = ValueSerializer.defaults(
     serializeDateTimeValuesAsString: true,
@@ -44,9 +54,10 @@ final class OutboxWriter {
     final json = row.toJson(serializer: _serializer);
     final recordId = json['id']! as String;
     final version = json['row_version']! as int;
+    final derived = _derivedFields[table] ?? const <String>{};
     final data = {
       for (final MapEntry(:key, :value) in json.entries)
-        if (!_serverFields.contains(key)) key: value,
+        if (!_serverFields.contains(key) && !derived.contains(key)) key: value,
     };
     final pending =
         await (_db.select(_db.outbox)..where(
@@ -71,6 +82,7 @@ final class OutboxWriter {
       return;
     }
     if (version == 0 && deleted) return;
+    if (before != null && _sameData(before, data)) return;
     // Qaytarish nuqtasi — tasdiqlanmagan birinchi o'zgarishdan oldingi holat:
     // yuborilayotgan mutatsiya bo'lsa uniki, aks holda yozuvdan oldingisi.
     final sending =
@@ -104,5 +116,12 @@ final class OutboxWriter {
             createdAt: now(),
           ),
         );
+  }
+
+  /// Yuboriladigan maydonlarning birortasi ham o'zgarmagan (masalan faqat
+  /// server hisoblaydigan maydonlar).
+  static bool _sameData(DataClass before, Map<String, Object?> data) {
+    final previous = before.toJson(serializer: _serializer);
+    return data.entries.every((e) => previous[e.key] == e.value);
   }
 }

@@ -83,9 +83,12 @@ final class PayPlanned {
       if (settle && updated.settledAt == null) {
         updated = settlePlan(updated.copyWith(closedAt: now), now: now);
       }
+      // Reja avval: "yopish" (`closed_at`) serverga amaldan oldin yetadi —
+      // amal trigger'i reja versiyasini oshirgach yuborilsa conflict bo'lardi.
+      // To'langan summa/holat faqat lokal nusxa (server o'zi hisoblaydi).
       await _deps.transactor.run(() async {
-        await _deps.transactions.save(tx);
         await _deps.plans.save(updated);
+        await _deps.transactions.save(tx);
       });
     }
     return prepared;

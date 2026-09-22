@@ -230,34 +230,61 @@ void main() {
     expect((jsonDecode(mutation.data) as Map)['deleted_at'], isNotNull);
   });
 
-  test("BR-073: reja to'lovi — amal va reja bitta tranzaksiyada", () async {
-    await db
-        .into(db.plannedItems)
-        .insert(
-          PlannedItem(
-            id: 'rent',
-            householdId: 'h',
-            kind: PlanKind.expense,
-            name: 'Ijara',
-            dueDate: LocalDate(2026, 10, 5),
-            budgetMonth: MonthKey(2026, 10),
-            categoryId: 'food',
-            accountId: 'card',
-            plannedAmount: const Money(300000000),
-            rowVersion: 3,
-          ).toCompanion(),
-        );
-    final tx = ok(await PayPlanned(deps)('rent'));
-    final plan = (await deps.plans.byId('rent'))!;
-    expect(plan.paidAmount, const Money(300000000));
-    expect(plan.settledAt, isNotNull);
-    final rows = await outbox();
-    expect(
-      {for (final r in rows) r.targetTable: r.baseVersion},
-      {'transactions': null, 'planned_items': 3},
-    );
-    expect(tx.plannedItemId, 'rent');
-  });
+  Future<void> insertRentPlan() => db
+      .into(db.plannedItems)
+      .insert(
+        PlannedItem(
+          id: 'rent',
+          householdId: 'h',
+          kind: PlanKind.expense,
+          name: 'Ijara',
+          dueDate: LocalDate(2026, 10, 5),
+          budgetMonth: MonthKey(2026, 10),
+          categoryId: 'food',
+          accountId: 'card',
+          plannedAmount: const Money(300000000),
+          rowVersion: 3,
+        ).toCompanion(),
+      );
+
+  test(
+    "BR-073: reja to'lovi — holat lokal, serverga faqat amal (reja hosila)",
+    () async {
+      await insertRentPlan();
+      final tx = ok(await PayPlanned(deps)('rent'));
+      final plan = (await deps.plans.byId('rent'))!;
+      expect(plan.paidAmount, const Money(300000000));
+      expect(plan.settledAt, isNotNull);
+      // To'langan summa/holatni server amal trigger'ida o'zi hisoblaydi:
+      // reja mutatsiyasi bo'lsa, trigger versiyani oshirib conflict berardi.
+      final rows = await outbox();
+      expect([for (final r in rows) r.targetTable], ['transactions']);
+      expect(tx.plannedItemId, 'rent');
+    },
+  );
+
+  test(
+    "BR-073: qisman to'lab yopish — reja (closed_at) amaldan oldin navbatda",
+    () async {
+      await insertRentPlan();
+      ok(
+        await PayPlanned(deps)(
+          'rent',
+          amount: const Money(100000000),
+          settle: true,
+        ),
+      );
+      final rows = await outbox();
+      expect(
+        [for (final r in rows) (r.targetTable, r.baseVersion)],
+        [('planned_items', 3), ('transactions', null)],
+      );
+      final data = jsonDecode(rows.first.data) as Map<String, Object?>;
+      expect(data['closed_at'], isNotNull);
+      expect(data.keys, isNot(contains('paid_amount')));
+      expect(data.keys, isNot(contains('settled_at')));
+    },
+  );
 
   test('BR-062: fond sarfi — tizim kategoriyasi lokal bazadan', () async {
     final tx = ok(await AddPersonalSpend(deps)(amount: const Money(45000)));
