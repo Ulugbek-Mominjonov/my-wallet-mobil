@@ -490,6 +490,16 @@ void main() {
       await tester.tap(find.text('Galereya'));
       await tester.pumpAndSettle();
       expect(find.byType(Image), findsOneWidget);
+      // E20-T02: kichik rasm ekrandagi o'lchamida dekodlanadi.
+      final thumb = tester.widget<Image>(find.byType(Image)).image;
+      expect(
+        thumb,
+        isA<ResizeImage>().having(
+          (image) => image.width,
+          'width',
+          (64 * tester.view.devicePixelRatio).round(),
+        ),
+      );
 
       await tester.runAsync(() async {
         await tester.tap(find.widgetWithText(FilledButton, 'Saqlash'));

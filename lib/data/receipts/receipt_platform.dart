@@ -29,8 +29,9 @@ final class SupabaseReceiptStorage implements ReceiptStorage {
   }
 
   @override
-  Future<String> signedUrl(String path) =>
-      _client.storage.from(receiptsBucket).createSignedUrl(path, 3600);
+  Future<String> signedUrl(String path) => _client.storage
+      .from(receiptsBucket)
+      .createSignedUrl(path, receiptUrlTtl.inSeconds);
 }
 
 /// Kamera yoki galereyadan rasm; bekor qilinsa — `null`.

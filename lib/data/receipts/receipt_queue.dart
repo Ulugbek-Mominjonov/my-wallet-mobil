@@ -11,11 +11,14 @@ const int maxReceiptBytes = 1024 * 1024;
 /// Storage bucket (contracts/api.md).
 const receiptsBucket = 'receipts';
 
+/// Vaqtinchalik ko'rish havolasi muddati.
+const Duration receiptUrlTtl = Duration(hours: 1);
+
 /// Storage'ga yuklash va o'qish (Supabase — `SupabaseReceiptStorage`).
 abstract interface class ReceiptStorage {
   Future<void> upload(String path, Uint8List bytes, {required String mime});
 
-  /// Vaqtinchalik (1 soat) ko'rish havolasi.
+  /// Vaqtinchalik ([receiptUrlTtl]) ko'rish havolasi.
   Future<String> signedUrl(String path);
 }
 

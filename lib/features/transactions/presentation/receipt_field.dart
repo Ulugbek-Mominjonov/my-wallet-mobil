@@ -131,10 +131,16 @@ class _ReceiptImage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Kichik rasm ekrandagi o'lchamida dekodlanadi (E20-T02): to'liq
+    // o'lchamli chek xotirani (rasm keshini) behuda egallamaydi.
+    final cacheWidth = switch (size) {
+      final size? => (size * MediaQuery.devicePixelRatioOf(context)).round(),
+      null => null,
+    };
     switch (source) {
       case LocalReceipt(:final image):
         return Image(
-          image: image,
+          image: ResizeImage.resizeIfNeeded(cacheWidth, null, image),
           width: size,
           height: size,
           fit: BoxFit.cover,
@@ -147,7 +153,13 @@ class _ReceiptImage extends ConsumerWidget {
             child: const Icon(Icons.image_outlined),
           );
         }
-        return Image.network(url, width: size, height: size, fit: BoxFit.cover);
+        return Image.network(
+          url,
+          width: size,
+          height: size,
+          cacheWidth: cacheWidth,
+          fit: BoxFit.cover,
+        );
     }
   }
 }

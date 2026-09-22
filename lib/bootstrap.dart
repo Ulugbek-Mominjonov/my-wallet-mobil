@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -5,6 +6,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:my_wallet/app/app.dart';
 import 'package:my_wallet/core/config/app_config.dart';
 import 'package:my_wallet/core/di/app_providers.dart';
@@ -38,29 +40,43 @@ Future<void> bootstrap({required AppEnv env}) async {
     return true;
   };
 
-  final config = AppConfig.fromEnvironment(expected: env);
-  AppLog.info('My Wallet ishga tushdi: ${config.env.name}');
-
-  // Sessiya shifrlangan xotirada saqlanadi va shu yerda tiklanadi.
-  await initSupabase(config);
-  if (Platform.isAndroid) await registerBackgroundSync();
-  final firebaseReady = await _initFirebase(config.firebase);
-  if (firebaseReady && !kDebugMode) {
-    AppLog.reporter = CrashlyticsReporter(FirebaseCrashlytics.instance);
-  }
-  final preferences = await SharedPreferences.getInstance();
-
   runApp(
     ProviderScope(
-      overrides: [
-        appConfigProvider.overrideWithValue(config),
-        firebaseReadyProvider.overrideWithValue(firebaseReady),
-        sharedPreferencesProvider.overrideWithValue(preferences),
-      ],
+      overrides: await prepareApp(AppConfig.fromEnvironment(expected: env)),
       observers: const [AppProviderObserver()],
       child: const MyWalletApp(),
     ),
   );
+  // Sovuq start (E20-T02): fon sinxroni birinchi kadrdan keyin
+  // ro'yxatdan o'tadi — ekran tezroq chiqadi.
+  if (Platform.isAndroid) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => unawaited(registerBackgroundSync()),
+    );
+  }
+}
+
+/// Ilova xizmatlarini ishga tushiradi (Supabase sessiyasi, fon sinxroni,
+/// Firebase, sozlamalar) va `ProviderScope` uchun override'larni qaytaradi.
+/// E2E testlari ham shundan foydalanadi (xato ushlagichlarisiz).
+Future<List<Override>> prepareApp(AppConfig config) async {
+  AppLog.info('My Wallet ishga tushdi: ${config.env.name}');
+
+  // Mustaqil ishlar parallel (sovuq start, E20-T02): sessiya shifrlangan
+  // xotiradan tiklanadi, Firebase va sozlamalar bir vaqtda.
+  final (_, firebaseReady, preferences) = await (
+    initSupabase(config),
+    _initFirebase(config.firebase),
+    SharedPreferences.getInstance(),
+  ).wait;
+  if (firebaseReady && !kDebugMode) {
+    AppLog.reporter = CrashlyticsReporter(FirebaseCrashlytics.instance);
+  }
+  return [
+    appConfigProvider.overrideWithValue(config),
+    firebaseReadyProvider.overrideWithValue(firebaseReady),
+    sharedPreferencesProvider.overrideWithValue(preferences),
+  ];
 }
 
 /// Push (E19): Firebase faqat sozlangan bo'lsa ishga tushadi; xato bo'lsa —

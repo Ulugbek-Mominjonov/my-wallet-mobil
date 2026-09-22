@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:drift/drift.dart';
@@ -75,10 +76,19 @@ pendingReceiptsProvider = StreamProvider.autoDispose.family((
   )..where((p) => p.transactionId.equals(transactionId))).watch();
 });
 
-/// Yuklangan chek uchun vaqtinchalik havola (tarmoq kerak).
+/// Imzolangan havola muddati tugashidan oldin qayta ishlatiladigan oraliq.
+const Duration receiptUrlReuse = Duration(minutes: 50);
+
+/// Yuklangan chek uchun vaqtinchalik havola (tarmoq kerak). Muvaffaqiyatli
+/// havola [receiptUrlReuse] davomida saqlanadi (E20-T02): ekranga qaytganda
+/// yangi imzo so'rovi va rasmni qayta yuklash (URL o'zgarib, kesh o'tmasligi)
+/// bo'lmaydi.
 final FutureProviderFamily<String, String> receiptUrlProvider = FutureProvider
     .autoDispose
-    .family(
-      (ref, path) async =>
-          await ref.watch(receiptStorageProvider).signedUrl(path),
-    );
+    .family((ref, path) async {
+      final url = await ref.watch(receiptStorageProvider).signedUrl(path);
+      final link = ref.keepAlive();
+      final expiry = Timer(receiptUrlReuse, link.close);
+      ref.onDispose(expiry.cancel);
+      return url;
+    });
