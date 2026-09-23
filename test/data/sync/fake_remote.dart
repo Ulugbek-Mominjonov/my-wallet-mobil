@@ -148,6 +148,49 @@ final class FakeRemote implements RemoteApi {
     return const Ok(null);
   }
 
+  /// E30: a'zolar va taklif — testda qo'yiladi, chaqiruvlar yoziladi.
+  List<HouseholdMember> members = const [];
+  HouseholdInvite invite = (
+    code: 'ABCD2345',
+    expiresAt: DateTime.utc(2026, 10, 6),
+  );
+  final roleChanges = <(String, MemberRole)>[];
+  final removed = <String>[];
+  int left = 0;
+
+  @override
+  Future<Result<List<HouseholdMember>>> householdMembers(
+    String householdId,
+  ) async => Ok(members);
+
+  @override
+  Future<Result<HouseholdInvite>> createInvite(
+    String householdId, {
+    MemberRole role = MemberRole.member,
+  }) async => Ok(invite);
+
+  @override
+  Future<Result<void>> setMemberRole(
+    String householdId,
+    String userId,
+    MemberRole role,
+  ) async {
+    roleChanges.add((userId, role));
+    return const Ok(null);
+  }
+
+  @override
+  Future<Result<void>> removeMember(String householdId, String userId) async {
+    removed.add(userId);
+    return const Ok(null);
+  }
+
+  @override
+  Future<Result<void>> leaveHousehold(String householdId) async {
+    left += 1;
+    return const Ok(null);
+  }
+
   /// E29: kurslar — testda qo'yiladi; so'ralgan sanalar yoziladi.
   List<FxRateRow> rates = const [];
   final rateRequests = <LocalDate>[];

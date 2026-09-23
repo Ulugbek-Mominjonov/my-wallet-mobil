@@ -49,11 +49,14 @@ class _GoalsScreenState extends ConsumerState<GoalsScreen> {
     final report = ref.watch(goalsReportProvider).value;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.walletGoals)),
-      floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.add),
-        label: Text(l10n.goalAdd),
-        onPressed: () => _openForm(context),
-      ),
+      // BR-011: spravochniklarni owner/admin boshqaradi.
+      floatingActionButton: ref.watch(canManageProvider)
+          ? FloatingActionButton.extended(
+              icon: const Icon(Icons.add),
+              label: Text(l10n.goalAdd),
+              onPressed: () => _openForm(context),
+            )
+          : null,
       body: switch (report) {
         null => const Center(child: CircularProgressIndicator()),
         GoalsReport(:final lines) when lines.isEmpty => EmptyState(

@@ -28,6 +28,7 @@ final class TransactionFilter {
     this.categoryId,
     this.accountId,
     this.tagId,
+    this.createdBy,
     this.search = '',
   });
 
@@ -40,6 +41,9 @@ final class TransactionFilter {
   final String? accountId;
   final String? tagId;
 
+  /// BR-011: kim yozgan (oilaviy byudjetda a'zo filtri).
+  final String? createdBy;
+
   /// Joy nomi yoki izoh ichida; raqam bo'lsa — summa (asosiy birlikda) ham.
   final String search;
 
@@ -48,6 +52,7 @@ final class TransactionFilter {
       categoryId == null &&
       accountId == null &&
       tagId == null &&
+      createdBy == null &&
       search.trim().isEmpty;
 
   TransactionFilter copyWith({
@@ -56,17 +61,20 @@ final class TransactionFilter {
     String? categoryId,
     String? accountId,
     String? tagId,
+    String? createdBy,
     String? search,
     bool clearKind = false,
     bool clearCategory = false,
     bool clearAccount = false,
     bool clearTag = false,
+    bool clearCreatedBy = false,
   }) => TransactionFilter(
     month: month ?? this.month,
     kind: clearKind ? null : (kind ?? this.kind),
     categoryId: clearCategory ? null : (categoryId ?? this.categoryId),
     accountId: clearAccount ? null : (accountId ?? this.accountId),
     tagId: clearTag ? null : (tagId ?? this.tagId),
+    createdBy: clearCreatedBy ? null : (createdBy ?? this.createdBy),
     search: search ?? this.search,
   );
 
@@ -78,11 +86,12 @@ final class TransactionFilter {
       other.categoryId == categoryId &&
       other.accountId == accountId &&
       other.tagId == tagId &&
+      other.createdBy == createdBy &&
       other.search == search;
 
   @override
   int get hashCode =>
-      Object.hash(month, kind, categoryId, accountId, tagId, search);
+      Object.hash(month, kind, categoryId, accountId, tagId, createdBy, search);
 }
 
 /// BR-056: joy nomi — oxirgi ishlatilgan kategoriya va hisob bilan.
@@ -285,6 +294,39 @@ class LedgerDao extends DatabaseAccessor<AppDatabase> with _$LedgerDaoMixin {
     return Money((await query.getSingle()).read(amount) ?? 0, base);
   }
 
+  /// BR-011 (E30-T05): oy xarajati a'zolar kesimida (`created_by`) —
+  /// o'tkazmasiz, fond xarajatisiz (BR-062); serverdagi `report_members`
+  /// bilan bir xil ma'no, lekin lokal (oflaynda ham).
+  Future<Map<String?, Money>> spendingByMember(
+    String householdId,
+    MonthKey month, {
+    Currency base = Currency.uzs,
+  }) async {
+    final amount = transactions.amountBase.sum();
+    final accounts = attachedDatabase.accounts;
+    final query =
+        selectOnly(transactions).join([
+            innerJoin(
+              accounts,
+              accounts.id.equalsExp(transactions.accountId),
+              useColumns: false,
+            ),
+          ])
+          ..addColumns([transactions.createdBy, amount])
+          ..where(
+            transactions.householdId.equals(householdId) &
+                transactions.budgetMonth.equals(month.toIsoDate()) &
+                transactions.kind.equals(TransactionKind.expense.wire) &
+                accounts.type.equals(AccountType.personalFund.wire).not() &
+                transactions.deletedAt.isNull(),
+          )
+          ..groupBy([transactions.createdBy]);
+    return {
+      for (final row in await query.get())
+        row.read(transactions.createdBy): Money(row.read(amount) ?? 0, base),
+    };
+  }
+
   /// BR-118: qarzga bog'langan to'lovlar — yangidan eskiga
   /// (`transactions_debt` indeksi; ro'yxat uchun [limit] ta).
   Stream<List<TransactionRow>> watchDebtPayments(
@@ -389,6 +431,9 @@ class LedgerDao extends DatabaseAccessor<AppDatabase> with _$LedgerDaoMixin {
     }
     if (filter.accountId case final id?) {
       condition &= t.accountId.equals(id) | t.toAccountId.equals(id);
+    }
+    if (filter.createdBy case final userId?) {
+      condition &= t.createdBy.equals(userId);
     }
     if (filter.tagId case final id?) {
       final links = attachedDatabase.transactionTags;

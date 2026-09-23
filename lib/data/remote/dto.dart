@@ -294,3 +294,17 @@ final class OpenMonthPreview {
 
 /// BR-163: Telegram'ni ulash havolasi uchun bir martalik token.
 typedef TelegramLinkToken = ({String token, DateTime expiresAt});
+
+/// BR-011: byudjet a'zosi (`household_members` RPC).
+typedef HouseholdMember = ({
+  String userId,
+  String name,
+  MemberRole role,
+  DateTime joinedAt,
+
+  /// Shu qurilmadagi foydalanuvchi (o'zini chiqarish — `leave_household`).
+  bool isMe,
+});
+
+/// BR-012: taklif kodi va amal qilish muddati.
+typedef HouseholdInvite = ({String code, DateTime expiresAt});

@@ -65,6 +65,28 @@ abstract interface class RemoteApi {
 
   /// BR-191: `since` dan boshlab valyuta kurslari (lokal nusxa uchun).
   Future<Result<List<FxRateRow>>> fxRates(LocalDate since);
+
+  /// BR-011: byudjet a'zolari (ism, rol).
+  Future<Result<List<HouseholdMember>>> householdMembers(String householdId);
+
+  /// BR-012: taklif kodi (owner/admin).
+  Future<Result<HouseholdInvite>> createInvite(
+    String householdId, {
+    MemberRole role,
+  });
+
+  /// BR-011: a'zo roli (owner — faqat egalikni o'tkazish orqali).
+  Future<Result<void>> setMemberRole(
+    String householdId,
+    String userId,
+    MemberRole role,
+  );
+
+  /// BR-013: a'zoni chiqarish (owner/admin).
+  Future<Result<void>> removeMember(String householdId, String userId);
+
+  /// BR-014: o'zi chiqadi (oxirgi owner chiqa olmaydi).
+  Future<Result<void>> leaveHousehold(String householdId);
 }
 
 final class RpcRemoteApi implements RemoteApi {
@@ -176,6 +198,62 @@ final class RpcRemoteApi implements RemoteApi {
     'p_platform': platform,
     'p_app_version': appVersion,
   }, (_) {});
+
+  @override
+  Future<Result<List<HouseholdMember>>> householdMembers(String householdId) =>
+      _call(
+        'household_members',
+        {'p_household': householdId},
+        (json) => [
+          for (final row in asObjects(json))
+            (
+              userId: read<String>(row, 'user_id'),
+              name: read<String>(row, 'name'),
+              role: MemberRole.fromWire(read<String>(row, 'role')),
+              joinedAt: DateTime.parse(read<String>(row, 'joined_at')),
+              isMe: read<bool>(row, 'is_me'),
+            ),
+        ],
+      );
+
+  @override
+  Future<Result<HouseholdInvite>> createInvite(
+    String householdId, {
+    MemberRole role = MemberRole.member,
+  }) => _call(
+    'create_invite',
+    {'p_household': householdId, 'p_role': role.wire},
+    (json) {
+      // Javob — bitta qatorli jadval (`returns table`).
+      final row = asObjects(json).single;
+      return (
+        code: read<String>(row, 'code'),
+        expiresAt: DateTime.parse(read<String>(row, 'expires_at')),
+      );
+    },
+  );
+
+  @override
+  Future<Result<void>> setMemberRole(
+    String householdId,
+    String userId,
+    MemberRole role,
+  ) => _call('set_member_role', {
+    'p_household': householdId,
+    'p_user': userId,
+    'p_role': role.wire,
+  }, (_) {});
+
+  @override
+  Future<Result<void>> removeMember(String householdId, String userId) => _call(
+    'remove_member',
+    {'p_household': householdId, 'p_user': userId},
+    (_) {},
+  );
+
+  @override
+  Future<Result<void>> leaveHousehold(String householdId) =>
+      _call('leave_household', {'p_household': householdId}, (_) {});
 
   @override
   Future<Result<List<FxRateRow>>> fxRates(LocalDate since) => _call(

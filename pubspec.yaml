@@ -38,6 +38,7 @@ dependencies:
   mobile_scanner: ^7.4.2
   package_info_plus: ^10.2.1
   path_provider: ^2.1.6
+  qr: ^4.0.0
   share_plus: ^13.3.0
   shared_preferences: ^2.5.5
   supabase_flutter: ^2.17.2

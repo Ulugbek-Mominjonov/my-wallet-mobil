@@ -72,6 +72,7 @@ class DashboardScreen extends ConsumerWidget {
               if (report.categories.isNotEmpty) _CategoriesCard(report: report),
               if (report.incomeTypes.isNotEmpty)
                 _IncomeTypesCard(report: report),
+              const _MembersCard(),
             ],
             // Fond, jamg'arma, qarz va maqsadlar — oyga bog'liq emas.
             _FundSavingsRow(report: report),
@@ -529,6 +530,43 @@ class _CategoriesCard extends ConsumerWidget {
                       ),
                   ],
                 ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// E30-T05 (BR-011): a'zolar kesimi — kim qancha sarfladi (lokal hisob).
+/// Yolg'iz byudjetda yoki ma'lumot bo'lmasa — ko'rinmaydi.
+class _MembersCard extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final lines = ref.watch(memberSpendingProvider).value ?? const [];
+    if (lines.isEmpty) return const SizedBox.shrink();
+    final total = lines.fold(0, (sum, line) => sum + line.spent.minor);
+    return _Section(
+      title: AppL10n.of(context).dashMembers,
+      child: Column(
+        children: [
+          for (final line in lines)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+              child: Row(
+                children: [
+                  Expanded(child: Text(line.name)),
+                  const SizedBox(width: AppSpacing.sm),
+                  Flexible(
+                    child: Text(
+                      '${moneyLabel(context, ref, line.spent)}'
+                      ' (${(line.spent.minor * 100 / total).round()}%)',
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                ],
               ),
             ),
         ],

@@ -14,6 +14,7 @@ import 'package:my_wallet/data/remote/settings_api.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
 import 'package:my_wallet/features/auth/application/sign_out.dart';
 import 'package:my_wallet/features/auth/presentation/sign_out_dialog.dart';
+import 'package:my_wallet/features/household/presentation/members_screen.dart';
 import 'package:my_wallet/features/settings/application/data_export.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:my_wallet/features/transactions/presentation/add_transaction_screen.dart';
@@ -73,6 +74,14 @@ class SettingsScreen extends ConsumerWidget {
               subtitle: Text(l10n.settingsHousehold),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => context.push(joinPath),
+            ),
+            // BR-011..014: a'zolar, rollar va taklif.
+            ListTile(
+              leading: const Icon(Icons.group_outlined),
+              title: Text(l10n.membersTitle),
+              subtitle: Text(roleLabel(l10n, ready.household.role)),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => context.push(membersPath),
             ),
           ],
           header(l10n.settingsAppearance),

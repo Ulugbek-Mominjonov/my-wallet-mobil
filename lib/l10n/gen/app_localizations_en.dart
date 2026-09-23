@@ -37,6 +37,58 @@ class AppL10nEn extends AppL10n {
   String get actionRetry => 'Try again';
 
   @override
+  String get actionCopy => 'Copy';
+
+  @override
+  String get actionClose => 'Close';
+
+  @override
+  String get copied => 'Copied';
+
+  @override
+  String get roleOwner => 'Owner';
+
+  @override
+  String get roleAdmin => 'Admin';
+
+  @override
+  String get roleMember => 'Member';
+
+  @override
+  String get roleViewer => 'Viewer';
+
+  @override
+  String get membersTitle => 'Members';
+
+  @override
+  String get membersInvite => 'Invite';
+
+  @override
+  String get membersInviteHint => 'Share the code or QR — valid for 7 days';
+
+  @override
+  String get membersYou => 'you';
+
+  @override
+  String get membersRemove => 'Remove from budget';
+
+  @override
+  String get membersLeave => 'Leave the budget';
+
+  @override
+  String membersSetRole(String role) {
+    return 'Role: $role';
+  }
+
+  @override
+  String membersActions(String name) {
+    return '$name: actions';
+  }
+
+  @override
+  String get membersOffline => 'The member list needs an internet connection';
+
+  @override
   String get errorUnexpected => 'Unexpected error. Please try again.';
 
   @override
@@ -687,6 +739,9 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get dashCategories => 'Categories';
+
+  @override
+  String get dashMembers => 'By member';
 
   @override
   String get dashIncomeTypes => 'Income types';

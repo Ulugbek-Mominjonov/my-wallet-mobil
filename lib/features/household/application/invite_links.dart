@@ -1,5 +1,6 @@
 import 'package:app_links/app_links.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_wallet/core/config/app_config.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 
 /// Taklif kodi uzunligi (BR-012) — server alifbosidagi 8 belgi.
@@ -7,6 +8,14 @@ const inviteCodeLength = 8;
 
 /// QR skaner marshruti.
 const inviteScanPath = '/join/scan';
+
+/// Taklif havolasi (BR-012) — muhitga mos sxema bilan; Android manifestidagi
+/// `deepLinkScheme` bilan bir xil (admin paneldagi `inviteLink` kabi).
+String inviteLink(String code, AppEnv env) => switch (env) {
+  AppEnv.dev => 'mywallet-dev://invite/$code',
+  AppEnv.staging => 'mywallet-stg://invite/$code',
+  AppEnv.prod => 'mywallet://invite/$code',
+};
 
 /// Kiruvchi `mywallet://invite/<kod>` havolalari (ilova yopiq bo'lsa ham —
 /// birinchi havola). Testda boshqa oqim bilan almashtiriladi.

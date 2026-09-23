@@ -37,6 +37,58 @@ class AppL10nRu extends AppL10n {
   String get actionRetry => 'Повторить';
 
   @override
+  String get actionCopy => 'Копировать';
+
+  @override
+  String get actionClose => 'Закрыть';
+
+  @override
+  String get copied => 'Скопировано';
+
+  @override
+  String get roleOwner => 'Владелец';
+
+  @override
+  String get roleAdmin => 'Админ';
+
+  @override
+  String get roleMember => 'Участник';
+
+  @override
+  String get roleViewer => 'Наблюдатель';
+
+  @override
+  String get membersTitle => 'Участники';
+
+  @override
+  String get membersInvite => 'Пригласить';
+
+  @override
+  String get membersInviteHint => 'Передайте код или QR — действует 7 дней';
+
+  @override
+  String get membersYou => 'вы';
+
+  @override
+  String get membersRemove => 'Убрать из бюджета';
+
+  @override
+  String get membersLeave => 'Выйти из бюджета';
+
+  @override
+  String membersSetRole(String role) {
+    return 'Роль: $role';
+  }
+
+  @override
+  String membersActions(String name) {
+    return '$name: действия';
+  }
+
+  @override
+  String get membersOffline => 'Для списка участников нужен интернет';
+
+  @override
   String get errorUnexpected => 'Непредвиденная ошибка. Попробуйте ещё раз.';
 
   @override
@@ -685,6 +737,9 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get dashCategories => 'Категории';
+
+  @override
+  String get dashMembers => 'По участникам';
 
   @override
   String get dashIncomeTypes => 'Виды дохода';

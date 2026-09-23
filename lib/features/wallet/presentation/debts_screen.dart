@@ -11,6 +11,7 @@ import 'package:my_wallet/core/widgets/empty_state.dart';
 import 'package:my_wallet/core/widgets/money_text.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
+import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:my_wallet/features/wallet/application/wallet_controller.dart';
 import 'package:my_wallet/features/wallet/application/wallet_reports.dart';
 import 'package:my_wallet/features/wallet/presentation/debt_form_screen.dart';
@@ -30,16 +31,19 @@ class DebtsScreen extends ConsumerWidget {
     final report = ref.watch(debtsReportProvider).value;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.walletDebts)),
-      floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.add),
-        label: Text(l10n.debtAdd),
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            fullscreenDialog: true,
-            builder: (_) => const DebtFormScreen(),
-          ),
-        ),
-      ),
+      // BR-011: spravochniklarni owner/admin boshqaradi.
+      floatingActionButton: ref.watch(canManageProvider)
+          ? FloatingActionButton.extended(
+              icon: const Icon(Icons.add),
+              label: Text(l10n.debtAdd),
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  fullscreenDialog: true,
+                  builder: (_) => const DebtFormScreen(),
+                ),
+              ),
+            )
+          : null,
       body: switch (report) {
         null => const Center(child: CircularProgressIndicator()),
         DebtsReport(:final lines) when lines.isEmpty => EmptyState(

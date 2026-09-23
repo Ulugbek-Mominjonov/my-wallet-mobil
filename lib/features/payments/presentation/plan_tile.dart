@@ -31,6 +31,7 @@ class PlanTile extends ConsumerWidget {
     final category = _categoryName(ref);
     final planned = plan.plannedAmount;
     final remaining = plan.remaining;
+    final canWrite = ref.watch(canWriteProvider);
 
     final tile = Padding(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
@@ -97,7 +98,8 @@ class PlanTile extends ConsumerWidget {
                         ),
                       },
                     ),
-                    if (status.isOpen)
+                    // BR-011: kuzatuvchi faqat o'qiydi.
+                    if (status.isOpen && canWrite)
                       TextButton(
                         onPressed: () =>
                             unawaited(showPayPlanSheet(context, plan)),
@@ -115,7 +117,7 @@ class PlanTile extends ConsumerWidget {
       ),
     );
 
-    if (!status.isOpen) return tile;
+    if (!status.isOpen || !canWrite) return tile;
     // Swipe → to'liq to'lash; qator ro'yxat yangilanishi bilan o'zgaradi.
     return Dismissible(
       key: ValueKey('pay-${plan.id}'),
@@ -231,6 +233,8 @@ class _PlanMenu extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppL10n.of(context);
     final skipped = status == PlannedStatus.skipped;
+    // BR-011: kuzatuvchida reja amallari yo'q.
+    if (!ref.watch(canWriteProvider)) return const SizedBox.shrink();
     return PopupMenuButton<_MenuAction>(
       onSelected: (action) => unawaited(_run(context, ref, action)),
       itemBuilder: (context) => [

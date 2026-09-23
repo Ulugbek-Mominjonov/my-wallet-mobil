@@ -2,6 +2,7 @@ import 'package:drift/drift.dart' show TableUpdateQuery;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
 import 'package:my_wallet/features/dashboard/application/month_report.dart';
+import 'package:my_wallet/features/household/application/members_controller.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
@@ -55,4 +56,35 @@ final StreamProvider<MonthReport?> monthReportProvider = StreamProvider((
   )) {
     yield await loader.load(month);
   }
+});
+
+/// E30-T05: a'zolar kesimi — tanlangan oyda kim qancha sarfladi (lokal).
+/// Ismlar — a'zolar keshidan; bitta a'zoda blok ko'rsatilmaydi.
+final FutureProvider<List<({String name, Money spent})>>
+memberSpendingProvider = FutureProvider((ref) async {
+  final householdId = ref.watch(currentHouseholdIdProvider);
+  final startup = ref.watch(startupProvider);
+  final members = ref.watch(cachedMembersProvider).value ?? const [];
+  if (householdId == null || startup is! StartupReady || members.length < 2) {
+    return const [];
+  }
+  final spending = await ref
+      .watch(appDatabaseProvider)
+      .ledgerDao
+      .spendingByMember(
+        householdId,
+        ref.watch(dashboardMonthProvider),
+        base: startup.currency,
+      );
+  final lines = [
+    for (final member in members)
+      (
+        name: member.name,
+        spent: spending[member.userId] ?? Money(0, startup.currency),
+      ),
+  ]..sort((a, b) => b.spent.minor.compareTo(a.spent.minor));
+  return [
+    for (final line in lines)
+      if (line.spent.isPositive) line,
+  ];
 });

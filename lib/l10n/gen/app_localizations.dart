@@ -153,6 +153,102 @@ abstract class AppL10n {
   /// **'Qayta urinish'**
   String get actionRetry;
 
+  /// No description provided for @actionCopy.
+  ///
+  /// In uz, this message translates to:
+  /// **'Nusxalash'**
+  String get actionCopy;
+
+  /// No description provided for @actionClose.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yopish'**
+  String get actionClose;
+
+  /// No description provided for @copied.
+  ///
+  /// In uz, this message translates to:
+  /// **'Nusxalandi'**
+  String get copied;
+
+  /// No description provided for @roleOwner.
+  ///
+  /// In uz, this message translates to:
+  /// **'Egasi'**
+  String get roleOwner;
+
+  /// No description provided for @roleAdmin.
+  ///
+  /// In uz, this message translates to:
+  /// **'Admin'**
+  String get roleAdmin;
+
+  /// No description provided for @roleMember.
+  ///
+  /// In uz, this message translates to:
+  /// **'A\'zo'**
+  String get roleMember;
+
+  /// No description provided for @roleViewer.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kuzatuvchi'**
+  String get roleViewer;
+
+  /// No description provided for @membersTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'A\'zolar'**
+  String get membersTitle;
+
+  /// No description provided for @membersInvite.
+  ///
+  /// In uz, this message translates to:
+  /// **'Taklif qilish'**
+  String get membersInvite;
+
+  /// No description provided for @membersInviteHint.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kodni yoki QR ni bering — 7 kun amal qiladi'**
+  String get membersInviteHint;
+
+  /// No description provided for @membersYou.
+  ///
+  /// In uz, this message translates to:
+  /// **'siz'**
+  String get membersYou;
+
+  /// No description provided for @membersRemove.
+  ///
+  /// In uz, this message translates to:
+  /// **'Byudjetdan chiqarish'**
+  String get membersRemove;
+
+  /// No description provided for @membersLeave.
+  ///
+  /// In uz, this message translates to:
+  /// **'Byudjetdan chiqish'**
+  String get membersLeave;
+
+  /// No description provided for @membersSetRole.
+  ///
+  /// In uz, this message translates to:
+  /// **'Rol: {role}'**
+  String membersSetRole(String role);
+
+  /// No description provided for @membersActions.
+  ///
+  /// In uz, this message translates to:
+  /// **'{name}: amallar'**
+  String membersActions(String name);
+
+  /// No description provided for @membersOffline.
+  ///
+  /// In uz, this message translates to:
+  /// **'A\'zolar ro\'yxati uchun internet kerak'**
+  String get membersOffline;
+
   /// No description provided for @errorUnexpected.
   ///
   /// In uz, this message translates to:
@@ -1262,6 +1358,12 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Kategoriyalar'**
   String get dashCategories;
+
+  /// No description provided for @dashMembers.
+  ///
+  /// In uz, this message translates to:
+  /// **'A\'zolar kesimi'**
+  String get dashMembers;
 
   /// No description provided for @dashIncomeTypes.
   ///

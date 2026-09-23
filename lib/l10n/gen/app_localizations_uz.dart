@@ -37,6 +37,58 @@ class AppL10nUz extends AppL10n {
   String get actionRetry => 'Qayta urinish';
 
   @override
+  String get actionCopy => 'Nusxalash';
+
+  @override
+  String get actionClose => 'Yopish';
+
+  @override
+  String get copied => 'Nusxalandi';
+
+  @override
+  String get roleOwner => 'Egasi';
+
+  @override
+  String get roleAdmin => 'Admin';
+
+  @override
+  String get roleMember => 'A\'zo';
+
+  @override
+  String get roleViewer => 'Kuzatuvchi';
+
+  @override
+  String get membersTitle => 'A\'zolar';
+
+  @override
+  String get membersInvite => 'Taklif qilish';
+
+  @override
+  String get membersInviteHint => 'Kodni yoki QR ni bering — 7 kun amal qiladi';
+
+  @override
+  String get membersYou => 'siz';
+
+  @override
+  String get membersRemove => 'Byudjetdan chiqarish';
+
+  @override
+  String get membersLeave => 'Byudjetdan chiqish';
+
+  @override
+  String membersSetRole(String role) {
+    return 'Rol: $role';
+  }
+
+  @override
+  String membersActions(String name) {
+    return '$name: amallar';
+  }
+
+  @override
+  String get membersOffline => 'A\'zolar ro\'yxati uchun internet kerak';
+
+  @override
   String get errorUnexpected => 'Kutilmagan xato. Qayta urinib ko\'ring.';
 
   @override
@@ -687,6 +739,9 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get dashCategories => 'Kategoriyalar';
+
+  @override
+  String get dashMembers => 'A\'zolar kesimi';
 
   @override
   String get dashIncomeTypes => 'Daromad turlari';

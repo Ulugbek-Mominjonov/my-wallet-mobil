@@ -219,6 +219,22 @@ bool isUpdateRequired(String current, String minimum) {
 }
 
 /// Byudjet vaqt zonasidagi soat (BR-002) — byudjet tanlangach aniq bo'ladi.
+/// BR-011: joriy byudjetdagi rol (byudjet tanlanmagan — `viewer`).
+final Provider<MemberRole> myRoleProvider = Provider((ref) {
+  final startup = ref.watch(startupProvider);
+  return startup is StartupReady ? startup.household.role : MemberRole.viewer;
+});
+
+/// BR-011: amal yoza oladimi (kuzatuvchi — faqat o'qish).
+final Provider<bool> canWriteProvider = Provider(
+  (ref) => ref.watch(myRoleProvider).canWrite,
+);
+
+/// BR-011: spravochniklarni boshqara oladimi (owner/admin).
+final Provider<bool> canManageProvider = Provider(
+  (ref) => ref.watch(myRoleProvider).canManage,
+);
+
 final clockProvider = Provider<Clock>((ref) {
   final state = ref.watch(startupProvider);
   return TzClock(

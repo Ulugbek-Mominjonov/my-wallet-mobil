@@ -540,11 +540,11 @@
 
 ### E30 · Oilaviy byudjet — mobil qismi
 
-- [ ] **E30-T04** A'zolar ekrani: ro'yxat, rollar, taklif (kod, havola,
+- [x] **E30-T04** A'zolar ekrani: ro'yxat, rollar, taklif (kod, havola,
   QR, ulashish), chiqish/chiqarish (owner/admin).
-- [ ] **E30-T05** "Kim yozdi" — amal elementida a'zo avatari, filtrda a'zo,
+- [x] **E30-T05** "Kim yozdi" — amal elementida a'zo avatari, filtrda a'zo,
   dashboard'da a'zolar kesimi (ixtiyoriy blok).
-- [ ] **E30-T06** Rolga qarab UI: `viewer` — faqat o'qish, `member` —
+- [x] **E30-T06** Rolga qarab UI: `viewer` — faqat o'qish, `member` —
   spravochnik tahriri yo'q.
 
 ### E32 · Tahlillar — mobil qismi
@@ -593,3 +593,4 @@
 | 2026-09-21 | E19-T01..T05 | Bildirishnomalar: FCM (env bilan, sozlanmasa o'chiq), ro'yxat/chiqish, bosilganda oq ro'yxatdagi ekran, ochiq paytidagi push; lokal eslatmalar (14 kun, ≤ 30, debounce); onboarding'da ruxsat; bildirishnoma sozlamalari (server, Telegram, sinov); Sozlamalar (tema, til, eksport, akkaunt o'chirish, ilova haqida); integratsiya testi CI'dagi sekinlikka chidamli qilindi (E18 qizil CI sababi); 386 test (90,0%), dev APK ✅, 9 integratsiya. **E19 yakunlandi** |
 | 2026-09-22 | E20-T02, T04 | E2E (patrol) emulyatorda: kirish → sozlash → xarajat → "Keldi" → Xulosa → oflayn → sinxron — yashil; nightly `e2e.yml`. E2E topgan xato: reja to'lovidan keyin har safar sinxron conflict (`planned_items` hosila maydonlari navbatga tushardi, amal trigger'i versiyani oshirardi) — navbat hosila maydonlarsiz, "yopish" amaldan oldin, rad etilgan amalda reja lokal qayta hisoblanadi; 2 integratsiya testi (tuzatishsiz yiqiladi). Sovuq start ~1,5 s (emulyator, profil); chek rasmlari keshi. 418 test, domen 212, 11 integratsiya. E20-T08 (reliz nomzodi) — 🔑 keystore va testerlar |
 | 2026-09-23 | E29-T07..T09, E34-T03 | ko'p valyuta: domen `FxRate`/`FxRates`/`toBaseAmount` (serverdagi `to_base_amount` bilan bir xil, BigInt bilan aniq), `FxRateRepository` va `prepareTransaction` da `amount_base` (qo'lda kurs ustun, kurs yo'q — `fx_rate_missing`); amal formasida hisob valyutasi, kurs maydoni va `≈` ekvivalent, turli valyutali o'tkazmada manzil summasi (BR-193); Hamyonda asosiy valyutadagi jami (BR-194); lokal `exchange_rates` jadvali (drift v4) va har sinxronda `fx_rates` RPC'si bilan yangilanishi. Limitlar v2 (BR-134): lokal jadvalda `rollover`/`rollover_negative` (drift v3), hisobotda amaldagi limit va o'tgan oy qoldig'i, limit oynasida ikki sozlama. Golden fixture'lar (multi-currency va rollover) yashil; 441 test, qoplama ilova 83%, domen 98%. Migratsiyalar endi `stepByStep` bilan (versiya juftliklari testi buni talab qildi) |
+| 2026-09-23 | E30-T04..T06 | oilaviy byudjet: a'zolar ekrani (ro'yxat, rollar, taklif — kod, havola va QR `qr` paketi bilan chizilgan, nusxalash; chiqarish/chiqish), `household_members` RPC va uning lokal keshi (oflaynda ismlar ko'rinadi); amal elementida "kim yozdi", amallar filtrida a'zo, Xulosada a'zolar kesimi (lokal `created_by` bo'yicha); rolga qarab UI — kuzatuvchida "＋", reja to'lovi va menyu yo'q, member'da qarz/maqsad/limit qo'shish yo'q. 449 test |

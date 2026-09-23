@@ -54,11 +54,14 @@ class AppShell extends ConsumerWidget {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        tooltip: l10n.navAddLabel,
-        onPressed: () => context.push('/add'),
-        child: const Icon(Icons.add),
-      ),
+      // BR-011: kuzatuvchi faqat o'qiydi — qo'shish tugmasi yo'q.
+      floatingActionButton: ref.watch(canWriteProvider)
+          ? FloatingActionButton(
+              tooltip: l10n.navAddLabel,
+              onPressed: () => context.push('/add'),
+              child: const Icon(Icons.add),
+            )
+          : null,
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),

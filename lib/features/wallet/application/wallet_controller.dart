@@ -103,12 +103,7 @@ final StreamProvider<List<LimitLine>?> limitsProvider = StreamProvider(
 
 /// BR-130: limitlarni faqat owner/admin o'zgartiradi (server RLS bilan bir
 /// xil); qarz va maqsad — member ham.
-final Provider<bool> canManageLimitsProvider = Provider((ref) {
-  final startup = ref.watch(startupProvider);
-  return startup is StartupReady &&
-      (startup.household.role == MemberRole.owner ||
-          startup.household.role == MemberRole.admin);
-});
+final Provider<bool> canManageLimitsProvider = canManageProvider;
 
 /// Hamyon yozuvlari (lokal, oflayn; outbox orqali serverga).
 final Provider<WalletActions> walletActionsProvider = Provider(

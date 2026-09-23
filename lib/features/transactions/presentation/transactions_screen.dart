@@ -10,6 +10,8 @@ import 'package:my_wallet/core/widgets/month_switcher.dart';
 import 'package:my_wallet/data/local/daos/ledger_dao.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/local/directory_providers.dart';
+import 'package:my_wallet/data/remote/dto.dart';
+import 'package:my_wallet/features/household/application/members_controller.dart';
 import 'package:my_wallet/features/transactions/application/transaction_list_controller.dart';
 import 'package:my_wallet/features/transactions/presentation/add_transaction_screen.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
@@ -120,6 +122,8 @@ class _Filters extends ConsumerWidget {
     final controller = ref.read(transactionListProvider.notifier);
     final accounts = ref.watch(accountsProvider).value ?? const <Account>[];
     final tags = ref.watch(tagsProvider).value ?? const <Tag>[];
+    final members =
+        ref.watch(cachedMembersProvider).value ?? const <HouseholdMember>[];
     final categories = <Category>[
       ...?ref.watch(categoriesProvider(CategoryKind.expense)).value,
       ...?ref.watch(categoriesProvider(CategoryKind.income)).value,
@@ -187,6 +191,19 @@ class _Filters extends ConsumerWidget {
                       : filter.copyWith(accountId: id),
                 ),
               ),
+              if (members.length > 1)
+                _PickerChip<HouseholdMember>(
+                  label: l10n.membersTitle,
+                  items: members,
+                  selectedId: filter.createdBy,
+                  idOf: (m) => m.userId,
+                  nameOf: (m) => m.name,
+                  onSelected: (id) => set(
+                    id == null
+                        ? filter.copyWith(clearCreatedBy: true)
+                        : filter.copyWith(createdBy: id),
+                  ),
+                ),
               if (tags.isNotEmpty)
                 _PickerChip<Tag>(
                   label: l10n.fieldTags,
@@ -346,9 +363,12 @@ class _TransactionTile extends ConsumerWidget {
         '${account?.name ?? '?'} → ${accounts[row.toAccountId]?.name ?? '?'}',
       _ => row.payee ?? category ?? l10n.kindExpense,
     };
+    // BR-011: oilaviy byudjetda — kim yozgani (o'ziniki belgilanmaydi).
+    final author = ref.watch(authorNameProvider(row.createdBy));
     final subtitle = [
       if (kind != TransactionKind.transfer && row.payee != null) ?category,
       if (kind != TransactionKind.transfer) ?account?.name,
+      ?author,
       ?row.note,
     ].join(' · ');
     final currency = account?.openingBalance.currency.code ?? 'UZS';

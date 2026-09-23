@@ -13,6 +13,7 @@ import 'package:my_wallet/features/dev/design_catalog_screen.dart';
 import 'package:my_wallet/features/household/application/invite_links.dart';
 import 'package:my_wallet/features/household/presentation/invite_scan_screen.dart';
 import 'package:my_wallet/features/household/presentation/join_or_create_screen.dart';
+import 'package:my_wallet/features/household/presentation/members_screen.dart';
 import 'package:my_wallet/features/lock/presentation/lock_screen.dart';
 import 'package:my_wallet/features/lock/presentation/lock_settings_screen.dart';
 import 'package:my_wallet/features/notifications/presentation/notification_settings_screen.dart';
@@ -58,6 +59,9 @@ const lockSettingsPath = '/settings/lock';
 /// Sozlamalar (E19-T04) va bildirishnoma sozlamalari (E19-T03).
 const settingsPath = '/settings';
 const notificationSettingsPath = '/settings/notifications';
+
+/// E30-T04: byudjet a'zolari.
+const membersPath = '/settings/members';
 
 /// Marshrutlar. Kirilmagan — faqat kirish ekrani; kirilgan — undan
 /// bosh sahifaga (sessiya eskirsa ham avtomatik).
@@ -108,6 +112,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: lockSettingsPath,
         builder: (context, state) => const LockSettingsScreen(),
+      ),
+      GoRoute(
+        path: membersPath,
+        builder: (context, state) => const MembersScreen(),
       ),
       GoRoute(
         path: joinPath,
