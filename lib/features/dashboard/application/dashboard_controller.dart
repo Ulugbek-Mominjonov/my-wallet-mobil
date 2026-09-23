@@ -88,3 +88,29 @@ memberSpendingProvider = FutureProvider((ref) async {
       if (line.spent.isPositive) line,
   ];
 });
+
+/// E32-T03: "Diqqat" — sakragan kategoriyalar va obunalar (lokal hisob,
+/// serverdagi `report_insights` bilan bir xil qoidalar).
+final FutureProvider<({List<CategorySpike> spikes, List<Subscription> subs})>
+insightsProvider = FutureProvider((ref) async {
+  final householdId = ref.watch(currentHouseholdIdProvider);
+  final startup = ref.watch(startupProvider);
+  if (householdId == null || startup is! StartupReady) {
+    return (spikes: const <CategorySpike>[], subs: const <Subscription>[]);
+  }
+  // Amallar o'zgarsa — qayta hisoblanadi (oylik hisob bilan birga).
+  ref.watch(monthReportProvider);
+  final month = ref.watch(dashboardMonthProvider);
+  final input = await ref
+      .watch(appDatabaseProvider)
+      .reportDao
+      .insightsInput(householdId, month, base: startup.currency);
+  return (
+    spikes: categorySpikes(
+      current: input.current,
+      previousTotal: input.previousTotal,
+      limit: 3,
+    ),
+    subs: subscriptions(input.payments, limit: 3),
+  );
+});

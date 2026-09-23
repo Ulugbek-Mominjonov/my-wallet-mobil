@@ -744,6 +744,19 @@ class AppL10nEn extends AppL10n {
   String get dashMembers => 'By member';
 
   @override
+  String get dashAttention => 'Worth a look';
+
+  @override
+  String insightSpike(String name, int percent, String average) {
+    return '$name: $percent% above the 3-month average ($average)';
+  }
+
+  @override
+  String insightSubscription(String payee, String amount, int months) {
+    return '$payee — $amount, repeating for $months months';
+  }
+
+  @override
   String get dashIncomeTypes => 'Income types';
 
   @override
@@ -950,6 +963,23 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get yearEmpty => 'Nothing recorded this year';
+
+  @override
+  String get yearSummaryTitle => 'Year summary';
+
+  @override
+  String yearSummaryMonths(int count) {
+    return 'Across $count months with records';
+  }
+
+  @override
+  String get yearSummaryAvgExpense => 'Average monthly expense';
+
+  @override
+  String get yearSummaryBest => 'Best month';
+
+  @override
+  String get yearSummaryWorst => 'Weakest month';
 
   @override
   String get categoryTrend => 'Month by month';

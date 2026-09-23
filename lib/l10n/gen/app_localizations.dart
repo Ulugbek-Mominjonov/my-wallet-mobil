@@ -1365,6 +1365,24 @@ abstract class AppL10n {
   /// **'A\'zolar kesimi'**
   String get dashMembers;
 
+  /// No description provided for @dashAttention.
+  ///
+  /// In uz, this message translates to:
+  /// **'Diqqat'**
+  String get dashAttention;
+
+  /// No description provided for @insightSpike.
+  ///
+  /// In uz, this message translates to:
+  /// **'{name}: 3 oylik o\'rtachadan {percent}% ko\'p (o\'rtacha {average})'**
+  String insightSpike(String name, int percent, String average);
+
+  /// No description provided for @insightSubscription.
+  ///
+  /// In uz, this message translates to:
+  /// **'{payee} — {amount}, {months} oydan beri takrorlanmoqda'**
+  String insightSubscription(String payee, String amount, int months);
+
   /// No description provided for @dashIncomeTypes.
   ///
   /// In uz, this message translates to:
@@ -1742,6 +1760,36 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Bu yilda yozuv yo\'q'**
   String get yearEmpty;
+
+  /// No description provided for @yearSummaryTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yil xulosasi'**
+  String get yearSummaryTitle;
+
+  /// No description provided for @yearSummaryMonths.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yozuvi bor {count} oy bo\'yicha'**
+  String yearSummaryMonths(int count);
+
+  /// No description provided for @yearSummaryAvgExpense.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oyiga o\'rtacha xarajat'**
+  String get yearSummaryAvgExpense;
+
+  /// No description provided for @yearSummaryBest.
+  ///
+  /// In uz, this message translates to:
+  /// **'Eng ko\'p orttirilgan oy'**
+  String get yearSummaryBest;
+
+  /// No description provided for @yearSummaryWorst.
+  ///
+  /// In uz, this message translates to:
+  /// **'Eng kam orttirilgan oy'**
+  String get yearSummaryWorst;
 
   /// No description provided for @categoryTrend.
   ///

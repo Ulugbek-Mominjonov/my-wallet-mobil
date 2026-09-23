@@ -12,6 +12,7 @@ import 'package:my_wallet/features/dashboard/application/dashboard_controller.da
 import 'package:my_wallet/features/dashboard/application/year_report.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
+import 'package:wallet_domain/wallet_domain.dart';
 
 /// Tanlangan yil (standart — joriy yil).
 final NotifierProvider<SelectedYear, int> selectedYearProvider =
@@ -77,6 +78,8 @@ class YearScreen extends ConsumerWidget {
           : ListView(
               padding: const EdgeInsets.all(AppSpacing.lg),
               children: [
+                _YearSummaryCard(report: report),
+                const SizedBox(height: AppSpacing.md),
                 AppCard(
                   child: MonthBars(
                     labels: [
@@ -98,6 +101,76 @@ class YearScreen extends ConsumerWidget {
             ),
     );
   }
+}
+
+/// E32-T04: "Yil xulosasi" — jamlar, oyiga o'rtacha va eng yaxshi/og'ir oy.
+class _YearSummaryCard extends ConsumerWidget {
+  const new({required this.report});
+
+  final YearReport report;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    final summary = YearSummary.of([
+      for (final month in report.months) month.facts,
+    ]);
+    String month(({MonthKey month, Money saved}) line) {
+      final title = formatMonthTitle(
+        l10n,
+        year: line.month.year,
+        month: line.month.month,
+      );
+      return '$title · ${moneyLabel(context, ref, line.saved)}';
+    }
+
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.yearSummaryTitle,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Text(l10n.yearSummaryMonths(summary.monthsCount)),
+          _SummaryRow(
+            label: l10n.dashSaved,
+            value:
+                '${moneyLabel(context, ref, summary.saved)}'
+                ' (${(summary.savedRatio * 100).round()}%)',
+          ),
+          _SummaryRow(
+            label: l10n.yearSummaryAvgExpense,
+            value: moneyLabel(context, ref, summary.avgExpense),
+          ),
+          if (summary.best case final best?)
+            _SummaryRow(label: l10n.yearSummaryBest, value: month(best)),
+          if (summary.worst case final worst?)
+            _SummaryRow(label: l10n.yearSummaryWorst, value: month(worst)),
+        ],
+      ),
+    );
+  }
+}
+
+class _SummaryRow extends StatelessWidget {
+  const new({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(top: AppSpacing.xs),
+    child: Row(
+      children: [
+        Expanded(child: Text(label)),
+        const SizedBox(width: AppSpacing.sm),
+        Flexible(child: Text(value, textAlign: TextAlign.end)),
+      ],
+    ),
+  );
 }
 
 class _MonthRow extends ConsumerWidget {

@@ -220,6 +220,23 @@
   "dashMarkPaid": "Paid",
   "dashCategories": "Categories",
   "dashMembers": "By member",
+  "dashAttention": "Worth a look",
+  "insightSpike": "{name}: {percent}% above the 3-month average ({average})",
+  "@insightSpike": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "percent": { "type": "int" },
+      "average": { "type": "String" }
+    }
+  },
+  "insightSubscription": "{payee} — {amount}, repeating for {months} months",
+  "@insightSubscription": {
+    "placeholders": {
+      "payee": { "type": "String" },
+      "amount": { "type": "String" },
+      "months": { "type": "int" }
+    }
+  },
   "dashIncomeTypes": "Income types",
   "dashFund": "👤 Personal fund",
   "dashSavings": "🏦 Savings",
@@ -283,6 +300,14 @@
   "yearTotal": "TOTAL",
   "yearView": "Year view",
   "yearEmpty": "Nothing recorded this year",
+  "yearSummaryTitle": "Year summary",
+  "yearSummaryMonths": "Across {count} months with records",
+  "@yearSummaryMonths": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "yearSummaryAvgExpense": "Average monthly expense",
+  "yearSummaryBest": "Best month",
+  "yearSummaryWorst": "Weakest month",
   "categoryTrend": "Month by month",
   "categoryTransactions": "Show transactions",
   "monthShort": "{month, select, 1{Jan} 2{Feb} 3{Mar} 4{Apr} 5{May} 6{Jun} 7{Jul} 8{Aug} 9{Sep} 10{Oct} 11{Nov} 12{Dec} other{?}}",

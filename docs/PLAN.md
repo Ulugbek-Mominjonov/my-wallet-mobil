@@ -549,9 +549,9 @@
 
 ### E32 · Tahlillar — mobil qismi
 
-- [ ] **E32-T03** Dashboard'da "Diqqat" kartalari (kategoriya sakrashi,
+- [x] **E32-T03** Dashboard'da "Diqqat" kartalari (kategoriya sakrashi,
   yangi obuna aniqlandi) — lokal hisob yoki `report_insights` keshi.
-- [ ] **E32-T04** "Yil xulosasi" ekrani (yil oxirida/boshida taklif qilinadi).
+- [x] **E32-T04** "Yil xulosasi" ekrani (yil oxirida/boshida taklif qilinadi).
 
 ### E33 · Android vidjet va chek QR skaneri `[mobile]`
 
@@ -594,3 +594,4 @@
 | 2026-09-22 | E20-T02, T04 | E2E (patrol) emulyatorda: kirish → sozlash → xarajat → "Keldi" → Xulosa → oflayn → sinxron — yashil; nightly `e2e.yml`. E2E topgan xato: reja to'lovidan keyin har safar sinxron conflict (`planned_items` hosila maydonlari navbatga tushardi, amal trigger'i versiyani oshirardi) — navbat hosila maydonlarsiz, "yopish" amaldan oldin, rad etilgan amalda reja lokal qayta hisoblanadi; 2 integratsiya testi (tuzatishsiz yiqiladi). Sovuq start ~1,5 s (emulyator, profil); chek rasmlari keshi. 418 test, domen 212, 11 integratsiya. E20-T08 (reliz nomzodi) — 🔑 keystore va testerlar |
 | 2026-09-23 | E29-T07..T09, E34-T03 | ko'p valyuta: domen `FxRate`/`FxRates`/`toBaseAmount` (serverdagi `to_base_amount` bilan bir xil, BigInt bilan aniq), `FxRateRepository` va `prepareTransaction` da `amount_base` (qo'lda kurs ustun, kurs yo'q — `fx_rate_missing`); amal formasida hisob valyutasi, kurs maydoni va `≈` ekvivalent, turli valyutali o'tkazmada manzil summasi (BR-193); Hamyonda asosiy valyutadagi jami (BR-194); lokal `exchange_rates` jadvali (drift v4) va har sinxronda `fx_rates` RPC'si bilan yangilanishi. Limitlar v2 (BR-134): lokal jadvalda `rollover`/`rollover_negative` (drift v3), hisobotda amaldagi limit va o'tgan oy qoldig'i, limit oynasida ikki sozlama. Golden fixture'lar (multi-currency va rollover) yashil; 441 test, qoplama ilova 83%, domen 98%. Migratsiyalar endi `stepByStep` bilan (versiya juftliklari testi buni talab qildi) |
 | 2026-09-23 | E30-T04..T06 | oilaviy byudjet: a'zolar ekrani (ro'yxat, rollar, taklif — kod, havola va QR `qr` paketi bilan chizilgan, nusxalash; chiqarish/chiqish), `household_members` RPC va uning lokal keshi (oflaynda ismlar ko'rinadi); amal elementida "kim yozdi", amallar filtrida a'zo, Xulosada a'zolar kesimi (lokal `created_by` bo'yicha); rolga qarab UI — kuzatuvchida "＋", reja to'lovi va menyu yo'q, member'da qarz/maqsad/limit qo'shish yo'q. 449 test |
+| 2026-09-23 | E32-T03, T04 | tahlillar: domen qoidalari (`categorySpikes`, `subscriptions`, `YearSummary` — server `report_insights` bilan bir xil chegaralar), Xulosada "Diqqat" kartasi (sakragan kategoriya, topilgan obuna — lokal hisob, oflaynda ham) va Yillik ko'rinish tepasida "Yil xulosasi" (jamlar, oyiga o'rtacha xarajat, eng yaxshi/og'ir oy). 450 ilova testi, domen 237 |

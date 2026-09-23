@@ -408,6 +408,23 @@
   "dashMarkPaid": "To'landi",
   "dashCategories": "Kategoriyalar",
   "dashMembers": "A'zolar kesimi",
+  "dashAttention": "Diqqat",
+  "insightSpike": "{name}: 3 oylik o'rtachadan {percent}% ko'p (o'rtacha {average})",
+  "@insightSpike": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "percent": { "type": "int" },
+      "average": { "type": "String" }
+    }
+  },
+  "insightSubscription": "{payee} — {amount}, {months} oydan beri takrorlanmoqda",
+  "@insightSubscription": {
+    "placeholders": {
+      "payee": { "type": "String" },
+      "amount": { "type": "String" },
+      "months": { "type": "int" }
+    }
+  },
   "dashIncomeTypes": "Daromad turlari",
   "dashFund": "👤 Shaxsiy fond",
   "dashSavings": "🏦 Jamg'arma",
@@ -549,6 +566,14 @@
   "yearTotal": "JAMI",
   "yearView": "Yillik ko'rinish",
   "yearEmpty": "Bu yilda yozuv yo'q",
+  "yearSummaryTitle": "Yil xulosasi",
+  "yearSummaryMonths": "Yozuvi bor {count} oy bo'yicha",
+  "@yearSummaryMonths": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "yearSummaryAvgExpense": "Oyiga o'rtacha xarajat",
+  "yearSummaryBest": "Eng ko'p orttirilgan oy",
+  "yearSummaryWorst": "Eng kam orttirilgan oy",
   "categoryTrend": "Oyma-oy",
   "categoryTransactions": "Amallarni ko'rish",
   "monthShort": "{month, select, 1{Yan} 2{Fev} 3{Mar} 4{Apr} 5{May} 6{Iyn} 7{Iyl} 8{Avg} 9{Sen} 10{Okt} 11{Noy} 12{Dek} other{?}}",

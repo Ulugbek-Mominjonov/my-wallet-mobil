@@ -742,6 +742,19 @@ class AppL10nRu extends AppL10n {
   String get dashMembers => 'По участникам';
 
   @override
+  String get dashAttention => 'Обратите внимание';
+
+  @override
+  String insightSpike(String name, int percent, String average) {
+    return '$name: на $percent% больше среднего за 3 месяца (в среднем $average)';
+  }
+
+  @override
+  String insightSubscription(String payee, String amount, int months) {
+    return '$payee — $amount, повторяется $months месяцев';
+  }
+
+  @override
   String get dashIncomeTypes => 'Виды дохода';
 
   @override
@@ -948,6 +961,23 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get yearEmpty => 'В этом году нет записей';
+
+  @override
+  String get yearSummaryTitle => 'Итоги года';
+
+  @override
+  String yearSummaryMonths(int count) {
+    return 'По $count месяцам с записями';
+  }
+
+  @override
+  String get yearSummaryAvgExpense => 'Средний расход в месяц';
+
+  @override
+  String get yearSummaryBest => 'Лучший месяц';
+
+  @override
+  String get yearSummaryWorst => 'Худший месяц';
 
   @override
   String get categoryTrend => 'По месяцам';

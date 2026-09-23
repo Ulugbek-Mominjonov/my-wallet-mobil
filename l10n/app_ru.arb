@@ -220,6 +220,23 @@
   "dashMarkPaid": "Оплачено",
   "dashCategories": "Категории",
   "dashMembers": "По участникам",
+  "dashAttention": "Обратите внимание",
+  "insightSpike": "{name}: на {percent}% больше среднего за 3 месяца (в среднем {average})",
+  "@insightSpike": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "percent": { "type": "int" },
+      "average": { "type": "String" }
+    }
+  },
+  "insightSubscription": "{payee} — {amount}, повторяется {months} месяцев",
+  "@insightSubscription": {
+    "placeholders": {
+      "payee": { "type": "String" },
+      "amount": { "type": "String" },
+      "months": { "type": "int" }
+    }
+  },
   "dashIncomeTypes": "Виды дохода",
   "dashFund": "👤 Личный фонд",
   "dashSavings": "🏦 Накопления",
@@ -283,6 +300,14 @@
   "yearTotal": "ИТОГО",
   "yearView": "Годовой обзор",
   "yearEmpty": "В этом году нет записей",
+  "yearSummaryTitle": "Итоги года",
+  "yearSummaryMonths": "По {count} месяцам с записями",
+  "@yearSummaryMonths": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "yearSummaryAvgExpense": "Средний расход в месяц",
+  "yearSummaryBest": "Лучший месяц",
+  "yearSummaryWorst": "Худший месяц",
   "categoryTrend": "По месяцам",
   "categoryTransactions": "Показать операции",
   "monthShort": "{month, select, 1{Янв} 2{Фев} 3{Мар} 4{Апр} 5{Май} 6{Июн} 7{Июл} 8{Авг} 9{Сен} 10{Окт} 11{Ноя} 12{Дек} other{?}}",

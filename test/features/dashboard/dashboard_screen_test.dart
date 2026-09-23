@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:my_wallet/core/share/file_sharer.dart';
 import 'package:my_wallet/data/local/database.dart';
+import 'package:my_wallet/data/local/mappers.dart';
+import 'package:wallet_domain/wallet_domain.dart';
 
 import '../../support/test_database.dart';
 import 'dashboard_harness.dart';
@@ -54,6 +56,10 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('2026-yil'), findsOneWidget);
     expect(find.text('JAMI'), findsOneWidget);
+    // E32-T04: yil xulosasi — o'rtacha xarajat va eng yaxshi oy.
+    expect(find.text('Yil xulosasi'), findsOneWidget);
+    expect(find.text("Oyiga o'rtacha xarajat"), findsOneWidget);
+    expect(find.text("Eng ko'p orttirilgan oy"), findsOneWidget);
     router.pop();
     await tester.pumpAndSettle();
 
@@ -61,6 +67,60 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Oyma-oy'), findsOneWidget);
     expect(find.text("Amallarni ko'rish"), findsOneWidget);
+  });
+
+  testWidgets('E32-T03: "Diqqat" — sakrash va obuna', (tester) async {
+    await seedMonth(db, income: 1000000000, expense: 20000000);
+    // Oldingi uch oy: 200 000 dan (o'rtacha 200 000), oktabrda — 600 000.
+    await db.batch((b) {
+      b.insertAll(db.transactions, [
+        for (final (index, month) in [7, 8, 9].indexed)
+          Transaction(
+            id: 'p$index',
+            householdId: 'h1',
+            kind: TransactionKind.expense,
+            accountId: 'card',
+            amount: const Money(20000000),
+            amountBase: const Money(20000000),
+            categoryId: 'food',
+            occurredOn: LocalDate(2026, month, 5),
+            budgetMonth: MonthKey(2026, month),
+            rowVersion: 1,
+          ).toCompanion(),
+        Transaction(
+          id: 'spike',
+          householdId: 'h1',
+          kind: TransactionKind.expense,
+          accountId: 'card',
+          amount: const Money(40000000),
+          amountBase: const Money(40000000),
+          categoryId: 'food',
+          occurredOn: LocalDate(2026, 10, 6),
+          budgetMonth: MonthKey(2026, 10),
+          rowVersion: 1,
+        ).toCompanion(),
+        // Obuna: bir xil nom va summa uch oyda.
+        for (final (index, month) in [8, 9, 10].indexed)
+          Transaction(
+            id: 'sub$index',
+            householdId: 'h1',
+            kind: TransactionKind.expense,
+            accountId: 'card',
+            amount: const Money(5000000),
+            amountBase: const Money(5000000),
+            categoryId: 'food',
+            payee: 'Netflix',
+            occurredOn: LocalDate(2026, month, 3),
+            budgetMonth: MonthKey(2026, month),
+            rowVersion: 1,
+          ).toCompanion(),
+      ]);
+    });
+    await pumpDashboard(tester, db);
+
+    expect(find.text('Diqqat'), findsOneWidget);
+    expect(find.textContaining('Oziq-ovqat'), findsWidgets);
+    expect(find.textContaining('Netflix'), findsOneWidget);
   });
 
   group('ulashish (E16-T06)', () {

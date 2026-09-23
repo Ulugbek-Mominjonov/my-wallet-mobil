@@ -73,6 +73,7 @@ class DashboardScreen extends ConsumerWidget {
               if (report.incomeTypes.isNotEmpty)
                 _IncomeTypesCard(report: report),
               const _MembersCard(),
+              const _InsightsCard(),
             ],
             // Fond, jamg'arma, qarz va maqsadlar — oyga bog'liq emas.
             _FundSavingsRow(report: report),
@@ -529,6 +530,52 @@ class _CategoriesCard extends ConsumerWidget {
                         },
                       ),
                   ],
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// E32-T03: "Diqqat" — sakragan kategoriyalar va topilgan obunalar
+/// (lokal hisob; serverdagi `report_insights` bilan bir xil qoidalar).
+class _InsightsCard extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    final insights = ref.watch(insightsProvider).value;
+    if (insights == null ||
+        (insights.spikes.isEmpty && insights.subs.isEmpty)) {
+      return const SizedBox.shrink();
+    }
+    return _Section(
+      title: l10n.dashAttention,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (final spike in insights.spikes)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+              child: Text(
+                l10n.insightSpike(
+                  spike.name,
+                  spike.deltaPercent,
+                  moneyLabel(context, ref, spike.average),
+                ),
+              ),
+            ),
+          for (final sub in insights.subs)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+              child: Text(
+                l10n.insightSubscription(
+                  sub.payee,
+                  moneyLabel(context, ref, sub.amount),
+                  sub.months,
                 ),
               ),
             ),

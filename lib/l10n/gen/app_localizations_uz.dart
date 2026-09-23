@@ -744,6 +744,19 @@ class AppL10nUz extends AppL10n {
   String get dashMembers => 'A\'zolar kesimi';
 
   @override
+  String get dashAttention => 'Diqqat';
+
+  @override
+  String insightSpike(String name, int percent, String average) {
+    return '$name: 3 oylik o\'rtachadan $percent% ko\'p (o\'rtacha $average)';
+  }
+
+  @override
+  String insightSubscription(String payee, String amount, int months) {
+    return '$payee — $amount, $months oydan beri takrorlanmoqda';
+  }
+
+  @override
   String get dashIncomeTypes => 'Daromad turlari';
 
   @override
@@ -950,6 +963,23 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get yearEmpty => 'Bu yilda yozuv yo\'q';
+
+  @override
+  String get yearSummaryTitle => 'Yil xulosasi';
+
+  @override
+  String yearSummaryMonths(int count) {
+    return 'Yozuvi bor $count oy bo\'yicha';
+  }
+
+  @override
+  String get yearSummaryAvgExpense => 'Oyiga o\'rtacha xarajat';
+
+  @override
+  String get yearSummaryBest => 'Eng ko\'p orttirilgan oy';
+
+  @override
+  String get yearSummaryWorst => 'Eng kam orttirilgan oy';
 
   @override
   String get categoryTrend => 'Oyma-oy';

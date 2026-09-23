@@ -179,6 +179,92 @@ class ReportDao extends DatabaseAccessor<AppDatabase> with _$ReportDaoMixin {
   static int _carry(int leftover, {required bool negative}) =>
       leftover > 0 || negative ? leftover : 0;
 
+  /// E32-T03: "Diqqat" uchun kirish ma'lumotlari — oxirgi oylar xarajati
+  /// kategoriya kesimida (sakrash) va nom bo'yicha to'lovlar (obunalar).
+  /// Serverdagi `report_insights` bilan bir xil oyna (3 va 6 oy).
+  Future<
+    ({
+      Map<String, ({String name, Money actual})> current,
+      Map<String, Money> previousTotal,
+      List<({String payee, Money amount, MonthKey month})> payments,
+    })
+  >
+  insightsInput(
+    String householdId,
+    MonthKey month, {
+    Currency base = Currency.uzs,
+  }) async {
+    final from = month.shift(1 - subscriptionWindowMonths);
+    final accounts = attachedDatabase.accounts;
+    final rows =
+        await (selectOnly(transactions).join([
+                innerJoin(
+                  accounts,
+                  accounts.id.equalsExp(transactions.accountId),
+                  useColumns: false,
+                ),
+              ])
+              ..addColumns([
+                transactions.budgetMonth,
+                transactions.categoryId,
+                transactions.payee,
+                transactions.amountBase,
+              ])
+              ..where(
+                transactions.householdId.equals(householdId) &
+                    transactions.budgetMonth.isBetweenValues(
+                      from.toIsoDate(),
+                      month.toIsoDate(),
+                    ) &
+                    transactions.kind.equals(TransactionKind.expense.wire) &
+                    accounts.type.equals(AccountType.personalFund.wire).not() &
+                    transactions.deletedAt.isNull(),
+              ))
+            .get();
+    // Kategoriya nomlari va ota-kategoriya bog'lanishi (BR-132).
+    final expenseCategories =
+        await (select(categories)..where(
+              (c) =>
+                  c.householdId.equals(householdId) &
+                  c.kind.equals(CategoryKind.expense.wire),
+            ))
+            .get();
+    final parentOf = {
+      for (final category in expenseCategories)
+        category.id: category.parentId ?? category.id,
+    };
+    final nameOf = {
+      for (final category in expenseCategories) category.id: category.name,
+    };
+
+    final current = <String, ({String name, Money actual})>{};
+    final previous = <String, Money>{};
+    final payments = <({String payee, Money amount, MonthKey month})>[];
+    final avgFrom = month.shift(-spikeAverageMonths);
+    for (final row in rows) {
+      final rowMonth = MonthKey.parse(row.read(transactions.budgetMonth)!);
+      final value = Money(row.read(transactions.amountBase) ?? 0, base);
+      final categoryId = row.read(transactions.categoryId);
+      final target = categoryId == null ? null : parentOf[categoryId];
+      if (target != null) {
+        if (rowMonth == month) {
+          final line = current[target];
+          current[target] = (
+            name: nameOf[target] ?? '',
+            actual: (line?.actual ?? Money(0, base)) + value,
+          );
+        } else if (!rowMonth.isBefore(avgFrom)) {
+          previous[target] = (previous[target] ?? Money(0, base)) + value;
+        }
+      }
+      final payee = row.read(transactions.payee);
+      if (payee != null) {
+        payments.add((payee: payee, amount: value, month: rowMonth));
+      }
+    }
+    return (current: current, previousTotal: previous, payments: payments);
+  }
+
   /// Xarajat (fond hisobidan emas) va ajratma — "O'zim uchun"da.
   static const _actualByCategorySql = '''
     SELECT CASE WHEN t.kind = 'transfer'
