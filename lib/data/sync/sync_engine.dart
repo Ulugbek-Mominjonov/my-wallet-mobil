@@ -93,8 +93,44 @@ final class SyncEngine {
     final pushed = await push(householdId);
     if (!pushed.ok) return pushed;
     final pulled = await pull(householdId);
+    if (pulled.ok) await pullRates();
     return pushed._with(pulled: pulled.pulled, failure: pulled.failure);
   }
+
+  /// E29 (BR-191): valyuta kurslari — lokal nusxa. Har sinxronda faqat
+  /// oxirgi olingan sanadan keyingilari (sikl xatosi bo'lsa — jimgina
+  /// o'tkazib yuboriladi: kurslar sinxronni to'xtatmaydi).
+  Future<void> pullRates() async {
+    final last =
+        await (_db.selectOnly(_db.exchangeRates)
+              ..addColumns([_db.exchangeRates.rateDate.max()]))
+            .map((row) => row.read(_db.exchangeRates.rateDate.max()))
+            .getSingleOrNull();
+    // Birinchi marta — o'tgan yildan (CBU kunlik kurslari; ~250 qator).
+    final since = last == null
+        ? LocalDate.fromDateTime(now()).addDays(-_ratesHistoryDays)
+        : LocalDate.parse(last);
+    final result = await _api.fxRates(since);
+    if (result case Err(:final failure)) {
+      AppLog.info('Kurslar olinmadi: $failure');
+      return;
+    }
+    final rows = (result as Ok<List<FxRateRow>>).value;
+    if (rows.isEmpty) return;
+    await _db.batch(
+      (batch) => batch.insertAllOnConflictUpdate(_db.exchangeRates, [
+        for (final row in rows)
+          ExchangeRatesCompanion.insert(
+            currency: row.currency.code,
+            rateDate: row.date.toString(),
+            rateToBase: row.rate.toString(),
+          ),
+      ]),
+    );
+  }
+
+  /// Birinchi yuklashda olinadigan tarix (kun).
+  static const _ratesHistoryDays = 366;
 
   // ─── Push ────────────────────────────────────────────────────────────────
 

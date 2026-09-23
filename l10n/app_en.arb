@@ -130,6 +130,12 @@
   "fieldCategory": "Category",
   "fieldPayee": "Payee",
   "fieldNote": "Note",
+  "fieldFxRate": "Rate",
+  "fxRateMissing": "No rate for this date — enter it manually",
+  "fieldToAmount": "Destination amount ({currency})",
+  "@fieldToAmount": {
+    "placeholders": { "currency": { "type": "String" } }
+  },
   "fieldTo": "To",
   "dateToday": "Today",
   "dateYesterday": "Yesterday",
@@ -277,6 +283,7 @@
   "accountTypeOther": "Other",
   "walletAccounts": "Accounts",
   "walletTotalNoFund": "Total (excluding fund)",
+  "walletTotalBase": "Total (base currency)",
   "walletNegativeCash": "Cash balance is negative — check your records",
   "walletDebts": "💳 Debts",
   "walletGoals": "🎯 Goals",
@@ -339,6 +346,12 @@
   "limitRemove": "Remove limit",
   "limitsReadOnly": "Only the owner or an admin can change limits",
   "limitMonthly": "Monthly limit",
+  "limitRollover": "Carry the leftover to the next month",
+  "limitRolloverNegative": "Subtract the overspend",
+  "limitCarry": "from last month {amount}",
+  "@limitCarry": {
+    "placeholders": { "amount": { "type": "String" } }
+  },
   "onboardingNotifyTitle": "🔔 Reminders",
   "onboardingNotifyBody": "We'll remind you about payment days, limits and the monthly report",
   "onboardingNotifyAllow": "Turn on",

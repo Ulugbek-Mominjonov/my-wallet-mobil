@@ -6,6 +6,7 @@ import 'package:wallet_domain/src/result.dart';
 import 'package:wallet_domain/src/usecases/deps.dart';
 import 'package:wallet_domain/src/usecases/plan_payments.dart';
 import 'package:wallet_domain/src/usecases/prepare.dart';
+import 'package:wallet_domain/src/value_objects/fx_rate.dart';
 import 'package:wallet_domain/src/value_objects/local_date.dart';
 import 'package:wallet_domain/src/value_objects/money.dart';
 import 'package:wallet_domain/src/value_objects/month_key.dart';
@@ -28,6 +29,7 @@ final class TransactionInput {
     this.payee,
     this.note,
     this.debtId,
+    this.fxRate,
     this.source = TransactionSource.manual,
   });
 
@@ -47,6 +49,9 @@ final class TransactionInput {
   final String? payee;
   final String? note;
   final String? debtId;
+
+  /// BR-192: qo'lda kurs (bo'sh — sanadagi kurs).
+  final FxRate? fxRate;
   final TransactionSource source;
 }
 
@@ -80,6 +85,7 @@ final class AddTransaction {
       payee: input.payee,
       note: input.note,
       debtId: input.debtId,
+      fxRate: input.fxRate?.toString(),
       source: input.source,
     );
     return await _insert(_deps, draft, confirmClosedMonth: confirmClosedMonth);
@@ -96,6 +102,7 @@ final class TransferInput {
     this.toAmount,
     this.occurredOn,
     this.note,
+    this.fxRate,
   });
 
   final String fromAccountId;
@@ -106,6 +113,9 @@ final class TransferInput {
   final Money? toAmount;
   final LocalDate? occurredOn;
   final String? note;
+
+  /// BR-192: manba hisob valyutasi uchun qo'lda kurs.
+  final FxRate? fxRate;
 }
 
 final class AddTransfer {
@@ -131,6 +141,7 @@ final class AddTransfer {
       occurredOn: occurredOn,
       budgetMonth: occurredOn.monthKey,
       note: input.note,
+      fxRate: input.fxRate?.toString(),
     );
     return await _insert(_deps, draft, confirmClosedMonth: confirmClosedMonth);
   }

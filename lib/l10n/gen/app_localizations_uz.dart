@@ -464,6 +464,17 @@ class AppL10nUz extends AppL10n {
   String get fieldNote => 'Izoh';
 
   @override
+  String get fieldFxRate => 'Kurs';
+
+  @override
+  String get fxRateMissing => 'Bu sanaga kurs yo\'q — kursni qo\'lda kiriting';
+
+  @override
+  String fieldToAmount(String currency) {
+    return 'Manzil summasi ($currency)';
+  }
+
+  @override
   String get fieldTo => 'Qayerga';
 
   @override
@@ -972,6 +983,9 @@ class AppL10nUz extends AppL10n {
   String get walletTotalNoFund => 'Jami (fondsiz)';
 
   @override
+  String get walletTotalBase => 'Jami (asosiy valyutada)';
+
+  @override
   String get walletNegativeCash => 'Naqd qoldiq manfiy — yozuvlarni tekshiring';
 
   @override
@@ -1177,6 +1191,17 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get limitMonthly => 'Oylik limit';
+
+  @override
+  String get limitRollover => 'Qolganini keyingi oyga o\'tkazish';
+
+  @override
+  String get limitRolloverNegative => 'Oshib ketganini ayirish';
+
+  @override
+  String limitCarry(String amount) {
+    return 'o\'tgan oydan $amount';
+  }
 
   @override
   String get onboardingNotifyTitle => '🔔 Eslatmalar';

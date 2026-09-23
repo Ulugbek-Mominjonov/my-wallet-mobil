@@ -2,6 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:wallet_domain/src/entities/debt.dart';
 import 'package:wallet_domain/src/entities/enums.dart';
 import 'package:wallet_domain/src/internal/rounding.dart';
+import 'package:wallet_domain/src/rules/fx.dart';
 import 'package:wallet_domain/src/value_objects/currency.dart';
 import 'package:wallet_domain/src/value_objects/money.dart';
 import 'package:wallet_domain/src/value_objects/month_key.dart';
@@ -78,30 +79,39 @@ final class DebtProgress {
   final DebtStatus status;
 }
 
-/// BR-114: jamlar — faqat asosiy valyutadagi, arxivlanmagan qarzlar.
+/// BR-114, BR-194: jamlar — arxivlanmagan qarzlar, asosiy valyutadagi
+/// ekvivalentda. Kursi yo'q qarz jamga kirmaydi (0 deb hisoblanmaydi).
 @immutable
 final class DebtTotals {
   /// [paidThisMonth] — shu oyda qarzga bog'langan amallar (asosiy valyutada).
+  /// [toBase] — boshqa valyutadagi summani o'tkazadi (BR-194); berilmasa
+  /// faqat asosiy valyutadagi qarzlar hisobga olinadi.
   factory of(
     Iterable<(Debt, DebtProgress)> debts, {
     required Currency baseCurrency,
     required Money paidThisMonth,
+    ToBaseAmount? toBase,
   }) {
     var iOwe = Money(0, baseCurrency);
     var owedToMe = Money(0, baseCurrency);
     var monthly = Money(0, baseCurrency);
+    Money? inBase(Money? amount) => switch (amount) {
+      null => null,
+      _ when amount.currency == baseCurrency => amount,
+      _ => toBase?.call(amount),
+    };
     for (final (debt, progress) in debts) {
-      if (debt.archivedAt != null || debt.total.currency != baseCurrency) {
-        continue;
-      }
+      if (debt.archivedAt != null) continue;
+      final remaining = inBase(progress.remaining);
+      if (remaining == null) continue;
       switch (debt.direction) {
         case DebtDirection.iOwe:
-          iOwe += progress.remaining;
+          iOwe += remaining;
           if (progress.remaining.isPositive && debt.monthlyPayment != null) {
-            monthly += debt.monthlyPayment!;
+            monthly += inBase(debt.monthlyPayment) ?? Money(0, baseCurrency);
           }
         case DebtDirection.owedToMe:
-          owedToMe += progress.remaining;
+          owedToMe += remaining;
       }
     }
     return DebtTotals._(

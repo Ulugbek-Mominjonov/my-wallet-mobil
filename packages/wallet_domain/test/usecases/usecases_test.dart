@@ -36,6 +36,7 @@ void main() {
     LocalDate? occurredOn,
     MonthKey? manualMonth,
     String? payee,
+    FxRate? fxRate,
   }) => TransactionInput(
     kind: kind,
     accountId: accountId,
@@ -44,6 +45,7 @@ void main() {
     occurredOn: occurredOn,
     manualMonth: manualMonth,
     payee: payee,
+    fxRate: fxRate,
   );
 
   group('AddTransaction (BR-050, BR-051)', () {
@@ -68,6 +70,45 @@ void main() {
         expect(store.transactorRuns, 1);
       },
     );
+
+    test('BR-191: boshqa valyutadagi hisob — sanadagi kurs bilan', () async {
+      store.rates = FxRates.of([
+        (
+          currency: Currency.usd,
+          date: LocalDate(2026, 10, 1),
+          rate: FxRate.tryParse('12600')!,
+        ),
+      ]);
+      final tx = ok(
+        await AddTransaction(store.deps)(
+          input(accountId: 'usd', amount: 10000),
+        ),
+      );
+      expect(tx.amount, const Money(10000, Currency.usd));
+      expect(tx.amountBase, const Money(126000000));
+      expect(tx.fxRate, isNull);
+    });
+
+    test("BR-192: qo'lda kurs jadvaldagidan ustun", () async {
+      store.rates = FxRates.of([
+        (
+          currency: Currency.usd,
+          date: LocalDate(2026, 10, 1),
+          rate: FxRate.tryParse('12600')!,
+        ),
+      ]);
+      final tx = ok(
+        await AddTransaction(store.deps)(
+          input(
+            accountId: 'usd',
+            amount: 10000,
+            fxRate: FxRate.tryParse('13000'),
+          ),
+        ),
+      );
+      expect(tx.amountBase, const Money(130000000));
+      expect(tx.fxRate, '13000');
+    });
 
     test("standart sana — bugun; qo'lda oy saqlanadi (BR-041)", () async {
       final today = ok(await AddTransaction(store.deps)(input()));
@@ -214,6 +255,29 @@ void main() {
         expect(tx.budgetMonth, MonthKey(2026, 10));
       },
     );
+
+    test('BR-191: manba boshqa valyutada — ekvivalent kurs bilan', () async {
+      store.rates = FxRates.of([
+        (
+          currency: Currency.usd,
+          date: LocalDate(2026, 10, 1),
+          rate: FxRate.tryParse('12600')!,
+        ),
+      ]);
+      final tx = ok(
+        await AddTransfer(store.deps)(
+          TransferInput(
+            fromAccountId: 'usd',
+            toAccountId: 'cash',
+            amount: const Money(10000, Currency.usd),
+            toAmount: const Money(126000000),
+            occurredOn: LocalDate(2026, 10, 3),
+          ),
+        ),
+      );
+      expect(tx.amountBase, const Money(126000000));
+      expect(tx.toAmount, const Money(126000000));
+    });
 
     test('BR-193: boshqa valyutaga — manzil summasi majburiy', () async {
       expect(

@@ -146,5 +146,14 @@ final class WalletActions {
   Future<Result<CategoryLimit?>> setLimit(
     String categoryId, {
     required Money? amount,
-  }) => _run((deps) => SetCategoryLimit(deps)(categoryId, amount: amount));
+    bool? rollover,
+    bool? rolloverNegative,
+  }) => _run(
+    (deps) => SetCategoryLimit(deps)(
+      categoryId,
+      amount: amount,
+      rollover: rollover,
+      rolloverNegative: rolloverNegative,
+    ),
+  );
 }

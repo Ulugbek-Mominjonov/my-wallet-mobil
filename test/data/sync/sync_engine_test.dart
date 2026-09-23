@@ -508,6 +508,32 @@ void main() {
   });
 
   test(
+    'E29 (BR-191): sinxrondan keyin kurslar lokal jadvalga tushadi',
+    () async {
+      remote.rates = [
+        (
+          currency: Currency.usd,
+          date: LocalDate(2026, 10, 1),
+          rate: FxRate.tryParse('12600')!,
+        ),
+      ];
+      await engine.sync('h');
+
+      final rows = await db.select(db.exchangeRates).get();
+      expect(
+        [for (final row in rows) (row.currency, row.rateDate, row.rateToBase)],
+        [('USD', '2026-10-01', '12600')],
+      );
+      // Birinchi marta — bir yillik tarix so'raladi.
+      expect(remote.rateRequests.single.year, 2025);
+
+      // Ikkinchi sikl — faqat oxirgi sanadan keyingilari.
+      await engine.sync('h');
+      expect(remote.rateRequests.last, LocalDate(2026, 10, 1));
+    },
+  );
+
+  test(
     'sync: push, keyin pull; bir vaqtda bitta sikl, keyingisi navbatga',
     () async {
       await addExpense();

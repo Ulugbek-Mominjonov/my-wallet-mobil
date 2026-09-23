@@ -463,6 +463,17 @@ class AppL10nRu extends AppL10n {
   String get fieldNote => 'Комментарий';
 
   @override
+  String get fieldFxRate => 'Курс';
+
+  @override
+  String get fxRateMissing => 'На эту дату курса нет — введите курс вручную';
+
+  @override
+  String fieldToAmount(String currency) {
+    return 'Сумма зачисления ($currency)';
+  }
+
+  @override
   String get fieldTo => 'Куда';
 
   @override
@@ -970,6 +981,9 @@ class AppL10nRu extends AppL10n {
   String get walletTotalNoFund => 'Итого (без фонда)';
 
   @override
+  String get walletTotalBase => 'Итого (в основной валюте)';
+
+  @override
   String get walletNegativeCash =>
       'Остаток наличных отрицательный — проверьте записи';
 
@@ -1177,6 +1191,17 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get limitMonthly => 'Месячный лимит';
+
+  @override
+  String get limitRollover => 'Переносить остаток на следующий месяц';
+
+  @override
+  String get limitRolloverNegative => 'Вычитать перерасход';
+
+  @override
+  String limitCarry(String amount) {
+    return 'с прошлого месяца $amount';
+  }
 
   @override
   String get onboardingNotifyTitle => '🔔 Напоминания';

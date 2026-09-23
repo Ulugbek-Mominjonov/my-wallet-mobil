@@ -3,6 +3,7 @@ import 'package:drift_flutter/drift_flutter.dart';
 import 'package:my_wallet/data/local/daos/directory_dao.dart';
 import 'package:my_wallet/data/local/daos/ledger_dao.dart';
 import 'package:my_wallet/data/local/daos/report_dao.dart';
+import 'package:my_wallet/data/local/database.steps.dart';
 import 'package:my_wallet/data/local/tables/local_tables.dart';
 import 'package:my_wallet/data/local/tables/sync_tables.dart';
 
@@ -32,6 +33,7 @@ part 'database.g.dart';
     SyncIssues,
     AppSettings,
     PendingUploads,
+    ExchangeRates,
   ],
   daos: [LedgerDao, DirectoryDao, ReportDao],
 )
@@ -42,18 +44,35 @@ class AppDatabase extends _$AppDatabase {
   factory open() => AppDatabase(driftDatabase(name: 'my_wallet'));
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 4;
 
+  /// Har qadam — bitta versiya (drift `stepByStep`, snapshot'lardan):
+  /// oraliq versiyadan yangilanish ham aynan shu yo'ldan o'tadi.
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (migrator) => migrator.createAll(),
-    onUpgrade: (migrator, from, to) async {
+    onUpgrade: stepByStep(
       // v2 (E15-T07): chek rasmlari navbati (jadval va indeksi).
-      if (from < 2) {
-        await migrator.createTable(pendingUploads);
-        await migrator.createIndex(pendingUploadsHousehold);
-      }
-    },
+      from1To2: (migrator, schema) async {
+        await migrator.createTable(schema.pendingUploads);
+        await migrator.createIndex(schema.pendingUploadsHousehold);
+      },
+      // v3 (E34-T03, BR-134): limit qoldig'ini keyingi oyga o'tkazish.
+      from2To3: (migrator, schema) async {
+        await migrator.addColumn(
+          schema.categoryLimits,
+          schema.categoryLimits.rollover,
+        );
+        await migrator.addColumn(
+          schema.categoryLimits,
+          schema.categoryLimits.rolloverNegative,
+        );
+      },
+      // v4 (E29-T07, BR-191): valyuta kurslari (oflayn `amount_base` uchun).
+      from3To4: (migrator, schema) async {
+        await migrator.createTable(schema.exchangeRates);
+      },
+    ),
   );
 
   static const _deviceIdKey = 'device_id';

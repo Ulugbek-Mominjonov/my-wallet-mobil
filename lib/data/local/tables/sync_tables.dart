@@ -117,6 +117,13 @@ class CategoryLimits extends Table with SyncedRow {
       boolean().named('alert_80').withDefault(const Constant(true))();
   BoolColumn get alert100 =>
       boolean().named('alert_100').withDefault(const Constant(true))();
+
+  /// BR-134: o'tgan oy qoldig'i shu oyga qo'shiladi.
+  BoolColumn get rollover => boolean().withDefault(const Constant(false))();
+
+  /// BR-134: o'tgan oyda oshib ketgani shu oy limitidan ayiriladi.
+  BoolColumn get rolloverNegative =>
+      boolean().withDefault(const Constant(false))();
 }
 
 @DataClassName('QuickActionRow')

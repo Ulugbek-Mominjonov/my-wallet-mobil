@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show FutureProviderFamily;
 import 'package:meta/meta.dart';
 import 'package:my_wallet/data/local/directory_providers.dart';
 import 'package:my_wallet/data/receipts/receipt_providers.dart';
@@ -23,6 +24,10 @@ final class AddTransactionState {
     this.tagIds = const {},
     this.debtId,
     this.manualMonth,
+    this.baseCurrency = Currency.uzs,
+    this.toCurrency,
+    this.fxRate,
+    this.toEntry = const AmountEntry(),
     this.editing,
     this.receipts = const [],
     this.saving = false,
@@ -50,6 +55,18 @@ final class AddTransactionState {
   /// BR-041, BR-042: qo'lda tanlangan tegishli oy (`null` — qoida bo'yicha).
   final MonthKey? manualMonth;
 
+  /// Byudjetning asosiy valyutasi (BR-191: ekvivalent shunda ko'rsatiladi).
+  final Currency baseCurrency;
+
+  /// O'tkazma manzili hisobining valyutasi (BR-193).
+  final Currency? toCurrency;
+
+  /// BR-192: qo'lda kurs (bo'sh — sanadagi kurs).
+  final FxRate? fxRate;
+
+  /// BR-193: manzil hisob valyutasidagi summa (turli valyutali o'tkazmada).
+  final AmountEntry toEntry;
+
   /// Tahrirlanayotgan amal (E15-T06); `null` — yangi amal.
   final Transaction? editing;
 
@@ -64,12 +81,23 @@ final class AddTransactionState {
 
   bool get isTransfer => kind == TransactionKind.transfer;
 
+  /// BR-191: hisob valyutasi asosiydan farq qiladimi (kurs maydoni shunda).
+  bool get isForeign => currency != baseCurrency;
+
+  /// BR-193: manzil summasi alohida kiritiladimi (valyutalar har xil).
+  bool get needsToAmount =>
+      isTransfer && toCurrency != null && toCurrency != currency;
+
+  /// Manzil hisob valyutasidagi summa (BR-193).
+  Money get toAmount => toEntry.value(toCurrency ?? currency);
+
   /// Saqlash mumkinmi: summa va kerakli maydonlar to'ldirilgan.
   bool get canSave =>
       amount.minor > 0 &&
       accountId != null &&
       !saving &&
-      (!isTransfer || (toAccountId != null && toAccountId != accountId));
+      (!isTransfer || (toAccountId != null && toAccountId != accountId)) &&
+      (!needsToAmount || toAmount.isPositive);
 
   AddTransactionState copyWith({
     TransactionKind? kind,
@@ -84,6 +112,10 @@ final class AddTransactionState {
     Set<String>? tagIds,
     String? debtId,
     MonthKey? manualMonth,
+    Currency? baseCurrency,
+    Currency? toCurrency,
+    FxRate? fxRate,
+    AmountEntry? toEntry,
     Transaction? editing,
     List<CompressedImage>? receipts,
     bool? saving,
@@ -92,6 +124,7 @@ final class AddTransactionState {
     bool clearDebt = false,
     bool clearManualMonth = false,
     bool clearFailure = false,
+    bool clearFxRate = false,
   }) => AddTransactionState(
     kind: kind ?? this.kind,
     entry: entry ?? this.entry,
@@ -105,12 +138,29 @@ final class AddTransactionState {
     tagIds: tagIds ?? this.tagIds,
     debtId: clearDebt ? null : (debtId ?? this.debtId),
     manualMonth: clearManualMonth ? null : (manualMonth ?? this.manualMonth),
+    baseCurrency: baseCurrency ?? this.baseCurrency,
+    toCurrency: toCurrency ?? this.toCurrency,
+    fxRate: clearFxRate ? null : (fxRate ?? this.fxRate),
+    toEntry: toEntry ?? this.toEntry,
     editing: editing ?? this.editing,
     receipts: receipts ?? this.receipts,
     saving: saving ?? this.saving,
     failure: clearFailure ? null : (failure ?? this.failure),
   );
 }
+
+/// BR-191: sanadagi kurs (hisob valyutasi → asosiy valyuta) — formada
+/// ekvivalentni ko'rsatish uchun; kurs yo'q bo'lsa `null`.
+/// Kalit — valyuta va sana (`Currency` va `LocalDate` qiymat bo'yicha teng).
+typedef FxRateKey = ({Currency currency, LocalDate on});
+
+final FutureProviderFamily<FxRate?, FxRateKey> fxRateProvider =
+    FutureProvider.family<FxRate?, FxRateKey>((ref, key) async {
+      final deps = ref.watch(domainDepsProvider);
+      final startup = ref.watch(startupProvider);
+      if (deps == null || startup is! StartupReady) return null;
+      return await deps.fx.rate(key.currency, startup.currency, key.on);
+    });
 
 final NotifierProvider<AddTransactionController, AddTransactionState>
 addTransactionProvider = NotifierProvider.autoDispose(
@@ -123,20 +173,32 @@ base class AddTransactionController extends Notifier<AddTransactionState> {
   @override
   AddTransactionState build() {
     final startup = ref.watch(startupProvider);
-    final initial = AddTransactionState(
-      currency: startup is StartupReady ? startup.currency : Currency.uzs,
-    );
+    final base = startup is StartupReady ? startup.currency : Currency.uzs;
+    final initial = AddTransactionState(currency: base, baseCurrency: base);
     // Hisoblar keyinroq yuklanishi mumkin: standart hisob faqat hali
     // tanlanmagan bo'lsa qo'yiladi — kiritilgan qiymatlar o'chmaydi.
     ref.listen(accountsProvider, (_, next) {
       final accountId = _defaultAccountId(next.value);
       if (accountId != null && stateOrNull?.accountId == null) {
-        state = state.copyWith(accountId: accountId);
+        state = state.copyWith(
+          accountId: accountId,
+          currency: _currencyOf(accountId, next.value) ?? state.currency,
+        );
       }
     });
-    final accountId = _defaultAccountId(ref.read(accountsProvider).value);
-    return accountId == null ? initial : initial.copyWith(accountId: accountId);
+    final accounts = ref.read(accountsProvider).value;
+    final accountId = _defaultAccountId(accounts);
+    return accountId == null
+        ? initial
+        : initial.copyWith(
+            accountId: accountId,
+            currency: _currencyOf(accountId, accounts) ?? base,
+          );
   }
+
+  /// Hisob valyutasi (BR-021: summa shu valyutada kiritiladi).
+  static Currency? _currencyOf(String? id, List<Account>? accounts) =>
+      accounts?.where((a) => a.id == id).firstOrNull?.currency;
 
   /// Standart hisob — ro'yxatdagi birinchisi (fond emas).
   static String? _defaultAccountId(List<Account>? accounts) => accounts
@@ -166,9 +228,31 @@ base class AddTransactionController extends Notifier<AddTransactionState> {
   void press(AmountKey key) =>
       state = state.copyWith(entry: state.entry.press(key));
 
-  void selectAccount(String id) => state = state.copyWith(accountId: id);
+  /// BR-021: hisob almashsa — summa shu hisob valyutasida; qo'lda kurs
+  /// bekor qilinadi (boshqa valyutaga tegishli edi).
+  void selectAccount(String id) => state = state.copyWith(
+    accountId: id,
+    currency: _currencyOf(id, ref.read(accountsProvider).value),
+    clearFxRate: true,
+  );
 
-  void selectToAccount(String id) => state = state.copyWith(toAccountId: id);
+  void selectToAccount(String id) => state = state.copyWith(
+    toAccountId: id,
+    toCurrency: _currencyOf(id, ref.read(accountsProvider).value),
+  );
+
+  /// BR-192: qo'lda kurs (bo'sh matn — sanadagi kursga qaytadi).
+  void setFxRate(String text) => text.trim().isEmpty
+      ? state = state.copyWith(clearFxRate: true)
+      : state = state.copyWith(fxRate: FxRate.tryParse(text.trim()));
+
+  /// BR-193: manzil hisob valyutasidagi summa (turli valyutali o'tkazma).
+  void pressToAmount(AmountKey key) =>
+      state = state.copyWith(toEntry: state.toEntry.press(key));
+
+  void setToAmount(String text) => state = state.copyWith(
+    toEntry: AmountEntry(digits: text.replaceAll(RegExp('[^0-9]'), '')),
+  );
 
   void selectCategory(String? id) => state = id == null
       ? state.copyWith(clearCategory: true)
@@ -334,8 +418,11 @@ base class AddTransactionController extends Notifier<AddTransactionState> {
             fromAccountId: state.accountId!,
             toAccountId: state.toAccountId!,
             amount: state.amount,
+            // BR-193: valyutalar har xil bo'lsa — manzil summasi ham.
+            toAmount: state.needsToAmount ? state.toAmount : null,
             occurredOn: state.occurredOn,
             note: _trimmed(state.note),
+            fxRate: state.fxRate,
           ),
           confirmClosedMonth: confirmClosedMonth,
         )
@@ -350,6 +437,7 @@ base class AddTransactionController extends Notifier<AddTransactionState> {
             payee: _trimmed(state.payee),
             note: _trimmed(state.note),
             debtId: state.debtId,
+            fxRate: state.fxRate,
           ),
           confirmClosedMonth: confirmClosedMonth,
         );

@@ -15,7 +15,9 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CategoryLimit {
 
- String get id; String get householdId; String get categoryId; Money get amount; bool get alert80; bool get alert100; DateTime? get deletedAt; int get rowVersion;
+ String get id; String get householdId; String get categoryId; Money get amount; bool get alert80; bool get alert100;/// BR-134: o'tgan oy qoldig'ini shu oyga qo'shish.
+ bool get rollover;/// BR-134: o'tgan oyda oshib ketgani ayirilsinmi.
+ bool get rolloverNegative; DateTime? get deletedAt; int get rowVersion;
 /// Create a copy of CategoryLimit
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,20 +29,20 @@ $CategoryLimitCopyWith<CategoryLimit> get copyWith => _$CategoryLimitCopyWithImp
 @override
 bool operator ==(Object other) {
   final _this = this as CategoryLimit;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CategoryLimit&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.householdId, _this.householdId) || other.householdId == _this.householdId)&&(identical(other.categoryId, _this.categoryId) || other.categoryId == _this.categoryId)&&(identical(other.amount, _this.amount) || other.amount == _this.amount)&&(identical(other.alert80, _this.alert80) || other.alert80 == _this.alert80)&&(identical(other.alert100, _this.alert100) || other.alert100 == _this.alert100)&&(identical(other.deletedAt, _this.deletedAt) || other.deletedAt == _this.deletedAt)&&(identical(other.rowVersion, _this.rowVersion) || other.rowVersion == _this.rowVersion));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CategoryLimit&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.householdId, _this.householdId) || other.householdId == _this.householdId)&&(identical(other.categoryId, _this.categoryId) || other.categoryId == _this.categoryId)&&(identical(other.amount, _this.amount) || other.amount == _this.amount)&&(identical(other.alert80, _this.alert80) || other.alert80 == _this.alert80)&&(identical(other.alert100, _this.alert100) || other.alert100 == _this.alert100)&&(identical(other.rollover, _this.rollover) || other.rollover == _this.rollover)&&(identical(other.rolloverNegative, _this.rolloverNegative) || other.rolloverNegative == _this.rolloverNegative)&&(identical(other.deletedAt, _this.deletedAt) || other.deletedAt == _this.deletedAt)&&(identical(other.rowVersion, _this.rowVersion) || other.rowVersion == _this.rowVersion));
 }
 
 
 @override
 int get hashCode {
   final _this = this as CategoryLimit;
-  return Object.hash(runtimeType,_this.id,_this.householdId,_this.categoryId,_this.amount,_this.alert80,_this.alert100,_this.deletedAt,_this.rowVersion);
+  return Object.hash(runtimeType,_this.id,_this.householdId,_this.categoryId,_this.amount,_this.alert80,_this.alert100,_this.rollover,_this.rolloverNegative,_this.deletedAt,_this.rowVersion);
 }
 
 @override
 String toString() {
   final _this = this as CategoryLimit;
-  return 'CategoryLimit(id: ${_this.id}, householdId: ${_this.householdId}, categoryId: ${_this.categoryId}, amount: ${_this.amount}, alert80: ${_this.alert80}, alert100: ${_this.alert100}, deletedAt: ${_this.deletedAt}, rowVersion: ${_this.rowVersion})';
+  return 'CategoryLimit(id: ${_this.id}, householdId: ${_this.householdId}, categoryId: ${_this.categoryId}, amount: ${_this.amount}, alert80: ${_this.alert80}, alert100: ${_this.alert100}, rollover: ${_this.rollover}, rolloverNegative: ${_this.rolloverNegative}, deletedAt: ${_this.deletedAt}, rowVersion: ${_this.rowVersion})';
 }
 
 
@@ -51,7 +53,7 @@ abstract mixin class $CategoryLimitCopyWith<$Res>  {
   factory $CategoryLimitCopyWith(CategoryLimit value, $Res Function(CategoryLimit) _then) = _$CategoryLimitCopyWithImpl;
 @useResult
 $Res call({
- String id, String householdId, String categoryId, Money amount, bool alert80, bool alert100, DateTime? deletedAt, int rowVersion
+ String id, String householdId, String categoryId, Money amount, bool alert80, bool alert100, bool rollover, bool rolloverNegative, DateTime? deletedAt, int rowVersion
 });
 
 
@@ -68,7 +70,7 @@ class _$CategoryLimitCopyWithImpl<$Res>
 
 /// Create a copy of CategoryLimit
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? householdId = null,Object? categoryId = null,Object? amount = null,Object? alert80 = null,Object? alert100 = null,Object? deletedAt = freezed,Object? rowVersion = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? householdId = null,Object? categoryId = null,Object? amount = null,Object? alert80 = null,Object? alert100 = null,Object? rollover = null,Object? rolloverNegative = null,Object? deletedAt = freezed,Object? rowVersion = null,}) {
   return _then(CategoryLimit(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,householdId: null == householdId ? _self.householdId : householdId // ignore: cast_nullable_to_non_nullable
@@ -76,6 +78,8 @@ as String,categoryId: null == categoryId ? _self.categoryId : categoryId // igno
 as String,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as Money,alert80: null == alert80 ? _self.alert80 : alert80 // ignore: cast_nullable_to_non_nullable
 as bool,alert100: null == alert100 ? _self.alert100 : alert100 // ignore: cast_nullable_to_non_nullable
+as bool,rollover: null == rollover ? _self.rollover : rollover // ignore: cast_nullable_to_non_nullable
+as bool,rolloverNegative: null == rolloverNegative ? _self.rolloverNegative : rolloverNegative // ignore: cast_nullable_to_non_nullable
 as bool,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,rowVersion: null == rowVersion ? _self.rowVersion : rowVersion // ignore: cast_nullable_to_non_nullable
 as int,
@@ -163,10 +167,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String householdId,  String categoryId,  Money amount,  bool alert80,  bool alert100,  DateTime? deletedAt,  int rowVersion)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String householdId,  String categoryId,  Money amount,  bool alert80,  bool alert100,  bool rollover,  bool rolloverNegative,  DateTime? deletedAt,  int rowVersion)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CategoryLimit() when $default != null:
-return $default(_that.id,_that.householdId,_that.categoryId,_that.amount,_that.alert80,_that.alert100,_that.deletedAt,_that.rowVersion);case _:
+return $default(_that.id,_that.householdId,_that.categoryId,_that.amount,_that.alert80,_that.alert100,_that.rollover,_that.rolloverNegative,_that.deletedAt,_that.rowVersion);case _:
   return orElse();
 
 }
@@ -184,10 +188,10 @@ return $default(_that.id,_that.householdId,_that.categoryId,_that.amount,_that.a
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String householdId,  String categoryId,  Money amount,  bool alert80,  bool alert100,  DateTime? deletedAt,  int rowVersion)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String householdId,  String categoryId,  Money amount,  bool alert80,  bool alert100,  bool rollover,  bool rolloverNegative,  DateTime? deletedAt,  int rowVersion)  $default,) {final _that = this;
 switch (_that) {
 case _CategoryLimit():
-return $default(_that.id,_that.householdId,_that.categoryId,_that.amount,_that.alert80,_that.alert100,_that.deletedAt,_that.rowVersion);case _:
+return $default(_that.id,_that.householdId,_that.categoryId,_that.amount,_that.alert80,_that.alert100,_that.rollover,_that.rolloverNegative,_that.deletedAt,_that.rowVersion);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -204,10 +208,10 @@ return $default(_that.id,_that.householdId,_that.categoryId,_that.amount,_that.a
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String householdId,  String categoryId,  Money amount,  bool alert80,  bool alert100,  DateTime? deletedAt,  int rowVersion)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String householdId,  String categoryId,  Money amount,  bool alert80,  bool alert100,  bool rollover,  bool rolloverNegative,  DateTime? deletedAt,  int rowVersion)?  $default,) {final _that = this;
 switch (_that) {
 case _CategoryLimit() when $default != null:
-return $default(_that.id,_that.householdId,_that.categoryId,_that.amount,_that.alert80,_that.alert100,_that.deletedAt,_that.rowVersion);case _:
+return $default(_that.id,_that.householdId,_that.categoryId,_that.amount,_that.alert80,_that.alert100,_that.rollover,_that.rolloverNegative,_that.deletedAt,_that.rowVersion);case _:
   return null;
 
 }
@@ -219,7 +223,7 @@ return $default(_that.id,_that.householdId,_that.categoryId,_that.amount,_that.a
 
 
 class _CategoryLimit implements CategoryLimit {
-  const _CategoryLimit({required this.id, required this.householdId, required this.categoryId, required this.amount, this.alert80 = true, this.alert100 = true, this.deletedAt, this.rowVersion = 0});
+  const _CategoryLimit({required this.id, required this.householdId, required this.categoryId, required this.amount, this.alert80 = true, this.alert100 = true, this.rollover = false, this.rolloverNegative = false, this.deletedAt, this.rowVersion = 0});
   
 
 @override final  String id;
@@ -228,6 +232,10 @@ class _CategoryLimit implements CategoryLimit {
 @override final  Money amount;
 @override@JsonKey() final  bool alert80;
 @override@JsonKey() final  bool alert100;
+/// BR-134: o'tgan oy qoldig'ini shu oyga qo'shish.
+@override@JsonKey() final  bool rollover;
+/// BR-134: o'tgan oyda oshib ketgani ayirilsinmi.
+@override@JsonKey() final  bool rolloverNegative;
 @override final  DateTime? deletedAt;
 @override@JsonKey() final  int rowVersion;
 
@@ -241,18 +249,18 @@ _$CategoryLimitCopyWith<_CategoryLimit> get copyWith => __$CategoryLimitCopyWith
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CategoryLimit&&(identical(other.id, id) || other.id == id)&&(identical(other.householdId, householdId) || other.householdId == householdId)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.alert80, alert80) || other.alert80 == alert80)&&(identical(other.alert100, alert100) || other.alert100 == alert100)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.rowVersion, rowVersion) || other.rowVersion == rowVersion));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CategoryLimit&&(identical(other.id, id) || other.id == id)&&(identical(other.householdId, householdId) || other.householdId == householdId)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.alert80, alert80) || other.alert80 == alert80)&&(identical(other.alert100, alert100) || other.alert100 == alert100)&&(identical(other.rollover, rollover) || other.rollover == rollover)&&(identical(other.rolloverNegative, rolloverNegative) || other.rolloverNegative == rolloverNegative)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.rowVersion, rowVersion) || other.rowVersion == rowVersion));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,householdId,categoryId,amount,alert80,alert100,deletedAt,rowVersion);
+    return Object.hash(runtimeType,id,householdId,categoryId,amount,alert80,alert100,rollover,rolloverNegative,deletedAt,rowVersion);
 }
 
 @override
 String toString() {
-    return 'CategoryLimit(id: $id, householdId: $householdId, categoryId: $categoryId, amount: $amount, alert80: $alert80, alert100: $alert100, deletedAt: $deletedAt, rowVersion: $rowVersion)';
+    return 'CategoryLimit(id: $id, householdId: $householdId, categoryId: $categoryId, amount: $amount, alert80: $alert80, alert100: $alert100, rollover: $rollover, rolloverNegative: $rolloverNegative, deletedAt: $deletedAt, rowVersion: $rowVersion)';
 }
 
 
@@ -263,7 +271,7 @@ abstract mixin class _$CategoryLimitCopyWith<$Res> implements $CategoryLimitCopy
   factory _$CategoryLimitCopyWith(_CategoryLimit value, $Res Function(_CategoryLimit) _then) = __$CategoryLimitCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String householdId, String categoryId, Money amount, bool alert80, bool alert100, DateTime? deletedAt, int rowVersion
+ String id, String householdId, String categoryId, Money amount, bool alert80, bool alert100, bool rollover, bool rolloverNegative, DateTime? deletedAt, int rowVersion
 });
 
 
@@ -280,7 +288,7 @@ class __$CategoryLimitCopyWithImpl<$Res>
 
 /// Create a copy of CategoryLimit
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? householdId = null,Object? categoryId = null,Object? amount = null,Object? alert80 = null,Object? alert100 = null,Object? deletedAt = freezed,Object? rowVersion = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? householdId = null,Object? categoryId = null,Object? amount = null,Object? alert80 = null,Object? alert100 = null,Object? rollover = null,Object? rolloverNegative = null,Object? deletedAt = freezed,Object? rowVersion = null,}) {
   return _then(_CategoryLimit(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,householdId: null == householdId ? _self.householdId : householdId // ignore: cast_nullable_to_non_nullable
@@ -288,6 +296,8 @@ as String,categoryId: null == categoryId ? _self.categoryId : categoryId // igno
 as String,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as Money,alert80: null == alert80 ? _self.alert80 : alert80 // ignore: cast_nullable_to_non_nullable
 as bool,alert100: null == alert100 ? _self.alert100 : alert100 // ignore: cast_nullable_to_non_nullable
+as bool,rollover: null == rollover ? _self.rollover : rollover // ignore: cast_nullable_to_non_nullable
+as bool,rolloverNegative: null == rolloverNegative ? _self.rolloverNegative : rolloverNegative // ignore: cast_nullable_to_non_nullable
 as bool,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,rowVersion: null == rowVersion ? _self.rowVersion : rowVersion // ignore: cast_nullable_to_non_nullable
 as int,

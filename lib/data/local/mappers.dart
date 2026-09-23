@@ -326,6 +326,8 @@ extension CategoryLimitRowMapper on CategoryLimitRow {
     amount: Money(amount, base),
     alert80: alert80,
     alert100: alert100,
+    rollover: rollover,
+    rolloverNegative: rolloverNegative,
     deletedAt: deletedAt,
     rowVersion: rowVersion,
   );
@@ -339,6 +341,8 @@ extension CategoryLimitMapper on CategoryLimit {
     amount: amount.minor,
     alert80: Value(alert80),
     alert100: Value(alert100),
+    rollover: Value(rollover),
+    rolloverNegative: Value(rolloverNegative),
     deletedAt: Value(deletedAt),
     rowVersion: Value(rowVersion),
   );

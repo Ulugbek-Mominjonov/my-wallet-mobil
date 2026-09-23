@@ -879,6 +879,24 @@ abstract class AppL10n {
   /// **'Izoh'**
   String get fieldNote;
 
+  /// No description provided for @fieldFxRate.
+  ///
+  /// In uz, this message translates to:
+  /// **'Kurs'**
+  String get fieldFxRate;
+
+  /// No description provided for @fxRateMissing.
+  ///
+  /// In uz, this message translates to:
+  /// **'Bu sanaga kurs yo\'q — kursni qo\'lda kiriting'**
+  String get fxRateMissing;
+
+  /// No description provided for @fieldToAmount.
+  ///
+  /// In uz, this message translates to:
+  /// **'Manzil summasi ({currency})'**
+  String fieldToAmount(String currency);
+
   /// No description provided for @fieldTo.
   ///
   /// In uz, this message translates to:
@@ -1761,6 +1779,12 @@ abstract class AppL10n {
   /// **'Jami (fondsiz)'**
   String get walletTotalNoFund;
 
+  /// No description provided for @walletTotalBase.
+  ///
+  /// In uz, this message translates to:
+  /// **'Jami (asosiy valyutada)'**
+  String get walletTotalBase;
+
   /// No description provided for @walletNegativeCash.
   ///
   /// In uz, this message translates to:
@@ -2132,6 +2156,24 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Oylik limit'**
   String get limitMonthly;
+
+  /// No description provided for @limitRollover.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qolganini keyingi oyga o\'tkazish'**
+  String get limitRollover;
+
+  /// No description provided for @limitRolloverNegative.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oshib ketganini ayirish'**
+  String get limitRolloverNegative;
+
+  /// No description provided for @limitCarry.
+  ///
+  /// In uz, this message translates to:
+  /// **'o\'tgan oydan {amount}'**
+  String limitCarry(String amount);
 
   /// No description provided for @onboardingNotifyTitle.
   ///

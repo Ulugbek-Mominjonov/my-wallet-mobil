@@ -60,6 +60,7 @@ Map<String, Object?> _json(MonthReport report) => {
         'actual': line.actual.minor,
         'actual_total': line.actualTotal.minor,
         'limit': line.limit?.minor,
+        'limit_carry': line.limitCarry.minor,
         'limit_ratio': ratio,
         'limit_status': status?.name,
       },

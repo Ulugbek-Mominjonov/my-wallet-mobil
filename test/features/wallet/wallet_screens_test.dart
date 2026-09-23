@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:my_wallet/data/local/database.dart';
+import 'package:my_wallet/data/local/mappers.dart';
 import 'package:my_wallet/data/remote/dto.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:my_wallet/features/transactions/presentation/transactions_screen.dart';
@@ -40,6 +41,39 @@ void main() {
       // (17 500 000) bitta "jami" sifatida hech qayerda yo'q.
       expect(find.text(money("12 500 000 so'm")), findsNothing);
       expect(find.text(money("17 500 000 so'm")), findsNothing);
+    });
+
+    testWidgets('E29 (BR-194): ikki valyuta — asosiy valyutadagi jami', (
+      tester,
+    ) async {
+      await db.batch((batch) {
+        batch
+          ..insert(
+            db.accounts,
+            const Account(
+              id: 'usd',
+              householdId: 'h1',
+              name: 'Dollar',
+              type: AccountType.bank,
+              openingBalance: Money(100000, Currency.usd),
+              sortOrder: 4,
+              rowVersion: 1,
+            ).toCompanion(),
+          )
+          ..insert(
+            db.exchangeRates,
+            ExchangeRatesCompanion.insert(
+              currency: 'USD',
+              rateDate: '2026-10-01',
+              rateToBase: '12600',
+            ),
+          );
+      });
+      await pumpWallet(tester, db);
+
+      // 16 700 000 so'm + 1 000 USD × 12 600 = 29 300 000 so'm.
+      expect(find.text('Jami (asosiy valyutada)'), findsOneWidget);
+      expect(find.text(money("29 300 000 so'm")), findsOneWidget);
     });
 
     testWidgets('BR-025: manfiy naqd — ogohlantirish', (tester) async {
@@ -235,6 +269,35 @@ void main() {
       await tester.pumpAndSettle();
       // Kredit: 1 000 000 / 2 000 000.
       expect(find.text('50%'), findsOneWidget);
+    });
+
+    testWidgets("BR-134: rollover yoqiladi va o'tgan oy qoldig'i ko'rinadi", (
+      tester,
+    ) async {
+      await pumpWallet(tester, db, path: '/wallet/limits');
+      await tester.tap(find.text('Kredit'));
+      await tester.pumpAndSettle();
+      // Manfiy qoldiq sozlamasi — rollover yoqilmaguncha o'chiq.
+      final negative = tester.widget<SwitchListTile>(
+        find.widgetWithText(SwitchListTile, 'Oshib ketganini ayirish'),
+      );
+      expect(negative.onChanged, isNull);
+
+      await tester.enterText(find.byType(TextField), '2000000');
+      await tester.tap(
+        find.widgetWithText(SwitchListTile, "Qolganini keyingi oyga o'tkazish"),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.widgetWithText(FilledButton, 'Saqlash'));
+      await tester.pumpAndSettle();
+
+      // Sentabrda Kredit xarajati yo'q — butun limit oktabrga o'tadi:
+      // 1 000 000 / (2 000 000 + 2 000 000) = 25%.
+      expect(
+        find.text("o'tgan oydan ${money("2 000 000 so'm")}"),
+        findsOneWidget,
+      );
+      expect(find.text('25%'), findsOneWidget);
     });
 
     testWidgets("member — faqat ko'rish", (tester) async {

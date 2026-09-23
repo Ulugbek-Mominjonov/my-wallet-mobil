@@ -130,6 +130,12 @@
   "fieldCategory": "Категория",
   "fieldPayee": "Место / кому",
   "fieldNote": "Комментарий",
+  "fieldFxRate": "Курс",
+  "fxRateMissing": "На эту дату курса нет — введите курс вручную",
+  "fieldToAmount": "Сумма зачисления ({currency})",
+  "@fieldToAmount": {
+    "placeholders": { "currency": { "type": "String" } }
+  },
   "fieldTo": "Куда",
   "dateToday": "Сегодня",
   "dateYesterday": "Вчера",
@@ -277,6 +283,7 @@
   "accountTypeOther": "Другое",
   "walletAccounts": "Счета",
   "walletTotalNoFund": "Итого (без фонда)",
+  "walletTotalBase": "Итого (в основной валюте)",
   "walletNegativeCash": "Остаток наличных отрицательный — проверьте записи",
   "walletDebts": "💳 Долги",
   "walletGoals": "🎯 Цели",
@@ -339,6 +346,12 @@
   "limitRemove": "Убрать лимит",
   "limitsReadOnly": "Лимиты меняют только владелец или администратор",
   "limitMonthly": "Месячный лимит",
+  "limitRollover": "Переносить остаток на следующий месяц",
+  "limitRolloverNegative": "Вычитать перерасход",
+  "limitCarry": "с прошлого месяца {amount}",
+  "@limitCarry": {
+    "placeholders": { "amount": { "type": "String" } }
+  },
   "onboardingNotifyTitle": "🔔 Напоминания",
   "onboardingNotifyBody": "Напомним о днях платежей, лимитах и месячном отчёте",
   "onboardingNotifyAllow": "Включить",

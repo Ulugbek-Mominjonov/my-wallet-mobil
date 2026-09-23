@@ -49,6 +49,7 @@ final class FixtureLedger {
       .._applyCategories(_list(setup['categories']))
       .._applyAccounts(_list(setup['accounts']))
       .._applyOpeningBalances(setup['opening_balances'] as Json?)
+      .._applyRates(_list(setup['rates']))
       .._applyLimits(_list(setup['limits']))
       .._applyDebts(_list(setup['debts']))
       .._applyGoals(_list(setup['goals']))
@@ -63,6 +64,12 @@ final class FixtureLedger {
   final accounts = <String, Account>{};
   final categories = <String, Category>{};
   final limits = <CategoryLimit>[];
+
+  /// E29 (BR-191): kurslar — `setup.rates` dan.
+  FxRates rates = FxRates.empty;
+
+  /// O'sha kurslar qator ko'rinishida (lokal bazaga yozish uchun).
+  final rateRows = <FxRateRow>[];
   final debts = <String, Debt>{};
   final goals = <Goal>[];
   final plans = <String, PlannedItem>{};
@@ -162,6 +169,18 @@ final class FixtureLedger {
     });
   }
 
+  void _applyRates(List<Json> items) {
+    rateRows.addAll([
+      for (final item in items)
+        (
+          currency: Currency(item['currency']! as String),
+          date: LocalDate.parse(item['date']! as String),
+          rate: FxRate.tryParse('${item['rate']}')!,
+        ),
+    ]);
+    rates = FxRates.of(rateRows);
+  }
+
   void _applyLimits(List<Json> items) {
     for (final (index, item) in items.indexed) {
       limits.add(
@@ -170,6 +189,8 @@ final class FixtureLedger {
           householdId: 'h',
           categoryId: categories[item['category']]!.id,
           amount: Money(item['amount']! as int),
+          rollover: item['rollover'] == true,
+          rolloverNegative: item['rollover_negative'] == true,
         ),
       );
     }
@@ -178,16 +199,18 @@ final class FixtureLedger {
   void _applyDebts(List<Json> items) {
     for (final item in items) {
       final key = item['key']! as String;
+      // BR-194: qarz o'z valyutasida (standart — asosiy valyuta).
+      final currency = Currency((item['currency'] as String?) ?? 'UZS');
       debts[key] = Debt(
         id: 'debt:$key',
         householdId: 'h',
         name: item['name']! as String,
         direction: DebtDirection.fromWire(item['direction']! as String),
-        total: Money(item['total']! as int),
-        paidBefore: Money((item['paid_before'] as int?) ?? 0),
+        total: Money(item['total']! as int, currency),
+        paidBefore: Money((item['paid_before'] as int?) ?? 0, currency),
         monthlyPayment: item['monthly_payment'] == null
             ? null
-            : Money(item['monthly_payment']! as int),
+            : Money(item['monthly_payment']! as int, currency),
       );
     }
   }
@@ -247,9 +270,6 @@ final class FixtureLedger {
     final kind = TransactionKind.fromWire(item['kind']! as String);
     final account = accounts[item['account']]!;
     final toAccount = item['to'] == null ? null : accounts[item['to']]!;
-    if (account.currency != household.baseCurrency) {
-      throw UnsupportedError("Ko'p valyuta — E29 (kurs bilan amount_base)");
-    }
     final planKey = item['plan'] as String?;
     final plan = planKey == null ? null : plans[planKey]!;
     var category = item['category'] == null
@@ -261,9 +281,24 @@ final class FixtureLedger {
         account.isPersonalFund) {
       category = _allocationCategory;
     }
-    final amount = Money(item['amount']! as int);
+    final amount = Money(item['amount']! as int, account.currency);
     final occurredOn = LocalDate.parse(item['date']! as String);
     final manual = item.containsKey('month');
+    // BR-191..193: asosiy valyutadagi summa — qo'lda kurs yoki sanadagi kurs.
+    final fxRate = item['fx_rate'] == null
+        ? null
+        : FxRate.tryParse('${item['fx_rate']}');
+    final rate =
+        fxRate ??
+        rates.rate(account.currency, household.baseCurrency, occurredOn);
+    if (rate == null) {
+      throw StateError('fx_rate_missing: ${account.currency} $occurredOn');
+    }
+    final amountBase = toBaseAmount(
+      amount,
+      base: household.baseCurrency,
+      rate: rate,
+    );
     final tx = Transaction(
       id: 'tx:${transactions.length}',
       householdId: 'h',
@@ -271,10 +306,17 @@ final class FixtureLedger {
       accountId: account.id,
       toAccountId: toAccount?.id,
       amount: amount,
-      amountBase: amount,
-      toAmount: item['to_amount'] == null
-          ? (kind == TransactionKind.transfer ? amount : null)
-          : Money(item['to_amount']! as int),
+      amountBase: amountBase,
+      fxRate: fxRate?.toString(),
+      // BR-193: manzil hisob valyutasidagi summa (bir xil valyutada — o'zi).
+      toAmount: switch (item['to_amount']) {
+        final int value => Money(value, toAccount!.currency),
+        _ when kind == TransactionKind.transfer => Money(
+          amount.minor,
+          toAccount!.currency,
+        ),
+        _ => null,
+      },
       categoryId: category?.id,
       occurredOn: occurredOn,
       budgetMonth: manual
@@ -516,11 +558,13 @@ final class FixtureLedger {
   }
 
   List<Json> _byCategory(MonthKey month, List<BudgetLine> lines) {
-    final actual = <String?, Money>{};
-    for (final line in lines.where((l) => l.isSpending)) {
-      actual[line.categoryId] =
-          (actual[line.categoryId] ?? Money.zero) + line.amount;
-    }
+    final actual = _spendingByCategory(lines);
+    // BR-134: rollover yoqilgan limitlarda o'tgan oy fakti ham kerak.
+    final previous = limits.any((l) => l.rollover)
+        ? _spendingByCategory(
+            _lines.where((line) => line.month == month.shift(-1)).toList(),
+          )
+        : const <String?, Money>{};
     final planned = <String?, Money>{};
     for (final plan in plans.values.where(
       (p) =>
@@ -540,8 +584,18 @@ final class FixtureLedger {
     );
     return [
       for (final category in expenseCategories)
-        ?_categoryRow(category, expenseCategories, actual, planned),
+        ?_categoryRow(category, expenseCategories, actual, planned, previous),
     ];
+  }
+
+  /// Oyning xarajat/ajratma qatorlari — kategoriya bo'yicha.
+  Map<String?, Money> _spendingByCategory(List<BudgetLine> lines) {
+    final actual = <String?, Money>{};
+    for (final line in lines.where((l) => l.isSpending)) {
+      actual[line.categoryId] =
+          (actual[line.categoryId] ?? Money.zero) + line.amount;
+    }
+    return actual;
   }
 
   Json? _categoryRow(
@@ -549,20 +603,25 @@ final class FixtureLedger {
     Iterable<Category> all,
     Map<String?, Money> actual,
     Map<String?, Money> planned,
+    Map<String?, Money> previous,
   ) {
-    final own = actual[category.id] ?? Money.zero;
-    final total =
-        own +
+    Money totalOf(Map<String?, Money> source) =>
+        (source[category.id] ?? Money.zero) +
         Money.sum([
           for (final child in all.where((c) => c.parentId == category.id))
-            actual[child.id] ?? Money.zero,
+            source[child.id] ?? Money.zero,
         ]);
-    final limit = limits
+    final own = actual[category.id] ?? Money.zero;
+    final total = totalOf(actual);
+    final setting = limits
         .where((l) => l.categoryId == category.id && l.deletedAt == null)
-        .map((l) => l.amount)
         .firstOrNull;
     final plannedAmount = planned[category.id] ?? Money.zero;
-    if (plannedAmount.isZero && total.isZero && limit == null) return null;
+    if (plannedAmount.isZero && total.isZero && setting == null) return null;
+    // BR-134: amaldagi limit — o'tgan oy qoldig'i bilan, noldan kichik emas.
+    final limit = setting == null
+        ? null
+        : _effectiveLimit(setting, totalOf(previous));
     return {
       'name': category.name,
       'parent_id': category.parentId,
@@ -570,9 +629,19 @@ final class FixtureLedger {
       'actual': own.minor,
       'actual_total': total.minor,
       'limit': limit?.minor,
+      'limit_carry': limit == null ? 0 : (limit - setting!.amount).minor,
       'limit_ratio': limitRatio(total, limit),
       'limit_status': limitStatus(total, limit)?.name,
     };
+  }
+
+  /// BR-134: musbat qoldiq doim o'tadi, manfiysi — faqat sozlama bilan.
+  Money _effectiveLimit(CategoryLimit limit, Money previousActual) {
+    if (!limit.rollover) return limit.amount;
+    final leftover = limit.amount - previousActual;
+    if (leftover.isNegative && !limit.rolloverNegative) return limit.amount;
+    final effective = limit.amount + leftover;
+    return effective.isNegative ? Money(0, effective.currency) : effective;
   }
 
   Json reportYear(int year) {
@@ -680,11 +749,15 @@ final class FixtureLedger {
         debt,
         DebtProgress.of(
           debt,
-          paidInApp: Money.sum(payments.map((tx) => tx.amount)),
+          // Qarz o'z valyutasida (BR-194) — bo'sh yig'indi ham shu valyutada.
+          paidInApp: Money.sum(
+            payments.map((tx) => tx.amount),
+            debt.total.currency,
+          ),
           paymentCount: payments.length,
           pendingAmount: Money.sum([
             for (final plan in pending) ?plan.remaining,
-          ]),
+          ], debt.total.currency),
           pendingCount: pending.length,
           currentMonth: currentMonth,
         ),
@@ -692,6 +765,7 @@ final class FixtureLedger {
     }
     final totals = DebtTotals.of(
       rows,
+      toBase: rates.converter(household.baseCurrency, today),
       baseCurrency: household.baseCurrency,
       paidThisMonth: Money.sum(
         live

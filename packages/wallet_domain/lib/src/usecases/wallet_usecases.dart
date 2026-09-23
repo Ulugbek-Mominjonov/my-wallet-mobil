@@ -253,6 +253,8 @@ final class SetCategoryLimit {
   Future<Result<CategoryLimit?>> call(
     String categoryId, {
     required Money? amount,
+    bool? rollover,
+    bool? rolloverNegative,
   }) async {
     if (amount != null && !amount.isPositive) {
       return _invalid('amount', 'invalid_amount');
@@ -272,13 +274,23 @@ final class SetCategoryLimit {
       return const Ok(null);
     }
     final household = await _deps.households.current();
+    final carry = rollover ?? current?.rollover ?? false;
+    // BR-134: manfiy qoldiq faqat rollover yoqilganda ma'noga ega.
+    final carryNegative =
+        carry && (rolloverNegative ?? current?.rolloverNegative ?? false);
     final limit =
-        current?.copyWith(amount: amount) ??
+        current?.copyWith(
+          amount: amount,
+          rollover: carry,
+          rolloverNegative: carryNegative,
+        ) ??
         CategoryLimit(
           id: _deps.ids.newId(),
           householdId: household.id,
           categoryId: categoryId,
           amount: amount,
+          rollover: carry,
+          rolloverNegative: carryNegative,
         );
     await _deps.transactor.run(() => _deps.limits.save(limit));
     return Ok(limit);

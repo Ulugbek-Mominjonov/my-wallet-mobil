@@ -262,6 +262,12 @@
   "fieldCategory": "Kategoriya",
   "fieldPayee": "Joy / kimga",
   "fieldNote": "Izoh",
+  "fieldFxRate": "Kurs",
+  "fxRateMissing": "Bu sanaga kurs yo'q — kursni qo'lda kiriting",
+  "fieldToAmount": "Manzil summasi ({currency})",
+  "@fieldToAmount": {
+    "placeholders": { "currency": { "type": "String" } }
+  },
   "fieldTo": "Qayerga",
   "dateToday": "Bugun",
   "dateYesterday": "Kecha",
@@ -558,6 +564,7 @@
   "accountTypeOther": "Boshqa",
   "walletAccounts": "Hisoblar",
   "walletTotalNoFund": "Jami (fondsiz)",
+  "walletTotalBase": "Jami (asosiy valyutada)",
   "walletNegativeCash": "Naqd qoldiq manfiy — yozuvlarni tekshiring",
   "walletDebts": "💳 Qarzlar",
   "walletGoals": "🎯 Maqsadlar",
@@ -706,6 +713,12 @@
   "limitRemove": "Limitni olib tashlash",
   "limitsReadOnly": "Limitlarni faqat ega yoki admin o'zgartiradi",
   "limitMonthly": "Oylik limit",
+  "limitRollover": "Qolganini keyingi oyga o'tkazish",
+  "limitRolloverNegative": "Oshib ketganini ayirish",
+  "limitCarry": "o'tgan oydan {amount}",
+  "@limitCarry": {
+    "placeholders": { "amount": { "type": "String" } }
+  },
   "onboardingNotifyTitle": "🔔 Eslatmalar",
   "onboardingNotifyBody": "To'lov kunlari, limitlar va oylik hisobot haqida xabar beramiz",
   "onboardingNotifyAllow": "Yoqish",

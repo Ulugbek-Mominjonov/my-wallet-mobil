@@ -3840,6 +3840,36 @@ class $CategoryLimitsTable extends CategoryLimits
     ),
     defaultValue: const Constant(true),
   );
+  static const VerificationMeta _rolloverMeta = const VerificationMeta(
+    'rollover',
+  );
+  @override
+  late final GeneratedColumn<bool> rollover = GeneratedColumn<bool>(
+    'rollover',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("rollover" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _rolloverNegativeMeta = const VerificationMeta(
+    'rolloverNegative',
+  );
+  @override
+  late final GeneratedColumn<bool> rolloverNegative = GeneratedColumn<bool>(
+    'rollover_negative',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("rollover_negative" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -3853,6 +3883,8 @@ class $CategoryLimitsTable extends CategoryLimits
     amount,
     alert80,
     alert100,
+    rollover,
+    rolloverNegative,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -3940,6 +3972,21 @@ class $CategoryLimitsTable extends CategoryLimits
         alert100.isAcceptableOrUnknown(data['alert_100']!, _alert100Meta),
       );
     }
+    if (data.containsKey('rollover')) {
+      context.handle(
+        _rolloverMeta,
+        rollover.isAcceptableOrUnknown(data['rollover']!, _rolloverMeta),
+      );
+    }
+    if (data.containsKey('rollover_negative')) {
+      context.handle(
+        _rolloverNegativeMeta,
+        rolloverNegative.isAcceptableOrUnknown(
+          data['rollover_negative']!,
+          _rolloverNegativeMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -3993,6 +4040,14 @@ class $CategoryLimitsTable extends CategoryLimits
         DriftSqlType.bool,
         data['${effectivePrefix}alert_100'],
       )!,
+      rollover: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}rollover'],
+      )!,
+      rolloverNegative: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}rollover_negative'],
+      )!,
     );
   }
 
@@ -4023,6 +4078,12 @@ class CategoryLimitRow extends DataClass
   final int amount;
   final bool alert80;
   final bool alert100;
+
+  /// BR-134: o'tgan oy qoldig'i shu oyga qo'shiladi.
+  final bool rollover;
+
+  /// BR-134: o'tgan oyda oshib ketgani shu oy limitidan ayiriladi.
+  final bool rolloverNegative;
   const CategoryLimitRow({
     required this.id,
     required this.householdId,
@@ -4035,6 +4096,8 @@ class CategoryLimitRow extends DataClass
     required this.amount,
     required this.alert80,
     required this.alert100,
+    required this.rollover,
+    required this.rolloverNegative,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -4058,6 +4121,8 @@ class CategoryLimitRow extends DataClass
     map['amount'] = Variable<int>(amount);
     map['alert_80'] = Variable<bool>(alert80);
     map['alert_100'] = Variable<bool>(alert100);
+    map['rollover'] = Variable<bool>(rollover);
+    map['rollover_negative'] = Variable<bool>(rolloverNegative);
     return map;
   }
 
@@ -4082,6 +4147,8 @@ class CategoryLimitRow extends DataClass
       amount: Value(amount),
       alert80: Value(alert80),
       alert100: Value(alert100),
+      rollover: Value(rollover),
+      rolloverNegative: Value(rolloverNegative),
     );
   }
 
@@ -4102,6 +4169,8 @@ class CategoryLimitRow extends DataClass
       amount: serializer.fromJson<int>(json['amount']),
       alert80: serializer.fromJson<bool>(json['alert_80']),
       alert100: serializer.fromJson<bool>(json['alert_100']),
+      rollover: serializer.fromJson<bool>(json['rollover']),
+      rolloverNegative: serializer.fromJson<bool>(json['rollover_negative']),
     );
   }
   @override
@@ -4119,6 +4188,8 @@ class CategoryLimitRow extends DataClass
       'amount': serializer.toJson<int>(amount),
       'alert_80': serializer.toJson<bool>(alert80),
       'alert_100': serializer.toJson<bool>(alert100),
+      'rollover': serializer.toJson<bool>(rollover),
+      'rollover_negative': serializer.toJson<bool>(rolloverNegative),
     };
   }
 
@@ -4134,6 +4205,8 @@ class CategoryLimitRow extends DataClass
     int? amount,
     bool? alert80,
     bool? alert100,
+    bool? rollover,
+    bool? rolloverNegative,
   }) => CategoryLimitRow(
     id: id ?? this.id,
     householdId: householdId ?? this.householdId,
@@ -4146,6 +4219,8 @@ class CategoryLimitRow extends DataClass
     amount: amount ?? this.amount,
     alert80: alert80 ?? this.alert80,
     alert100: alert100 ?? this.alert100,
+    rollover: rollover ?? this.rollover,
+    rolloverNegative: rolloverNegative ?? this.rolloverNegative,
   );
   CategoryLimitRow copyWithCompanion(CategoryLimitsCompanion data) {
     return CategoryLimitRow(
@@ -4166,6 +4241,10 @@ class CategoryLimitRow extends DataClass
       amount: data.amount.present ? data.amount.value : this.amount,
       alert80: data.alert80.present ? data.alert80.value : this.alert80,
       alert100: data.alert100.present ? data.alert100.value : this.alert100,
+      rollover: data.rollover.present ? data.rollover.value : this.rollover,
+      rolloverNegative: data.rolloverNegative.present
+          ? data.rolloverNegative.value
+          : this.rolloverNegative,
     );
   }
 
@@ -4182,7 +4261,9 @@ class CategoryLimitRow extends DataClass
           ..write('categoryId: $categoryId, ')
           ..write('amount: $amount, ')
           ..write('alert80: $alert80, ')
-          ..write('alert100: $alert100')
+          ..write('alert100: $alert100, ')
+          ..write('rollover: $rollover, ')
+          ..write('rolloverNegative: $rolloverNegative')
           ..write(')'))
         .toString();
   }
@@ -4200,6 +4281,8 @@ class CategoryLimitRow extends DataClass
     amount,
     alert80,
     alert100,
+    rollover,
+    rolloverNegative,
   );
   @override
   bool operator ==(Object other) =>
@@ -4215,7 +4298,9 @@ class CategoryLimitRow extends DataClass
           other.categoryId == this.categoryId &&
           other.amount == this.amount &&
           other.alert80 == this.alert80 &&
-          other.alert100 == this.alert100);
+          other.alert100 == this.alert100 &&
+          other.rollover == this.rollover &&
+          other.rolloverNegative == this.rolloverNegative);
 }
 
 class CategoryLimitsCompanion extends UpdateCompanion<CategoryLimitRow> {
@@ -4230,6 +4315,8 @@ class CategoryLimitsCompanion extends UpdateCompanion<CategoryLimitRow> {
   final Value<int> amount;
   final Value<bool> alert80;
   final Value<bool> alert100;
+  final Value<bool> rollover;
+  final Value<bool> rolloverNegative;
   final Value<int> rowid;
   const CategoryLimitsCompanion({
     this.id = const Value.absent(),
@@ -4243,6 +4330,8 @@ class CategoryLimitsCompanion extends UpdateCompanion<CategoryLimitRow> {
     this.amount = const Value.absent(),
     this.alert80 = const Value.absent(),
     this.alert100 = const Value.absent(),
+    this.rollover = const Value.absent(),
+    this.rolloverNegative = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   CategoryLimitsCompanion.insert({
@@ -4257,6 +4346,8 @@ class CategoryLimitsCompanion extends UpdateCompanion<CategoryLimitRow> {
     required int amount,
     this.alert80 = const Value.absent(),
     this.alert100 = const Value.absent(),
+    this.rollover = const Value.absent(),
+    this.rolloverNegative = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        householdId = Value(householdId),
@@ -4274,6 +4365,8 @@ class CategoryLimitsCompanion extends UpdateCompanion<CategoryLimitRow> {
     Expression<int>? amount,
     Expression<bool>? alert80,
     Expression<bool>? alert100,
+    Expression<bool>? rollover,
+    Expression<bool>? rolloverNegative,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -4288,6 +4381,8 @@ class CategoryLimitsCompanion extends UpdateCompanion<CategoryLimitRow> {
       if (amount != null) 'amount': amount,
       if (alert80 != null) 'alert_80': alert80,
       if (alert100 != null) 'alert_100': alert100,
+      if (rollover != null) 'rollover': rollover,
+      if (rolloverNegative != null) 'rollover_negative': rolloverNegative,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -4304,6 +4399,8 @@ class CategoryLimitsCompanion extends UpdateCompanion<CategoryLimitRow> {
     Value<int>? amount,
     Value<bool>? alert80,
     Value<bool>? alert100,
+    Value<bool>? rollover,
+    Value<bool>? rolloverNegative,
     Value<int>? rowid,
   }) {
     return CategoryLimitsCompanion(
@@ -4318,6 +4415,8 @@ class CategoryLimitsCompanion extends UpdateCompanion<CategoryLimitRow> {
       amount: amount ?? this.amount,
       alert80: alert80 ?? this.alert80,
       alert100: alert100 ?? this.alert100,
+      rollover: rollover ?? this.rollover,
+      rolloverNegative: rolloverNegative ?? this.rolloverNegative,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -4358,6 +4457,12 @@ class CategoryLimitsCompanion extends UpdateCompanion<CategoryLimitRow> {
     if (alert100.present) {
       map['alert_100'] = Variable<bool>(alert100.value);
     }
+    if (rollover.present) {
+      map['rollover'] = Variable<bool>(rollover.value);
+    }
+    if (rolloverNegative.present) {
+      map['rollover_negative'] = Variable<bool>(rolloverNegative.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -4378,6 +4483,8 @@ class CategoryLimitsCompanion extends UpdateCompanion<CategoryLimitRow> {
           ..write('amount: $amount, ')
           ..write('alert80: $alert80, ')
           ..write('alert100: $alert100, ')
+          ..write('rollover: $rollover, ')
+          ..write('rolloverNegative: $rolloverNegative, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -14468,6 +14575,284 @@ class PendingUploadsCompanion extends UpdateCompanion<PendingUploadRow> {
   }
 }
 
+class $ExchangeRatesTable extends ExchangeRates
+    with TableInfo<$ExchangeRatesTable, ExchangeRateRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ExchangeRatesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _currencyMeta = const VerificationMeta(
+    'currency',
+  );
+  @override
+  late final GeneratedColumn<String> currency = GeneratedColumn<String>(
+    'currency',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _rateDateMeta = const VerificationMeta(
+    'rateDate',
+  );
+  @override
+  late final GeneratedColumn<String> rateDate = GeneratedColumn<String>(
+    'rate_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _rateToBaseMeta = const VerificationMeta(
+    'rateToBase',
+  );
+  @override
+  late final GeneratedColumn<String> rateToBase = GeneratedColumn<String>(
+    'rate_to_base',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [currency, rateDate, rateToBase];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'exchange_rates';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ExchangeRateRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('currency')) {
+      context.handle(
+        _currencyMeta,
+        currency.isAcceptableOrUnknown(data['currency']!, _currencyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_currencyMeta);
+    }
+    if (data.containsKey('rate_date')) {
+      context.handle(
+        _rateDateMeta,
+        rateDate.isAcceptableOrUnknown(data['rate_date']!, _rateDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_rateDateMeta);
+    }
+    if (data.containsKey('rate_to_base')) {
+      context.handle(
+        _rateToBaseMeta,
+        rateToBase.isAcceptableOrUnknown(
+          data['rate_to_base']!,
+          _rateToBaseMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_rateToBaseMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {currency, rateDate};
+  @override
+  ExchangeRateRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ExchangeRateRow(
+      currency: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}currency'],
+      )!,
+      rateDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rate_date'],
+      )!,
+      rateToBase: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rate_to_base'],
+      )!,
+    );
+  }
+
+  @override
+  $ExchangeRatesTable createAlias(String alias) {
+    return $ExchangeRatesTable(attachedDatabase, alias);
+  }
+}
+
+class ExchangeRateRow extends DataClass implements Insertable<ExchangeRateRow> {
+  final String currency;
+
+  /// `YYYY-MM-DD` (serverdagi `rate_date`).
+  final String rateDate;
+
+  /// 1 birlik valyuta necha so'm (`numeric(18, 6)` — aniqlik uchun matn).
+  final String rateToBase;
+  const ExchangeRateRow({
+    required this.currency,
+    required this.rateDate,
+    required this.rateToBase,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['currency'] = Variable<String>(currency);
+    map['rate_date'] = Variable<String>(rateDate);
+    map['rate_to_base'] = Variable<String>(rateToBase);
+    return map;
+  }
+
+  ExchangeRatesCompanion toCompanion(bool nullToAbsent) {
+    return ExchangeRatesCompanion(
+      currency: Value(currency),
+      rateDate: Value(rateDate),
+      rateToBase: Value(rateToBase),
+    );
+  }
+
+  factory ExchangeRateRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ExchangeRateRow(
+      currency: serializer.fromJson<String>(json['currency']),
+      rateDate: serializer.fromJson<String>(json['rate_date']),
+      rateToBase: serializer.fromJson<String>(json['rate_to_base']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'currency': serializer.toJson<String>(currency),
+      'rate_date': serializer.toJson<String>(rateDate),
+      'rate_to_base': serializer.toJson<String>(rateToBase),
+    };
+  }
+
+  ExchangeRateRow copyWith({
+    String? currency,
+    String? rateDate,
+    String? rateToBase,
+  }) => ExchangeRateRow(
+    currency: currency ?? this.currency,
+    rateDate: rateDate ?? this.rateDate,
+    rateToBase: rateToBase ?? this.rateToBase,
+  );
+  ExchangeRateRow copyWithCompanion(ExchangeRatesCompanion data) {
+    return ExchangeRateRow(
+      currency: data.currency.present ? data.currency.value : this.currency,
+      rateDate: data.rateDate.present ? data.rateDate.value : this.rateDate,
+      rateToBase: data.rateToBase.present
+          ? data.rateToBase.value
+          : this.rateToBase,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ExchangeRateRow(')
+          ..write('currency: $currency, ')
+          ..write('rateDate: $rateDate, ')
+          ..write('rateToBase: $rateToBase')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(currency, rateDate, rateToBase);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ExchangeRateRow &&
+          other.currency == this.currency &&
+          other.rateDate == this.rateDate &&
+          other.rateToBase == this.rateToBase);
+}
+
+class ExchangeRatesCompanion extends UpdateCompanion<ExchangeRateRow> {
+  final Value<String> currency;
+  final Value<String> rateDate;
+  final Value<String> rateToBase;
+  final Value<int> rowid;
+  const ExchangeRatesCompanion({
+    this.currency = const Value.absent(),
+    this.rateDate = const Value.absent(),
+    this.rateToBase = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ExchangeRatesCompanion.insert({
+    required String currency,
+    required String rateDate,
+    required String rateToBase,
+    this.rowid = const Value.absent(),
+  }) : currency = Value(currency),
+       rateDate = Value(rateDate),
+       rateToBase = Value(rateToBase);
+  static Insertable<ExchangeRateRow> custom({
+    Expression<String>? currency,
+    Expression<String>? rateDate,
+    Expression<String>? rateToBase,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (currency != null) 'currency': currency,
+      if (rateDate != null) 'rate_date': rateDate,
+      if (rateToBase != null) 'rate_to_base': rateToBase,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ExchangeRatesCompanion copyWith({
+    Value<String>? currency,
+    Value<String>? rateDate,
+    Value<String>? rateToBase,
+    Value<int>? rowid,
+  }) {
+    return ExchangeRatesCompanion(
+      currency: currency ?? this.currency,
+      rateDate: rateDate ?? this.rateDate,
+      rateToBase: rateToBase ?? this.rateToBase,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (currency.present) {
+      map['currency'] = Variable<String>(currency.value);
+    }
+    if (rateDate.present) {
+      map['rate_date'] = Variable<String>(rateDate.value);
+    }
+    if (rateToBase.present) {
+      map['rate_to_base'] = Variable<String>(rateToBase.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ExchangeRatesCompanion(')
+          ..write('currency: $currency, ')
+          ..write('rateDate: $rateDate, ')
+          ..write('rateToBase: $rateToBase, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -14492,6 +14877,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $SyncIssuesTable syncIssues = $SyncIssuesTable(this);
   late final $AppSettingsTable appSettings = $AppSettingsTable(this);
   late final $PendingUploadsTable pendingUploads = $PendingUploadsTable(this);
+  late final $ExchangeRatesTable exchangeRates = $ExchangeRatesTable(this);
   late final Index accountsHousehold = Index(
     'accounts_household',
     'CREATE INDEX accounts_household ON accounts (household_id)',
@@ -14607,6 +14993,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     syncIssues,
     appSettings,
     pendingUploads,
+    exchangeRates,
     accountsHousehold,
     categoriesHousehold,
     recurringRulesHousehold,
@@ -16369,6 +16756,8 @@ typedef $$CategoryLimitsTableCreateCompanionBuilder =
       required int amount,
       Value<bool> alert80,
       Value<bool> alert100,
+      Value<bool> rollover,
+      Value<bool> rolloverNegative,
       Value<int> rowid,
     });
 typedef $$CategoryLimitsTableUpdateCompanionBuilder =
@@ -16384,6 +16773,8 @@ typedef $$CategoryLimitsTableUpdateCompanionBuilder =
       Value<int> amount,
       Value<bool> alert80,
       Value<bool> alert100,
+      Value<bool> rollover,
+      Value<bool> rolloverNegative,
       Value<int> rowid,
     });
 
@@ -16448,6 +16839,16 @@ class $$CategoryLimitsTableFilterComposer
 
   ColumnFilters<bool> get alert100 => $composableBuilder(
     column: $table.alert100,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get rollover => $composableBuilder(
+    column: $table.rollover,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get rolloverNegative => $composableBuilder(
+    column: $table.rolloverNegative,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -16515,6 +16916,16 @@ class $$CategoryLimitsTableOrderingComposer
     column: $table.alert100,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<bool> get rollover => $composableBuilder(
+    column: $table.rollover,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get rolloverNegative => $composableBuilder(
+    column: $table.rolloverNegative,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$CategoryLimitsTableAnnotationComposer
@@ -16564,6 +16975,14 @@ class $$CategoryLimitsTableAnnotationComposer
 
   GeneratedColumn<bool> get alert100 =>
       $composableBuilder(column: $table.alert100, builder: (column) => column);
+
+  GeneratedColumn<bool> get rollover =>
+      $composableBuilder(column: $table.rollover, builder: (column) => column);
+
+  GeneratedColumn<bool> get rolloverNegative => $composableBuilder(
+    column: $table.rolloverNegative,
+    builder: (column) => column,
+  );
 }
 
 class $$CategoryLimitsTableTableManager
@@ -16614,6 +17033,8 @@ class $$CategoryLimitsTableTableManager
                 Value<int> amount = const Value.absent(),
                 Value<bool> alert80 = const Value.absent(),
                 Value<bool> alert100 = const Value.absent(),
+                Value<bool> rollover = const Value.absent(),
+                Value<bool> rolloverNegative = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CategoryLimitsCompanion(
                 id: id,
@@ -16627,6 +17048,8 @@ class $$CategoryLimitsTableTableManager
                 amount: amount,
                 alert80: alert80,
                 alert100: alert100,
+                rollover: rollover,
+                rolloverNegative: rolloverNegative,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -16642,6 +17065,8 @@ class $$CategoryLimitsTableTableManager
                 required int amount,
                 Value<bool> alert80 = const Value.absent(),
                 Value<bool> alert100 = const Value.absent(),
+                Value<bool> rollover = const Value.absent(),
+                Value<bool> rolloverNegative = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CategoryLimitsCompanion.insert(
                 id: id,
@@ -16655,6 +17080,8 @@ class $$CategoryLimitsTableTableManager
                 amount: amount,
                 alert80: alert80,
                 alert100: alert100,
+                rollover: rollover,
+                rolloverNegative: rolloverNegative,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -21530,6 +21957,179 @@ typedef $$PendingUploadsTableProcessedTableManager =
       PendingUploadRow,
       PrefetchHooks Function()
     >;
+typedef $$ExchangeRatesTableCreateCompanionBuilder =
+    ExchangeRatesCompanion Function({
+      required String currency,
+      required String rateDate,
+      required String rateToBase,
+      Value<int> rowid,
+    });
+typedef $$ExchangeRatesTableUpdateCompanionBuilder =
+    ExchangeRatesCompanion Function({
+      Value<String> currency,
+      Value<String> rateDate,
+      Value<String> rateToBase,
+      Value<int> rowid,
+    });
+
+class $$ExchangeRatesTableFilterComposer
+    extends Composer<_$AppDatabase, $ExchangeRatesTable> {
+  $$ExchangeRatesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get currency => $composableBuilder(
+    column: $table.currency,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get rateDate => $composableBuilder(
+    column: $table.rateDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get rateToBase => $composableBuilder(
+    column: $table.rateToBase,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ExchangeRatesTableOrderingComposer
+    extends Composer<_$AppDatabase, $ExchangeRatesTable> {
+  $$ExchangeRatesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get currency => $composableBuilder(
+    column: $table.currency,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get rateDate => $composableBuilder(
+    column: $table.rateDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get rateToBase => $composableBuilder(
+    column: $table.rateToBase,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ExchangeRatesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ExchangeRatesTable> {
+  $$ExchangeRatesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get currency =>
+      $composableBuilder(column: $table.currency, builder: (column) => column);
+
+  GeneratedColumn<String> get rateDate =>
+      $composableBuilder(column: $table.rateDate, builder: (column) => column);
+
+  GeneratedColumn<String> get rateToBase => $composableBuilder(
+    column: $table.rateToBase,
+    builder: (column) => column,
+  );
+}
+
+class $$ExchangeRatesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ExchangeRatesTable,
+          ExchangeRateRow,
+          $$ExchangeRatesTableFilterComposer,
+          $$ExchangeRatesTableOrderingComposer,
+          $$ExchangeRatesTableAnnotationComposer,
+          $$ExchangeRatesTableCreateCompanionBuilder,
+          $$ExchangeRatesTableUpdateCompanionBuilder,
+          (
+            ExchangeRateRow,
+            BaseReferences<_$AppDatabase, $ExchangeRatesTable, ExchangeRateRow>,
+          ),
+          ExchangeRateRow,
+          PrefetchHooks Function()
+        > {
+  $$ExchangeRatesTableTableManager(_$AppDatabase db, $ExchangeRatesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ExchangeRatesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ExchangeRatesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ExchangeRatesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> currency = const Value.absent(),
+                Value<String> rateDate = const Value.absent(),
+                Value<String> rateToBase = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ExchangeRatesCompanion(
+                currency: currency,
+                rateDate: rateDate,
+                rateToBase: rateToBase,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String currency,
+                required String rateDate,
+                required String rateToBase,
+                Value<int> rowid = const Value.absent(),
+              }) => ExchangeRatesCompanion.insert(
+                currency: currency,
+                rateDate: rateDate,
+                rateToBase: rateToBase,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$ExchangeRatesTable, ExchangeRateRow>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $ExchangeRatesTable,
+                    ExchangeRateRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ExchangeRatesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ExchangeRatesTable,
+      ExchangeRateRow,
+      $$ExchangeRatesTableFilterComposer,
+      $$ExchangeRatesTableOrderingComposer,
+      $$ExchangeRatesTableAnnotationComposer,
+      $$ExchangeRatesTableCreateCompanionBuilder,
+      $$ExchangeRatesTableUpdateCompanionBuilder,
+      (
+        ExchangeRateRow,
+        BaseReferences<_$AppDatabase, $ExchangeRatesTable, ExchangeRateRow>,
+      ),
+      ExchangeRateRow,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -21571,4 +22171,6 @@ class $AppDatabaseManager {
       $$AppSettingsTableTableManager(_db, _db.appSettings);
   $$PendingUploadsTableTableManager get pendingUploads =>
       $$PendingUploadsTableTableManager(_db, _db.pendingUploads);
+  $$ExchangeRatesTableTableManager get exchangeRates =>
+      $$ExchangeRatesTableTableManager(_db, _db.exchangeRates);
 }

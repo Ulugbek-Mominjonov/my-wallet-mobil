@@ -149,6 +149,20 @@ class _AccountsCard extends ConsumerWidget {
                 style: theme.textTheme.titleSmall,
               ),
             ),
+          // BR-194: bir nechta valyuta bo'lsa — asosiy valyutadagi jami.
+          if (report.baseTotal case final baseTotal?)
+            ListTile(
+              dense: true,
+              title: Text(
+                l10n.walletTotalBase,
+                style: theme.textTheme.titleSmall,
+              ),
+              trailing: MoneyText(
+                baseTotal.minor,
+                currency: baseTotal.currency.code,
+                style: theme.textTheme.titleSmall,
+              ),
+            ),
         ],
       ),
     );

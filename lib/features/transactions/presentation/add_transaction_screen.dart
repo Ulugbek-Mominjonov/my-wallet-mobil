@@ -126,6 +126,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                       selected: state.occurredOn,
                       onSelected: controller.selectDate,
                     ),
+                    FxFields(state: state),
                     FundHint(state: state),
                     MonthAttributionField(state: state),
                     if (!state.isTransfer) ...[

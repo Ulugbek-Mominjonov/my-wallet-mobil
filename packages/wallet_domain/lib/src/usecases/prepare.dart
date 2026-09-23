@@ -5,8 +5,11 @@ import 'package:wallet_domain/src/entities/planned_item.dart';
 import 'package:wallet_domain/src/entities/transaction.dart';
 import 'package:wallet_domain/src/failures.dart';
 import 'package:wallet_domain/src/result.dart';
+import 'package:wallet_domain/src/rules/fx.dart';
 import 'package:wallet_domain/src/rules/month_attribution.dart';
 import 'package:wallet_domain/src/usecases/deps.dart';
+import 'package:wallet_domain/src/value_objects/fx_rate.dart';
+import 'package:wallet_domain/src/value_objects/money.dart';
 import 'package:wallet_domain/src/value_objects/month_key.dart';
 
 /// BR-003: nom/joy — 1–60 belgi (serverdagi `entity_name`).
@@ -33,12 +36,24 @@ Future<Result<Transaction>> prepareTransaction(
   final account = await deps.accounts.byId(draft.accountId);
   if (account == null) return invalid('account', 'account_not_found');
   if (account.deletedAt != null) return invalid('account', 'account_deleted');
-  // Boshqa valyutadagi hisob — kurs kerak (E29).
-  if (account.currency != household.baseCurrency) {
-    return invalid('amount', 'fx_rate_missing');
-  }
+  // BR-191..193: summa — hisob valyutasida; asosiy valyutadagi ekvivalent
+  // qo'lda kurs (bo'lsa) yoki sanadagi kurs bilan. Kurs yo'q — yozilmaydi.
+  final amount = Money(draft.amount.minor, account.currency);
+  final rate = draft.fxRate == null
+      ? await deps.fx.rate(
+          account.currency,
+          household.baseCurrency,
+          draft.occurredOn,
+        )
+      : FxRate.tryParse(draft.fxRate!);
+  if (rate == null) return invalid('amount', 'fx_rate_missing');
+  final amountBase = toBaseAmount(
+    amount,
+    base: household.baseCurrency,
+    rate: rate,
+  );
 
-  var tx = draft;
+  var tx = draft.copyWith(amount: amount);
   Category? category;
   switch (draft.kind) {
     case TransactionKind.income || TransactionKind.expense:
@@ -85,7 +100,7 @@ Future<Result<Transaction>> prepareTransaction(
   tx = tx.copyWith(
     payee: payee == null || payee.isEmpty ? null : payee,
     budgetMonth: budgetMonth,
-    amountBase: draft.amount,
+    amountBase: amountBase,
   );
 
   final lock = await monthLockFailure(

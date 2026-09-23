@@ -19,6 +19,14 @@ Future<void> storeFixture(AppDatabase db, FixtureLedger ledger) =>
         ..insertAll(db.categories, [
           for (final c in ledger.categories.values) c.toCompanion(),
         ])
+        ..insertAll(db.exchangeRates, [
+          for (final row in ledger.rateRows)
+            ExchangeRatesCompanion.insert(
+              currency: row.currency.code,
+              rateDate: row.date.toString(),
+              rateToBase: row.rate.toString(),
+            ),
+        ])
         ..insertAll(db.categoryLimits, [
           for (final l in ledger.limits) l.toCompanion(),
         ])

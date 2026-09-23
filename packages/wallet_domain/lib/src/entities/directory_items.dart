@@ -13,6 +13,12 @@ abstract class CategoryLimit with _$CategoryLimit {
     required Money amount,
     @Default(true) bool alert80,
     @Default(true) bool alert100,
+
+    /// BR-134: o'tgan oy qoldig'ini shu oyga qo'shish.
+    @Default(false) bool rollover,
+
+    /// BR-134: o'tgan oyda oshib ketgani ayirilsinmi.
+    @Default(false) bool rolloverNegative,
     DateTime? deletedAt,
     @Default(0) int rowVersion,
   }) = _CategoryLimit;

@@ -65,6 +65,9 @@ final class FakeStore {
   final Map<String, Goal> goals = {};
   final Map<String, CategoryLimit> limits = {};
 
+  /// E29 (BR-191): kurslar — testlarda to'g'ridan-to'g'ri qo'yiladi.
+  FxRates rates = FxRates.empty;
+
   /// Nechta lokal tranzaksiya ochilgan (yozuvlar birga bo'lishi uchun).
   int transactorRuns = 0;
   int _nextId = 0;
@@ -79,10 +82,20 @@ final class FakeStore {
     debts: _Debts(this),
     goals: _Goals(this),
     limits: _Limits(this),
+    fx: _FxRates(this),
     transactor: _Transactor(this),
     ids: _Ids(this),
     clock: _Clock(this),
   );
+}
+
+final class _FxRates implements FxRateRepository {
+  const new(this._store);
+  final FakeStore _store;
+
+  @override
+  Future<FxRate?> rate(Currency from, Currency to, LocalDate on) async =>
+      _store.rates.rate(from, to, on);
 }
 
 final class _Households implements HouseholdRepository {

@@ -29,10 +29,38 @@ DomainDeps localDomainDeps(
     debts: DriftDebtRepository(db, householdId, outbox),
     goals: DriftGoalRepository(db, householdId, outbox),
     limits: DriftCategoryLimitRepository(db, householdId, outbox),
+    fx: DriftFxRateRepository(db),
     transactor: DriftTransactor(db),
     ids: ids,
     clock: clock,
   );
+}
+
+/// BR-191: kurslar — lokal nusxa (`exchange_rates`, E29-T07 `fx_rates` RPC).
+final class DriftFxRateRepository implements FxRateRepository {
+  const new(this._db);
+  final AppDatabase _db;
+
+  @override
+  Future<FxRate?> rate(Currency from, Currency to, LocalDate on) async {
+    if (from == to) return FxRate.one;
+    final rows =
+        await (_db.select(_db.exchangeRates)..where(
+              (r) =>
+                  r.currency.isIn([from.code, to.code]) &
+                  r.rateDate.isSmallerOrEqualValue(on.toString()),
+            ))
+            .get();
+    return FxRates.of([
+      for (final row in rows)
+        if (FxRate.tryParse(row.rateToBase) case final rate?)
+          (
+            currency: Currency(row.currency),
+            date: LocalDate.parse(row.rateDate),
+            rate: rate,
+          ),
+    ]).rate(from, to, on);
+  }
 }
 
 final class DriftTransactor implements Transactor {

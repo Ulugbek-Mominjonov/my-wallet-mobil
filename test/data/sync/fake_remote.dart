@@ -147,4 +147,17 @@ final class FakeRemote implements RemoteApi {
     unregistered.add(token);
     return const Ok(null);
   }
+
+  /// E29: kurslar — testda qo'yiladi; so'ralgan sanalar yoziladi.
+  List<FxRateRow> rates = const [];
+  final rateRequests = <LocalDate>[];
+
+  @override
+  Future<Result<List<FxRateRow>>> fxRates(LocalDate since) async {
+    rateRequests.add(since);
+    return Ok([
+      for (final row in rates)
+        if (!row.date.isBefore(since)) row,
+    ]);
+  }
 }

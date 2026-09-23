@@ -61,7 +61,11 @@ Keep-alive va smoke testlar.
 | `preview_outdated` | preview'dan keyin ma'lumot o'zgargan — preview'ni qayta oling (BR-043) |
 | `month_not_finished` | tugamagan oyni yopib bo'lmaydi (BR-150) |
 | `month_shift_mismatch` | oy siljishi farqli daromad turlari birlashtirilmaydi (BR-036, BR-043) |
-| `invalid_batch` / `invalid_device` | sinxron paketi massiv emas yoki 100 dan ortiq; qurilma ID bo'sh/uzun |
+| `invalid_batch` / `invalid_device` | sinxron paketi massiv emas yoki 100 dan ortiq (`set_sort_order` — 1000, `bulk_transactions` — 500 dan ortiq); qurilma ID bo'sh/uzun |
+| `invalid_table` | `set_sort_order` ga tartibli spravochnik bo'lmagan jadval |
+| `invalid_action` | `bulk_transactions` ga noma'lum amal yoki qiymatsiz `set_category`/`add_tag` |
+| `confirm_mismatch` | `delete_household` tasdiq nomi byudjet nomiga mos emas |
+| `transaction_not_found` | `save_transaction`: tahrirlanayotgan amal yo'q (o'chirilgan yoki boshqa byudjetniki) |
 
 Postgres standart kodlari: `23505` — nom band (cheklov nomi `message` da, masalan
 `accounts_name_key`), `23514` — qiymat cheklovi (masalan bo'sh nom, summa ≤ 0),
@@ -80,6 +84,7 @@ Postgres standart kodlari: `23505` — nom band (cheklov nomi `message` da, masa
 | `transfer_ownership(p_household, p_new_owner)` | byudjet, a'zo | — | owner |
 | `set_member_role(p_household, p_user, p_role)` | rol (`owner` emas) | — | owner/admin (admin owner'ga tegolmaydi) |
 | `remove_member(p_household, p_user)` | a'zo | — | owner/admin |
+| `delete_household(p_household, p_confirm_name)` | byudjet, nomi (registrsiz) | — | owner (BR-014); ma'lumotlar kaskadda, chek fayllari `purge-files` bilan |
 
 ### `app_config` qiymatlari
 
@@ -107,10 +112,11 @@ Umumiy qoidalar (barcha sinxron jadvallar):
 | Jadval | O'qish | Yozish | Klient yozadigan ustunlar (insert → update) |
 |---|---|---|---|
 | `currencies`, `category_templates`, `exchange_rates` | har kim | platforma admini (aal2) | — |
-| `accounts` | a'zolar | owner/admin | `id, household_id, name, type, currency, opening_balance, opening_date, icon, color, sort_order` → `name, type, currency, opening_balance, opening_date, icon, color, sort_order, archived_at, deleted_at` |
+| `card_message_templates` | platforma admini (aal2) | platforma admini (aal2) | `bank, pattern, kind, amount_unit, currency, sample, active, sort_order` (BR-222; naqshda `(?<amount>…)` guruhi majburiy — `date`, `payee`, `card` ixtiyoriy) |
+| `accounts` | a'zolar | owner/admin | `id, household_id, name, type, currency, opening_balance, opening_date, icon, color, card_last4, sort_order` → `name, type, currency, opening_balance, opening_date, icon, color, card_last4, sort_order, archived_at, deleted_at` |
 | `categories` | a'zolar | owner/admin | `id, household_id, kind, name, parent_id, month_shift, icon, color, sort_order` → `name, parent_id, month_shift, icon, color, sort_order, archived_at, deleted_at` (`kind` o'zgarmaydi) |
 | `recurring_rules` | a'zolar | owner/admin | `id, household_id, kind, name, category_id, account_id, amount, day_of_month, auto_pay, active, start_month, end_month, sort_order` → shular (`id, household_id` dan tashqari) + `deleted_at` |
-| `category_limits` | a'zolar | owner/admin | `id, household_id, category_id, amount, alert_80, alert_100` → `amount, alert_80, alert_100, deleted_at` |
+| `category_limits` | a'zolar | owner/admin | `id, household_id, category_id, amount, alert_80, alert_100, rollover, rollover_negative` → `amount, alert_80, alert_100, rollover, rollover_negative, deleted_at` |
 | `quick_actions` | a'zolar | owner/admin | `id, household_id, name, amount, category_id, account_id, payee, sort_order` → shular (`id, household_id` dan tashqari) + `deleted_at` |
 | `tags` | a'zolar | yaratish — owner/admin/member; tahrir — owner/admin | `id, household_id, name, color` → `name, color, deleted_at` |
 
@@ -118,15 +124,24 @@ Asosiy cheklovlar:
 
 | Jadval | Cheklov |
 |---|---|
-| `accounts` | `type`: `cash`, `card`, `bank`, `ewallet`, `deposit`, `personal_fund`, `other`; `personal_fund` byudjetda bitta (`accounts_personal_fund_key`) |
+| `accounts` | `type`: `cash`, `card`, `bank`, `ewallet`, `deposit`, `personal_fund`, `other`; `personal_fund` byudjetda bitta (`accounts_personal_fund_key`); `card_last4` — 4 ta raqam, byudjetda takrorlanmaydi (`accounts_card_last4_key`, BR-222) |
 | `categories` | `month_shift` −1..1 faqat `income` da; `parent_id` — bir daraja, bir turda; `system_code = personal_allocation` — tizim kategoriyasi |
 | `recurring_rules` | `kind`: `expense`/`income` — kategoriya majburiy va turi mos; `allocation` — kategoriyasiz, manba fond bo'lmagan hisob; `amount` NULL = o'zgaruvchan; `day_of_month` 1–31; `auto_pay` → summa va hisob majburiy; `end_month ≥ start_month` |
-| `category_limits` | faqat `expense` kategoriyasiga, bittadan (`category_limits_category_key`); `amount > 0` |
+| `category_limits` | faqat `expense` kategoriyasiga, bittadan (`category_limits_category_key`); `amount > 0`; `rollover` — o'tgan oy qoldig'i shu oyga qo'shiladi (BR-134), `rollover_negative` — oshib ketgani ayiriladi |
 | `quick_actions` | `amount > 0`; `expense` kategoriyasi; hisob majburiy |
 
 Yangi byudjet (ro'yxatdan o'tish yoki `create_household`) standart to'plamni
 foydalanuvchi tilida oladi: shablondagi 18 kategoriya, hisoblar **Naqd**,
 **Karta**, **Shaxsiy fond**; fond qoidasi — 10%, 5-kun, manba — Naqd (BR-060).
+
+### Tartib — `set_sort_order(p_household, p_table, p_ids)` (E22)
+
+Drag & drop natijasi bitta so'rovda: `sort_order` = `p_ids` dagi o'rin (0 dan).
+`p_table`: `accounts`, `categories`, `recurring_rules`, `quick_actions`
+(owner/admin), `goals` (owner/admin/member). Boshqa byudjet yoki o'chirilgan
+qatorlar e'tiborsiz; o'zgarmaganlari yozilmaydi (`row_version` oshmaydi).
+Javob — yangilangan qatorlar soni. Xatolar: `forbidden`, `invalid_table`,
+`invalid_batch` (> 1000 ID).
 
 ### Ikon kalitlari
 
@@ -182,9 +197,66 @@ tartibni takrorlaydi (`private.planned_status`).
 
 | View | Ustunlar | Qoida |
 |---|---|---|
-| `account_balances` | `household_id, account_id, balance` (hisob valyutasida) | BR-021 |
-| `debt_balances` | `household_id, debt_id, paid_in_app, pending_amount, pending_count, remaining, progress, months_left, end_month, status` (`closed`/`paying`/`pending`/`unlinked`) | BR-112..116 |
+| `account_balances` | `household_id, account_id, balance` (hisob valyutasida), `balance_base` (asosiy valyutadagi ekvivalent, joriy kurs; kurs yo'q — `null`) | BR-021, BR-194 |
+| `debt_balances` | `household_id, debt_id, paid_in_app, pending_amount, pending_count, remaining, progress, months_left, end_month, status` (`closed`/`paying`/`pending`/`unlinked`), `remaining_base`, `monthly_base` (asosiy valyutada — jamlar shundan) | BR-112..116, BR-194 |
 | `goal_progress` | `household_id, goal_id, saved, remaining, progress, months_left, end_month, on_track` | BR-121, BR-122 |
+
+### Admin amallar jadvali (E23) — a'zolar
+
+Filtr (`p_filters jsonb`, hammasi ixtiyoriy): `month` (oy boshi, tegishli oy),
+`from`/`to` (amal sanasi), `kinds[]`, `accounts[]` (manba **yoki** manzil),
+`categories[]` (subkategoriyalari bilan), `members[]` (`created_by`), `tags[]`,
+`min`/`max` (asosiy valyutada, chegaralar kiradi), `q` (joy yoki izoh: qism-matn,
+3+ belgida xatoli yozuv ham — BR-202; `%`/`_` oddiy belgi). Ro'yxat va jami bir
+xil filtrdan; a'zo bo'lmagan — `forbidden`.
+
+- `transactions_list(p_household, p_filters = '{}', p_after_date, p_after_id, p_limit = 50)` —
+  keyset sahifa, `(occurred_on, id)` bo'yicha kamayish; keyingi sahifa — oxirgi
+  qatorning `occurred_on` va `id` si. `p_limit` 1..1000 (PostgREST `max_rows`; eksport — 1000 tadan). Qator: amal ustunlari (shu jumladan `fx_rate` — qo'llangan kurs, BR-193) +
+  `tag_ids uuid[]`, `has_receipt boolean`.
+- `transactions_summary(p_household, p_filters = '{}')` →
+  `{count, income, expense, transfer}` (asosiy valyutada).
+- `bulk_transactions(p_household, p_ids, p_action, p_value)` — owner/admin/member;
+  `p_action`: `set_category` (`p_value` — kategoriya), `add_tag` (`p_value` — teg,
+  idempotent), `delete`. Har qator alohida: biri rad etilsa qolganlari bajariladi.
+  Javob — `{done: [id], skipped: [{id, reason}]}`; `reason` — biznes kod
+  (`month_closed`, `category_kind_mismatch`, ...), `not_found` (boshqa byudjet
+  yoki o'chirilgan) yoki SQLSTATE. Xatolar: `forbidden`, `invalid_action`,
+  `invalid_batch` (> 500 ID).
+
+### Eksport va import (E25-T02, E25-T03)
+
+- `export_household(p_household)` → to'liq JSON zaxira (BR-180): `{version,
+  exported_at, household, members[], accounts[], categories[], tags[],
+  recurring_rules[], quick_actions[], category_limits[], debts[], goals[],
+  months[], planned_items[], transactions[], transaction_tags[],
+  attachments[]}`. Faqat **owner/admin**; o'chirilgan (tombstone) qatorlar
+  kirmaydi; chek fayllari emas, faqat `attachments` yo'llari.
+- `import_transactions(p_household, p_rows, p_dry_run = true)` → `{total, ready,
+  imported, duplicates[{index, transaction_id}], errors[{index, code}]}`
+  (BR-182). `p_rows` — `[{occurred_on, amount, payee, account, category, note,
+  kind?}]`; `amount` tiyinda, manfiy — xarajat, musbat — daromad (`kind` berilsa
+  — o'sha). Hisob va kategoriya **nomi** bo'yicha topiladi (registrsiz).
+  `index` — qatorning 1 dan boshlangan tartibi. Dublikat — sana + summa + joy
+  nomi bir xil amal (yozilmaydi). `p_dry_run = true` da hech narsa yozilmaydi
+  (`imported = 0`); `false` da faqat toza qatorlar yoziladi (`source = import`).
+  Qator xatolari: `invalid_row` (sana/summa yo'q yoki 0), `account_not_found`,
+  `category_not_found`, amal triggeri kodlari (masalan `month_closed`).
+  Xatolar: `forbidden`, `invalid_batch` (> 1000 qator). Owner/admin/member.
+
+### Amal formasi (E23-T02)
+
+- `save_transaction(p_household, p_kind, p_account_id, p_amount, p_occurred_on,
+  p_to_account_id, p_to_amount, p_fx_rate, p_category_id, p_payee, p_budget_month,
+  p_planned_item_id, p_debt_id, p_note, p_tag_ids, p_id)` → amal `id`. `p_id` yo'q —
+  yaratish (`source = manual`), bor — to'liq tahrirlash. Amal va teglari bitta
+  tranzaksiyada: ro'yxatda yo'q teglar o'chiriladi (tombstone). `p_budget_month`
+  berilsa — qo'lda (BR-042), aks holda avto; avto tahrirda saqlangan oy faqat
+  kirishlar o'zgarsa qayta hisoblanadi (BR-043). Qolgan tekshiruvlar — amal
+  triggeri (yuqoridagi xato kodlari). Owner/admin/member.
+- `payee_suggestions(p_household, p_query, p_kind = 'expense', p_limit = 8)` —
+  BR-056: `{payee, category_id, account_id, last_used}`, har nom bir marta
+  (oxirgi kategoriya/hisob bilan), boshidan mos kelganlari oldin. A'zolar.
 
 ### Chek rasmlari (Storage)
 
@@ -208,8 +280,19 @@ Summalar tiyinda. Ichki nomlar (onboarding) byudjet ichida registrsiz qidiriladi
 | `bulk_pay_planned(p_items[], p_date?, p_account?)` | `{paid: [id], skipped: [{id, reason}]}`; `reason`: `not_found`, `forbidden`, `skipped`, `already_paid`, `amount_unknown`, `account_required`, `account_not_found`, `currency_mismatch` (BR-074) | owner/admin/member |
 | `recalc_income_months_preview(p_household)` | `{count, moves[{from_month, to_month, count, amount_base}]}` (BR-043) | owner/admin |
 | `recalc_income_months_apply(p_household, p_expected_count)` | `{moved}` — son preview bilan mos bo'lmasa `preview_outdated` | owner/admin |
+| `recalc_income_months_rows(p_household, p_limit = 200)` | `{total, rows[{id, occurred_on, payee, category, amount_base, from_month, to_month}]}` — ko'chadigan yozuvlar (yangisidan boshlab, `p_limit` ≤ 1000); `total` — hammasi, tasdiqda shu son beriladi | owner/admin |
 | `month_close_check(p_household, p_month)` | `{month, unpaid_count, unpaid_amount, unknown_count}` (BR-153) | a'zolar |
 | `set_month_closed(p_household, p_month, p_closed)` | `{month, closed}` — yopish faqat tugagan oy uchun (BR-150) | owner/admin |
+| `audit_list(p_household, p_tables[]?, p_actors[]?, p_from?, p_to?, p_after_at?, p_after_id?, p_limit = 50)` | qator: `{id, at, actor_id, table_name, record_id, action, old_values, new_values}` — eng yangisi birinchi, kursor `(at, id)` kamayishi; davr chegarasi byudjet vaqt zonasida, `p_to` kuni ham kiradi; `p_limit` ≤ 200 (BR-008) | owner/admin |
+| `household_devices(p_household)` | `{devices[{user_id, platform, app_version, last_seen_at}], sync[{user_id, device_id, last_sync_at, ok, conflicts, rejected}]}` — push tokeni qaytmaydi; `sync` — `sync_mutations` dan qurilma kesimida (30 kun) | owner/admin |
+| `platform_users(p_query?, p_limit = 50, p_offset = 0)` | `{total, users[{user_id, email, display_name, locale, created_at, last_sign_in_at, blocked, households, is_admin}]}` — faqat agregat (byudjet ichi ko'rinmaydi) | platforma admini (aal2) |
+| `platform_set_blocked(p_user, p_blocked)` | `{user_id, blocked}`; kirish to'xtaydi (`banned_until`), ma'lumot o'chmaydi. Xatolar: `self_block`, `admin_block`, `not_found` | platforma admini (aal2) |
+| `send_announcement(p_message{uz,ru,en}, p_title?, p_users[]?, p_channels[] = {push,telegram})` | `{batch, queued, users}` — navbatga qo'yiladi (yuborish: notify-dispatch); kanali o'chiq yoki qurilmasi yo'qqa yozilmaydi (BR-163). Xatolar: `invalid_message`, `invalid_channel` | platforma admini (aal2) |
+| `announcement_log(p_limit = 20)` | `{items[{batch, created_at, users, total, sent, failed, pending, message}]}` | platforma admini (aal2) |
+| `platform_health()` | `{stats{db_bytes, db_limit_pct, storage_bytes, storage_limit_pct, users, households, largest_tables[]}, limits{db_bytes, storage_bytes, warn_pct}, jobs[{job, started_at, finished_at, status, details}], outbox{pending, sending, failed, sent, oldest_pending}}` | platforma admini (aal2) |
+| `import_legacy_v1(p_household, p_payload, p_dry_run = true)` | `{batch, dry_run, counts{incomes, expenses, plans, allocations, fund_spends}, warnings[{code, name}], months[{month, legacy{balance, saved}, current{…}, diff{…}}]}` — eski Sheets eksporti (v1, docs/MIGRATSIYA.md); `p_dry_run` da yozuvlar bekor qilinadi, natija qoladi; qayta import oldingi paketni tombstone qiladi (`import_batch_id`). Xatolar: `forbidden`, `unsupported_version`, `accounts_missing` | owner/admin |
+| `fx_rate_for(p_household, p_currency, p_date)` | `numeric` yoki `null` — sanadagi (yoki undan oldingi eng yaqin) kurs; amal formasi shuni ko'rsatadi (BR-191) | a'zolar |
+| `report_members(p_household, p_month)` | `{month, members[{user_id, name, expense, income, count}]}` — kim qancha sarfladi (`created_by`, o'tkazmasiz, asosiy valyutada) | a'zolar |
 | `merge_categories(p_from, p_to)` | `{children, transactions, plans, recurring_rules, quick_actions}` — manba o'chiriladi, maqsad limiti ustun (BR-036) | owner/admin |
 | `onboarding_apply(p_household, p_payload)` | `{applied: true, accounts, income_types, recurring_rules}` yoki qayta chaqirilsa `{applied: false}` | owner/admin |
 
@@ -259,14 +342,21 @@ qoldig'i (`planned − paid`), `unknown_count` — summasi noma'lum to'lanmaganl
 
 | RPC | Javob (asosiy maydonlar) |
 |---|---|
-| `report_month(p_household, p_month)` | `{month, closed, is_current, totals{income, income_card, income_cash, expense, expense_card, expense_cash, planned, unpaid, unknown_count, allocated, fund_spent}, derived{balance, forecast, saved, saved_ratio, spent_ratio, plan_ratio, card, cash}, projection{days_in_month, days_elapsed, daily_spend, month_end_spend, income_received, income_expected, income_pending, month_end_balance, per_day_available}, by_type[{category_id, name, card, cash}], by_category[{category_id, name, parent_id, planned, actual, actual_total, limit, limit_ratio, limit_status}], unpaid[{id, kind, name, category_id, planned_amount, paid_amount, due_date, auto_pay, status}], fund{allocated, spent, balance}, savings{before, this_month, total}, debts{i_owe, owed_to_me, monthly_obligation, net, paid_this_month}, goals[{goal_id, name, saved, remaining, progress}]}` |
+| `report_month(p_household, p_month)` | `{month, closed, is_current, totals{income, income_card, income_cash, expense, expense_card, expense_cash, planned, unpaid, unknown_count, allocated, fund_spent}, derived{balance, forecast, saved, saved_ratio, spent_ratio, plan_ratio (reja yo'q — null), card, cash}, projection{days_in_month, days_elapsed, daily_spend, month_end_spend, income_received, income_expected, income_pending (boolean — kutilgan daromad hali to'liq kelmagan), month_end_balance, per_day_available (faqat joriy oyda, aks holda null)}, by_type[{category_id, name, card, cash}], by_category[{category_id, name, parent_id, planned, actual, actual_total, limit (BR-134 bilan amaldagi), limit_carry (o'tgan oydan o'tgan qoldiq), limit_ratio, limit_status}], unpaid[{id, kind, name, category_id, planned_amount, paid_amount, due_date, auto_pay, status}], fund{allocated, spent, balance}, savings{before, this_month, total}, debts{i_owe, owed_to_me, monthly_obligation, net, paid_this_month}, goals[{goal_id, name, saved, remaining, progress}]}` |
 | `report_year(p_household, p_year)` | `{year, months[12 × {month, income, expense, allocated, fund_spent, closed, has_records, balance, forecast, saved, saved_ratio, …}], totals{…}}` |
 | `report_savings(p_household)` | `{months[{month, income, expense, balance, accumulated, is_current}], summary{months_count, total_income, total_expense, total_balance, total_saved, avg_monthly_saved, avg_monthly_expense}}` |
 | `report_personal_fund(p_household, p_from, p_to)` | `{balance, total_allocated, total_spent, months[{month, allocated, spent}], spends[{id, occurred_on, amount, category_id, payee, note}]}` |
 | `report_debts(p_household)` | `{debts[{debt_id, name, direction, currency, total, paid_before, monthly_payment, due_date, archived, paid_in_app, pending_amount, pending_count, remaining, progress, months_left, end_month, status}], totals{i_owe, owed_to_me, monthly_obligation, net, paid_this_month}}` |
 | `report_goals(p_household)` | `{avg_monthly_saved, goals[{goal_id, name, currency, target, saved, remaining, progress, monthly, monthly_source (goal/average), months_left, end_month, deadline, on_track, account_id, achieved_at}]}` |
 | `report_category_trend(p_household, p_from, p_to, p_category?)` | `{series[{month, category_id, actual}], compare[{category_id, actual, prev, avg3, vs_prev, vs_avg3}]}` (BR-095) |
+| `report_insights(p_household, p_month)` | `{month, expense, spikes[{category_id, name, actual, average, delta_pct}], subscriptions[{payee, amount, months, last_on}], subscriptions_total, top_expenses[{id, occurred_on, payee, category, amount}], weekdays[7 × {dow (1 — dushanba), amount, count}]}` (E32-T01) |
+| `fx_rates(p_since)` | `[{currency, rate_date, rate_to_base}]` — `p_since` dan boshlab (mobil lokal kurslar jadvali, BR-191) |
 | `health_check(p_household)` | `{problems[{code, …}], warnings[{code, …}], info{transactions, planned_items, first_month, opened_months, closed_months, income_rules}}` |
+
+`report_insights` — byudjet xarajatlari bo'yicha (fond xarajati va o'tkazma
+kirmaydi): `spikes` — oxirgi 3 oy o'rtachasidan 30%+ oshgan kategoriyalar (5
+tagacha), `subscriptions` — oxirgi 6 oyning kamida 3 tasida takrorlangan bir
+xil nom va summa (10 tagacha), `top_expenses` — oyning eng katta 5 xarajati.
 
 Formulalar: BR-090..095 (`BIZNES-QOIDALAR.md` 10-bo'lim). `limit_status`:
 `ok` < 80%, `near` 80–100%, `over` > 100% (ota-kategoriya — subkategoriyalar
@@ -350,6 +440,7 @@ O'qish — faqat o'ziniki; yozish — `update` (qator qo'shilmaydi/o'chmaydi).
 | `days_ahead` | 3 | 0–14 — kunlik eslatmada necha kun oldinga |
 | `monthly_report`, `report_day` | `true`, 21 | 1–28 — o'tgan oy hisoboti kuni (BR-161) |
 | `limit_alerts`, `income_missing` | `true`, `true` | BR-133, BR-165 |
+| `big_expense` | `null` | E30-T03: boshqa a'zoning shu summadan katta xarajati haqida xabar (asosiy valyutada; `null` — o'chiq) |
 
 ### Qurilma (FCM push)
 
@@ -357,7 +448,7 @@ O'qish — faqat o'ziniki; yozish — `update` (qator qo'shilmaydi/o'chmaydi).
   ochilganda va token yangilanganda; token boshqa akkauntda bo'lsa — ko'chadi.
 - `unregister_device(p_token)` — chiqishda.
 - Push: `notification { title, body }` (tayyor matn, foydalanuvchi tilida) +
-  `data { type }`: `daily_reminder` | `monthly_report` | `limit_alert` |
+  `data { type }`: `daily_reminder` | `monthly_report` | `limit_alert` | `big_expense` |
   `income_missing` | `test` — ilova bosilganda tegishli ekranni ochadi.
   Eskirgan token server tomonda o'chiriladi.
 
@@ -367,6 +458,20 @@ O'qish — faqat o'ziniki; yozish — `update` (qator qo'shilmaydi/o'chmaydi).
   (15 daqiqa, bir martalik) → `https://t.me/<bot>?start=<token>` ni oching.
 - Holat: `telegram_links` (o'z qatori: `linked_at`) — bor bo'lsa "Ulangan".
 - `telegram_unlink()` — uzish (botda `/stop` ham).
+
+Botdagi amallar (E31) — RPC'lar faqat `service_role` uchun, klient chaqirmaydi;
+klientga tegishlisi: `accounts.card_last4` va bot tilining `profiles.locale` bilan
+bir manbadan o'qilishi.
+
+| Bot | Natija |
+|---|---|
+| `taksi 20000`, `+500 ming maosh` (BR-220) | amal yoziladi (`source = 'telegram'`); nom tarixidan kategoriya/hisob taxmin qilinadi; javobda **✏️ Kategoriya** va **❌ Bekor** tugmalari |
+| Bank botidan **forward** qilingan karta xabari (BR-222) | `card_message_templates` naqshlari bo'yicha summa/sana/joy/karta o'qiladi; karta `accounts.card_last4` ga mos hisobga yoziladi |
+| `/hisobot`, `/hisobot 2026-08` (BR-221) | oy yakuni: daromad, xarajat, qoldiq va top-3 kategoriya |
+| `/til uz\|ru\|en` | bot tili (`profiles.locale`) |
+
+Bot amali oddiy amal bilan bir xil qoidalarga bo'ysunadi: yopilgan oyga
+yozilmaydi (`month_closed`), bekor qilish — soft delete (sinxronda tombstone).
 
 ### Test xabar va "hozir yuborish" (BR-164)
 

@@ -559,7 +559,101 @@ void main() {
     // Tur o'zgarsa ham summa qoladi.
     expect(find.text("500 so'm"), findsOneWidget);
   });
+
+  group("E29: ko'p valyuta (BR-191..194)", () {
+    setUp(
+      () => db.batch((batch) {
+        batch
+          ..insert(
+            db.accounts,
+            const Account(
+              id: 'usd',
+              householdId: 'h1',
+              name: 'Dollar',
+              type: AccountType.bank,
+              openingBalance: Money(0, Currency.usd),
+              sortOrder: 4,
+              rowVersion: 1,
+            ).toCompanion(),
+          )
+          ..insert(
+            db.exchangeRates,
+            ExchangeRatesCompanion.insert(
+              currency: 'USD',
+              rateDate: '2026-10-01',
+              rateToBase: '12600',
+            ),
+          );
+      }),
+    );
+
+    testWidgets('boshqa valyutadagi hisob — kurs va ekvivalent', (
+      tester,
+    ) async {
+      await openSheet(tester);
+      await tapChip(tester, 'Dollar');
+      await tapKeys(tester, ['1', '0', '0']);
+      await tester.pumpAndSettle();
+
+      expect(find.text(r'$100.00'), findsOneWidget);
+      // 100 USD × 12 600 = 1 260 000 so'm.
+      expect(find.text("≈ ${money("1 260 000 so'm")}"), findsOneWidget);
+
+      await tapChip(tester, 'Oziq-ovqat');
+      await tester.tap(find.widgetWithText(FilledButton, 'Saqlash'));
+      await tester.pumpAndSettle();
+
+      final tx = (await db.select(db.transactions).get()).single;
+      expect((tx.amount, tx.amountBase), (10000, 126000000));
+    });
+
+    testWidgets("qo'lda kurs — ekvivalent va saqlangan qiymat", (tester) async {
+      await openSheet(tester);
+      await tapChip(tester, 'Dollar');
+      await tapKeys(tester, ['1', '0', '0']);
+      await enterField(tester, 'Kurs', '13000');
+      expect(find.text("≈ ${money("1 300 000 so'm")}"), findsOneWidget);
+
+      await tapChip(tester, 'Oziq-ovqat');
+      await tester.tap(find.widgetWithText(FilledButton, 'Saqlash'));
+      await tester.pumpAndSettle();
+
+      final tx = (await db.select(db.transactions).get()).single;
+      expect((tx.amountBase, tx.fxRate), (130000000, 13000.0));
+    });
+
+    testWidgets('BR-193: turli valyutali o‘tkazma — manzil summasi', (
+      tester,
+    ) async {
+      await openSheet(tester);
+      await tester.tap(find.text("O'tkazma"));
+      await tester.pumpAndSettle();
+      await tapChip(tester, 'Dollar');
+      await tapChip(tester, 'Naqd', last: true);
+      await tapKeys(tester, ['1', '0', '0']);
+
+      // Manzil summasi kiritilmaguncha saqlab bo'lmaydi.
+      expect(
+        tester
+            .widget<FilledButton>(find.widgetWithText(FilledButton, 'Saqlash'))
+            .onPressed,
+        isNull,
+      );
+      await enterField(tester, 'Manzil summasi (UZS)', '1270000');
+      await tester.tap(find.widgetWithText(FilledButton, 'Saqlash'));
+      await tester.pumpAndSettle();
+
+      final tx = (await db.select(db.transactions).get()).single;
+      expect(
+        (tx.amount, tx.toAmount, tx.amountBase),
+        (10000, 127000000, 126000000),
+      );
+    });
+  });
 }
+
+/// Pul matni — `formatMoney` guruhlarni bo'linmas bo'shliq bilan ajratadi.
+String money(String text) => text.replaceAll(' ', '\u00a0');
 
 final class _NoStorage implements ReceiptStorage {
   @override

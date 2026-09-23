@@ -2060,8 +2060,1307 @@ i1.GeneratedColumn<String> _column_105(String aliasedName) =>
       type: i1.DriftSqlType.string,
       $customConstraints: 'NOT NULL',
     );
+
+final class Schema3 extends i0.VersionedSchema {
+  Schema3({required super.database}) : super(version: 3);
+  @override
+  late final List<i1.DatabaseSchemaEntity> entities = [
+    households,
+    accounts,
+    categories,
+    recurringRules,
+    categoryLimits,
+    quickActions,
+    tags,
+    debts,
+    goals,
+    months,
+    plannedItems,
+    transactions,
+    transactionTags,
+    attachments,
+    outbox,
+    syncState,
+    syncIssues,
+    appSettings,
+    pendingUploads,
+    accountsHousehold,
+    categoriesHousehold,
+    recurringRulesHousehold,
+    categoryLimitsHousehold,
+    quickActionsHousehold,
+    tagsHousehold,
+    debtsHousehold,
+    goalsHousehold,
+    plannedItemsMonth,
+    plannedItemsDebt,
+    transactionsMonth,
+    transactionsList,
+    transactionsAccount,
+    transactionsToAccount,
+    transactionsPlanned,
+    transactionsDebt,
+    transactionTagsTransaction,
+    attachmentsTransaction,
+    outboxPendingRecord,
+    outboxOrder,
+    syncIssuesOpen,
+    pendingUploadsHousehold,
+  ];
+  late final Shape0 households = Shape0(
+    source: i0.VersionedTable(
+      entityName: 'households',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_6,
+        _column_7,
+        _column_8,
+        _column_9,
+        _column_10,
+        _column_11,
+        _column_12,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape1 accounts = Shape1(
+    source: i0.VersionedTable(
+      entityName: 'accounts',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_1,
+        _column_18,
+        _column_19,
+        _column_20,
+        _column_21,
+        _column_22,
+        _column_23,
+        _column_24,
+        _column_25,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape2 categories = Shape2(
+    source: i0.VersionedTable(
+      entityName: 'categories',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_26,
+        _column_1,
+        _column_27,
+        _column_28,
+        _column_29,
+        _column_22,
+        _column_23,
+        _column_24,
+        _column_25,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape3 recurringRules = Shape3(
+    source: i0.VersionedTable(
+      entityName: 'recurring_rules',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_26,
+        _column_1,
+        _column_30,
+        _column_31,
+        _column_32,
+        _column_33,
+        _column_34,
+        _column_35,
+        _column_36,
+        _column_37,
+        _column_38,
+        _column_24,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape19 categoryLimits = Shape19(
+    source: i0.VersionedTable(
+      entityName: 'category_limits',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_39,
+        _column_40,
+        _column_41,
+        _column_42,
+        _column_106,
+        _column_107,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape5 quickActions = Shape5(
+    source: i0.VersionedTable(
+      entityName: 'quick_actions',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_1,
+        _column_40,
+        _column_39,
+        _column_43,
+        _column_44,
+        _column_24,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape6 tags = Shape6(
+    source: i0.VersionedTable(
+      entityName: 'tags',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_1,
+        _column_23,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape7 debts = Shape7(
+    source: i0.VersionedTable(
+      entityName: 'debts',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_1,
+        _column_45,
+        _column_19,
+        _column_46,
+        _column_47,
+        _column_48,
+        _column_49,
+        _column_50,
+        _column_25,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape8 goals = Shape8(
+    source: i0.VersionedTable(
+      entityName: 'goals',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_1,
+        _column_19,
+        _column_51,
+        _column_52,
+        _column_53,
+        _column_54,
+        _column_31,
+        _column_24,
+        _column_55,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape9 months = Shape9(
+    source: i0.VersionedTable(
+      entityName: 'months',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(household_id, month)'],
+      columns: [
+        _column_13,
+        _column_56,
+        _column_57,
+        _column_58,
+        _column_59,
+        _column_12,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape10 plannedItems = Shape10(
+    source: i0.VersionedTable(
+      entityName: 'planned_items',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_26,
+        _column_1,
+        _column_30,
+        _column_31,
+        _column_60,
+        _column_61,
+        _column_62,
+        _column_34,
+        _column_36,
+        _column_63,
+        _column_29,
+        _column_64,
+        _column_65,
+        _column_58,
+        _column_66,
+        _column_50,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape11 transactions = Shape11(
+    source: i0.VersionedTable(
+      entityName: 'transactions',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_26,
+        _column_43,
+        _column_67,
+        _column_40,
+        _column_68,
+        _column_69,
+        _column_70,
+        _column_30,
+        _column_44,
+        _column_71,
+        _column_62,
+        _column_72,
+        _column_73,
+        _column_36,
+        _column_50,
+        _column_74,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape12 transactionTags = Shape12(
+    source: i0.VersionedTable(
+      entityName: 'transaction_tags',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_75,
+        _column_76,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape13 attachments = Shape13(
+    source: i0.VersionedTable(
+      entityName: 'attachments',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_75,
+        _column_77,
+        _column_78,
+        _column_79,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape14 outbox = Shape14(
+    source: i0.VersionedTable(
+      entityName: 'outbox',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [],
+      columns: [
+        _column_80,
+        _column_81,
+        _column_13,
+        _column_82,
+        _column_83,
+        _column_84,
+        _column_85,
+        _column_86,
+        _column_87,
+        _column_88,
+        _column_89,
+        _column_90,
+        _column_91,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape15 syncState = Shape15(
+    source: i0.VersionedTable(
+      entityName: 'sync_state',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(household_id)'],
+      columns: [_column_13, _column_92, _column_93, _column_94, _column_90],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape16 syncIssues = Shape16(
+    source: i0.VersionedTable(
+      entityName: 'sync_issues',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [],
+      columns: [
+        _column_80,
+        _column_13,
+        _column_95,
+        _column_82,
+        _column_83,
+        _column_96,
+        _column_97,
+        _column_98,
+        _column_99,
+        _column_100,
+        _column_91,
+        _column_101,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape17 appSettings = Shape17(
+    source: i0.VersionedTable(
+      entityName: 'app_settings',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY("key")'],
+      columns: [_column_102, _column_103],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape18 pendingUploads = Shape18(
+    source: i0.VersionedTable(
+      entityName: 'pending_uploads',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [],
+      columns: [
+        _column_80,
+        _column_13,
+        _column_75,
+        _column_104,
+        _column_105,
+        _column_78,
+        _column_79,
+        _column_89,
+        _column_90,
+        _column_91,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  final i1.Index accountsHousehold = i1.Index(
+    'accounts_household',
+    'CREATE INDEX accounts_household ON accounts (household_id)',
+  );
+  final i1.Index categoriesHousehold = i1.Index(
+    'categories_household',
+    'CREATE INDEX categories_household ON categories (household_id)',
+  );
+  final i1.Index recurringRulesHousehold = i1.Index(
+    'recurring_rules_household',
+    'CREATE INDEX recurring_rules_household ON recurring_rules (household_id)',
+  );
+  final i1.Index categoryLimitsHousehold = i1.Index(
+    'category_limits_household',
+    'CREATE INDEX category_limits_household ON category_limits (household_id)',
+  );
+  final i1.Index quickActionsHousehold = i1.Index(
+    'quick_actions_household',
+    'CREATE INDEX quick_actions_household ON quick_actions (household_id)',
+  );
+  final i1.Index tagsHousehold = i1.Index(
+    'tags_household',
+    'CREATE INDEX tags_household ON tags (household_id)',
+  );
+  final i1.Index debtsHousehold = i1.Index(
+    'debts_household',
+    'CREATE INDEX debts_household ON debts (household_id)',
+  );
+  final i1.Index goalsHousehold = i1.Index(
+    'goals_household',
+    'CREATE INDEX goals_household ON goals (household_id)',
+  );
+  final i1.Index plannedItemsMonth = i1.Index(
+    'planned_items_month',
+    'CREATE INDEX planned_items_month ON planned_items (household_id, budget_month)',
+  );
+  final i1.Index plannedItemsDebt = i1.Index(
+    'planned_items_debt',
+    'CREATE INDEX planned_items_debt ON planned_items (debt_id)',
+  );
+  final i1.Index transactionsMonth = i1.Index(
+    'transactions_month',
+    'CREATE INDEX transactions_month ON transactions (household_id, budget_month)',
+  );
+  final i1.Index transactionsList = i1.Index(
+    'transactions_list',
+    'CREATE INDEX transactions_list ON transactions (household_id, occurred_on, id)',
+  );
+  final i1.Index transactionsAccount = i1.Index(
+    'transactions_account',
+    'CREATE INDEX transactions_account ON transactions (account_id)',
+  );
+  final i1.Index transactionsToAccount = i1.Index(
+    'transactions_to_account',
+    'CREATE INDEX transactions_to_account ON transactions (to_account_id)',
+  );
+  final i1.Index transactionsPlanned = i1.Index(
+    'transactions_planned',
+    'CREATE INDEX transactions_planned ON transactions (planned_item_id)',
+  );
+  final i1.Index transactionsDebt = i1.Index(
+    'transactions_debt',
+    'CREATE INDEX transactions_debt ON transactions (debt_id)',
+  );
+  final i1.Index transactionTagsTransaction = i1.Index(
+    'transaction_tags_transaction',
+    'CREATE INDEX transaction_tags_transaction ON transaction_tags (transaction_id)',
+  );
+  final i1.Index attachmentsTransaction = i1.Index(
+    'attachments_transaction',
+    'CREATE INDEX attachments_transaction ON attachments (transaction_id)',
+  );
+  final i1.Index outboxPendingRecord = i1.Index(
+    'outbox_pending_record',
+    'CREATE UNIQUE INDEX outbox_pending_record ON outbox (target_table, record_id) WHERE status = \'pending\'',
+  );
+  final i1.Index outboxOrder = i1.Index(
+    'outbox_order',
+    'CREATE INDEX outbox_order ON outbox (household_id, id)',
+  );
+  final i1.Index syncIssuesOpen = i1.Index(
+    'sync_issues_open',
+    'CREATE INDEX sync_issues_open ON sync_issues (household_id, resolved_at)',
+  );
+  final i1.Index pendingUploadsHousehold = i1.Index(
+    'pending_uploads_household',
+    'CREATE INDEX pending_uploads_household ON pending_uploads (household_id, id)',
+  );
+}
+
+class Shape19 extends i0.VersionedTable {
+  Shape19({required super.source, required super.alias}) : super.aliased();
+  i1.GeneratedColumn<String> get id =>
+      columnsByName['id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get householdId =>
+      columnsByName['household_id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get createdBy =>
+      columnsByName['created_by']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get createdAt =>
+      columnsByName['created_at']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get updatedAt =>
+      columnsByName['updated_at']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get deletedAt =>
+      columnsByName['deleted_at']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get rowVersion =>
+      columnsByName['row_version']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<String> get categoryId =>
+      columnsByName['category_id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get amount =>
+      columnsByName['amount']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get alert80 =>
+      columnsByName['alert_80']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get alert100 =>
+      columnsByName['alert_100']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get rollover =>
+      columnsByName['rollover']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get rolloverNegative =>
+      columnsByName['rollover_negative']! as i1.GeneratedColumn<int>;
+}
+
+i1.GeneratedColumn<int> _column_106(String aliasedName) =>
+    i1.GeneratedColumn<int>(
+      'rollover',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.int,
+      $customConstraints: 'NOT NULL DEFAULT 0 CHECK (rollover IN (0, 1))',
+      defaultValue: const i1.CustomExpression('0'),
+    );
+i1.GeneratedColumn<int> _column_107(String aliasedName) =>
+    i1.GeneratedColumn<int>(
+      'rollover_negative',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.int,
+      $customConstraints:
+          'NOT NULL DEFAULT 0 CHECK (rollover_negative IN (0, 1))',
+      defaultValue: const i1.CustomExpression('0'),
+    );
+
+final class Schema4 extends i0.VersionedSchema {
+  Schema4({required super.database}) : super(version: 4);
+  @override
+  late final List<i1.DatabaseSchemaEntity> entities = [
+    households,
+    accounts,
+    categories,
+    recurringRules,
+    categoryLimits,
+    quickActions,
+    tags,
+    debts,
+    goals,
+    months,
+    plannedItems,
+    transactions,
+    transactionTags,
+    attachments,
+    outbox,
+    syncState,
+    syncIssues,
+    appSettings,
+    pendingUploads,
+    exchangeRates,
+    accountsHousehold,
+    categoriesHousehold,
+    recurringRulesHousehold,
+    categoryLimitsHousehold,
+    quickActionsHousehold,
+    tagsHousehold,
+    debtsHousehold,
+    goalsHousehold,
+    plannedItemsMonth,
+    plannedItemsDebt,
+    transactionsMonth,
+    transactionsList,
+    transactionsAccount,
+    transactionsToAccount,
+    transactionsPlanned,
+    transactionsDebt,
+    transactionTagsTransaction,
+    attachmentsTransaction,
+    outboxPendingRecord,
+    outboxOrder,
+    syncIssuesOpen,
+    pendingUploadsHousehold,
+  ];
+  late final Shape0 households = Shape0(
+    source: i0.VersionedTable(
+      entityName: 'households',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_6,
+        _column_7,
+        _column_8,
+        _column_9,
+        _column_10,
+        _column_11,
+        _column_12,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape1 accounts = Shape1(
+    source: i0.VersionedTable(
+      entityName: 'accounts',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_1,
+        _column_18,
+        _column_19,
+        _column_20,
+        _column_21,
+        _column_22,
+        _column_23,
+        _column_24,
+        _column_25,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape2 categories = Shape2(
+    source: i0.VersionedTable(
+      entityName: 'categories',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_26,
+        _column_1,
+        _column_27,
+        _column_28,
+        _column_29,
+        _column_22,
+        _column_23,
+        _column_24,
+        _column_25,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape3 recurringRules = Shape3(
+    source: i0.VersionedTable(
+      entityName: 'recurring_rules',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_26,
+        _column_1,
+        _column_30,
+        _column_31,
+        _column_32,
+        _column_33,
+        _column_34,
+        _column_35,
+        _column_36,
+        _column_37,
+        _column_38,
+        _column_24,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape19 categoryLimits = Shape19(
+    source: i0.VersionedTable(
+      entityName: 'category_limits',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_39,
+        _column_40,
+        _column_41,
+        _column_42,
+        _column_106,
+        _column_107,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape5 quickActions = Shape5(
+    source: i0.VersionedTable(
+      entityName: 'quick_actions',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_1,
+        _column_40,
+        _column_39,
+        _column_43,
+        _column_44,
+        _column_24,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape6 tags = Shape6(
+    source: i0.VersionedTable(
+      entityName: 'tags',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_1,
+        _column_23,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape7 debts = Shape7(
+    source: i0.VersionedTable(
+      entityName: 'debts',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_1,
+        _column_45,
+        _column_19,
+        _column_46,
+        _column_47,
+        _column_48,
+        _column_49,
+        _column_50,
+        _column_25,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape8 goals = Shape8(
+    source: i0.VersionedTable(
+      entityName: 'goals',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_1,
+        _column_19,
+        _column_51,
+        _column_52,
+        _column_53,
+        _column_54,
+        _column_31,
+        _column_24,
+        _column_55,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape9 months = Shape9(
+    source: i0.VersionedTable(
+      entityName: 'months',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(household_id, month)'],
+      columns: [
+        _column_13,
+        _column_56,
+        _column_57,
+        _column_58,
+        _column_59,
+        _column_12,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape10 plannedItems = Shape10(
+    source: i0.VersionedTable(
+      entityName: 'planned_items',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_26,
+        _column_1,
+        _column_30,
+        _column_31,
+        _column_60,
+        _column_61,
+        _column_62,
+        _column_34,
+        _column_36,
+        _column_63,
+        _column_29,
+        _column_64,
+        _column_65,
+        _column_58,
+        _column_66,
+        _column_50,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape11 transactions = Shape11(
+    source: i0.VersionedTable(
+      entityName: 'transactions',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_26,
+        _column_43,
+        _column_67,
+        _column_40,
+        _column_68,
+        _column_69,
+        _column_70,
+        _column_30,
+        _column_44,
+        _column_71,
+        _column_62,
+        _column_72,
+        _column_73,
+        _column_36,
+        _column_50,
+        _column_74,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape12 transactionTags = Shape12(
+    source: i0.VersionedTable(
+      entityName: 'transaction_tags',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_75,
+        _column_76,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape13 attachments = Shape13(
+    source: i0.VersionedTable(
+      entityName: 'attachments',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_12,
+        _column_75,
+        _column_77,
+        _column_78,
+        _column_79,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape14 outbox = Shape14(
+    source: i0.VersionedTable(
+      entityName: 'outbox',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [],
+      columns: [
+        _column_80,
+        _column_81,
+        _column_13,
+        _column_82,
+        _column_83,
+        _column_84,
+        _column_85,
+        _column_86,
+        _column_87,
+        _column_88,
+        _column_89,
+        _column_90,
+        _column_91,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape15 syncState = Shape15(
+    source: i0.VersionedTable(
+      entityName: 'sync_state',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(household_id)'],
+      columns: [_column_13, _column_92, _column_93, _column_94, _column_90],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape16 syncIssues = Shape16(
+    source: i0.VersionedTable(
+      entityName: 'sync_issues',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [],
+      columns: [
+        _column_80,
+        _column_13,
+        _column_95,
+        _column_82,
+        _column_83,
+        _column_96,
+        _column_97,
+        _column_98,
+        _column_99,
+        _column_100,
+        _column_91,
+        _column_101,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape17 appSettings = Shape17(
+    source: i0.VersionedTable(
+      entityName: 'app_settings',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY("key")'],
+      columns: [_column_102, _column_103],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape18 pendingUploads = Shape18(
+    source: i0.VersionedTable(
+      entityName: 'pending_uploads',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [],
+      columns: [
+        _column_80,
+        _column_13,
+        _column_75,
+        _column_104,
+        _column_105,
+        _column_78,
+        _column_79,
+        _column_89,
+        _column_90,
+        _column_91,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape20 exchangeRates = Shape20(
+    source: i0.VersionedTable(
+      entityName: 'exchange_rates',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(currency, rate_date)'],
+      columns: [_column_108, _column_109, _column_110],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  final i1.Index accountsHousehold = i1.Index(
+    'accounts_household',
+    'CREATE INDEX accounts_household ON accounts (household_id)',
+  );
+  final i1.Index categoriesHousehold = i1.Index(
+    'categories_household',
+    'CREATE INDEX categories_household ON categories (household_id)',
+  );
+  final i1.Index recurringRulesHousehold = i1.Index(
+    'recurring_rules_household',
+    'CREATE INDEX recurring_rules_household ON recurring_rules (household_id)',
+  );
+  final i1.Index categoryLimitsHousehold = i1.Index(
+    'category_limits_household',
+    'CREATE INDEX category_limits_household ON category_limits (household_id)',
+  );
+  final i1.Index quickActionsHousehold = i1.Index(
+    'quick_actions_household',
+    'CREATE INDEX quick_actions_household ON quick_actions (household_id)',
+  );
+  final i1.Index tagsHousehold = i1.Index(
+    'tags_household',
+    'CREATE INDEX tags_household ON tags (household_id)',
+  );
+  final i1.Index debtsHousehold = i1.Index(
+    'debts_household',
+    'CREATE INDEX debts_household ON debts (household_id)',
+  );
+  final i1.Index goalsHousehold = i1.Index(
+    'goals_household',
+    'CREATE INDEX goals_household ON goals (household_id)',
+  );
+  final i1.Index plannedItemsMonth = i1.Index(
+    'planned_items_month',
+    'CREATE INDEX planned_items_month ON planned_items (household_id, budget_month)',
+  );
+  final i1.Index plannedItemsDebt = i1.Index(
+    'planned_items_debt',
+    'CREATE INDEX planned_items_debt ON planned_items (debt_id)',
+  );
+  final i1.Index transactionsMonth = i1.Index(
+    'transactions_month',
+    'CREATE INDEX transactions_month ON transactions (household_id, budget_month)',
+  );
+  final i1.Index transactionsList = i1.Index(
+    'transactions_list',
+    'CREATE INDEX transactions_list ON transactions (household_id, occurred_on, id)',
+  );
+  final i1.Index transactionsAccount = i1.Index(
+    'transactions_account',
+    'CREATE INDEX transactions_account ON transactions (account_id)',
+  );
+  final i1.Index transactionsToAccount = i1.Index(
+    'transactions_to_account',
+    'CREATE INDEX transactions_to_account ON transactions (to_account_id)',
+  );
+  final i1.Index transactionsPlanned = i1.Index(
+    'transactions_planned',
+    'CREATE INDEX transactions_planned ON transactions (planned_item_id)',
+  );
+  final i1.Index transactionsDebt = i1.Index(
+    'transactions_debt',
+    'CREATE INDEX transactions_debt ON transactions (debt_id)',
+  );
+  final i1.Index transactionTagsTransaction = i1.Index(
+    'transaction_tags_transaction',
+    'CREATE INDEX transaction_tags_transaction ON transaction_tags (transaction_id)',
+  );
+  final i1.Index attachmentsTransaction = i1.Index(
+    'attachments_transaction',
+    'CREATE INDEX attachments_transaction ON attachments (transaction_id)',
+  );
+  final i1.Index outboxPendingRecord = i1.Index(
+    'outbox_pending_record',
+    'CREATE UNIQUE INDEX outbox_pending_record ON outbox (target_table, record_id) WHERE status = \'pending\'',
+  );
+  final i1.Index outboxOrder = i1.Index(
+    'outbox_order',
+    'CREATE INDEX outbox_order ON outbox (household_id, id)',
+  );
+  final i1.Index syncIssuesOpen = i1.Index(
+    'sync_issues_open',
+    'CREATE INDEX sync_issues_open ON sync_issues (household_id, resolved_at)',
+  );
+  final i1.Index pendingUploadsHousehold = i1.Index(
+    'pending_uploads_household',
+    'CREATE INDEX pending_uploads_household ON pending_uploads (household_id, id)',
+  );
+}
+
+class Shape20 extends i0.VersionedTable {
+  Shape20({required super.source, required super.alias}) : super.aliased();
+  i1.GeneratedColumn<String> get currency =>
+      columnsByName['currency']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get rateDate =>
+      columnsByName['rate_date']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get rateToBase =>
+      columnsByName['rate_to_base']! as i1.GeneratedColumn<String>;
+}
+
+i1.GeneratedColumn<String> _column_108(String aliasedName) =>
+    i1.GeneratedColumn<String>(
+      'currency',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.string,
+      $customConstraints: 'NOT NULL',
+    );
+i1.GeneratedColumn<String> _column_109(String aliasedName) =>
+    i1.GeneratedColumn<String>(
+      'rate_date',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.string,
+      $customConstraints: 'NOT NULL',
+    );
+i1.GeneratedColumn<String> _column_110(String aliasedName) =>
+    i1.GeneratedColumn<String>(
+      'rate_to_base',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.string,
+      $customConstraints: 'NOT NULL',
+    );
 i0.MigrationStepWithVersion migrationSteps({
   required Future<void> Function(i1.Migrator m, Schema2 schema) from1To2,
+  required Future<void> Function(i1.Migrator m, Schema3 schema) from2To3,
+  required Future<void> Function(i1.Migrator m, Schema4 schema) from3To4,
 }) {
   return (currentVersion, database) async {
     switch (currentVersion) {
@@ -2070,6 +3369,16 @@ i0.MigrationStepWithVersion migrationSteps({
         final migrator = i1.Migrator(database, schema);
         await from1To2(migrator, schema);
         return 2;
+      case 2:
+        final schema = Schema3(database: database);
+        final migrator = i1.Migrator(database, schema);
+        await from2To3(migrator, schema);
+        return 3;
+      case 3:
+        final schema = Schema4(database: database);
+        final migrator = i1.Migrator(database, schema);
+        await from3To4(migrator, schema);
+        return 4;
       default:
         throw ArgumentError.value('Unknown migration from $currentVersion');
     }
@@ -2078,6 +3387,12 @@ i0.MigrationStepWithVersion migrationSteps({
 
 i1.OnUpgrade stepByStep({
   required Future<void> Function(i1.Migrator m, Schema2 schema) from1To2,
+  required Future<void> Function(i1.Migrator m, Schema3 schema) from2To3,
+  required Future<void> Function(i1.Migrator m, Schema4 schema) from3To4,
 }) => i0.VersionedSchema.stepByStepHelper(
-  step: migrationSteps(from1To2: from1To2),
+  step: migrationSteps(
+    from1To2: from1To2,
+    from2To3: from2To3,
+    from3To4: from3To4,
+  ),
 );

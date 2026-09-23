@@ -62,6 +62,9 @@ abstract interface class RemoteApi {
 
   /// Chiqishda — shu qurilmaga push yuborilmasin.
   Future<Result<void>> unregisterDevice(String token);
+
+  /// BR-191: `since` dan boshlab valyuta kurslari (lokal nusxa uchun).
+  Future<Result<List<FxRateRow>>> fxRates(LocalDate since);
 }
 
 final class RpcRemoteApi implements RemoteApi {
@@ -173,6 +176,21 @@ final class RpcRemoteApi implements RemoteApi {
     'p_platform': platform,
     'p_app_version': appVersion,
   }, (_) {});
+
+  @override
+  Future<Result<List<FxRateRow>>> fxRates(LocalDate since) => _call(
+    'fx_rates',
+    {'p_since': since.toString()},
+    (json) => [
+      for (final row in asObjects(json))
+        if (FxRate.tryParse('${row['rate_to_base']}') case final rate?)
+          (
+            currency: Currency(read<String>(row, 'currency')),
+            date: LocalDate.parse(read<String>(row, 'rate_date')),
+            rate: rate,
+          ),
+    ],
+  );
 
   @override
   Future<Result<void>> unregisterDevice(String token) =>

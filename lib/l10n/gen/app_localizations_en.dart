@@ -463,6 +463,17 @@ class AppL10nEn extends AppL10n {
   String get fieldNote => 'Note';
 
   @override
+  String get fieldFxRate => 'Rate';
+
+  @override
+  String get fxRateMissing => 'No rate for this date — enter it manually';
+
+  @override
+  String fieldToAmount(String currency) {
+    return 'Destination amount ($currency)';
+  }
+
+  @override
   String get fieldTo => 'To';
 
   @override
@@ -972,6 +983,9 @@ class AppL10nEn extends AppL10n {
   String get walletTotalNoFund => 'Total (excluding fund)';
 
   @override
+  String get walletTotalBase => 'Total (base currency)';
+
+  @override
   String get walletNegativeCash =>
       'Cash balance is negative — check your records';
 
@@ -1178,6 +1192,17 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get limitMonthly => 'Monthly limit';
+
+  @override
+  String get limitRollover => 'Carry the leftover to the next month';
+
+  @override
+  String get limitRolloverNegative => 'Subtract the overspend';
+
+  @override
+  String limitCarry(String amount) {
+    return 'from last month $amount';
+  }
 
   @override
   String get onboardingNotifyTitle => '🔔 Reminders';

@@ -14,6 +14,7 @@ final class DomainDeps {
     required this.debts,
     required this.goals,
     required this.limits,
+    required this.fx,
     required this.transactor,
     required this.ids,
     required this.clock,
@@ -28,6 +29,7 @@ final class DomainDeps {
   final DebtRepository debts;
   final GoalRepository goals;
   final CategoryLimitRepository limits;
+  final FxRateRepository fx;
   final Transactor transactor;
   final IdGenerator ids;
   final Clock clock;

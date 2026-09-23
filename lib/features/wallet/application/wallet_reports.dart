@@ -11,10 +11,14 @@ typedef AccountLine = ({Account account, Money balance});
 /// hisobisiz (BR-005: fond boshqa pullar bilan bitta "jami"ga qo'shilmaydi).
 @immutable
 final class AccountsReport {
-  const new(this.lines);
+  const new(this.lines, {this.baseTotal});
 
   /// Turi, keyin tartib bo'yicha; arxivlanganlar yo'q.
   final List<AccountLine> lines;
+
+  /// BR-194: bir nechta valyuta bo'lsa — asosiy valyutadagi umumiy jami
+  /// (fondsiz, joriy kurs bilan). Bitta valyuta yoki kurs yo'q — `null`.
+  final Money? baseTotal;
 
   AccountLine? get fund =>
       lines.where((l) => l.account.isPersonalFund).firstOrNull;
@@ -99,7 +103,14 @@ typedef LimitLine = ({
   Category category,
   int depth,
   Money actual,
+
+  /// BR-134 bilan amaldagi limit.
   Money? limit,
+
+  /// O'tgan oydan o'tgan qoldiq (yoqilmagan bo'lsa — 0).
+  Money carry,
+  bool rollover,
+  bool rolloverNegative,
   LimitStatus? status,
   double? ratio,
 });
@@ -128,6 +139,17 @@ final class WalletReportLoader {
   final LocalDate today;
 
   MonthKey get _current => today.monthKey;
+
+  /// BR-191: lokal kurslar jadvali (serverdagi `exchange_rates` nusxasi).
+  Future<FxRates> fxRates() async => FxRates.of([
+    for (final row in await _db.select(_db.exchangeRates).get())
+      if (FxRate.tryParse(row.rateToBase) case final rate?)
+        (
+          currency: Currency(row.currency),
+          date: LocalDate.parse(row.rateDate),
+          rate: rate,
+        ),
+  ]);
 
   /// Birinchi yozuvdan joriy oygacha oylar (serverdagi hisobotlar oralig'i).
   Future<List<MonthFacts>> history() async {
@@ -166,7 +188,23 @@ final class WalletReportLoader {
                 Money(0, account.openingBalance.currency),
           ),
     ]..sort((a, b) => a.account.type.index.compareTo(b.account.type.index));
-    return AccountsReport(lines);
+    final report = AccountsReport(lines);
+    return AccountsReport(lines, baseTotal: await _baseTotal(report.totals));
+  }
+
+  /// BR-194: valyutalar bo'yicha jamlarni asosiy valyutaga keltiradi; bitta
+  /// valyuta yoki birortasining kursi yo'q bo'lsa — `null` (noto'g'ri jami
+  /// ko'rsatilmaydi).
+  Future<Money?> _baseTotal(Map<Currency, Money> totals) async {
+    if (totals.length < 2) return null;
+    final toBase = (await fxRates()).converter(base, today);
+    var sum = Money(0, base);
+    for (final total in totals.values) {
+      final converted = toBase(total);
+      if (converted == null) return null;
+      sum += converted;
+    }
+    return sum;
   }
 
   Future<FundReport> fund({
@@ -245,6 +283,8 @@ final class WalletReportLoader {
       lines: lines,
       totals: DebtTotals.of(
         [for (final line in lines) (line.debt, line.progress)],
+        // BR-194: boshqa valyutadagi qarz joriy kurs bilan jamga kiradi.
+        toBase: (await fxRates()).converter(base, today),
         baseCurrency: base,
         paidThisMonth: await _db.ledgerDao.debtPaymentsIn(
           _householdId,
@@ -346,14 +386,27 @@ final class WalletReportLoader {
               ]))
             .get();
     final categories = [for (final row in rows) row.toDomain()];
+    final settings = {
+      for (final l
+          in await (_db.select(_db.categoryLimits)..where(
+                (l) =>
+                    l.householdId.equals(_householdId) & l.deletedAt.isNull(),
+              ))
+              .get())
+        l.categoryId: l,
+    };
     LimitLine lineOf(Category category, int depth) {
       final line = lines[category.id];
       final actual = line?.actualTotal ?? Money(0, base);
+      final setting = settings[category.id];
       return (
         category: category,
         depth: depth,
         actual: actual,
         limit: line?.limit,
+        carry: line?.limitCarry ?? Money(0, base),
+        rollover: setting?.rollover ?? false,
+        rolloverNegative: setting?.rolloverNegative ?? false,
         status: limitStatus(actual, line?.limit),
         ratio: limitRatio(actual, line?.limit),
       );

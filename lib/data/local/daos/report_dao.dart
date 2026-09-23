@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:drift/drift.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/local/mappers.dart';
@@ -19,7 +21,12 @@ typedef CategoryLine = ({
 
   /// Subkategoriyalari bilan — limit shu bo'yicha (BR-131).
   Money actualTotal,
+
+  /// BR-134 bilan amaldagi limit (`limit + limitCarry`, noldan kichik emas).
   Money? limit,
+
+  /// O'tgan oydan o'tgan qoldiq (rollover o'chiq bo'lsa — 0).
+  Money limitCarry,
 });
 
 /// Daromad turi bo'yicha oy (`report_month.by_type`, BR-022 karta/naqd).
@@ -81,14 +88,13 @@ class ReportDao extends DatabaseAccessor<AppDatabase> with _$ReportDaoMixin {
     MonthKey month, {
     Currency base = Currency.uzs,
   }) async {
-    final args = [
-      Variable.withString(householdId),
-      Variable.withString(month.toIsoDate()),
-    ];
-    Future<Map<String, int>> sums(String sql) async => {
+    Future<Map<String, int>> sums(String sql, [MonthKey? forMonth]) async => {
       for (final row in await customSelect(
         sql,
-        variables: args,
+        variables: [
+          Variable.withString(householdId),
+          Variable.withString((forMonth ?? month).toIsoDate()),
+        ],
         readsFrom: {transactions, accounts, categories, plannedItems},
       ).get())
         ?row.read<String?>('category_id'): row.read<int>('amount'),
@@ -115,7 +121,7 @@ class ReportDao extends DatabaseAccessor<AppDatabase> with _$ReportDaoMixin {
                 (l) => l.householdId.equals(householdId) & l.deletedAt.isNull(),
               ))
               .get())
-        l.categoryId: l.amount,
+        l.categoryId: l,
     };
     final children = <String, List<String>>{};
     for (final category in expense) {
@@ -123,17 +129,35 @@ class ReportDao extends DatabaseAccessor<AppDatabase> with _$ReportDaoMixin {
         (children[parent] ??= []).add(category.id);
       }
     }
+    int totalOf(Map<String, int> source, String categoryId) {
+      var total = source[categoryId] ?? 0;
+      for (final child in children[categoryId] ?? const <String>[]) {
+        total += source[child] ?? 0;
+      }
+      return total;
+    }
+
+    // BR-134: rollover yoqilgan limitlarda o'tgan oy fakti ham kerak.
+    final rollover = limits.values.any((l) => l.rollover);
+    final previous = rollover
+        ? await sums(_actualByCategorySql, month.shift(-1))
+        : const <String, int>{};
 
     final lines = <CategoryLine>[];
     for (final category in expense) {
       final own = actual[category.id] ?? 0;
-      var total = own;
-      for (final child in children[category.id] ?? const <String>[]) {
-        total += actual[child] ?? 0;
-      }
+      final total = totalOf(actual, category.id);
       final plan = planned[category.id] ?? 0;
       final limit = limits[category.id];
       if (plan == 0 && total == 0 && limit == null) continue;
+      // BR-134: amaldagi limit — o'tgan oy qoldig'i bilan, noldan kichik emas.
+      final carry = limit == null || !limit.rollover
+          ? 0
+          : _carry(
+              limit.amount - totalOf(previous, category.id),
+              negative: limit.rolloverNegative,
+            );
+      final effective = limit == null ? null : max(0, limit.amount + carry);
       lines.add((
         categoryId: category.id,
         name: category.name,
@@ -141,11 +165,19 @@ class ReportDao extends DatabaseAccessor<AppDatabase> with _$ReportDaoMixin {
         planned: Money(plan, base),
         actual: Money(own, base),
         actualTotal: Money(total, base),
-        limit: limit == null ? null : Money(limit, base),
+        limit: effective == null ? null : Money(effective, base),
+        limitCarry: Money(
+          effective == null ? 0 : effective - limit!.amount,
+          base,
+        ),
       ));
     }
     return lines;
   }
+
+  /// BR-134: musbat qoldiq doim o'tadi, manfiysi — faqat sozlama bilan.
+  static int _carry(int leftover, {required bool negative}) =>
+      leftover > 0 || negative ? leftover : 0;
 
   /// Xarajat (fond hisobidan emas) va ajratma — "O'zim uchun"da.
   static const _actualByCategorySql = '''

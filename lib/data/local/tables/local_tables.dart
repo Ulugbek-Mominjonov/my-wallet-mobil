@@ -114,3 +114,20 @@ class AppSettings extends Table {
   @override
   Set<Column<Object>> get primaryKey => {key};
 }
+
+/// E29 (BR-191): valyuta kurslari — serverdagi `exchange_rates` nusxasi.
+/// Sinxron jadvali emas (hammaga ochiq ma'lumot): ilova PostgREST'dan o'qib
+/// shu yerga yozadi va oflaynda `amount_base` ni shu bilan hisoblaydi.
+@DataClassName('ExchangeRateRow')
+class ExchangeRates extends Table {
+  TextColumn get currency => text()();
+
+  /// `YYYY-MM-DD` (serverdagi `rate_date`).
+  TextColumn get rateDate => text()();
+
+  /// 1 birlik valyuta necha so'm (`numeric(18, 6)` — aniqlik uchun matn).
+  TextColumn get rateToBase => text()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {currency, rateDate};
+}

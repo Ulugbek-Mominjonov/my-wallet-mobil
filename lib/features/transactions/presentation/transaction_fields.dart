@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_wallet/core/design_system/tokens.dart';
+import 'package:my_wallet/core/widgets/money_text.dart';
 import 'package:my_wallet/core/widgets/name_dialog.dart';
 import 'package:my_wallet/data/local/daos/ledger_dao.dart';
 import 'package:my_wallet/data/local/directory_providers.dart';
+import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:my_wallet/features/transactions/application/add_transaction_controller.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
 import 'package:wallet_domain/wallet_domain.dart';
@@ -348,6 +350,73 @@ class NoteField extends ConsumerWidget {
       onChanged: ref.read(addTransactionProvider.notifier).setNote,
     ),
   );
+}
+
+/// E29-T07, T08 (BR-191..193): boshqa valyutadagi hisobda — asosiy
+/// valyutadagi ekvivalent, qo'lda kurs va turli valyutali o'tkazmada
+/// manzil summasi. Ekvivalent — lokal taxmin; kanonik qiymat serverdan.
+class FxFields extends ConsumerWidget {
+  const new({required this.state, super.key});
+
+  final AddTransactionState state;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppL10n.of(context);
+    final controller = ref.read(addTransactionProvider.notifier);
+    if (!state.isForeign && !state.needsToAmount) {
+      return const SizedBox.shrink();
+    }
+    final on = state.occurredOn ?? ref.watch(clockProvider).today();
+    final rate =
+        state.fxRate ??
+        ref.watch(fxRateProvider((currency: state.currency, on: on))).value;
+    final equivalent = rate == null
+        ? null
+        : toBaseAmount(state.amount, base: state.baseCurrency, rate: rate);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (state.isForeign)
+          _Section(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  decoration: InputDecoration(
+                    labelText: l10n.fieldFxRate,
+                    hintText: rate?.toString(),
+                    suffixText: state.baseCurrency.code,
+                  ),
+                  onChanged: controller.setFxRate,
+                ),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  equivalent == null
+                      ? l10n.fxRateMissing
+                      : '≈ ${moneyLabel(context, ref, equivalent)}',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            ),
+          ),
+        if (state.needsToAmount)
+          _Section(
+            child: TextField(
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: l10n.fieldToAmount(state.toCurrency!.code),
+              ),
+              onChanged: controller.setToAmount,
+            ),
+          ),
+      ],
+    );
+  }
 }
 
 class _Section extends StatelessWidget {

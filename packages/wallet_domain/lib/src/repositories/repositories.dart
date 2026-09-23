@@ -7,6 +7,8 @@ import 'package:wallet_domain/src/entities/goal.dart';
 import 'package:wallet_domain/src/entities/household.dart';
 import 'package:wallet_domain/src/entities/planned_item.dart';
 import 'package:wallet_domain/src/entities/transaction.dart';
+import 'package:wallet_domain/src/value_objects/currency.dart';
+import 'package:wallet_domain/src/value_objects/fx_rate.dart';
 import 'package:wallet_domain/src/value_objects/local_date.dart';
 import 'package:wallet_domain/src/value_objects/month_key.dart';
 
@@ -75,6 +77,12 @@ abstract interface class CategoryLimitRepository {
   /// Kategoriyaning amaldagi (o'chirilmagan) limiti — bittadan (BR-130).
   Future<CategoryLimit?> forCategory(String categoryId);
   Future<void> save(CategoryLimit limit);
+}
+
+/// BR-191: valyuta kurslari (lokal nusxa — `exchange_rates`).
+abstract interface class FxRateRepository {
+  /// Sanadagi yoki undan oldingi eng yaqin kurs; yo'q bo'lsa — `null`.
+  Future<FxRate?> rate(Currency from, Currency to, LocalDate on);
 }
 
 /// Bir nechta yozuv — bitta lokal tranzaksiyada (hammasi yoki hech biri).
