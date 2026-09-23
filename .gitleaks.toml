@@ -1,0 +1,13 @@
+# E28-T02: sirlar skaneri sozlamasi — standart qoidalar ustiga istisnolar.
+# Repo ochiq: haqiqiy kalit kodga tushmaydi (keystore va sirlar — GitHub
+# Secrets, build vaqtida beriladi).
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Build artefaktlari (git'ga tushmaydi): Dart/Flutter oraliq fayllari va emulyator loglari"
+paths = [
+  '''\.dart_tool/''',
+  '''build/''',
+  '''\.gradle/''',
+]
