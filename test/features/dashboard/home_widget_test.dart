@@ -29,7 +29,8 @@ void main() {
       homeWidgetWriter: (data) async => writes.add(data),
     );
 
-    expect(writes, isNotEmpty);
+    // Qiymat o'zgarmasa qayta yozilmaydi (bitta yozuv yetarli).
+    expect(writes, hasLength(1));
     final data = writes.last;
     expect(data['title'], 'Oktabr 2026');
     // 10 000 000 − 2 000 000 = 8 000 000 so'm.

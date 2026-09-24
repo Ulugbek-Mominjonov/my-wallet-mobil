@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart' show mapEquals;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_widget/home_widget.dart';
@@ -10,6 +11,7 @@ import 'package:my_wallet/core/format/month_format.dart';
 import 'package:my_wallet/core/security/privacy_mode.dart';
 import 'package:my_wallet/core/widgets/money_text.dart';
 import 'package:my_wallet/features/dashboard/application/dashboard_controller.dart';
+import 'package:my_wallet/features/dashboard/application/month_report.dart';
 import 'package:my_wallet/features/household/application/invite_links.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
 import 'package:wallet_domain/wallet_domain.dart';
@@ -30,27 +32,30 @@ final Provider<HomeWidgetWriter> homeWidgetWriterProvider = Provider(
 );
 
 /// E33-T01: joriy oy qoldig'i, "kuniga ≈ X" va "＋" havolasi vidjetga
-/// yoziladi — hisob yoki maxfiylik rejimi (BR-212) o'zgarganda.
-class HomeWidgetSync extends ConsumerWidget {
+/// yoziladi — hisob yoki maxfiylik rejimi (BR-212) o'zgarganda. Qiymat
+/// o'zgarmagan bo'lsa yozilmaydi (har qayta qurishda diskka tegmaydi).
+class HomeWidgetSync extends ConsumerStatefulWidget {
   const new({required this.child, super.key});
 
   final Widget child;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // Qiymat o'zgarganda ham, birinchi qurishda ham yoziladi.
-    ref
-      ..listen(monthReportProvider, (_, _) => unawaited(_write(context, ref)))
-      ..listen(privacyModeProvider, (_, _) => unawaited(_write(context, ref)));
-    unawaited(_write(context, ref));
-    return child;
+  ConsumerState<HomeWidgetSync> createState() => _HomeWidgetSyncState();
+}
+
+class _HomeWidgetSyncState extends ConsumerState<HomeWidgetSync> {
+  Map<String, String>? _written;
+
+  @override
+  Widget build(BuildContext context) {
+    final report = ref.watch(monthReportProvider).value;
+    final hidden = ref.watch(privacyModeProvider);
+    if (report != null) unawaited(_write(report, hidden: hidden));
+    return widget.child;
   }
 
-  Future<void> _write(BuildContext context, WidgetRef ref) async {
-    final report = ref.read(monthReportProvider).value;
-    if (report == null || !context.mounted) return;
+  Future<void> _write(MonthReport report, {required bool hidden}) async {
     final l10n = AppL10n.of(context);
-    final hidden = ref.read(privacyModeProvider);
     String money(Money amount) => hidden
         ? MoneyText.hiddenValue
         : formatMoney(
@@ -59,8 +64,7 @@ class HomeWidgetSync extends ConsumerWidget {
             locale: appLocaleOf(context),
           );
     final perDay = report.forecast.perDayAvailable;
-
-    await ref.read(homeWidgetWriterProvider)({
+    final data = {
       'title': formatMonthTitle(
         l10n,
         year: report.month.year,
@@ -70,6 +74,9 @@ class HomeWidgetSync extends ConsumerWidget {
       'per_day': perDay == null ? '' : l10n.dashPerDay(money(perDay)),
       'add_label': '＋ ${l10n.kindExpense}',
       'add_uri': addLink(ref.read(appConfigProvider).env),
-    });
+    };
+    if (mapEquals(_written, data)) return;
+    _written = data;
+    await ref.read(homeWidgetWriterProvider)(data);
   }
 }
