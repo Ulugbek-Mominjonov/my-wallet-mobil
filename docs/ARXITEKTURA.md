@@ -104,6 +104,8 @@ Pub workspace: ildiz (Flutter ilova) + `packages/wallet_domain`.
 | Bildirishnoma | `firebase_messaging`, `flutter_local_notifications` | push + offline lokal eslatma |
 | Kuzatuv | Firebase Crashlytics | bepul |
 | Rasm | `image_picker` + `flutter_image_compress` | chek ≤ 1 MB |
+| QR | `mobile_scanner` (o'qish), `qr` (chizish — bitta `CustomPainter`) | taklif QR va fiskal chek (E30, E33) |
+| Vidjet | `home_widget` | bosh ekran vidjeti (E33-T01) |
 | Lint | `very_good_analysis` + `custom_lint` | qat'iy qoidalar |
 | Test | `test`, `flutter_test`, `mocktail`, `alchemist` (golden), `patrol` (e2e) | |
 
@@ -168,11 +170,12 @@ sozlamalar — yuqoridagi avatar orqali.
 | Ekran | Asosiy elementlar | Qoidalar |
 |---|---|---|
 | **Xulosa** | oy almashtirgich (swipe), QOLDIQ hero + prognoz, "kuniga ≈ X so'm", orttirgan % halqa, 4 stat (daromad/xarajat/karta/naqd), reja bajarilishi, yaqin to'lovlar (bir bosishda "To'landi"), kategoriyalar limit rangi bilan, daromad turlari, 👤 fond va 🏦 jamg'arma alohida plitalar, qarz/maqsad qisqacha, prognoz kartasi | BR-090..102, BR-005 |
-| **Qo'shish (＋)** | Xarajat / Daromad / O'tkazma; katta summa + raqamli klaviatura (`000`, `+ −`); tez tugmalar; kategoriya to'ri (oxirgilar oldinda); hisob chiplari; Bugun/Kecha/sana; payee avto-to'ldirish; **"→ Avgust 2026 oyining daromadi"** jonli izoh va oyni almashtirish; qarz/teg/izoh/chek | BR-040..056, BR-141 |
+| **Qo'shish (＋)** | Xarajat / Daromad / O'tkazma; katta summa + raqamli klaviatura (`000`, `+ −`); tez tugmalar; kategoriya to'ri (oxirgilar oldinda); hisob chiplari; Bugun/Kecha/sana; payee avto-to'ldirish; **"→ Avgust 2026 oyining daromadi"** jonli izoh va oyni almashtirish; boshqa valyutadagi hisobda kurs va `≈ ekvivalent` (E29), turli valyutali o'tkazmada manzil summasi; chek QR skaneri (E33-T02); qarz/teg/izoh/chek | BR-040..056, BR-141, BR-191..193 |
 | **Amallar** | kun bo'yicha guruh, kunlik jami, qidiruv, filtr chiplari, swipe → o'chirish + undo, yopilgan oy banneri | BR-009, BR-055, BR-202 |
 | **To'lovlar** | Xarajatlar / Kutilayotgan daromadlar; ⚠️ kechikkan · 📌 bugun · 🗓 yaqin · keyinroq · ✅ to'langan; summa maydoni + "To'landi" (qisman/yopish), o'tkazib yuborish, avto to'lov va qarz belgilari, `X so'm + N ta ?`, "Oyni ochish" (preview), kalendar ko'rinishi | BR-070..085 |
 | **Hamyon** | hisoblar va qoldiqlar, o'tkazma; 👤 shaxsiy fond (qoldiq, ajratma/sarf, sarf qo'shish, tarix); 🏦 jamg'arma (grafik, oylar ⏳); 💳 qarzlar (3 holat, progress, tugash); 🎯 maqsadlar; 📊 limitlar | BR-020..025, 060..065, 100..103, 110..123, 130..134 |
-| **Sozlamalar** | profil, byudjet(lar), a'zolar (E30), bildirishnomalar + Telegram, ilova qulfi, maxfiylik rejimi, tema, til, eksport, sinxron holati, akkauntni o'chirish, ilova haqida | BR-015, 160..168, 211..214 |
+| **Sozlamalar** | profil, byudjet(lar), **a'zolar** (ro'yxat, rollar, taklif — kod/havola/QR, chiqarish/chiqish), bildirishnomalar + Telegram, ilova qulfi, maxfiylik rejimi, tema, til, eksport, sinxron holati, akkauntni o'chirish, ilova haqida | BR-011..015, 160..168, 211..214 |
+| **Bosh ekran vidjeti** (E33-T01) | joriy oy qoldig'i, "kuniga ≈ X", "＋" (qo'shish varag'iga deep link); maxfiylik rejimida summalar "•••" | BR-094, BR-212 |
 | **Onboarding** | kirish → byudjet yaratish/qo'shilish → hisoblar va boshlang'ich qoldiq → maosh jadvali (daromad turlari va qaysi oyga tegishli) → doimiy to'lovlar (tayyor ro'yxatdan) → 👤 fond qoidasi → bildirishnoma ruxsati → joriy oy avtomatik ochiladi | BR-010, BR-031, BR-060, BR-080 |
 
 **Dizayn tizimi:** Material 3 + o'z tokenlarimiz (`ThemeExtension`:
