@@ -24,6 +24,7 @@ import 'package:my_wallet/data/receipts/receipt_platform.dart';
 import 'package:my_wallet/data/receipts/receipt_providers.dart';
 import 'package:my_wallet/data/remote/remote_api.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
+import 'package:my_wallet/features/dashboard/application/home_widget_sync.dart';
 import 'package:my_wallet/features/household/application/invite_links.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -103,6 +104,9 @@ void main() {
           inviteLinksProvider.overrideWith(
             (ref) => const Stream<String>.empty(),
           ),
+          appLinksProvider.overrideWithValue(const Stream<String>.empty()),
+          // Bosh ekran vidjeti (E33-T01) — plagin host'da yo'q.
+          homeWidgetWriterProvider.overrideWithValue((_) async {}),
           // Versiya tekshiruvi (BR-214) — plagin host'da yo'q.
           appVersionProvider.overrideWith((ref) async => '9.9.9'),
           // Bildirishnomalar plagini host'da yo'q (E19).

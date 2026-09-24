@@ -1,6 +1,7 @@
 import 'package:app_links/app_links.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_wallet/core/config/app_config.dart';
+import 'package:my_wallet/core/logging/app_log.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
@@ -28,8 +29,11 @@ String _scheme(AppEnv env) => switch (env) {
 /// taklif, tez amallar va bosh ekran vidjeti. Testda almashtiriladi.
 /// Bir nechta tinglovchi (taklif va tez amallar) — broadcast oqim.
 final Provider<Stream<String>> appLinksProvider = Provider(
-  (ref) =>
-      AppLinks().uriLinkStream.map((uri) => uri.toString()).asBroadcastStream(),
+  (ref) => AppLinks().uriLinkStream
+      .map((uri) => uri.toString())
+      // Plagin yo'q yoki kanal xato bersa — havolasiz davom etadi.
+      .handleError((Object error) => AppLog.info('Havola oqimi: $error'))
+      .asBroadcastStream(),
 );
 
 /// `mywallet://invite/<kod>` havolalari — kod.
