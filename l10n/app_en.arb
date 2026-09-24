@@ -205,6 +205,8 @@
   "receipt": "Receipt",
   "receiptCamera": "Camera",
   "receiptGallery": "Gallery",
+  "receiptScan": "Scan receipt",
+  "receiptScanTitle": "Receipt QR code",
   "receiptTooLarge": "The image is too large — pick another",
   "receiptPending": "Waiting to upload",
   "dashBalance": "Balance",

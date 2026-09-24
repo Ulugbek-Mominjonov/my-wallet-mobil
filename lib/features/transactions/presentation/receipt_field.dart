@@ -3,11 +3,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:my_wallet/app/router.dart';
 import 'package:my_wallet/core/design_system/tokens.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/receipts/receipt_providers.dart';
 import 'package:my_wallet/features/transactions/application/add_transaction_controller.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
+import 'package:wallet_domain/wallet_domain.dart';
 
 /// BR-201: chek rasmlari — kamera/galereya, ≤ 1 MB ga siqiladi; yangi
 /// rasmlar saqlashda navbatga tushadi. Tahrirlashda mavjudlari ham ko'rinadi.
@@ -67,9 +70,21 @@ class ReceiptField extends ConsumerWidget {
             label: Text(l10n.receipt),
             onPressed: () => unawaited(_pick(context, ref)),
           ),
+          // E33-T02: fiskal chek QR kodi — summa va sana formaga tushadi.
+          ActionChip(
+            avatar: const Icon(Icons.qr_code_scanner, size: 18),
+            label: Text(l10n.receiptScan),
+            onPressed: () => unawaited(_scan(context, ref)),
+          ),
         ],
       ),
     );
+  }
+
+  Future<void> _scan(BuildContext context, WidgetRef ref) async {
+    final scan = await context.push<ReceiptScan>(receiptScanPath);
+    if (scan == null) return;
+    ref.read(addTransactionProvider.notifier).applyReceiptScan(scan);
   }
 
   Future<void> _pick(BuildContext context, WidgetRef ref) async {

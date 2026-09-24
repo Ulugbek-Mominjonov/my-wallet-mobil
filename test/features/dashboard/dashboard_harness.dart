@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/local/mappers.dart';
 import 'package:my_wallet/data/repositories/local_ledger.dart';
+import 'package:my_wallet/features/dashboard/application/home_widget_sync.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
@@ -97,6 +98,9 @@ Future<GoRouter> pumpDashboard(
   AppDatabase db, {
   Size size = const Size(1080, 6000),
   List<Override> overrides = const [],
+
+  /// E33-T01: bosh ekran vidjetiga yozilgan qiymatlar (testda tekshiriladi).
+  HomeWidgetWriter? homeWidgetWriter,
 }) {
   tester.view
     ..physicalSize = size
@@ -105,6 +109,7 @@ Future<GoRouter> pumpDashboard(
   return pumpApp(
     tester,
     database: db,
+    homeWidgetWriter: homeWidgetWriter,
     overrides: [
       clockProvider.overrideWithValue(
         TzClock('Asia/Tashkent', utcNow: () => DateTime.utc(2026, 10, 10, 4)),

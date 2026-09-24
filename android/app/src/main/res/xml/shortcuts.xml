@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- E33-T03: tez amallar (ikonni uzoq bosganda). Har biri deep link bilan
+     ochiladi — ilova `shortcutLinksProvider` orqali marshrutga o'tadi.
+     Sxema flavor bo'yicha (build.gradle.kts dagi deepLinkScheme). -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="add_expense"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_expense"
+        android:shortcutShortLabel="@string/shortcut_expense_short"
+        android:shortcutLongLabel="@string/shortcut_expense_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="${deepLinkScheme}://add?kind=expense"
+            android:targetClass="uz.mywallet.app.MainActivity"
+            android:targetPackage="${applicationId}" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="add_income"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_income"
+        android:shortcutShortLabel="@string/shortcut_income_short"
+        android:shortcutLongLabel="@string/shortcut_income_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="${deepLinkScheme}://add?kind=income"
+            android:targetClass="uz.mywallet.app.MainActivity"
+            android:targetPackage="${applicationId}" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="payments"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_payments"
+        android:shortcutShortLabel="@string/shortcut_payments_short"
+        android:shortcutLongLabel="@string/shortcut_payments_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="${deepLinkScheme}://payments"
+            android:targetClass="uz.mywallet.app.MainActivity"
+            android:targetPackage="${applicationId}" />
+    </shortcut>
+</shortcuts>

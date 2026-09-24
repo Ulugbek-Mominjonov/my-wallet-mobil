@@ -393,6 +393,8 @@
   "receipt": "Chek",
   "receiptCamera": "Kamera",
   "receiptGallery": "Galereya",
+  "receiptScan": "Chekni skanerlash",
+  "receiptScanTitle": "Chek QR kodi",
   "receiptTooLarge": "Rasm juda katta — boshqasini tanlang",
   "receiptPending": "Yuklanishi kutilmoqda",
   "dashBalance": "Qoldiq",

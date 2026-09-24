@@ -9,6 +9,7 @@ import 'package:my_wallet/core/security/privacy_mode.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
 import 'package:my_wallet/data/sync/sync_status.dart';
 import 'package:my_wallet/features/auth/presentation/sign_out_dialog.dart';
+import 'package:my_wallet/features/dashboard/application/home_widget_sync.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:my_wallet/features/sync/presentation/sync_status_badge.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
@@ -47,11 +48,14 @@ class AppShell extends ConsumerWidget {
         titleSpacing: AppSpacing.lg,
         actions: const [_PrivacyToggle(), SyncStatusBadge(), _AccountMenu()],
       ),
-      body: Column(
-        children: [
-          const _Banners(),
-          Expanded(child: navigationShell),
-        ],
+      // E33-T01: bosh ekran vidjeti — hisob o'zgarganda yangilanadi.
+      body: HomeWidgetSync(
+        child: Column(
+          children: [
+            const _Banners(),
+            Expanded(child: navigationShell),
+          ],
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       // BR-011: kuzatuvchi faqat o'qiydi — qo'shish tugmasi yo'q.

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shortcut_expense_short">Расход</string>
+    <string name="shortcut_expense_long">Добавить расход</string>
+    <string name="shortcut_income_short">Доход</string>
+    <string name="shortcut_income_long">Добавить доход</string>
+    <string name="shortcut_payments_short">Платежи</string>
+    <string name="shortcut_payments_long">Список платежей</string>
+</resources>

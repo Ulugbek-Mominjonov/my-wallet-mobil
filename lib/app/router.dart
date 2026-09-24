@@ -28,6 +28,7 @@ import 'package:my_wallet/features/startup/presentation/update_required_screen.d
 import 'package:my_wallet/features/sync/presentation/sync_status_screen.dart';
 import 'package:my_wallet/features/transactions/presentation/add_transaction_screen.dart';
 import 'package:my_wallet/features/transactions/presentation/edit_transaction_screen.dart';
+import 'package:my_wallet/features/transactions/presentation/receipt_scan_screen.dart';
 import 'package:my_wallet/features/transactions/presentation/transactions_screen.dart';
 import 'package:my_wallet/features/wallet/presentation/debts_screen.dart';
 import 'package:my_wallet/features/wallet/presentation/fund_screen.dart';
@@ -62,6 +63,9 @@ const notificationSettingsPath = '/settings/notifications';
 
 /// E30-T04: byudjet a'zolari.
 const membersPath = '/settings/members';
+
+/// E33-T02: chek QR skaneri.
+const receiptScanPath = '/add/scan';
 
 /// Marshrutlar. Kirilmagan — faqat kirish ekrani; kirilgan — undan
 /// bosh sahifaga (sessiya eskirsa ham avtomatik).
@@ -116,6 +120,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: membersPath,
         builder: (context, state) => const MembersScreen(),
+      ),
+      GoRoute(
+        path: receiptScanPath,
+        builder: (context, state) => const ReceiptScanScreen(),
       ),
       GoRoute(
         path: joinPath,

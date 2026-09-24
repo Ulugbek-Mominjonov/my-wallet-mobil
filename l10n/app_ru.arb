@@ -205,6 +205,8 @@
   "receipt": "Чек",
   "receiptCamera": "Камера",
   "receiptGallery": "Галерея",
+  "receiptScan": "Сканировать чек",
+  "receiptScanTitle": "QR-код чека",
   "receiptTooLarge": "Изображение слишком большое — выберите другое",
   "receiptPending": "Ожидает загрузки",
   "dashBalance": "Остаток",

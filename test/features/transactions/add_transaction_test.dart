@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/local/mappers.dart';
@@ -11,6 +12,8 @@ import 'package:my_wallet/data/receipts/receipt_providers.dart';
 import 'package:my_wallet/data/receipts/receipt_queue.dart';
 import 'package:my_wallet/data/repositories/local_ledger.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
+import 'package:my_wallet/features/transactions/application/add_transaction_controller.dart';
+import 'package:my_wallet/features/transactions/presentation/add_transaction_screen.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
 import '../../support/pump_app.dart';
@@ -536,6 +539,27 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Rasm juda katta — boshqasini tanlang'), findsOneWidget);
     });
+  });
+
+  testWidgets('E33-T02: chek QR — summa, sana va havola formaga tushadi', (
+    tester,
+  ) async {
+    await openSheet(tester);
+    final container = ProviderScope.containerOf(
+      tester.element(find.byType(AddTransactionScreen)),
+    );
+    container.read(addTransactionProvider.notifier).applyReceiptScan((
+      amount: const Money(15000000),
+      date: LocalDate(2026, 10, 4),
+      tin: '301234567',
+      link: 'https://ofd.soliq.uz/check?s=15000000',
+    ));
+    await tester.pumpAndSettle();
+
+    expect(find.text("150 000 so'm".replaceAll(' ', '\u00a0')), findsOneWidget);
+    final state = container.read(addTransactionProvider);
+    expect(state.occurredOn, LocalDate(2026, 10, 4));
+    expect(state.note, contains('ofd.soliq.uz'));
   });
 
   testWidgets('kategoriyasiz xarajat — aniq xabar', (tester) async {

@@ -555,13 +555,13 @@
 
 ### E33 · Android vidjet va chek QR skaneri `[mobile]`
 
-- [ ] **E33-T01** Bosh ekran vidjeti (`home_widget`): joriy oy qoldig'i,
+- [x] **E33-T01** Bosh ekran vidjeti (`home_widget`): joriy oy qoldig'i,
   "kuniga ≈ X", "＋" tugmasi (qo'shish varag'iga deep link); maxfiylik
   rejimini hurmat qiladi.
-- [ ] **E33-T02** Chek QR skaneri (`mobile_scanner`): soliq.uz fiskal chek
+- [x] **E33-T02** Chek QR skaneri (`mobile_scanner`): soliq.uz fiskal chek
   havolasidan summa/sana/sotuvchini ajratish → xarajat formasi to'ldiriladi;
   tanilmasa — faqat havola izohga.
-- [ ] **E33-T03** Tez amallar (app shortcuts): "Xarajat", "Daromad",
+- [x] **E33-T03** Tez amallar (app shortcuts): "Xarajat", "Daromad",
   "To'lovlar" — ikonni uzoq bosganda.
 
 ### E34 · Limitlar v2 — mobil qismi
@@ -595,3 +595,4 @@
 | 2026-09-23 | E29-T07..T09, E34-T03 | ko'p valyuta: domen `FxRate`/`FxRates`/`toBaseAmount` (serverdagi `to_base_amount` bilan bir xil, BigInt bilan aniq), `FxRateRepository` va `prepareTransaction` da `amount_base` (qo'lda kurs ustun, kurs yo'q — `fx_rate_missing`); amal formasida hisob valyutasi, kurs maydoni va `≈` ekvivalent, turli valyutali o'tkazmada manzil summasi (BR-193); Hamyonda asosiy valyutadagi jami (BR-194); lokal `exchange_rates` jadvali (drift v4) va har sinxronda `fx_rates` RPC'si bilan yangilanishi. Limitlar v2 (BR-134): lokal jadvalda `rollover`/`rollover_negative` (drift v3), hisobotda amaldagi limit va o'tgan oy qoldig'i, limit oynasida ikki sozlama. Golden fixture'lar (multi-currency va rollover) yashil; 441 test, qoplama ilova 83%, domen 98%. Migratsiyalar endi `stepByStep` bilan (versiya juftliklari testi buni talab qildi) |
 | 2026-09-23 | E30-T04..T06 | oilaviy byudjet: a'zolar ekrani (ro'yxat, rollar, taklif — kod, havola va QR `qr` paketi bilan chizilgan, nusxalash; chiqarish/chiqish), `household_members` RPC va uning lokal keshi (oflaynda ismlar ko'rinadi); amal elementida "kim yozdi", amallar filtrida a'zo, Xulosada a'zolar kesimi (lokal `created_by` bo'yicha); rolga qarab UI — kuzatuvchida "＋", reja to'lovi va menyu yo'q, member'da qarz/maqsad/limit qo'shish yo'q. 449 test |
 | 2026-09-23 | E32-T03, T04 | tahlillar: domen qoidalari (`categorySpikes`, `subscriptions`, `YearSummary` — server `report_insights` bilan bir xil chegaralar), Xulosada "Diqqat" kartasi (sakragan kategoriya, topilgan obuna — lokal hisob, oflaynda ham) va Yillik ko'rinish tepasida "Yil xulosasi" (jamlar, oyiga o'rtacha xarajat, eng yaxshi/og'ir oy). 450 ilova testi, domen 237 |
+| 2026-09-24 | E33-T01..T03 | bosh ekran vidjeti (`home_widget`: joriy oy qoldig'i, "kuniga ≈ X" va "＋" havolasi; maxfiylik rejimida "•••" — BR-212; Android tomoni — `HomeScreenWidget.kt`, layout va `home_widget_info.xml`), chek QR skaneri (soliq.uz fiskal havolasidan summa va sana; tanilmasa — havola izohga) va tez amallar (`shortcuts.xml`: Xarajat, Daromad, To'lovlar — deep link orqali, uz/ru/en). Kiruvchi havolalar bitta broadcast oqimdan: taklif va tez amal marshrutlari oq ro'yxat bilan. 455 ilova testi, domen 240; dev APK build yashil |

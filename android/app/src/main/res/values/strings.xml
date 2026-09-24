@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- E33-T03: tez amallar (ikonni uzoq bosganda). Standart til — o'zbekcha;
+     ru va en tarjimalari values-ru va values-en da. -->
+<resources>
+    <string name="shortcut_expense_short">Xarajat</string>
+    <string name="shortcut_expense_long">Xarajat qo\'shish</string>
+    <string name="shortcut_income_short">Daromad</string>
+    <string name="shortcut_income_long">Daromad qo\'shish</string>
+    <string name="shortcut_payments_short">To\'lovlar</string>
+    <string name="shortcut_payments_long">To\'lovlar ro\'yxati</string>
+</resources>

@@ -13,6 +13,7 @@ import 'package:my_wallet/core/settings/app_settings.dart';
 import 'package:my_wallet/data/auth/auth_providers.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
+import 'package:my_wallet/features/dashboard/application/home_widget_sync.dart';
 import 'package:my_wallet/features/household/application/invite_links.dart';
 import 'package:my_wallet/features/notifications/application/local_reminders.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
@@ -41,6 +42,12 @@ Future<GoRouter> pumpApp(
   StartupState? startup,
   FakeStartupController? startupController,
   Stream<String>? inviteLinks,
+
+  /// E33-T03: tez amal va vidjet havolalari.
+  Stream<String>? shortcutLinks,
+
+  /// E33-T01: bosh ekran vidjetiga yozish (standart — hech narsa).
+  HomeWidgetWriter? homeWidgetWriter,
 
   /// Cheksiz animatsiya (yuklanish indikatori) bo'lsa — `false`.
   bool settle = true,
@@ -90,6 +97,14 @@ Future<GoRouter> pumpApp(
       ),
       inviteLinksProvider.overrideWith(
         (ref) => inviteLinks ?? const Stream<String>.empty(),
+      ),
+      // Kiruvchi havolalar va bosh ekran vidjeti — platforma kanallari
+      // testda yo'q (E33).
+      appLinksProvider.overrideWithValue(
+        shortcutLinks ?? const Stream<String>.empty(),
+      ),
+      homeWidgetWriterProvider.overrideWithValue(
+        homeWidgetWriter ?? (_) async {},
       ),
       // Lokal baza — xotirada (testda haqiqiy fayl ochilmaydi).
       appDatabaseProvider.overrideWithValue(db),

@@ -693,6 +693,12 @@ class AppL10nEn extends AppL10n {
   String get receiptGallery => 'Gallery';
 
   @override
+  String get receiptScan => 'Scan receipt';
+
+  @override
+  String get receiptScanTitle => 'Receipt QR code';
+
+  @override
   String get receiptTooLarge => 'The image is too large — pick another';
 
   @override

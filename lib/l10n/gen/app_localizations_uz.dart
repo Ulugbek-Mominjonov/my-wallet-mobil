@@ -693,6 +693,12 @@ class AppL10nUz extends AppL10n {
   String get receiptGallery => 'Galereya';
 
   @override
+  String get receiptScan => 'Chekni skanerlash';
+
+  @override
+  String get receiptScanTitle => 'Chek QR kodi';
+
+  @override
   String get receiptTooLarge => 'Rasm juda katta — boshqasini tanlang';
 
   @override

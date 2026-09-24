@@ -2,6 +2,7 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_wallet/core/config/app_config.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
+import 'package:wallet_domain/wallet_domain.dart';
 
 /// Taklif kodi uzunligi (BR-012) — server alifbosidagi 8 belgi.
 const inviteCodeLength = 8;
@@ -11,21 +12,60 @@ const inviteScanPath = '/join/scan';
 
 /// Taklif havolasi (BR-012) — muhitga mos sxema bilan; Android manifestidagi
 /// `deepLinkScheme` bilan bir xil (admin paneldagi `inviteLink` kabi).
-String inviteLink(String code, AppEnv env) => switch (env) {
-  AppEnv.dev => 'mywallet-dev://invite/$code',
-  AppEnv.staging => 'mywallet-stg://invite/$code',
-  AppEnv.prod => 'mywallet://invite/$code',
+String inviteLink(String code, AppEnv env) => '${_scheme(env)}://invite/$code';
+
+/// E33-T01: vidjetdagi "＋" tugmasi havolasi (xarajat qo'shish).
+String addLink(AppEnv env) => '${_scheme(env)}://add?kind=expense';
+
+/// Android manifestidagi `deepLinkScheme` bilan bir xil.
+String _scheme(AppEnv env) => switch (env) {
+  AppEnv.dev => 'mywallet-dev',
+  AppEnv.staging => 'mywallet-stg',
+  AppEnv.prod => 'mywallet',
 };
 
-/// Kiruvchi `mywallet://invite/<kod>` havolalari (ilova yopiq bo'lsa ham —
-/// birinchi havola). Testda boshqa oqim bilan almashtiriladi.
-final inviteLinksProvider = StreamProvider<String>((ref) {
-  final links = AppLinks();
-  return links.uriLinkStream
-      .map((uri) => parseInviteCode(uri.toString()))
+/// Kiruvchi havolalar (ilova yopiq bo'lsa ham — birinchi havola):
+/// taklif, tez amallar va bosh ekran vidjeti. Testda almashtiriladi.
+/// Bir nechta tinglovchi (taklif va tez amallar) — broadcast oqim.
+final Provider<Stream<String>> appLinksProvider = Provider(
+  (ref) =>
+      AppLinks().uriLinkStream.map((uri) => uri.toString()).asBroadcastStream(),
+);
+
+/// `mywallet://invite/<kod>` havolalari — kod.
+final StreamProvider<String> inviteLinksProvider = StreamProvider(
+  (ref) => ref
+      .watch(appLinksProvider)
+      .map(parseInviteCode)
       .where((code) => code != null)
-      .cast<String>();
-});
+      .cast<String>(),
+);
+
+/// E33-T01, T03: vidjet va tez amallar havolalari — ilova marshruti.
+final StreamProvider<String> shortcutLinksProvider = StreamProvider(
+  (ref) => ref
+      .watch(appLinksProvider)
+      .map(parseShortcutRoute)
+      .where((route) => route != null)
+      .cast<String>(),
+);
+
+/// Havola hosti → marshrut (oq ro'yxat: tashqaridan kelgan qiymat
+/// marshrut sifatida ishlatilmaydi).
+const Map<String, String> shortcutRoutes = {
+  'add': '/add',
+  'payments': '/payments',
+};
+
+/// `mywallet://add?kind=expense` → `/add?kind=expense`; noma'lum — `null`.
+String? parseShortcutRoute(String input) {
+  final uri = Uri.tryParse(input.trim());
+  final route = uri == null ? null : shortcutRoutes[uri.host];
+  if (uri == null || route == null) return null;
+  final kind = uri.queryParameters['kind'];
+  final allowed = TransactionKind.values.any((k) => k.wire == kind);
+  return route == '/add' && allowed ? '$route?kind=$kind' : route;
+}
 
 /// Oxirgi kelgan taklif kodi — qo'shilish ekrani shuni to'ldiradi.
 final NotifierProvider<PendingInvite, String?> pendingInviteProvider =

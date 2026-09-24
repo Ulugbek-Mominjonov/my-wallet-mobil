@@ -1275,6 +1275,18 @@ abstract class AppL10n {
   /// **'Galereya'**
   String get receiptGallery;
 
+  /// No description provided for @receiptScan.
+  ///
+  /// In uz, this message translates to:
+  /// **'Chekni skanerlash'**
+  String get receiptScan;
+
+  /// No description provided for @receiptScanTitle.
+  ///
+  /// In uz, this message translates to:
+  /// **'Chek QR kodi'**
+  String get receiptScanTitle;
+
   /// No description provided for @receiptTooLarge.
   ///
   /// In uz, this message translates to:

@@ -286,6 +286,19 @@ base class AddTransactionController extends Notifier<AddTransactionState> {
 
   void setNote(String note) => state = state.copyWith(note: note);
 
+  /// E33-T02: chek QR kodi — summa, sana va havola (izohga). Tanilmagan
+  /// kodda faqat havola qoladi: summani foydalanuvchi kiritadi.
+  void applyReceiptScan(ReceiptScan scan) => state = state.copyWith(
+    kind: TransactionKind.expense,
+    entry: scan.amount.isPositive
+        ? AmountEntry(
+            digits: '${scan.amount.minor ~/ state.currency.minorPerMajor}',
+          )
+        : state.entry,
+    occurredOn: scan.date,
+    note: [?_trimmed(state.note), scan.link].join(' '),
+  );
+
   void addReceipt(CompressedImage image) =>
       state = state.copyWith(receipts: [...state.receipts, image]);
 

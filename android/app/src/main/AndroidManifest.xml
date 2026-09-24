@@ -42,8 +42,26 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data android:scheme="${deepLinkScheme}" android:host="invite"/>
                 <data android:scheme="${deepLinkScheme}" android:host="auth-callback"/>
+                <!-- E33-T01, T03: bosh ekran vidjeti va tez amallar. -->
+                <data android:scheme="${deepLinkScheme}" android:host="add"/>
+                <data android:scheme="${deepLinkScheme}" android:host="payments"/>
             </intent-filter>
+            <!-- E33-T03: ikonni uzoq bosganda chiqadigan tez amallar. -->
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
+        <!-- E33-T01: bosh ekran vidjeti (home_widget). -->
+        <receiver
+            android:name=".HomeScreenWidget"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/home_widget_info" />
+        </receiver>
         <!-- Rejali lokal eslatmalar (flutter_local_notifications, BR-168). -->
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">

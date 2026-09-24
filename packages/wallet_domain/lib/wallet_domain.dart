@@ -32,6 +32,7 @@ export 'src/rules/personal_allocation.dart';
 export 'src/rules/plan_board.dart';
 export 'src/rules/plan_settlement.dart';
 export 'src/rules/planned_status.dart';
+export 'src/rules/receipt_qr.dart';
 export 'src/rules/reminder_buckets.dart';
 export 'src/rules/savings.dart';
 export 'src/rules/year_summary.dart';

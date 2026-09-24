@@ -691,6 +691,12 @@ class AppL10nRu extends AppL10n {
   String get receiptGallery => 'Галерея';
 
   @override
+  String get receiptScan => 'Сканировать чек';
+
+  @override
+  String get receiptScanTitle => 'QR-код чека';
+
+  @override
   String get receiptTooLarge => 'Изображение слишком большое — выберите другое';
 
   @override
