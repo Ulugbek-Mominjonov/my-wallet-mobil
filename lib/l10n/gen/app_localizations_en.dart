@@ -40,6 +40,14 @@ class AppL10nEn extends AppL10n {
   String get actionCopy => 'Copy';
 
   @override
+  String get actionShare => 'Share';
+
+  @override
+  String membersShareText(String code) {
+    return 'Join the budget in My Wallet. Invite code: $code';
+  }
+
+  @override
   String get actionClose => 'Close';
 
   @override

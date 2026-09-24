@@ -19,3 +19,13 @@ final Provider<FileSharer> fileSharerProvider = Provider(
     );
   },
 );
+
+/// Matnni tizim "Ulashish" oynasiga beradi (taklif kodi va havolasi —
+/// BR-012). Testda soxta funksiya bilan almashtiriladi.
+typedef TextSharer = Future<void> Function(String text);
+
+final Provider<TextSharer> textSharerProvider = Provider((ref) {
+  return (text) async {
+    await SharePlus.instance.share(ShareParams(text: text));
+  };
+});

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:my_wallet/app/router.dart';
+import 'package:my_wallet/core/share/file_sharer.dart';
 import 'package:my_wallet/data/remote/dto.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
@@ -26,8 +27,10 @@ HouseholdMember _member(
 
 void main() {
   late FakeRemote remote;
+  final shared = <String>[];
 
   setUp(() {
+    shared.clear();
     // Buferga nusxalash — testda platforma kanali yo'q.
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(SystemChannels.platform, (_) async => null);
@@ -45,7 +48,10 @@ void main() {
     addTearDown(tester.view.reset);
     final router = await pumpApp(
       tester,
-      overrides: [remoteApiProvider.overrideWithValue(remote)],
+      overrides: [
+        remoteApiProvider.overrideWithValue(remote),
+        textSharerProvider.overrideWithValue((text) async => shared.add(text)),
+      ],
       startup: switch (AppBootstrap.fromJson(
         bootstrapJson(
           households: [householdJson(id: 'h1', role: role)],
@@ -83,6 +89,12 @@ void main() {
     await tester.tap(find.widgetWithText(TextButton, 'Nusxalash'));
     await tester.pumpAndSettle();
     expect(find.text('Nusxalandi'), findsOneWidget);
+
+    // Ulashish — tizim oynasiga kod va havola bilan matn beradi.
+    await tester.tap(find.widgetWithText(TextButton, 'Ulashish'));
+    await tester.pumpAndSettle();
+    expect(shared.single, contains('ABCD2345'));
+    expect(shared.single, contains('mywallet-dev://invite/ABCD2345'));
   });
 
   testWidgets('BR-011: owner rolni o‘zgartiradi va a‘zoni chiqaradi', (

@@ -159,6 +159,18 @@ abstract class AppL10n {
   /// **'Nusxalash'**
   String get actionCopy;
 
+  /// No description provided for @actionShare.
+  ///
+  /// In uz, this message translates to:
+  /// **'Ulashish'**
+  String get actionShare;
+
+  /// No description provided for @membersShareText.
+  ///
+  /// In uz, this message translates to:
+  /// **'My Wallet byudjetiga qo‘shiling. Taklif kodi: {code}'**
+  String membersShareText(String code);
+
   /// No description provided for @actionClose.
   ///
   /// In uz, this message translates to:

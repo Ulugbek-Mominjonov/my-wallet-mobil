@@ -40,6 +40,14 @@ class AppL10nUz extends AppL10n {
   String get actionCopy => 'Nusxalash';
 
   @override
+  String get actionShare => 'Ulashish';
+
+  @override
+  String membersShareText(String code) {
+    return 'My Wallet byudjetiga qo‘shiling. Taklif kodi: $code';
+  }
+
+  @override
   String get actionClose => 'Yopish';
 
   @override

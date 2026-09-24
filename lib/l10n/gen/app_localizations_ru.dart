@@ -40,6 +40,14 @@ class AppL10nRu extends AppL10n {
   String get actionCopy => 'Копировать';
 
   @override
+  String get actionShare => 'Поделиться';
+
+  @override
+  String membersShareText(String code) {
+    return 'Присоединяйтесь к бюджету в My Wallet. Код приглашения: $code';
+  }
+
+  @override
   String get actionClose => 'Закрыть';
 
   @override

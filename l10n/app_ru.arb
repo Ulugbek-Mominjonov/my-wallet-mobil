@@ -10,6 +10,11 @@
   "actionCancel": "Отмена",
   "actionRetry": "Повторить",
   "actionCopy": "Копировать",
+  "actionShare": "Поделиться",
+  "membersShareText": "Присоединяйтесь к бюджету в My Wallet. Код приглашения: {code}",
+  "@membersShareText": {
+    "placeholders": { "code": { "type": "String" } }
+  },
   "actionClose": "Закрыть",
   "copied": "Скопировано",
   "roleOwner": "Владелец",

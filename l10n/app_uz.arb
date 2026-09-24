@@ -10,6 +10,11 @@
   "actionCancel": "Bekor qilish",
   "actionRetry": "Qayta urinish",
   "actionCopy": "Nusxalash",
+  "actionShare": "Ulashish",
+  "membersShareText": "My Wallet byudjetiga qo‘shiling. Taklif kodi: {code}",
+  "@membersShareText": {
+    "placeholders": { "code": { "type": "String" } }
+  },
   "actionClose": "Yopish",
   "copied": "Nusxalandi",
   "roleOwner": "Egasi",

@@ -10,6 +10,11 @@
   "actionCancel": "Cancel",
   "actionRetry": "Try again",
   "actionCopy": "Copy",
+  "actionShare": "Share",
+  "membersShareText": "Join the budget in My Wallet. Invite code: {code}",
+  "@membersShareText": {
+    "placeholders": { "code": { "type": "String" } }
+  },
   "actionClose": "Close",
   "copied": "Copied",
   "roleOwner": "Owner",

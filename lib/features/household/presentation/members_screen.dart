@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_wallet/core/design_system/tokens.dart';
 import 'package:my_wallet/core/di/app_providers.dart';
+import 'package:my_wallet/core/share/file_sharer.dart';
 import 'package:my_wallet/core/widgets/empty_state.dart';
 import 'package:my_wallet/core/widgets/qr_view.dart';
 import 'package:my_wallet/data/remote/dto.dart';
@@ -198,6 +199,14 @@ class _InviteDialog extends ConsumerWidget {
             if (context.mounted) _snack(context, l10n.copied);
           },
           child: Text(l10n.actionCopy),
+        ),
+        TextButton(
+          onPressed: () => unawaited(
+            ref.read(textSharerProvider)(
+              '${l10n.membersShareText(invite.code)}\n$link',
+            ),
+          ),
+          child: Text(l10n.actionShare),
         ),
         FilledButton(
           onPressed: () => Navigator.pop(context),
