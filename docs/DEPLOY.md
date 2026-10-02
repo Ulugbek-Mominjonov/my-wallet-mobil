@@ -91,6 +91,9 @@ bilan). Bo'sh qoldirilsa (dev) — push o'chiq, lokal eslatmalar ishlaydi.
 | `ADMIN_REPO_TOKEN` | secret | repo | admin `DEPLOY.md` 1.4 (contracts + integratsiya testlari) |
 | `ANDROID_RELEASE_ENABLED` | variable | repo | `true` — yuqoridagilar sozlangach; `android.yml` (staging) va `release.yml` (prod) shundan keyin ishlaydi |
 
+Bu qiymatlarni qo'lda kiritish shart emas: admin repodagi `.env.deploy` ga
+yoziladi va `make github-secrets` ikkala repoga yuklaydi (admin `DEPLOY.md` 9).
+
 CI fayllarni `tool/ci_release_files.sh` bilan yaratadi (`android/key.properties`,
 `env/<flavor>.json`) — qiymatlar logga chiqmaydi, repoga tushmaydi. Lokal
 imzolangan build uchun ham shu fayllar (`key.properties` bo'lmasa release
