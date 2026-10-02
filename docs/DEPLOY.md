@@ -88,7 +88,6 @@ bilan). Bo'sh qoldirilsa (dev) — push o'chiq, lokal eslatmalar ishlaydi.
 | `FIREBASE_APP_ID_ANDROID` | variable | staging / production | Firebase → Project settings → Android app ID |
 | `FIREBASE_APPDIST_SA` (base64) | secret | staging / production | admin `DEPLOY.md` 6.4 |
 | `TELEGRAM_BOT_USERNAME` | variable | staging / production | admin `DEPLOY.md` 7 |
-| `ADMIN_REPO_TOKEN` | secret | repo | admin `DEPLOY.md` 1.4 (contracts + integratsiya testlari) |
 | `ANDROID_RELEASE_ENABLED` | variable | repo | `true` — yuqoridagilar sozlangach; `android.yml` (staging) va `release.yml` (prod) shundan keyin ishlaydi |
 
 Bu qiymatlarni qo'lda kiritish shart emas: admin repodagi `.env.deploy` ga
