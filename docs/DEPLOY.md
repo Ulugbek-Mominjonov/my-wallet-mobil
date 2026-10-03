@@ -35,6 +35,14 @@ base64 -w0 upload.jks > upload.jks.b64
 keytool -list -v -keystore upload.jks -alias upload   # SHA-1 va SHA-256
 ```
 
+> ⚠️ Kalit paroli so'ralganda **Enter** bosing (store paroli bilan bir xil
+> bo'lsin). Zamonaviy `keytool` keystore'ni **PKCS12** qilib yaratadi, u
+> yerda alohida `-keypass` e'tiborga olinmaydi: kalit baribir store paroli
+> bilan shifrlanadi. Boshqa parol yozsangiz, Gradle imzolashda
+> `Given final block not properly padded` xatosini beradi. Shuning uchun
+> `ANDROID_KEYSTORE_PASSWORD` va `ANDROID_KEY_PASSWORD` bir xil bo'ladi
+> (`make github-secrets` buni tekshiradi).
+
 - `upload.jks` va parollar — **parol menejeri + oflayn nusxa**. Yo'qolsa,
   o'rnatilgan ilovalarni yangilab bo'lmaydi (yangi paket nomi kerak bo'ladi).
 - SHA-1 → Google OAuth Android client'lari va Firebase Android ilovalari
