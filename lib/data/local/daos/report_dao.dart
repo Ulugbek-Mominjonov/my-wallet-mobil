@@ -40,6 +40,18 @@ typedef IncomeTypeLine = ({
 /// Oy holati: ochilgan (rejalar yaratilgan) va yopilgan (BR-150).
 typedef MonthState = ({bool opened, bool closed});
 
+/// Chek (hisobot ro'yxati) qatori: oydagi bitta amal.
+typedef ReceiptEntry = ({
+  String id,
+  TransactionKind kind,
+  String occurredOn,
+  Money amount,
+  String name,
+  String? category,
+  String account,
+  bool fromFund,
+});
+
 /// Dashboard va hisobotlar uchun agregatlar — serverdagi `report_month` bilan
 /// bir xil ma'no (asosiy valyutada, `amount_base`). Oy filtri —
 /// `transactions_month` / `planned_items_month` indekslari.
@@ -459,5 +471,46 @@ class ReportDao extends DatabaseAccessor<AppDatabase> with _$ReportDaoMixin {
           base,
         ),
     };
+  }
+
+  /// Oydagi daromad va xarajatlar — chek uchun (serverdagi
+  /// `private.month_entries` bilan bir xil tasnif: fond sarfi belgilanadi).
+  Future<List<ReceiptEntry>> monthEntries(
+    String householdId,
+    MonthKey month, {
+    Currency base = Currency.uzs,
+  }) async {
+    final rows = await customSelect(
+      '''
+      SELECT t.id, t.kind, t.occurred_on, t.amount_base, t.payee, t.note,
+             c.name AS category, a.name AS account,
+             a.type = 'personal_fund' AS from_fund
+        FROM transactions t
+        JOIN accounts a ON a.id = t.account_id
+        LEFT JOIN categories c ON c.id = t.category_id
+       WHERE t.household_id = ?1 AND t.budget_month = ?2
+         AND t.deleted_at IS NULL AND t.kind IN ('income', 'expense')
+       ORDER BY t.occurred_on, t.created_at''',
+      variables: [
+        Variable.withString(householdId),
+        Variable.withString(month.toIsoDate()),
+      ],
+      readsFrom: {transactions, accounts, categories},
+    ).get();
+    return [
+      for (final row in rows)
+        (
+          id: row.read<String>('id'),
+          kind: TransactionKind.fromWire(row.read<String>('kind')),
+          occurredOn: row.read<String>('occurred_on'),
+          amount: Money(row.read<int>('amount_base'), base),
+          name: row.read<String?>('payee')?.trim().isNotEmpty ?? false
+              ? row.read<String>('payee')
+              : row.read<String?>('category') ?? row.read<String>('account'),
+          category: row.read<String?>('category'),
+          account: row.read<String>('account'),
+          fromFund: row.read<int>('from_fund') == 1,
+        ),
+    ];
   }
 }

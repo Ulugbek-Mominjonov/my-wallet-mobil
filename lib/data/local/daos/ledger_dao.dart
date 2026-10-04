@@ -212,20 +212,27 @@ class LedgerDao extends DatabaseAccessor<AppDatabase> with _$LedgerDaoMixin {
 
   /// BR-021 (serverdagi `private.account_balance`): boshlang'ich + daromad −
   /// xarajat ± o'tkazmalar, hisob valyutasida. Kalit — hisob ID si.
-  Future<Map<String, Money>> accountBalances(String householdId) async {
+  /// [asOf] berilsa — shu sanagacha (hisobot oyining oxiri); aks holda hozirgi.
+  Future<Map<String, Money>> accountBalances(
+    String householdId, {
+    String? asOf,
+  }) async {
+    final bound = asOf ?? '9999-12-31';
     final rows = await customSelect(
       '''
       SELECT a.id, a.currency,
              a.opening_balance
              + COALESCE((SELECT SUM(CASE WHEN t.kind = 'income' THEN t.amount ELSE -t.amount END)
                            FROM transactions t
-                          WHERE t.account_id = a.id AND t.deleted_at IS NULL), 0)
+                          WHERE t.account_id = a.id AND t.deleted_at IS NULL
+                            AND t.occurred_on <= ?2), 0)
              + COALESCE((SELECT SUM(t.to_amount)
                            FROM transactions t
-                          WHERE t.to_account_id = a.id AND t.deleted_at IS NULL), 0) AS balance
+                          WHERE t.to_account_id = a.id AND t.deleted_at IS NULL
+                            AND t.occurred_on <= ?2), 0) AS balance
         FROM accounts a
        WHERE a.household_id = ?1 AND a.deleted_at IS NULL''',
-      variables: [Variable.withString(householdId)],
+      variables: [Variable.withString(householdId), Variable.withString(bound)],
       readsFrom: {accounts, transactions},
     ).get();
     return {

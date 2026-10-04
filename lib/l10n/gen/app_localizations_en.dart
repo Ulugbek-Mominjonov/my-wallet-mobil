@@ -1508,4 +1508,46 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get statusPending => 'Pending';
+
+  @override
+  String get monthReceipt => 'Monthly receipt';
+
+  @override
+  String get monthReceiptHint => 'Income and expense list — share or PDF';
+
+  @override
+  String get receiptIncome => 'Income';
+
+  @override
+  String get receiptExpense => 'Expense';
+
+  @override
+  String get receiptBalances => 'Balance at month end';
+
+  @override
+  String get receiptTotalIncome => 'Total income';
+
+  @override
+  String get receiptTotalExpense => 'Total expense';
+
+  @override
+  String get receiptResult => 'Balance';
+
+  @override
+  String get receiptFund => 'from fund';
+
+  @override
+  String get receiptEmptySection => 'No records';
+
+  @override
+  String get receiptWithFund => 'Include personal fund spending';
+
+  @override
+  String get receiptShareText => 'Share as text';
+
+  @override
+  String get receiptSharePdf => 'Share as PDF';
+
+  @override
+  String get receiptFileName => 'receipt';
 }

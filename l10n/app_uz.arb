@@ -13,7 +13,11 @@
   "actionShare": "Ulashish",
   "membersShareText": "My Wallet byudjetiga qo‘shiling. Taklif kodi: {code}",
   "@membersShareText": {
-    "placeholders": { "code": { "type": "String" } }
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
   },
   "actionClose": "Yopish",
   "copied": "Nusxalandi",
@@ -29,11 +33,19 @@
   "membersLeave": "Byudjetdan chiqish",
   "membersSetRole": "Rol: {role}",
   "@membersSetRole": {
-    "placeholders": { "role": { "type": "String" } }
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
   },
   "membersActions": "{name}: amallar",
   "@membersActions": {
-    "placeholders": { "name": { "type": "String" } }
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   },
   "membersOffline": "A'zolar ro'yxati uchun internet kerak",
   "errorUnexpected": "Kutilmagan xato. Qayta urinib ko'ring.",
@@ -293,7 +305,11 @@
   "fxRateMissing": "Bu sanaga kurs yo'q — kursni qo'lda kiriting",
   "fieldToAmount": "Manzil summasi ({currency})",
   "@fieldToAmount": {
-    "placeholders": { "currency": { "type": "String" } }
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
   },
   "fieldTo": "Qayerga",
   "dateToday": "Bugun",
@@ -419,17 +435,29 @@
   "insightSpike": "{name}: 3 oylik o'rtachadan {percent}% ko'p (o'rtacha {average})",
   "@insightSpike": {
     "placeholders": {
-      "name": { "type": "String" },
-      "percent": { "type": "int" },
-      "average": { "type": "String" }
+      "name": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      },
+      "average": {
+        "type": "String"
+      }
     }
   },
   "insightSubscription": "{payee} — {amount}, {months} oydan beri takrorlanmoqda",
   "@insightSubscription": {
     "placeholders": {
-      "payee": { "type": "String" },
-      "amount": { "type": "String" },
-      "months": { "type": "int" }
+      "payee": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "months": {
+        "type": "int"
+      }
     }
   },
   "dashIncomeTypes": "Daromad turlari",
@@ -576,7 +604,11 @@
   "yearSummaryTitle": "Yil xulosasi",
   "yearSummaryMonths": "Yozuvi bor {count} oy bo'yicha",
   "@yearSummaryMonths": {
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "yearSummaryAvgExpense": "Oyiga o'rtacha xarajat",
   "yearSummaryBest": "Eng ko'p orttirilgan oy",
@@ -772,7 +804,11 @@
   "limitRolloverNegative": "Oshib ketganini ayirish",
   "limitCarry": "o'tgan oydan {amount}",
   "@limitCarry": {
-    "placeholders": { "amount": { "type": "String" } }
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
   },
   "onboardingNotifyTitle": "🔔 Eslatmalar",
   "onboardingNotifyBody": "To'lov kunlari, limitlar va oylik hisobot haqida xabar beramiz",
@@ -880,5 +916,19 @@
   "statusPartial": "Qisman to'langan",
   "statusPaid": "To'langan",
   "statusSkipped": "O'tkazilgan",
-  "statusPending": "Kutilmoqda"
+  "statusPending": "Kutilmoqda",
+  "monthReceipt": "Oylik chek",
+  "monthReceiptHint": "Daromad va xarajatlar ro‘yxati — ulashish yoki PDF",
+  "receiptIncome": "Daromad",
+  "receiptExpense": "Xarajat",
+  "receiptBalances": "Oy oxiridagi qoldiq",
+  "receiptTotalIncome": "Jami daromad",
+  "receiptTotalExpense": "Jami xarajat",
+  "receiptResult": "Qoldiq",
+  "receiptFund": "fonddan",
+  "receiptEmptySection": "Yozuv yo‘q",
+  "receiptWithFund": "Shaxsiy fond sarflari ham",
+  "receiptShareText": "Matn sifatida ulashish",
+  "receiptSharePdf": "PDF qilib ulashish",
+  "receiptFileName": "chek"
 }

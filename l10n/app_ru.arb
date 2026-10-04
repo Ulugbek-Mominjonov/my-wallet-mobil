@@ -13,7 +13,11 @@
   "actionShare": "Поделиться",
   "membersShareText": "Присоединяйтесь к бюджету в My Wallet. Код приглашения: {code}",
   "@membersShareText": {
-    "placeholders": { "code": { "type": "String" } }
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
   },
   "actionClose": "Закрыть",
   "copied": "Скопировано",
@@ -29,11 +33,19 @@
   "membersLeave": "Выйти из бюджета",
   "membersSetRole": "Роль: {role}",
   "@membersSetRole": {
-    "placeholders": { "role": { "type": "String" } }
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
   },
   "membersActions": "{name}: действия",
   "@membersActions": {
-    "placeholders": { "name": { "type": "String" } }
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   },
   "membersOffline": "Для списка участников нужен интернет",
   "errorUnexpected": "Непредвиденная ошибка. Попробуйте ещё раз.",
@@ -161,7 +173,11 @@
   "fxRateMissing": "На эту дату курса нет — введите курс вручную",
   "fieldToAmount": "Сумма зачисления ({currency})",
   "@fieldToAmount": {
-    "placeholders": { "currency": { "type": "String" } }
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
   },
   "fieldTo": "Куда",
   "dateToday": "Сегодня",
@@ -231,17 +247,29 @@
   "insightSpike": "{name}: на {percent}% больше среднего за 3 месяца (в среднем {average})",
   "@insightSpike": {
     "placeholders": {
-      "name": { "type": "String" },
-      "percent": { "type": "int" },
-      "average": { "type": "String" }
+      "name": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      },
+      "average": {
+        "type": "String"
+      }
     }
   },
   "insightSubscription": "{payee} — {amount}, повторяется {months} месяцев",
   "@insightSubscription": {
     "placeholders": {
-      "payee": { "type": "String" },
-      "amount": { "type": "String" },
-      "months": { "type": "int" }
+      "payee": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "months": {
+        "type": "int"
+      }
     }
   },
   "dashIncomeTypes": "Виды дохода",
@@ -310,7 +338,11 @@
   "yearSummaryTitle": "Итоги года",
   "yearSummaryMonths": "По {count} месяцам с записями",
   "@yearSummaryMonths": {
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "yearSummaryAvgExpense": "Средний расход в месяц",
   "yearSummaryBest": "Лучший месяц",
@@ -405,7 +437,11 @@
   "limitRolloverNegative": "Вычитать перерасход",
   "limitCarry": "с прошлого месяца {amount}",
   "@limitCarry": {
-    "placeholders": { "amount": { "type": "String" } }
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
   },
   "onboardingNotifyTitle": "🔔 Напоминания",
   "onboardingNotifyBody": "Напомним о днях платежей, лимитах и месячном отчёте",
@@ -470,5 +506,19 @@
   "statusPartial": "Оплачено частично",
   "statusPaid": "Оплачено",
   "statusSkipped": "Пропущено",
-  "statusPending": "Ожидается"
+  "statusPending": "Ожидается",
+  "monthReceipt": "Месячный чек",
+  "monthReceiptHint": "Список доходов и расходов — поделиться или PDF",
+  "receiptIncome": "Доход",
+  "receiptExpense": "Расход",
+  "receiptBalances": "Остаток на конец месяца",
+  "receiptTotalIncome": "Итого доход",
+  "receiptTotalExpense": "Итого расход",
+  "receiptResult": "Остаток",
+  "receiptFund": "из фонда",
+  "receiptEmptySection": "Записей нет",
+  "receiptWithFund": "Включая траты личного фонда",
+  "receiptShareText": "Поделиться текстом",
+  "receiptSharePdf": "Поделиться PDF",
+  "receiptFileName": "chek"
 }

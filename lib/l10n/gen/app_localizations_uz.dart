@@ -1507,4 +1507,47 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get statusPending => 'Kutilmoqda';
+
+  @override
+  String get monthReceipt => 'Oylik chek';
+
+  @override
+  String get monthReceiptHint =>
+      'Daromad va xarajatlar ro‘yxati — ulashish yoki PDF';
+
+  @override
+  String get receiptIncome => 'Daromad';
+
+  @override
+  String get receiptExpense => 'Xarajat';
+
+  @override
+  String get receiptBalances => 'Oy oxiridagi qoldiq';
+
+  @override
+  String get receiptTotalIncome => 'Jami daromad';
+
+  @override
+  String get receiptTotalExpense => 'Jami xarajat';
+
+  @override
+  String get receiptResult => 'Qoldiq';
+
+  @override
+  String get receiptFund => 'fonddan';
+
+  @override
+  String get receiptEmptySection => 'Yozuv yo‘q';
+
+  @override
+  String get receiptWithFund => 'Shaxsiy fond sarflari ham';
+
+  @override
+  String get receiptShareText => 'Matn sifatida ulashish';
+
+  @override
+  String get receiptSharePdf => 'PDF qilib ulashish';
+
+  @override
+  String get receiptFileName => 'chek';
 }

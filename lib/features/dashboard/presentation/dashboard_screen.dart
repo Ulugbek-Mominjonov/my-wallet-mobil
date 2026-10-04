@@ -15,6 +15,7 @@ import 'package:my_wallet/features/dashboard/presentation/share_report_screen.da
 import 'package:my_wallet/features/payments/application/payments_controller.dart';
 import 'package:my_wallet/features/payments/presentation/open_month_card.dart';
 import 'package:my_wallet/features/payments/presentation/plan_action_runner.dart';
+import 'package:my_wallet/features/reports/presentation/receipt_sheet.dart';
 import 'package:my_wallet/features/transactions/application/transaction_list_controller.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
 import 'package:wallet_domain/wallet_domain.dart';
@@ -81,7 +82,7 @@ class DashboardScreen extends ConsumerWidget {
                 report.debts.owedToMe.isPositive)
               _DebtsCard(report: report),
             if (report.goals.isNotEmpty) _GoalsCard(report: report),
-            if (!report.isEmpty) _ShareButton(report: report),
+            if (!report.isEmpty) _ShareButton(report: report, month: month),
           ],
         ],
       ),
@@ -89,28 +90,42 @@ class DashboardScreen extends ConsumerWidget {
   }
 }
 
-/// E16-T06: oy hisobini rasm sifatida ulashish (oldindan ko'rish bilan).
+/// E16-T06: oy hisobini rasm sifatida ulashish (oldindan ko'rish bilan);
+/// yonida — oylik chek: daromad va xarajatlar ro'yxati (matn yoki PDF).
 class _ShareButton extends StatelessWidget {
-  const new({required this.report});
+  const new({required this.report, required this.month});
 
   final MonthReport report;
+  final MonthKey month;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(top: AppSpacing.md),
-    child: Center(
-      child: TextButton.icon(
-        icon: const Icon(Icons.share_outlined),
-        label: Text(AppL10n.of(context).shareReport),
-        onPressed: () => Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute<void>(
-            fullscreenDialog: true,
-            builder: (_) => ShareReportScreen(report: report),
+  Widget build(BuildContext context) {
+    final l10n = AppL10n.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(top: AppSpacing.md),
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        spacing: AppSpacing.sm,
+        children: [
+          TextButton.icon(
+            icon: const Icon(Icons.share_outlined),
+            label: Text(l10n.shareReport),
+            onPressed: () => Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute<void>(
+                fullscreenDialog: true,
+                builder: (_) => ShareReportScreen(report: report),
+              ),
+            ),
           ),
-        ),
+          TextButton.icon(
+            icon: const Icon(Icons.receipt_long_outlined),
+            label: Text(l10n.monthReceipt),
+            onPressed: () => ReceiptSheet.open(context, month),
+          ),
+        ],
       ),
-    ),
-  );
+    );
+  }
 }
 
 class _MonthHeader extends ConsumerWidget {

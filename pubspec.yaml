@@ -39,7 +39,8 @@ dependencies:
   mobile_scanner: ^7.4.2
   package_info_plus: ^10.2.1
   path_provider: ^2.1.6
-  qr: ^4.0.0
+  pdf: ^3.13.1
+  qr: ^3.0.0
   share_plus: ^13.3.0
   shared_preferences: ^2.5.5
   supabase_flutter: ^2.17.2
@@ -63,6 +64,10 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+  # PDF chek uchun (standart PDF shriftlarida kirill yo'q). Litsenziya —
+  # assets/fonts/Roboto_LICENSE.txt (Apache-2.0).
+  assets:
+    - assets/fonts/
 
 # E2E (E20-T04): `patrol test` — dev flavor, lokal Supabase (10.0.2.2).
 patrol:

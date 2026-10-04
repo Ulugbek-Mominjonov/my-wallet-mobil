@@ -2732,6 +2732,90 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'Kutilmoqda'**
   String get statusPending;
+
+  /// No description provided for @monthReceipt.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oylik chek'**
+  String get monthReceipt;
+
+  /// No description provided for @monthReceiptHint.
+  ///
+  /// In uz, this message translates to:
+  /// **'Daromad va xarajatlar ro‘yxati — ulashish yoki PDF'**
+  String get monthReceiptHint;
+
+  /// No description provided for @receiptIncome.
+  ///
+  /// In uz, this message translates to:
+  /// **'Daromad'**
+  String get receiptIncome;
+
+  /// No description provided for @receiptExpense.
+  ///
+  /// In uz, this message translates to:
+  /// **'Xarajat'**
+  String get receiptExpense;
+
+  /// No description provided for @receiptBalances.
+  ///
+  /// In uz, this message translates to:
+  /// **'Oy oxiridagi qoldiq'**
+  String get receiptBalances;
+
+  /// No description provided for @receiptTotalIncome.
+  ///
+  /// In uz, this message translates to:
+  /// **'Jami daromad'**
+  String get receiptTotalIncome;
+
+  /// No description provided for @receiptTotalExpense.
+  ///
+  /// In uz, this message translates to:
+  /// **'Jami xarajat'**
+  String get receiptTotalExpense;
+
+  /// No description provided for @receiptResult.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qoldiq'**
+  String get receiptResult;
+
+  /// No description provided for @receiptFund.
+  ///
+  /// In uz, this message translates to:
+  /// **'fonddan'**
+  String get receiptFund;
+
+  /// No description provided for @receiptEmptySection.
+  ///
+  /// In uz, this message translates to:
+  /// **'Yozuv yo‘q'**
+  String get receiptEmptySection;
+
+  /// No description provided for @receiptWithFund.
+  ///
+  /// In uz, this message translates to:
+  /// **'Shaxsiy fond sarflari ham'**
+  String get receiptWithFund;
+
+  /// No description provided for @receiptShareText.
+  ///
+  /// In uz, this message translates to:
+  /// **'Matn sifatida ulashish'**
+  String get receiptShareText;
+
+  /// No description provided for @receiptSharePdf.
+  ///
+  /// In uz, this message translates to:
+  /// **'PDF qilib ulashish'**
+  String get receiptSharePdf;
+
+  /// No description provided for @receiptFileName.
+  ///
+  /// In uz, this message translates to:
+  /// **'chek'**
+  String get receiptFileName;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

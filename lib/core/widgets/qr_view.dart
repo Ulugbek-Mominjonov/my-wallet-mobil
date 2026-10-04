@@ -19,7 +19,12 @@ class QrView extends StatelessWidget {
       color: Colors.white,
       child: CustomPaint(
         painter: _QrPainter(
-          QrImage(QrCode(payload: QrPayload.fromString(data))),
+          QrImage(
+            QrCode.fromData(
+              data: data,
+              errorCorrectLevel: QrErrorCorrectLevel.M,
+            ),
+          ),
         ),
       ),
     ),

@@ -105,6 +105,7 @@ Pub workspace: ildiz (Flutter ilova) + `packages/wallet_domain`.
 | Kuzatuv | Firebase Crashlytics | bepul |
 | Rasm | `image_picker` + `flutter_image_compress` | chek ≤ 1 MB |
 | QR | `mobile_scanner` (o'qish), `qr` (chizish — bitta `CustomPainter`) | taklif QR va fiskal chek (E30, E33) |
+| Chek (PDF) | `pdf` (sof Dart), shriftlar `assets/fonts/Roboto-*` | oylik chek: daromad/xarajat ro'yxatini matn yoki PDF qilib ulashish. Standart PDF shriftlarida kirill yo'q — shuning uchun shrift ilova ichida |
 | Vidjet | `home_widget` | bosh ekran vidjeti (E33-T01) |
 | Lint | `very_good_analysis` + `custom_lint` | qat'iy qoidalar |
 | Test | `test`, `flutter_test`, `mocktail`, `alchemist` (golden), `patrol` (e2e) | |

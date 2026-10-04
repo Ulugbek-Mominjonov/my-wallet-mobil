@@ -1507,4 +1507,47 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get statusPending => 'Ожидается';
+
+  @override
+  String get monthReceipt => 'Месячный чек';
+
+  @override
+  String get monthReceiptHint =>
+      'Список доходов и расходов — поделиться или PDF';
+
+  @override
+  String get receiptIncome => 'Доход';
+
+  @override
+  String get receiptExpense => 'Расход';
+
+  @override
+  String get receiptBalances => 'Остаток на конец месяца';
+
+  @override
+  String get receiptTotalIncome => 'Итого доход';
+
+  @override
+  String get receiptTotalExpense => 'Итого расход';
+
+  @override
+  String get receiptResult => 'Остаток';
+
+  @override
+  String get receiptFund => 'из фонда';
+
+  @override
+  String get receiptEmptySection => 'Записей нет';
+
+  @override
+  String get receiptWithFund => 'Включая траты личного фонда';
+
+  @override
+  String get receiptShareText => 'Поделиться текстом';
+
+  @override
+  String get receiptSharePdf => 'Поделиться PDF';
+
+  @override
+  String get receiptFileName => 'chek';
 }

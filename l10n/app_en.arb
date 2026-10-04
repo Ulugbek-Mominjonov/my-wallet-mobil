@@ -13,7 +13,11 @@
   "actionShare": "Share",
   "membersShareText": "Join the budget in My Wallet. Invite code: {code}",
   "@membersShareText": {
-    "placeholders": { "code": { "type": "String" } }
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
   },
   "actionClose": "Close",
   "copied": "Copied",
@@ -29,11 +33,19 @@
   "membersLeave": "Leave the budget",
   "membersSetRole": "Role: {role}",
   "@membersSetRole": {
-    "placeholders": { "role": { "type": "String" } }
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
   },
   "membersActions": "{name}: actions",
   "@membersActions": {
-    "placeholders": { "name": { "type": "String" } }
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   },
   "membersOffline": "The member list needs an internet connection",
   "errorUnexpected": "Unexpected error. Please try again.",
@@ -161,7 +173,11 @@
   "fxRateMissing": "No rate for this date — enter it manually",
   "fieldToAmount": "Destination amount ({currency})",
   "@fieldToAmount": {
-    "placeholders": { "currency": { "type": "String" } }
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
   },
   "fieldTo": "To",
   "dateToday": "Today",
@@ -231,17 +247,29 @@
   "insightSpike": "{name}: {percent}% above the 3-month average ({average})",
   "@insightSpike": {
     "placeholders": {
-      "name": { "type": "String" },
-      "percent": { "type": "int" },
-      "average": { "type": "String" }
+      "name": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      },
+      "average": {
+        "type": "String"
+      }
     }
   },
   "insightSubscription": "{payee} — {amount}, repeating for {months} months",
   "@insightSubscription": {
     "placeholders": {
-      "payee": { "type": "String" },
-      "amount": { "type": "String" },
-      "months": { "type": "int" }
+      "payee": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "months": {
+        "type": "int"
+      }
     }
   },
   "dashIncomeTypes": "Income types",
@@ -310,7 +338,11 @@
   "yearSummaryTitle": "Year summary",
   "yearSummaryMonths": "Across {count} months with records",
   "@yearSummaryMonths": {
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "yearSummaryAvgExpense": "Average monthly expense",
   "yearSummaryBest": "Best month",
@@ -405,7 +437,11 @@
   "limitRolloverNegative": "Subtract the overspend",
   "limitCarry": "from last month {amount}",
   "@limitCarry": {
-    "placeholders": { "amount": { "type": "String" } }
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
   },
   "onboardingNotifyTitle": "🔔 Reminders",
   "onboardingNotifyBody": "We'll remind you about payment days, limits and the monthly report",
@@ -470,5 +506,19 @@
   "statusPartial": "Partly paid",
   "statusPaid": "Paid",
   "statusSkipped": "Skipped",
-  "statusPending": "Pending"
+  "statusPending": "Pending",
+  "monthReceipt": "Monthly receipt",
+  "monthReceiptHint": "Income and expense list — share or PDF",
+  "receiptIncome": "Income",
+  "receiptExpense": "Expense",
+  "receiptBalances": "Balance at month end",
+  "receiptTotalIncome": "Total income",
+  "receiptTotalExpense": "Total expense",
+  "receiptResult": "Balance",
+  "receiptFund": "from fund",
+  "receiptEmptySection": "No records",
+  "receiptWithFund": "Include personal fund spending",
+  "receiptShareText": "Share as text",
+  "receiptSharePdf": "Share as PDF",
+  "receiptFileName": "receipt"
 }
