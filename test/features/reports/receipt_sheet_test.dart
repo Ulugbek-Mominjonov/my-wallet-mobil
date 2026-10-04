@@ -13,19 +13,17 @@ final _month = MonthKey.parse('2026-10');
 
 ReceiptEntry _entry({
   required String id,
-  required TransactionKind kind,
+  required ReceiptLine line,
   required String name,
   required int amount,
-  bool fromFund = false,
 }) => (
   id: id,
-  kind: kind,
+  line: line,
   occurredOn: '2026-10-03',
   amount: Money(amount),
   name: name,
   category: 'Kategoriya',
-  account: fromFund ? 'Shaxsiy fond' : 'Karta',
-  fromFund: fromFund,
+  account: line == ReceiptLine.fundSpent ? 'Shaxsiy fond' : 'Karta',
 );
 
 final _receipt = Receipt(
@@ -34,22 +32,27 @@ final _receipt = Receipt(
   entries: [
     _entry(
       id: 'i1',
-      kind: TransactionKind.income,
+      line: ReceiptLine.income,
       name: 'Oylik',
       amount: 500000000,
     ),
     _entry(
       id: 'e1',
-      kind: TransactionKind.expense,
+      line: ReceiptLine.expense,
       name: 'Bozor',
       amount: 12000000,
     ),
     _entry(
       id: 'e2',
-      kind: TransactionKind.expense,
+      line: ReceiptLine.fundSpent,
       name: 'Taksi',
       amount: 3000000,
-      fromFund: true,
+    ),
+    _entry(
+      id: 'a1',
+      line: ReceiptLine.allocation,
+      name: 'Shaxsiy fond',
+      amount: 20000000,
     ),
   ],
   balances: {'Karta': const Money(488000000)},
@@ -104,6 +107,9 @@ void main() {
     expect(sharedText.single, contains('Oila byudjeti'));
     expect(sharedText.single, contains('03.10  Bozor'));
     expect(sharedText.single, contains('Taksi (fonddan)'));
+    // Fondga ajratma — alohida bo'limda (BR-061).
+    expect(sharedText.single, contains('FONDGA AJRATMA'));
+    expect(sharedText.single, contains('Shaxsiy fond'));
   });
 
   testWidgets('fond o‘chirilsa — chek matnida ham chiqmaydi', (tester) async {

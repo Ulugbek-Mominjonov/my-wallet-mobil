@@ -2816,6 +2816,18 @@ abstract class AppL10n {
   /// In uz, this message translates to:
   /// **'chek'**
   String get receiptFileName;
+
+  /// No description provided for @receiptAllocation.
+  ///
+  /// In uz, this message translates to:
+  /// **'Fondga ajratma'**
+  String get receiptAllocation;
+
+  /// No description provided for @receiptAllocated.
+  ///
+  /// In uz, this message translates to:
+  /// **'Jami ajratma'**
+  String get receiptAllocated;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

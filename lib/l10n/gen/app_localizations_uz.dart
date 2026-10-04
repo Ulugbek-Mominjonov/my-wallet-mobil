@@ -1550,4 +1550,10 @@ class AppL10nUz extends AppL10n {
 
   @override
   String get receiptFileName => 'chek';
+
+  @override
+  String get receiptAllocation => 'Fondga ajratma';
+
+  @override
+  String get receiptAllocated => 'Jami ajratma';
 }

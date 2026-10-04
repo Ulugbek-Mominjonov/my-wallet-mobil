@@ -12,25 +12,25 @@ const ReceiptLabels _labels = (
   totalExpense: 'Jami xarajat',
   result: 'Qoldiq',
   fund: 'fonddan',
+  allocation: 'Fondga ajratma',
+  allocated: 'Jami ajratma',
   empty: 'Yozuv yo‘q',
 );
 
 ReceiptEntry _entry({
   required String id,
-  required TransactionKind kind,
+  required ReceiptLine line,
   required String date,
   required int amount,
   required String name,
-  bool fromFund = false,
 }) => (
   id: id,
-  kind: kind,
+  line: line,
   occurredOn: date,
   amount: Money(amount),
   name: name,
   category: 'Kategoriya',
-  account: fromFund ? 'Shaxsiy fond' : 'Karta',
-  fromFund: fromFund,
+  account: line == ReceiptLine.fundSpent ? 'Shaxsiy fond' : 'Karta',
 );
 
 Receipt _receipt() => Receipt(
@@ -39,25 +39,24 @@ Receipt _receipt() => Receipt(
   entries: [
     _entry(
       id: 'i1',
-      kind: TransactionKind.income,
+      line: ReceiptLine.income,
       date: '2026-10-01',
       amount: 500000000,
       name: 'Oylik',
     ),
     _entry(
       id: 'e1',
-      kind: TransactionKind.expense,
+      line: ReceiptLine.expense,
       date: '2026-10-03',
       amount: 12000000,
       name: 'Bozor',
     ),
     _entry(
       id: 'e2',
-      kind: TransactionKind.expense,
+      line: ReceiptLine.fundSpent,
       date: '2026-10-04',
       amount: 3000000,
       name: 'Taksi',
-      fromFund: true,
     ),
   ],
   balances: {'Karta': const Money(488000000), 'Naqd': Money.zero},

@@ -520,5 +520,7 @@
   "receiptWithFund": "Include personal fund spending",
   "receiptShareText": "Share as text",
   "receiptSharePdf": "Share as PDF",
-  "receiptFileName": "receipt"
+  "receiptFileName": "receipt",
+  "receiptAllocation": "To personal fund",
+  "receiptAllocated": "Total allocated"
 }

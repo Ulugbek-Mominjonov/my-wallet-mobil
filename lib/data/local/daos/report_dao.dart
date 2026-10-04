@@ -41,15 +41,18 @@ typedef IncomeTypeLine = ({
 typedef MonthState = ({bool opened, bool closed});
 
 /// Chek (hisobot ro'yxati) qatori: oydagi bitta amal.
+/// Chek qatori turi — serverdagi `private.month_entries` bilan bir xil:
+/// daromad, oddiy xarajat, fonddan sarf (BR-063) yoki fondga ajratma (BR-061).
+enum ReceiptLine { income, expense, fundSpent, allocation }
+
 typedef ReceiptEntry = ({
   String id,
-  TransactionKind kind,
+  ReceiptLine line,
   String occurredOn,
   Money amount,
   String name,
   String? category,
   String account,
-  bool fromFund,
 });
 
 /// Dashboard va hisobotlar uchun agregatlar — serverdagi `report_month` bilan
@@ -497,19 +500,22 @@ class ReportDao extends DatabaseAccessor<AppDatabase> with _$ReportDaoMixin {
       ],
       readsFrom: {transactions, accounts, categories},
     ).get();
+    const lines = {
+      'income': ReceiptLine.income,
+      'expense': ReceiptLine.expense,
+      'fund_spent': ReceiptLine.fundSpent,
+      'allocation': ReceiptLine.allocation,
+    };
     return [
       for (final row in rows)
         (
           id: row.read<String>('id'),
-          kind: TransactionKind.fromWire(row.read<String>('kind')),
+          line: lines[row.read<String>('line')] ?? ReceiptLine.expense,
           occurredOn: row.read<String>('occurred_on'),
-          amount: Money(row.read<int>('amount_base'), base),
-          name: row.read<String?>('payee')?.trim().isNotEmpty ?? false
-              ? row.read<String>('payee')
-              : row.read<String?>('category') ?? row.read<String>('account'),
+          amount: Money(row.read<int>('amount'), base),
+          name: row.read<String>('name'),
           category: row.read<String?>('category'),
           account: row.read<String>('account'),
-          fromFund: row.read<int>('from_fund') == 1,
         ),
     ];
   }

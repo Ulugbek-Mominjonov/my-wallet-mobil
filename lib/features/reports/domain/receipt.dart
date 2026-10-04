@@ -13,6 +13,8 @@ typedef ReceiptLabels = ({
   String totalExpense,
   String result,
   String fund,
+  String allocation,
+  String allocated,
   String empty,
 });
 
@@ -35,17 +37,27 @@ final class Receipt {
   final Currency base;
 
   Iterable<ReceiptEntry> get incomes =>
-      entries.where((e) => e.kind == TransactionKind.income);
+      entries.where((e) => e.line == ReceiptLine.income);
+
+  /// Fondga ajratmalar (BR-061) — xarajat emas, alohida ko'rsatiladi.
+  Iterable<ReceiptEntry> get allocations =>
+      entries.where((e) => e.line == ReceiptLine.allocation);
 
   /// [withFund] `false` bo'lsa shaxsiy fond sarflari chiqarib tashlanadi.
   Iterable<ReceiptEntry> expenses({required bool withFund}) => entries.where(
-    (e) => e.kind == TransactionKind.expense && (withFund || !e.fromFund),
+    (e) =>
+        e.line == ReceiptLine.expense ||
+        (withFund && e.line == ReceiptLine.fundSpent),
   );
 
   Money totalIncome() => _sum(incomes);
 
   Money totalExpense({required bool withFund}) =>
       _sum(expenses(withFund: withFund));
+
+  /// Ajratma jami — xarajat jamiga qo'shilmaydi (bir pul ikki marta
+  /// sanalmasligi uchun: ajratma + fonddan sarf).
+  Money totalAllocated() => _sum(allocations);
 
   Money _sum(Iterable<ReceiptEntry> rows) =>
       rows.fold(Money(0, base), (sum, row) => sum + row.amount);
@@ -74,7 +86,9 @@ String receiptText(
       lines.add(labels.empty);
     } else {
       for (final row in rows) {
-        final fund = row.fromFund ? ' (${labels.fund})' : '';
+        final fund = row.line == ReceiptLine.fundSpent
+            ? ' (${labels.fund})'
+            : '';
         lines.add(
           '${day(row.occurredOn)}  ${row.name}$fund — ${money(row.amount)}',
         );
@@ -91,6 +105,9 @@ String receiptText(
     receipt.expenses(withFund: withFund),
     labels.totalExpense,
   );
+  if (receipt.allocations.isNotEmpty) {
+    section(labels.allocation, receipt.allocations, labels.allocated);
+  }
 
   if (receipt.balances.isNotEmpty) {
     lines.add(labels.balances.toUpperCase());

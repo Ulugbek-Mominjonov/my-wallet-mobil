@@ -520,5 +520,7 @@
   "receiptWithFund": "Включая траты личного фонда",
   "receiptShareText": "Поделиться текстом",
   "receiptSharePdf": "Поделиться PDF",
-  "receiptFileName": "chek"
+  "receiptFileName": "chek",
+  "receiptAllocation": "В личный фонд",
+  "receiptAllocated": "Итого в фонд"
 }

@@ -930,5 +930,7 @@
   "receiptWithFund": "Shaxsiy fond sarflari ham",
   "receiptShareText": "Matn sifatida ulashish",
   "receiptSharePdf": "PDF qilib ulashish",
-  "receiptFileName": "chek"
+  "receiptFileName": "chek",
+  "receiptAllocation": "Fondga ajratma",
+  "receiptAllocated": "Jami ajratma"
 }

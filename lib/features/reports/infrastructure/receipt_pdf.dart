@@ -94,7 +94,8 @@ Future<Uint8List> buildReceiptPdf(
       for (final entry in rows)
         row(
           '${_day(entry.occurredOn)}  '
-          '${entry.name}${entry.fromFund ? ' (${labels.fund})' : ''}',
+          '${entry.name}'
+          '${entry.line == ReceiptLine.fundSpent ? ' (${labels.fund})' : ''}',
           money(entry.amount),
         ),
     pw.Divider(height: 6, thickness: 0.5),
@@ -134,6 +135,13 @@ Future<Uint8List> buildReceiptPdf(
           labels.totalExpense,
           receipt.totalExpense(withFund: withFund),
         ),
+        if (receipt.allocations.isNotEmpty)
+          ...section(
+            labels.allocation,
+            receipt.allocations,
+            labels.allocated,
+            receipt.totalAllocated(),
+          ),
         if (receipt.balances.isNotEmpty) ...[
           pw.SizedBox(height: 8),
           pw.Text(

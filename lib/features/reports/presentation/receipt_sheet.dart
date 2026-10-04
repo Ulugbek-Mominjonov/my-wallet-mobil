@@ -43,6 +43,8 @@ class _ReceiptSheetState extends ConsumerState<ReceiptSheet> {
     totalExpense: l10n.receiptTotalExpense,
     result: l10n.receiptResult,
     fund: l10n.receiptFund,
+    allocation: l10n.receiptAllocation,
+    allocated: l10n.receiptAllocated,
     empty: l10n.receiptEmptySection,
   );
 
