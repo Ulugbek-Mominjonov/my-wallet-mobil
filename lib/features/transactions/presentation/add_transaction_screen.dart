@@ -50,115 +50,128 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
     final state = ref.watch(addTransactionProvider);
     final controller = ref.read(addTransactionProvider.notifier);
     final today = ref.watch(clockProvider).today();
+    final systemKeyboardOpen = MediaQuery.viewInsetsOf(context).bottom > 0;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(state.isEditing ? l10n.editTitle : l10n.addTitle),
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-              child: SegmentedButton<TransactionKind>(
-                segments: [
-                  ButtonSegment(
-                    value: TransactionKind.expense,
-                    label: Text(l10n.kindExpense),
-                  ),
-                  ButtonSegment(
-                    value: TransactionKind.income,
-                    label: Text(l10n.kindIncome),
-                  ),
-                  ButtonSegment(
-                    value: TransactionKind.transfer,
-                    label: Text(l10n.kindTransfer),
-                  ),
-                ],
-                selected: {state.kind},
-                // Tahrirlashda tur o'zgarmaydi (domen qoidasi).
-                onSelectionChanged: state.isEditing
-                    ? null
-                    : (selection) => controller.selectKind(selection.first),
-              ),
-            ),
-            if (state.kind == TransactionKind.expense && !state.isEditing)
+      // Bo'sh joyga tegilsa klaviatura yopiladi — tor ekranda formaga
+      // qaytishning eng tez yo'li.
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: FocusManager.instance.primaryFocus?.unfocus,
+        child: SafeArea(
+          child: Column(
+            children: [
               Padding(
-                padding: const EdgeInsets.only(top: AppSpacing.sm),
-                child: QuickActionsBar(
-                  onSaved: () => context.pop(),
-                  onEdit: controller.prefill,
-                ),
-              ),
-            AmountDisplay(entry: state.entry, currency: state.currency),
-            // Qisqa forma — hammasi birdan quriladi (dangasa ro'yxat emas).
-            Expanded(
-              child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    AccountChips(
-                      selectedId: state.accountId,
-                      excludeFund: state.kind == TransactionKind.income,
-                      onSelected: controller.selectAccount,
+                child: SegmentedButton<TransactionKind>(
+                  segments: [
+                    ButtonSegment(
+                      value: TransactionKind.expense,
+                      label: Text(l10n.kindExpense),
                     ),
-                    if (state.isTransfer)
-                      AccountChips(
-                        label: l10n.fieldTo,
-                        selectedId: state.toAccountId,
-                        excludeId: state.accountId,
-                        onSelected: controller.selectToAccount,
-                      )
-                    else
-                      CategoryGrid(
-                        kind: state.kind == TransactionKind.income
-                            ? CategoryKind.income
-                            : CategoryKind.expense,
-                        selectedId: state.categoryId,
-                        onSelected: controller.selectCategory,
-                        onCreate: (name) async {
-                          await controller.createCategory(name);
-                        },
-                      ),
-                    DateChips(
-                      today: today,
-                      selected: state.occurredOn,
-                      onSelected: controller.selectDate,
+                    ButtonSegment(
+                      value: TransactionKind.income,
+                      label: Text(l10n.kindIncome),
                     ),
-                    FxFields(state: state),
-                    FundHint(state: state),
-                    MonthAttributionField(state: state),
-                    if (!state.isTransfer) ...[
-                      PayeeField(state: state),
-                      DebtChips(selectedId: state.debtId),
-                    ],
-                    TagChips(selected: state.tagIds),
-                    const NoteField(),
-                    ReceiptField(state: state),
+                    ButtonSegment(
+                      value: TransactionKind.transfer,
+                      label: Text(l10n.kindTransfer),
+                    ),
                   ],
+                  selected: {state.kind},
+                  // Tahrirlashda tur o'zgarmaydi (domen qoidasi).
+                  onSelectionChanged: state.isEditing
+                      ? null
+                      : (selection) => controller.selectKind(selection.first),
                 ),
               ),
-            ),
-            AmountKeypad(onKey: controller.press),
-            Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              child: SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: state.canSave
-                      ? () => unawaited(_save(context, ref))
-                      : null,
-                  child: state.saving
-                      ? const SizedBox.square(
-                          dimension: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+              if (state.kind == TransactionKind.expense && !state.isEditing)
+                Padding(
+                  padding: const EdgeInsets.only(top: AppSpacing.sm),
+                  child: QuickActionsBar(
+                    onSaved: () => context.pop(),
+                    onEdit: controller.prefill,
+                  ),
+                ),
+              AmountDisplay(entry: state.entry, currency: state.currency),
+              // Qisqa forma — hammasi birdan quriladi (dangasa ro'yxat emas).
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      AccountChips(
+                        selectedId: state.accountId,
+                        excludeFund: state.kind == TransactionKind.income,
+                        onSelected: controller.selectAccount,
+                      ),
+                      if (state.isTransfer)
+                        AccountChips(
+                          label: l10n.fieldTo,
+                          selectedId: state.toAccountId,
+                          excludeId: state.accountId,
+                          onSelected: controller.selectToAccount,
                         )
-                      : Text(l10n.actionSave),
+                      else
+                        CategoryGrid(
+                          kind: state.kind == TransactionKind.income
+                              ? CategoryKind.income
+                              : CategoryKind.expense,
+                          selectedId: state.categoryId,
+                          onSelected: controller.selectCategory,
+                          onCreate: (name) async {
+                            await controller.createCategory(name);
+                          },
+                        ),
+                      DateChips(
+                        today: today,
+                        selected: state.occurredOn,
+                        onSelected: controller.selectDate,
+                      ),
+                      FxFields(state: state),
+                      FundHint(state: state),
+                      MonthAttributionField(state: state),
+                      if (!state.isTransfer) ...[
+                        PayeeField(state: state),
+                        DebtChips(selectedId: state.debtId),
+                      ],
+                      TagChips(selected: state.tagIds),
+                      const NoteField(),
+                      ReceiptField(state: state),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+              // Matn yozilayotganda (tizim klaviaturasi ochiq) raqamli
+              // klaviatura yashiriladi: aks holda ekran ikki klaviatura orasida
+              // qisilib, maydonlar ko'rinmay qoladi. Klaviatura yopilishi bilan
+              // o'z joyiga qaytadi.
+              if (!systemKeyboardOpen) AmountKeypad(onKey: controller.press),
+              Padding(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: state.canSave
+                        ? () => unawaited(_save(context, ref))
+                        : null,
+                    child: state.saving
+                        ? const SizedBox.square(
+                            dimension: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(l10n.actionSave),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

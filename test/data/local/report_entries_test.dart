@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:my_wallet/data/local/daos/report_dao.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:wallet_domain/testing.dart';
-import 'package:wallet_domain/wallet_domain.dart';
 
 import '../../support/fixtures.dart';
 

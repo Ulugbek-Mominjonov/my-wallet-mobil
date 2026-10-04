@@ -14,6 +14,7 @@ import 'package:my_wallet/data/repositories/local_ledger.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
 import 'package:my_wallet/features/transactions/application/add_transaction_controller.dart';
 import 'package:my_wallet/features/transactions/presentation/add_transaction_screen.dart';
+import 'package:my_wallet/features/transactions/presentation/amount_keypad.dart';
 import 'package:wallet_domain/wallet_domain.dart';
 
 import '../../support/pump_app.dart';
@@ -181,6 +182,27 @@ void main() {
           .onPressed,
       isNotNull,
     );
+  });
+
+  testWidgets('tizim klaviaturasi ochilganda raqamli klaviatura yashirinadi', (
+    tester,
+  ) async {
+    await openSheet(tester);
+    expect(find.byType(AmountKeypad), findsOneWidget);
+
+    // Tizim klaviaturasi ochilishi — ekran pastdan qisiladi.
+    tester.view.viewInsets = const FakeViewPadding(bottom: 600);
+    addTearDown(tester.view.reset);
+    await tester.pumpAndSettle();
+
+    // Raqamli klaviatura o'rnini bo'shatadi; saqlash tugmasi joyida qoladi.
+    expect(find.byType(AmountKeypad), findsNothing);
+    expect(find.widgetWithText(FilledButton, 'Saqlash'), findsOneWidget);
+
+    // Klaviatura yopilgach qaytadi.
+    tester.view.viewInsets = FakeViewPadding.zero;
+    await tester.pumpAndSettle();
+    expect(find.byType(AmountKeypad), findsOneWidget);
   });
 
   testWidgets('oddiy hisob: 12 000 + 3 000 = 15 000', (tester) async {
