@@ -485,14 +485,27 @@ class ReportDao extends DatabaseAccessor<AppDatabase> with _$ReportDaoMixin {
   }) async {
     final rows = await customSelect(
       '''
-      SELECT t.id, t.kind, t.occurred_on, t.amount_base, t.payee, t.note,
-             c.name AS category, a.name AS account,
-             a.type = 'personal_fund' AS from_fund
+      SELECT t.id, t.occurred_on,
+             CASE WHEN t.kind = 'income' THEN 'income'
+                  WHEN t.kind = 'transfer' THEN 'allocation'
+                  WHEN a.type = 'personal_fund' THEN 'fund_spent'
+                  ELSE 'expense' END AS line,
+             CASE WHEN t.kind = 'transfer' AND a.type = 'personal_fund'
+                  THEN -t.amount_base ELSE t.amount_base END AS amount,
+             CASE WHEN t.kind = 'transfer'
+                  THEN COALESCE(ta.name, a.name)
+                  ELSE COALESCE(NULLIF(t.payee, ''), c.name, a.name) END AS name,
+             c.name AS category, a.name AS account
         FROM transactions t
         JOIN accounts a ON a.id = t.account_id
+        LEFT JOIN accounts ta ON ta.id = t.to_account_id
         LEFT JOIN categories c ON c.id = t.category_id
        WHERE t.household_id = ?1 AND t.budget_month = ?2
-         AND t.deleted_at IS NULL AND t.kind IN ('income', 'expense')
+         AND t.deleted_at IS NULL
+         -- O'tkazma faqat bir tomoni fond bo'lsa byudjetga taalluqli
+         -- (BR-061); karta → naqd o'tkazma ro'yxatga kirmaydi.
+         AND (t.kind <> 'transfer'
+              OR (a.type = 'personal_fund') <> (ta.type = 'personal_fund'))
        ORDER BY t.occurred_on, t.created_at''',
       variables: [
         Variable.withString(householdId),

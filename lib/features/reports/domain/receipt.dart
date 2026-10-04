@@ -39,25 +39,29 @@ final class Receipt {
   Iterable<ReceiptEntry> get incomes =>
       entries.where((e) => e.line == ReceiptLine.income);
 
-  /// Fondga ajratmalar (BR-061) — xarajat emas, alohida ko'rsatiladi.
-  Iterable<ReceiptEntry> get allocations =>
-      entries.where((e) => e.line == ReceiptLine.allocation);
+  /// Fonddan sarflar (BR-063) — xarajat jamiga kirmaydi, chunki o'sha pul
+  /// fondga ajratilganda allaqachon sanalgan.
+  Iterable<ReceiptEntry> get fundSpends =>
+      entries.where((e) => e.line == ReceiptLine.fundSpent);
 
-  /// [withFund] `false` bo'lsa shaxsiy fond sarflari chiqarib tashlanadi.
+  /// Oy xarajati: oddiy xarajat va fondga ajratma (BR-061) — hisobotdagi
+  /// "Xarajat" bilan bir xil. [withFund] `true` bo'lsa ro'yxatga fonddan
+  /// sarflar ham qo'shiladi (jamga emas, alohida qatorga).
   Iterable<ReceiptEntry> expenses({required bool withFund}) => entries.where(
     (e) =>
         e.line == ReceiptLine.expense ||
+        e.line == ReceiptLine.allocation ||
         (withFund && e.line == ReceiptLine.fundSpent),
   );
 
   Money totalIncome() => _sum(incomes);
 
-  Money totalExpense({required bool withFund}) =>
-      _sum(expenses(withFund: withFund));
+  /// Jami xarajat — fonddan sarflarsiz (ular alohida ko'rsatiladi).
+  Money totalExpense({required bool withFund}) => _sum(
+    expenses(withFund: withFund).where((e) => e.line != ReceiptLine.fundSpent),
+  );
 
-  /// Ajratma jami — xarajat jamiga qo'shilmaydi (bir pul ikki marta
-  /// sanalmasligi uchun: ajratma + fonddan sarf).
-  Money totalAllocated() => _sum(allocations);
+  Money totalFundSpent() => _sum(fundSpends);
 
   Money _sum(Iterable<ReceiptEntry> rows) =>
       rows.fold(Money(0, base), (sum, row) => sum + row.amount);
@@ -102,11 +106,11 @@ String receiptText(
   section(labels.income, receipt.incomes, labels.totalIncome);
   section(
     labels.expense,
-    receipt.expenses(withFund: withFund),
+    receipt.expenses(withFund: false),
     labels.totalExpense,
   );
-  if (receipt.allocations.isNotEmpty) {
-    section(labels.allocation, receipt.allocations, labels.allocated);
+  if (withFund && receipt.fundSpends.isNotEmpty) {
+    section(labels.allocation, receipt.fundSpends, labels.allocated);
   }
 
   if (receipt.balances.isNotEmpty) {

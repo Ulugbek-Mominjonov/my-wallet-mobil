@@ -521,6 +521,7 @@
   "receiptShareText": "Share as text",
   "receiptSharePdf": "Share as PDF",
   "receiptFileName": "receipt",
-  "receiptAllocation": "To personal fund",
-  "receiptAllocated": "Total allocated"
+  "receiptAllocation": "Spent from fund",
+  "receiptAllocated": "Total from fund",
+  "receiptFailed": "Could not build the receipt"
 }

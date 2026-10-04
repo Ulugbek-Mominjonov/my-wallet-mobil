@@ -84,8 +84,11 @@ void main() {
       final text = receiptText(receipt, labels: _labels, withFund: false);
 
       expect(text, isNot(contains('Taksi')));
+      // BR-063: fonddan sarf xarajat jamiga kirmaydi (pul fondga
+      // ajratilganda allaqachon sanalgan) — tugmacha faqat ko'rinishga ta'sir.
       expect(receipt.totalExpense(withFund: false), const Money(12000000));
-      expect(receipt.totalExpense(withFund: true), const Money(15000000));
+      expect(receipt.totalExpense(withFund: true), const Money(12000000));
+      expect(receipt.totalFundSpent(), const Money(3000000));
     });
 
     test('bo‘sh oy — bo‘lim o‘rniga izoh', () {

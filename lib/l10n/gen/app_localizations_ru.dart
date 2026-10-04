@@ -1552,8 +1552,11 @@ class AppL10nRu extends AppL10n {
   String get receiptFileName => 'chek';
 
   @override
-  String get receiptAllocation => 'В личный фонд';
+  String get receiptAllocation => 'Траты из фонда';
 
   @override
-  String get receiptAllocated => 'Итого в фонд';
+  String get receiptAllocated => 'Итого из фонда';
+
+  @override
+  String get receiptFailed => 'Не удалось собрать чек';
 }

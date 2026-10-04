@@ -131,16 +131,16 @@ Future<Uint8List> buildReceiptPdf(
         ),
         ...section(
           labels.expense,
-          receipt.expenses(withFund: withFund),
+          receipt.expenses(withFund: false),
           labels.totalExpense,
-          receipt.totalExpense(withFund: withFund),
+          receipt.totalExpense(withFund: false),
         ),
-        if (receipt.allocations.isNotEmpty)
+        if (withFund && receipt.fundSpends.isNotEmpty)
           ...section(
             labels.allocation,
-            receipt.allocations,
+            receipt.fundSpends,
             labels.allocated,
-            receipt.totalAllocated(),
+            receipt.totalFundSpent(),
           ),
         if (receipt.balances.isNotEmpty) ...[
           pw.SizedBox(height: 8),

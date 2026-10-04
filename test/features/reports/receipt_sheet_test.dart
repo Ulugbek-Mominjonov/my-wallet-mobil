@@ -106,9 +106,10 @@ void main() {
     expect(sharedText, hasLength(1));
     expect(sharedText.single, contains('Oila byudjeti'));
     expect(sharedText.single, contains('03.10  Bozor'));
+    // Fonddan sarf — alohida bo'limda (BR-063), ajratma esa xarajat
+    // ro'yxatida (BR-061: pul byudjetdan chiqqan).
+    expect(sharedText.single, contains('FONDDAN SARFLAR'));
     expect(sharedText.single, contains('Taksi (fonddan)'));
-    // Fondga ajratma — alohida bo'limda (BR-061).
-    expect(sharedText.single, contains('FONDGA AJRATMA'));
     expect(sharedText.single, contains('Shaxsiy fond'));
   });
 
@@ -122,6 +123,27 @@ void main() {
 
     expect(sharedText.single, isNot(contains('Taksi')));
     expect(sharedText.single, contains('Bozor'));
+  });
+
+  testWidgets('xato bo‘lsa — spinner emas, sabab ko‘rsatiladi', (tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          receiptProvider(_month)
+              .overrideWith((ref) async => throw Exception('baza xatosi')),
+        ],
+        child: MaterialApp(
+          locale: const Locale('uz'),
+          localizationsDelegates: AppL10n.localizationsDelegates,
+          supportedLocales: AppL10n.supportedLocales,
+          home: Scaffold(body: ReceiptSheet(_month)),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Chekni tayyorlab bo‘lmadi'), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsNothing);
   });
 
   testWidgets('PDF: fayl nomi oy bilan, ichida haqiqiy PDF', (tester) async {

@@ -1552,8 +1552,11 @@ class AppL10nEn extends AppL10n {
   String get receiptFileName => 'receipt';
 
   @override
-  String get receiptAllocation => 'To personal fund';
+  String get receiptAllocation => 'Spent from fund';
 
   @override
-  String get receiptAllocated => 'Total allocated';
+  String get receiptAllocated => 'Total from fund';
+
+  @override
+  String get receiptFailed => 'Could not build the receipt';
 }

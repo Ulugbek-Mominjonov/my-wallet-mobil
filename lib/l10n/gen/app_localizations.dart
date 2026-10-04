@@ -2820,14 +2820,20 @@ abstract class AppL10n {
   /// No description provided for @receiptAllocation.
   ///
   /// In uz, this message translates to:
-  /// **'Fondga ajratma'**
+  /// **'Fonddan sarflar'**
   String get receiptAllocation;
 
   /// No description provided for @receiptAllocated.
   ///
   /// In uz, this message translates to:
-  /// **'Jami ajratma'**
+  /// **'Jami fonddan'**
   String get receiptAllocated;
+
+  /// No description provided for @receiptFailed.
+  ///
+  /// In uz, this message translates to:
+  /// **'Chekni tayyorlab bo‘lmadi'**
+  String get receiptFailed;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

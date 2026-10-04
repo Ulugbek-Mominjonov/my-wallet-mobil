@@ -4,6 +4,7 @@ import 'package:my_wallet/core/design_system/tokens.dart';
 import 'package:my_wallet/core/format/format_context.dart';
 import 'package:my_wallet/core/format/month_format.dart';
 import 'package:my_wallet/core/share/file_sharer.dart';
+import 'package:my_wallet/core/widgets/empty_state.dart';
 import 'package:my_wallet/features/reports/application/receipt_controller.dart';
 import 'package:my_wallet/features/reports/domain/receipt.dart';
 import 'package:my_wallet/features/reports/infrastructure/receipt_pdf.dart';
@@ -62,7 +63,7 @@ class _ReceiptSheetState extends ConsumerState<ReceiptSheet> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
-    final receipt = ref.watch(receiptProvider(widget.month)).value;
+    final state = ref.watch(receiptProvider(widget.month));
     final title = formatMonthTitle(
       l10n,
       year: widget.month.year,
@@ -96,12 +97,18 @@ class _ReceiptSheetState extends ConsumerState<ReceiptSheet> {
               onChanged: (value) => setState(() => _withFund = value),
               title: Text(l10n.receiptWithFund),
             ),
-            if (receipt == null)
-              const Padding(
-                padding: EdgeInsets.all(AppSpacing.lg),
-                child: Center(child: CircularProgressIndicator.adaptive()),
+            // Xato yuz bersa ko'rsatiladi: avval `.value` ishlatilgani uchun
+            // xato yashirinib, spinner aylanaverardi.
+            if (state case AsyncError(:final error))
+              Padding(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                child: EmptyState(
+                  icon: Icons.error_outline,
+                  title: l10n.receiptFailed,
+                  message: '$error',
+                ),
               )
-            else ...[
+            else if (state.value case final receipt?) ...[
               _Preview(receipt: receipt, withFund: _withFund),
               const SizedBox(height: AppSpacing.md),
               FilledButton.icon(
@@ -141,7 +148,11 @@ class _ReceiptSheetState extends ConsumerState<ReceiptSheet> {
                 icon: const Icon(Icons.picture_as_pdf_outlined),
                 label: Text(l10n.receiptSharePdf),
               ),
-            ],
+            ] else
+              const Padding(
+                padding: EdgeInsets.all(AppSpacing.lg),
+                child: Center(child: CircularProgressIndicator.adaptive()),
+              ),
           ],
         ),
       ),

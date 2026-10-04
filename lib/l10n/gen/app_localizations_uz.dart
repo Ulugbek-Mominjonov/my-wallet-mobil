@@ -1552,8 +1552,11 @@ class AppL10nUz extends AppL10n {
   String get receiptFileName => 'chek';
 
   @override
-  String get receiptAllocation => 'Fondga ajratma';
+  String get receiptAllocation => 'Fonddan sarflar';
 
   @override
-  String get receiptAllocated => 'Jami ajratma';
+  String get receiptAllocated => 'Jami fonddan';
+
+  @override
+  String get receiptFailed => 'Chekni tayyorlab bo‘lmadi';
 }

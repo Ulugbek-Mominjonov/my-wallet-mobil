@@ -521,6 +521,7 @@
   "receiptShareText": "Поделиться текстом",
   "receiptSharePdf": "Поделиться PDF",
   "receiptFileName": "chek",
-  "receiptAllocation": "В личный фонд",
-  "receiptAllocated": "Итого в фонд"
+  "receiptAllocation": "Траты из фонда",
+  "receiptAllocated": "Итого из фонда",
+  "receiptFailed": "Не удалось собрать чек"
 }

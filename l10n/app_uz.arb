@@ -931,6 +931,7 @@
   "receiptShareText": "Matn sifatida ulashish",
   "receiptSharePdf": "PDF qilib ulashish",
   "receiptFileName": "chek",
-  "receiptAllocation": "Fondga ajratma",
-  "receiptAllocated": "Jami ajratma"
+  "receiptAllocation": "Fonddan sarflar",
+  "receiptAllocated": "Jami fonddan",
+  "receiptFailed": "Chekni tayyorlab bo‘lmadi"
 }
