@@ -7,6 +7,8 @@ Format — [Keep a Changelog](https://keepachangelog.com/), versiyalar —
 
 ## [Unreleased]
 
+## [1.0.0] — 2026-10-05
+
 ### Qo'shildi
 
 - Xulosa: oy hisobi tarmoqsiz (qoldiq, prognoz, kuniga, orttirgan %),
@@ -21,6 +23,10 @@ Format — [Keep a Changelog](https://keepachangelog.com/), versiyalar —
 - Bildirishnomalar: push, qurilmadagi eslatmalar, Telegram; sozlamalar
   (tema, til, eksport, akkauntni o'chirish).
 - Ilova belgisi va splash, qulaylik (katta shrift, TalkBack, kontrast).
+- Oylik chek: daromad va xarajatlar ro'yxati (shaxsiy fondni qo'shish yoki
+  chiqarish bilan) — matn yoki PDF qilib ulashish.
+- Dizayn sayqali: yagona tipografika va kartalar, ro'yxatlarda rangli
+  belgilar; amal qo'shishda raqamli klaviatura yig'iladigan bo'ldi.
 
 ## [0.1.0] — 2026-09-18
 
