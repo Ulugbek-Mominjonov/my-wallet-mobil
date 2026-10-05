@@ -5,6 +5,7 @@ import 'package:my_wallet/core/design_system/tokens.dart';
 import 'package:my_wallet/core/format/month_format.dart';
 import 'package:my_wallet/core/widgets/app_card.dart';
 import 'package:my_wallet/core/widgets/money_text.dart';
+import 'package:my_wallet/core/widgets/section_label.dart';
 import 'package:my_wallet/data/local/daos/ledger_dao.dart';
 import 'package:my_wallet/features/payments/presentation/plan_tile.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
@@ -88,14 +89,15 @@ class _BalanceCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(l10n.dashBalance, style: theme.textTheme.labelLarge),
+          SectionLabel(l10n.dashBalance),
+          const SizedBox(height: AppSpacing.xs),
           MoneyText(
             report.balance.minor,
             currency: report.balance.currency.code,
             tone: report.balance.isNegative
                 ? MoneyTone.expense
                 : MoneyTone.neutral,
-            style: theme.textTheme.headlineMedium,
+            style: theme.textTheme.displaySmall,
           ),
           const SizedBox(height: AppSpacing.md),
           if (current != null)
@@ -174,8 +176,8 @@ class _AllocationCard extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(l10n.fundAllocation, style: theme.textTheme.titleSmall),
-          const SizedBox(height: AppSpacing.xs),
+          SectionLabel(l10n.fundAllocation),
+          const SizedBox(height: AppSpacing.sm),
           if (plan == null)
             Text(l10n.fundAllocationNone)
           else
@@ -225,10 +227,7 @@ class _MonthsCard extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-            child: Text(
-              l10n.fundMonths,
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
+            child: SectionLabel(l10n.fundMonths),
           ),
           for (final (:month, :allocated, :spent) in report.months.reversed)
             ListTile(

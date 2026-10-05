@@ -9,6 +9,7 @@ import 'package:my_wallet/core/format/month_format.dart';
 import 'package:my_wallet/core/widgets/app_card.dart';
 import 'package:my_wallet/core/widgets/empty_state.dart';
 import 'package:my_wallet/core/widgets/money_text.dart';
+import 'package:my_wallet/core/widgets/section_label.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/sync/sync_providers.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
@@ -84,7 +85,7 @@ class _DebtsList extends StatelessWidget {
             top: AppSpacing.md,
             bottom: AppSpacing.xs,
           ),
-          child: Text(title, style: Theme.of(context).textTheme.titleSmall),
+          child: SectionLabel(title),
         ),
         for (final line in lines) _DebtCard(line: line),
       ];
@@ -377,7 +378,7 @@ class DebtDetailScreen extends ConsumerWidget {
               top: AppSpacing.lg,
               bottom: AppSpacing.xs,
             ),
-            child: Text(l10n.debtPayments, style: theme.textTheme.titleSmall),
+            child: SectionLabel(l10n.debtPayments),
           ),
           if (payments != null && payments.isEmpty)
             Text(l10n.debtNoPayments)

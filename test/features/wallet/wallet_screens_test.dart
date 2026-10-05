@@ -191,7 +191,7 @@ void main() {
 
     testWidgets("tafsilot: bog'langan to'lovlar; arxivlash", (tester) async {
       await pumpWallet(tester, db, path: '/wallet/debts/car');
-      expect(find.text("Bog'langan to'lovlar"), findsOneWidget);
+      expect(find.text("BOG'LANGAN TO'LOVLAR"), findsOneWidget);
       expect(find.text('2026-10-10'), findsOneWidget);
       await tester.tap(find.byTooltip('Arxivlash'));
       await tester.pumpAndSettle();

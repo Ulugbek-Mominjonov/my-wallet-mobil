@@ -6,6 +6,7 @@ import 'package:my_wallet/core/widgets/app_card.dart';
 import 'package:my_wallet/core/widgets/empty_state.dart';
 import 'package:my_wallet/core/widgets/line_chart.dart';
 import 'package:my_wallet/core/widgets/money_text.dart';
+import 'package:my_wallet/core/widgets/section_label.dart';
 import 'package:my_wallet/features/wallet/application/wallet_controller.dart';
 import 'package:my_wallet/features/wallet/application/wallet_reports.dart';
 import 'package:my_wallet/l10n/gen/app_localizations.dart';
@@ -76,12 +77,13 @@ class _TotalCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(l10n.savingsTotal, style: theme.textTheme.labelLarge),
+          SectionLabel(l10n.savingsTotal),
+          const SizedBox(height: AppSpacing.xs),
           MoneyText(
             totals.totalBalance.minor,
             currency: totals.totalBalance.currency.code,
             tone: MoneyTone.auto,
-            style: theme.textTheme.headlineMedium,
+            style: theme.textTheme.displaySmall,
           ),
           const SizedBox(height: AppSpacing.sm),
           Wrap(
