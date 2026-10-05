@@ -19,15 +19,18 @@ import 'package:wallet_domain/wallet_domain.dart';
 /// Bosh ekran vidjetiga qiymat yozish (E33-T01). Testda soxta funksiya.
 typedef HomeWidgetWriter = Future<void> Function(Map<String, String> data);
 
-/// Android vidjeti nomi (`HomeScreenWidget.kt`).
-const homeWidgetName = 'HomeScreenWidget';
+/// Android vidjeti klassining to'liq nomi (`HomeScreenWidget.kt` — `main`
+/// manbasida, ya'ni paket qo'shimchasiz). `androidName` klassni ilova
+/// id'siga qo'shib qidiradi, dev/staging'da esa id `.dev`/`.stg` bilan —
+/// natijada klass topilmay, har yozuvda ClassNotFoundException bo'lardi.
+const homeWidgetName = 'uz.mywallet.app.HomeScreenWidget';
 
 final Provider<HomeWidgetWriter> homeWidgetWriterProvider = Provider(
   (ref) => (data) async {
     for (final MapEntry(:key, :value) in data.entries) {
       await HomeWidget.saveWidgetData<String>(key, value);
     }
-    await HomeWidget.updateWidget(androidName: homeWidgetName);
+    await HomeWidget.updateWidget(qualifiedAndroidName: homeWidgetName);
   },
 );
 

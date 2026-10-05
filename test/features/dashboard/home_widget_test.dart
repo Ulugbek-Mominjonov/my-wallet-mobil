@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -5,6 +7,7 @@ import 'package:my_wallet/core/config/app_config.dart';
 import 'package:my_wallet/core/security/privacy_mode.dart';
 import 'package:my_wallet/core/widgets/money_text.dart';
 import 'package:my_wallet/data/local/database.dart';
+import 'package:my_wallet/features/dashboard/application/home_widget_sync.dart';
 import 'package:my_wallet/features/household/application/invite_links.dart';
 
 import '../../support/test_database.dart';
@@ -73,6 +76,21 @@ void main() {
     expect(parseShortcutRoute('mywallet://add?kind=hack'), '/add');
     expect(parseShortcutRoute('mywallet://settings'), isNull);
     expect(parseShortcutRoute('salom'), isNull);
+  });
+
+  test('vidjet klassi — Kotlin manbasidagi to‘liq nom', () {
+    // `androidName` klassni ilova id'siga qo'shib qidiradi, dev/staging'da
+    // esa id `.dev`/`.stg` bilan — shuning uchun to'liq nom beriladi. Nom
+    // Kotlin faylidan ajralib qolmasin (E2E shu sabab qulab turgan edi).
+    final source = File(
+      'android/app/src/main/kotlin/uz/mywallet/app/HomeScreenWidget.kt',
+    );
+    expect(source.existsSync(), isTrue, reason: '${source.path} topilmadi');
+    final package = RegExp(
+      r'^package (.+)$',
+      multiLine: true,
+    ).firstMatch(source.readAsStringSync())?.group(1)?.trim();
+    expect(homeWidgetName, '$package.HomeScreenWidget');
   });
 
   test('havolalar sxemasi muhitga mos (Android manifesti bilan bir xil)', () {

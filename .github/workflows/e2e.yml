@@ -97,3 +97,11 @@ jobs:
             patrol test --device emulator-5554
             --dart-define-from-file=env/dev.json
             --dart-define=MAILPIT_URL=http://10.0.2.2:54324
+      # Qulasa — patrol hisoboti (qaysi qadamda to'xtagani) loglarsiz ko'rinsin.
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: failure()
+        with:
+          name: patrol-hisobot
+          path: mobil/build/app/reports/androidTests/connected/
+          retention-days: 7
+          if-no-files-found: ignore
