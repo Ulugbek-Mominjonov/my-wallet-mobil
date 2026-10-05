@@ -606,6 +606,28 @@ void main() {
     expect(find.text("500 so'm"), findsOneWidget);
   });
 
+  testWidgets("klaviatura: surilganda yig'iladi, summaga bosilsa qaytadi", (
+    tester,
+  ) async {
+    await openSheet(tester);
+    expect(find.byType(AmountKeypad), findsOneWidget);
+
+    // Maydonlarni ko'rish uchun barmoq bilan surish — klaviatura yig'iladi
+    // va ro'yxatga ko'proq joy qoladi.
+    await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -80));
+    await tester.pumpAndSettle();
+    expect(find.byType(AmountKeypad), findsNothing);
+
+    // Summaga bosilsa qaytadi (tugma ham bor).
+    await tester.tap(find.byType(AmountDisplay));
+    await tester.pumpAndSettle();
+    expect(find.byType(AmountKeypad), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Klaviaturani yashirish'));
+    await tester.pumpAndSettle();
+    expect(find.byType(AmountKeypad), findsNothing);
+  });
+
   group("E29: ko'p valyuta (BR-191..194)", () {
     setUp(
       () => db.batch((batch) {

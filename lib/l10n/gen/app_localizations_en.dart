@@ -405,6 +405,12 @@ class AppL10nEn extends AppL10n {
   String get fieldAmount => 'Amount';
 
   @override
+  String get keypadShow => 'Number pad';
+
+  @override
+  String get keypadHide => 'Hide number pad';
+
+  @override
   String get fieldAccount => 'Account';
 
   @override

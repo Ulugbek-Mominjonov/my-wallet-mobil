@@ -259,6 +259,7 @@ class _PickerChip<T> extends StatelessWidget {
           }
           final id = await showModalBottomSheet<String>(
             context: context,
+            useRootNavigator: true,
             builder: (context) => SafeArea(
               child: ListView(
                 shrinkWrap: true,

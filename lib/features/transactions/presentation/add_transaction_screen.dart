@@ -29,6 +29,18 @@ class AddTransactionScreen extends ConsumerStatefulWidget {
 }
 
 class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
+  /// Raqamli klaviatura ochiqmi. Summa kiritilgach u ko'proq xalaqit beradi:
+  /// maydonlar ro'yxati suriladigan bo'lsa — o'zi yig'iladi, summaga bosilsa
+  /// yoki tugma bilan qaytadi.
+  bool _keypad = true;
+
+  void _showKeypad({required bool show}) {
+    if (_keypad == show) return;
+    // Ikki klaviatura birga turmasin.
+    if (show) FocusManager.instance.primaryFocus?.unfocus();
+    setState(() => _keypad = show);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -60,6 +72,9 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
       // qaytishning eng tez yo'li.
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
+        // Ekran o'lchamidagi "nomsiz tugma" semantikaga tushmasin: TalkBack
+        // uchun bu harakatning ma'nosi yo'q (klaviatura orqaga bilan yopiladi).
+        excludeFromSemantics: true,
         onTap: FocusManager.instance.primaryFocus?.unfocus,
         child: SafeArea(
           child: Column(
@@ -67,6 +82,8 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: SegmentedButton<TransactionKind>(
+                  // Belgi matndan joy olib, nomni ikki qatorga tushirardi.
+                  showSelectedIcon: false,
                   segments: [
                     ButtonSegment(
                       value: TransactionKind.expense,
@@ -96,60 +113,95 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                     onEdit: controller.prefill,
                   ),
                 ),
-              AmountDisplay(entry: state.entry, currency: state.currency),
+              Row(
+                children: [
+                  // Simmetriya: tugma eni qadar bo'sh joy (summa markazda).
+                  const SizedBox(width: kMinInteractiveDimension),
+                  Expanded(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => _showKeypad(show: true),
+                      child: AmountDisplay(
+                        entry: state.entry,
+                        currency: state.currency,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    tooltip: _keypad ? l10n.keypadHide : l10n.keypadShow,
+                    icon: Icon(
+                      _keypad ? Icons.keyboard_arrow_down : Icons.dialpad,
+                    ),
+                    onPressed: () => _showKeypad(show: !_keypad),
+                  ),
+                ],
+              ),
               // Qisqa forma — hammasi birdan quriladi (dangasa ro'yxat emas).
               Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      AccountChips(
-                        // O'tkazmada ikki guruh chip yonma-yon turadi —
-                        // qaysi biri manba ekani yorliqdan ko'rinsin.
-                        label: state.isTransfer
-                            ? l10n.fieldFrom
-                            : l10n.fieldAccount,
-                        selectedId: state.accountId,
-                        excludeFund: state.kind == TransactionKind.income,
-                        onSelected: controller.selectAccount,
-                      ),
-                      if (state.isTransfer)
+                child: NotificationListener<ScrollUpdateNotification>(
+                  // Foydalanuvchi maydonlarni ko'rish uchun pastga sursa —
+                  // klaviatura yig'iladi va ro'yxat ko'proq joy oladi.
+                  // `dragDetails` faqat barmoq bilan surishda bo'ladi:
+                  // dastur o'zi surganda (maydonga o'tish) tegilmaydi.
+                  onNotification: (notification) {
+                    if (notification.dragDetails != null &&
+                        (notification.scrollDelta ?? 0) > 0) {
+                      _showKeypad(show: false);
+                    }
+                    return false;
+                  },
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
                         AccountChips(
-                          label: l10n.fieldTo,
-                          selectedId: state.toAccountId,
-                          excludeId: state.accountId,
-                          onSelected: controller.selectToAccount,
-                        )
-                      else
-                        CategoryGrid(
-                          kind: state.kind == TransactionKind.income
-                              ? CategoryKind.income
-                              : CategoryKind.expense,
-                          selectedId: state.categoryId,
-                          onSelected: controller.selectCategory,
-                          onCreate: (name) async {
-                            await controller.createCategory(name);
-                          },
+                          // O'tkazmada ikki guruh chip yonma-yon turadi —
+                          // qaysi biri manba ekani yorliqdan ko'rinsin.
+                          label: state.isTransfer
+                              ? l10n.fieldFrom
+                              : l10n.fieldAccount,
+                          selectedId: state.accountId,
+                          excludeFund: state.kind == TransactionKind.income,
+                          onSelected: controller.selectAccount,
                         ),
-                      DateChips(
-                        today: today,
-                        selected: state.occurredOn,
-                        onSelected: controller.selectDate,
-                      ),
-                      FxFields(state: state),
-                      FundHint(state: state),
-                      MonthAttributionField(state: state),
-                      if (!state.isTransfer) ...[
-                        PayeeField(state: state),
-                        DebtChips(selectedId: state.debtId),
+                        if (state.isTransfer)
+                          AccountChips(
+                            label: l10n.fieldTo,
+                            selectedId: state.toAccountId,
+                            excludeId: state.accountId,
+                            onSelected: controller.selectToAccount,
+                          )
+                        else
+                          CategoryGrid(
+                            kind: state.kind == TransactionKind.income
+                                ? CategoryKind.income
+                                : CategoryKind.expense,
+                            selectedId: state.categoryId,
+                            onSelected: controller.selectCategory,
+                            onCreate: (name) async {
+                              await controller.createCategory(name);
+                            },
+                          ),
+                        DateChips(
+                          today: today,
+                          selected: state.occurredOn,
+                          onSelected: controller.selectDate,
+                        ),
+                        FxFields(state: state),
+                        FundHint(state: state),
+                        MonthAttributionField(state: state),
+                        if (!state.isTransfer) ...[
+                          PayeeField(state: state),
+                          DebtChips(selectedId: state.debtId),
+                        ],
+                        TagChips(selected: state.tagIds),
+                        const NoteField(),
+                        ReceiptField(state: state),
                       ],
-                      TagChips(selected: state.tagIds),
-                      const NoteField(),
-                      ReceiptField(state: state),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -157,7 +209,8 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
               // klaviatura yashiriladi: aks holda ekran ikki klaviatura orasida
               // qisilib, maydonlar ko'rinmay qoladi. Klaviatura yopilishi bilan
               // o'z joyiga qaytadi.
-              if (!systemKeyboardOpen) AmountKeypad(onKey: controller.press),
+              if (_keypad && !systemKeyboardOpen)
+                AmountKeypad(onKey: controller.press),
               Padding(
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 child: SizedBox(

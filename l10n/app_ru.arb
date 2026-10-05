@@ -132,6 +132,8 @@
   "actionBack": "Назад",
   "fieldDay": "День",
   "fieldAmount": "Сумма",
+  "keypadShow": "Цифровая клавиатура",
+  "keypadHide": "Скрыть клавиатуру",
   "fieldAccount": "Счёт",
   "monthThis": "Этот месяц",
   "monthPrevious": "Прошлый месяц",

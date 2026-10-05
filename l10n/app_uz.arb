@@ -221,6 +221,8 @@
   "actionBack": "Orqaga",
   "fieldDay": "Kuni",
   "fieldAmount": "Summa",
+  "keypadShow": "Raqamli klaviatura",
+  "keypadHide": "Klaviaturani yashirish",
   "fieldAccount": "Hisob",
   "monthThis": "Shu oy",
   "monthPrevious": "Oldingi oy",

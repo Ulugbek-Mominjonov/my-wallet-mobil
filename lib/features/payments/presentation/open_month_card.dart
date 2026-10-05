@@ -60,6 +60,7 @@ class OpenMonthCard extends ConsumerWidget {
     }
     final confirmed = await showModalBottomSheet<bool>(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       builder: (context) =>
           _PreviewSheet(preview: preview, currency: startup.currency),

@@ -406,6 +406,12 @@ class AppL10nRu extends AppL10n {
   String get fieldAmount => 'Сумма';
 
   @override
+  String get keypadShow => 'Цифровая клавиатура';
+
+  @override
+  String get keypadHide => 'Скрыть клавиатуру';
+
+  @override
   String get fieldAccount => 'Счёт';
 
   @override

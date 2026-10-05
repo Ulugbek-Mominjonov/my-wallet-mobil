@@ -23,6 +23,7 @@ class ReceiptSheet extends ConsumerStatefulWidget {
   static Future<void> open(BuildContext context, MonthKey month) =>
       showModalBottomSheet<void>(
         context: context,
+        useRootNavigator: true,
         isScrollControlled: true,
         showDragHandle: true,
         builder: (_) => ReceiptSheet(month),

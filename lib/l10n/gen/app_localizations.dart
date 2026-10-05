@@ -765,6 +765,18 @@ abstract class AppL10n {
   /// **'Summa'**
   String get fieldAmount;
 
+  /// No description provided for @keypadShow.
+  ///
+  /// In uz, this message translates to:
+  /// **'Raqamli klaviatura'**
+  String get keypadShow;
+
+  /// No description provided for @keypadHide.
+  ///
+  /// In uz, this message translates to:
+  /// **'Klaviaturani yashirish'**
+  String get keypadHide;
+
   /// No description provided for @fieldAccount.
   ///
   /// In uz, this message translates to:

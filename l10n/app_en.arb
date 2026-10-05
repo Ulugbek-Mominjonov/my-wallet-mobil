@@ -132,6 +132,8 @@
   "actionBack": "Back",
   "fieldDay": "Day",
   "fieldAmount": "Amount",
+  "keypadShow": "Number pad",
+  "keypadHide": "Hide number pad",
   "fieldAccount": "Account",
   "monthThis": "This month",
   "monthPrevious": "Previous month",

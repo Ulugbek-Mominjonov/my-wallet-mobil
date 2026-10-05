@@ -33,6 +33,8 @@ Future<void> quickPay(BuildContext context, WidgetRef ref, PlannedItem plan) {
 Future<void> showPayPlanSheet(BuildContext context, PlannedItem plan) =>
     showModalBottomSheet<void>(
       context: context,
+      // Qobiqning pastki paneli varaqni yopib qolmasin.
+      useRootNavigator: true,
       isScrollControlled: true,
       builder: (_) => PayPlanSheet(plan: plan),
     );

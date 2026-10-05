@@ -216,25 +216,22 @@ class _SectionTile extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: AppSpacing.sm),
-                  // Uzun summa yoki katta shriftda ham qirqilmasin —
-                  // kerak bo'lsa bir oz kichrayadi.
+                  // Uzun summa qirqilmasin: `MoneyText` eni yetmasa kichrayadi.
                   Flexible(
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerRight,
-                      child: switch ((amount, subtitle)) {
-                        (final amount?, _) => MoneyText(
-                          amount.minor,
-                          currency: amount.currency.code,
-                          tone: tone,
-                        ),
-                        (_, final subtitle?) => Text(
-                          subtitle,
-                          style: theme.textTheme.bodyMedium,
-                        ),
-                        _ => const SizedBox.shrink(),
-                      },
-                    ),
+                    child: switch ((amount, subtitle)) {
+                      (final amount?, _) => MoneyText(
+                        amount.minor,
+                        currency: amount.currency.code,
+                        tone: tone,
+                      ),
+                      (_, final subtitle?) => Text(
+                        subtitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                      _ => const SizedBox.shrink(),
+                    },
                   ),
                 ],
               ),

@@ -406,6 +406,12 @@ class AppL10nUz extends AppL10n {
   String get fieldAmount => 'Summa';
 
   @override
+  String get keypadShow => 'Raqamli klaviatura';
+
+  @override
+  String get keypadHide => 'Klaviaturani yashirish';
+
+  @override
   String get fieldAccount => 'Hisob';
 
   @override

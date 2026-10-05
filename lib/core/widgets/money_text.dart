@@ -44,17 +44,23 @@ class MoneyText extends ConsumerWidget {
           );
     final base = style ?? DefaultTextStyle.of(context).style;
 
-    return Text(
-      text,
-      // TalkBack "•••" ni belgi-belgi o'qimasin.
-      semanticsLabel: hidden
-          ? Localizations.of<AppL10n>(context, AppL10n)?.amountHidden
-          : null,
-      maxLines: 1,
-      softWrap: false,
-      style: base.copyWith(
-        color: _color(context) ?? base.color,
-        fontFeatures: const [FontFeature.tabularFigures()],
+    // Joy tor bo'lsa summa kichrayadi — valyuta nomi ("so'm") qirqilib
+    // qolmasin. Eni cheklanmagan joyda (Row ichida) hech narsa o'zgarmaydi.
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      alignment: AlignmentDirectional.centerStart,
+      child: Text(
+        text,
+        // TalkBack "•••" ni belgi-belgi o'qimasin.
+        semanticsLabel: hidden
+            ? Localizations.of<AppL10n>(context, AppL10n)?.amountHidden
+            : null,
+        maxLines: 1,
+        softWrap: false,
+        style: base.copyWith(
+          color: _color(context) ?? base.color,
+          fontFeatures: const [FontFeature.tabularFigures()],
+        ),
       ),
     );
   }
