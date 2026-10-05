@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:my_wallet/core/design_system/tokens.dart';
 import 'package:my_wallet/core/widgets/app_card.dart';
 import 'package:my_wallet/core/widgets/money_text.dart';
+import 'package:my_wallet/core/widgets/section_label.dart';
+import 'package:my_wallet/core/widgets/tonal_icon.dart';
 import 'package:my_wallet/data/local/daos/ledger_dao.dart';
 import 'package:my_wallet/features/transactions/application/transaction_list_controller.dart';
 import 'package:my_wallet/features/wallet/application/wallet_controller.dart';
@@ -40,22 +42,26 @@ class WalletScreen extends ConsumerWidget {
         _AccountsCard(report: accounts),
         const SizedBox(height: AppSpacing.md),
         _SectionTile(
+          icon: Icons.person_outline,
           title: l10n.dashFund,
           amount: fund?.balance,
           onTap: () => context.push('/wallet/fund'),
         ),
         _SectionTile(
+          icon: Icons.savings_outlined,
           title: l10n.dashSavings,
           amount: savings?.totals.totalBalance,
           onTap: () => context.push('/wallet/savings'),
         ),
         _SectionTile(
+          icon: Icons.handshake_outlined,
           title: l10n.walletDebts,
           amount: debts?.totals.net,
           tone: MoneyTone.auto,
           onTap: () => context.push('/wallet/debts'),
         ),
         _SectionTile(
+          icon: Icons.flag_outlined,
           title: l10n.walletGoals,
           subtitle: goals == null || goals.lines.isEmpty
               ? null
@@ -64,6 +70,7 @@ class WalletScreen extends ConsumerWidget {
           onTap: () => context.push('/wallet/goals'),
         ),
         _SectionTile(
+          icon: Icons.speed_outlined,
           title: l10n.walletLimits,
           onTap: () => context.push('/wallet/limits'),
         ),
@@ -98,12 +105,7 @@ class _AccountsCard extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             child: Row(
               children: [
-                Expanded(
-                  child: Text(
-                    l10n.walletAccounts,
-                    style: theme.textTheme.titleMedium,
-                  ),
-                ),
+                Expanded(child: SectionLabel(l10n.walletAccounts)),
                 TextButton.icon(
                   icon: const Icon(Icons.swap_horiz),
                   label: Text(l10n.kindTransfer),
@@ -114,15 +116,15 @@ class _AccountsCard extends ConsumerWidget {
           ),
           if (report.negativeCash.isNotEmpty)
             ListTile(
-              leading: Icon(
+              leading: const TonalIcon(
                 Icons.warning_amber,
-                color: context.appColors.expense,
+                tone: IconTone.expense,
               ),
               title: Text(l10n.walletNegativeCash),
             ),
           for (final (:account, :balance) in report.lines)
             ListTile(
-              leading: Icon(accountTypeIcon(account.type)),
+              leading: TonalIcon(accountTypeIcon(account.type)),
               title: Text(account.name),
               subtitle: Text(accountTypeLabel(l10n, account.type)),
               trailing: MoneyText(
@@ -171,6 +173,7 @@ class _AccountsCard extends ConsumerWidget {
 
 class _SectionTile extends StatelessWidget {
   const new({
+    required this.icon,
     required this.title,
     required this.onTap,
     this.amount,
@@ -178,6 +181,7 @@ class _SectionTile extends StatelessWidget {
     this.tone = MoneyTone.neutral,
   });
 
+  final IconData icon;
   final String title;
   final VoidCallback onTap;
   final Money? amount;
@@ -185,25 +189,66 @@ class _SectionTile extends StatelessWidget {
   final MoneyTone tone;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-    child: AppCard(
-      onTap: onTap,
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(title, style: Theme.of(context).textTheme.titleMedium),
-          ),
-          if (amount case final amount?)
-            MoneyText(amount.minor, currency: amount.currency.code, tone: tone)
-          else if (subtitle case final subtitle?)
-            Text(subtitle),
-          const SizedBox(width: AppSpacing.sm),
-          const Icon(Icons.chevron_right),
-        ],
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+      child: AppCard(
+        onTap: onTap,
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg,
+          vertical: AppSpacing.md,
+        ),
+        child: Row(
+          children: [
+            TonalIcon(icon),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.sm),
+                  // Uzun summa yoki katta shriftda ham qirqilmasin —
+                  // kerak bo'lsa bir oz kichrayadi.
+                  Flexible(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerRight,
+                      child: switch ((amount, subtitle)) {
+                        (final amount?, _) => MoneyText(
+                          amount.minor,
+                          currency: amount.currency.code,
+                          tone: tone,
+                        ),
+                        (_, final subtitle?) => Text(
+                          subtitle,
+                          style: theme.textTheme.bodyMedium,
+                        ),
+                        _ => const SizedBox.shrink(),
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            Icon(
+              Icons.chevron_right,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 /// BR-020: hisob turi nomi.

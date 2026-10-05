@@ -535,6 +535,9 @@ class AppL10nUz extends AppL10n {
   }
 
   @override
+  String get fieldFrom => 'Qayerdan';
+
+  @override
   String get fieldTo => 'Qayerga';
 
   @override

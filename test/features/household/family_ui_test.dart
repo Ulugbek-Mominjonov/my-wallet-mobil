@@ -178,7 +178,7 @@ void main() {
     await openApp(tester);
     await tester.pumpAndSettle();
 
-    expect(find.text("A'zolar kesimi"), findsOneWidget);
+    expect(find.text("A'ZOLAR KESIMI"), findsOneWidget);
     expect(find.textContaining('75%'), findsOneWidget);
     expect(find.textContaining('25%'), findsOneWidget);
   });

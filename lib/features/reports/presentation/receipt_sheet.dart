@@ -5,6 +5,7 @@ import 'package:my_wallet/core/format/format_context.dart';
 import 'package:my_wallet/core/format/month_format.dart';
 import 'package:my_wallet/core/share/file_sharer.dart';
 import 'package:my_wallet/core/widgets/empty_state.dart';
+import 'package:my_wallet/core/widgets/money_text.dart';
 import 'package:my_wallet/features/reports/application/receipt_controller.dart';
 import 'package:my_wallet/features/reports/domain/receipt.dart';
 import 'package:my_wallet/features/reports/infrastructure/receipt_pdf.dart';
@@ -177,10 +178,12 @@ class _Preview extends StatelessWidget {
         _Line(
           label: '${l10n.receiptIncome} (${receipt.incomes.length})',
           amount: receipt.totalIncome(),
+          tone: MoneyTone.income,
         ),
         _Line(
           label: '${l10n.receiptExpense} (${expenses.length})',
           amount: receipt.totalExpense(withFund: withFund),
+          tone: MoneyTone.expense,
         ),
       ],
     );
@@ -188,17 +191,29 @@ class _Preview extends StatelessWidget {
 }
 
 class _Line extends StatelessWidget {
-  const new({required this.label, required this.amount});
+  const new({required this.label, required this.amount, required this.tone});
 
   final String label;
   final Money amount;
+  final MoneyTone tone;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [Text(label), Text(amount.toString())],
-    ),
-  );
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: theme.textTheme.bodyLarge),
+          MoneyText(
+            amount.minor,
+            currency: amount.currency.code,
+            tone: tone,
+            style: theme.textTheme.titleMedium,
+          ),
+        ],
+      ),
+    );
+  }
 }

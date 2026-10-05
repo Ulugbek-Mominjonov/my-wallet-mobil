@@ -99,7 +99,12 @@ void main() {
           ),
         );
       }
-      await tester.tap(find.widgetWithText(ChoiceChip, 'Oziq-ovqat'));
+      // Kategoriya chiplari klaviatura ustidagi oynachada — avval ko'rinadigan
+      // joyga suriladi (kichik ekranda ro'yxat tagida qolishi mumkin).
+      final category = find.widgetWithText(ChoiceChip, 'Oziq-ovqat');
+      await tester.ensureVisible(category);
+      await tester.pumpAndSettle();
+      await tester.tap(category);
       await tester.pumpAndSettle();
 
       await expectLater(

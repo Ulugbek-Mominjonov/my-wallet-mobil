@@ -179,6 +179,7 @@
       }
     }
   },
+  "fieldFrom": "Откуда",
   "fieldTo": "Куда",
   "dateToday": "Сегодня",
   "dateYesterday": "Вчера",

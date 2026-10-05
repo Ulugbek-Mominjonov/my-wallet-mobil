@@ -534,6 +534,9 @@ class AppL10nEn extends AppL10n {
   }
 
   @override
+  String get fieldFrom => 'From';
+
+  @override
   String get fieldTo => 'To';
 
   @override

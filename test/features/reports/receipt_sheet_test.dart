@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:my_wallet/core/design_system/app_theme.dart';
 import 'package:my_wallet/core/share/file_sharer.dart';
 import 'package:my_wallet/data/local/daos/report_dao.dart';
 import 'package:my_wallet/features/reports/application/receipt_controller.dart';
@@ -85,6 +86,8 @@ void main() {
           }),
         ],
         child: MaterialApp(
+          // `MoneyText` ilova mavzusidagi semantik ranglarni o'qiydi.
+          theme: buildAppTheme(Brightness.light),
           locale: const Locale('uz'),
           localizationsDelegates: AppL10n.localizationsDelegates,
           supportedLocales: AppL10n.supportedLocales,
@@ -133,6 +136,8 @@ void main() {
               .overrideWith((ref) async => throw Exception('baza xatosi')),
         ],
         child: MaterialApp(
+          // `MoneyText` ilova mavzusidagi semantik ranglarni o'qiydi.
+          theme: buildAppTheme(Brightness.light),
           locale: const Locale('uz'),
           localizationsDelegates: AppL10n.localizationsDelegates,
           supportedLocales: AppL10n.supportedLocales,

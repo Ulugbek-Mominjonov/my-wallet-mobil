@@ -8,6 +8,8 @@ import 'package:my_wallet/core/widgets/app_card.dart';
 import 'package:my_wallet/core/widgets/empty_state.dart';
 import 'package:my_wallet/core/widgets/money_text.dart';
 import 'package:my_wallet/core/widgets/month_switcher.dart';
+import 'package:my_wallet/core/widgets/section_label.dart';
+import 'package:my_wallet/core/widgets/tonal_icon.dart';
 import 'package:my_wallet/data/local/daos/ledger_dao.dart';
 import 'package:my_wallet/features/dashboard/application/dashboard_controller.dart';
 import 'package:my_wallet/features/dashboard/application/month_report.dart';
@@ -178,16 +180,18 @@ class _HeroCard extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(l10n.dashBalance, style: theme.textTheme.labelLarge),
+                SectionLabel(l10n.dashBalance),
+                const SizedBox(height: AppSpacing.xs),
+                // Oyning asosiy raqami — eng katta element.
                 MoneyText(
                   summary.balance.minor,
                   currency: summary.balance.currency.code,
                   tone: summary.balance.isNegative
                       ? MoneyTone.expense
                       : MoneyTone.neutral,
-                  style: theme.textTheme.headlineMedium,
+                  style: theme.textTheme.displaySmall,
                 ),
-                const SizedBox(height: AppSpacing.xs),
+                const SizedBox(height: AppSpacing.sm),
                 Text(
                   '${l10n.dashForecast}: '
                   '${moneyLabel(context, ref, summary.forecast)}',
@@ -299,8 +303,14 @@ class _StatsGrid extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: Theme.of(context).textTheme.labelMedium),
-            MoneyText(value.minor, currency: value.currency.code, tone: tone),
+            SectionLabel(label),
+            const SizedBox(height: AppSpacing.xs),
+            MoneyText(
+              value.minor,
+              currency: value.currency.code,
+              tone: tone,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
           ],
         ),
       ),
@@ -351,7 +361,7 @@ class _Section extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(title, style: Theme.of(context).textTheme.titleSmall),
+          SectionLabel(title),
           const SizedBox(height: AppSpacing.sm),
           child,
         ],
@@ -410,11 +420,16 @@ class _UpcomingCard extends ConsumerWidget {
           for (final (:plan, :status) in report.upcomingPayments.take(3))
             ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: Icon(switch (status) {
-                PlannedStatus.overdue => Icons.warning_amber,
-                PlannedStatus.partial => Icons.timelapse,
-                _ => Icons.event,
-              }),
+              leading: TonalIcon(
+                switch (status) {
+                  PlannedStatus.overdue => Icons.warning_amber,
+                  PlannedStatus.partial => Icons.timelapse,
+                  _ => Icons.event,
+                },
+                tone: status == PlannedStatus.overdue
+                    ? IconTone.expense
+                    : IconTone.neutral,
+              ),
               title: Text(plan.name),
               subtitle: Text(
                 [
@@ -688,12 +703,14 @@ class _FundSavingsRow extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: theme.textTheme.titleSmall),
+                SectionLabel(title),
+                const SizedBox(height: AppSpacing.xs),
                 MoneyText(
                   total.minor,
                   currency: total.currency.code,
                   style: theme.textTheme.titleLarge,
                 ),
+                const SizedBox(height: AppSpacing.xs),
                 for (final (label, value) in rows)
                   Text(
                     '$label: ${moneyLabel(context, ref, value)}',

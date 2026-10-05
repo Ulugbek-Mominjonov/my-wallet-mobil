@@ -1005,6 +1005,12 @@ abstract class AppL10n {
   /// **'Manzil summasi ({currency})'**
   String fieldToAmount(String currency);
 
+  /// No description provided for @fieldFrom.
+  ///
+  /// In uz, this message translates to:
+  /// **'Qayerdan'**
+  String get fieldFrom;
+
   /// No description provided for @fieldTo.
   ///
   /// In uz, this message translates to:

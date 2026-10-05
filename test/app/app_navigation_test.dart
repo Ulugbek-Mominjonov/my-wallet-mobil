@@ -24,7 +24,7 @@ void main() {
     await tester.tap(find.bySemanticsLabel('Hamyon'));
     await tester.pumpAndSettle();
     expect(find.byType(WalletScreen), findsOneWidget);
-    expect(find.text('Hisoblar'), findsOneWidget);
+    expect(find.text('HISOBLAR'), findsOneWidget);
   });
 
   testWidgets('＋ tugmasi yangi amal sahifasini ochadi va yopiladi', (

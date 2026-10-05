@@ -107,6 +107,11 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       AccountChips(
+                        // O'tkazmada ikki guruh chip yonma-yon turadi —
+                        // qaysi biri manba ekani yorliqdan ko'rinsin.
+                        label: state.isTransfer
+                            ? l10n.fieldFrom
+                            : l10n.fieldAccount,
                         selectedId: state.accountId,
                         excludeFund: state.kind == TransactionKind.income,
                         onSelected: controller.selectAccount,

@@ -534,6 +534,9 @@ class AppL10nRu extends AppL10n {
   }
 
   @override
+  String get fieldFrom => 'Откуда';
+
+  @override
   String get fieldTo => 'Куда';
 
   @override

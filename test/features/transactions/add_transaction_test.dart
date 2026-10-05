@@ -245,7 +245,7 @@ void main() {
     await tapKeys(tester, ['1', '000']);
     await tester.tap(find.text("O'tkazma"));
     await tester.pumpAndSettle();
-    expect(find.text('Qayerga'), findsOneWidget);
+    expect(find.text('QAYERGA'), findsOneWidget);
     expect(
       tester
           .widget<FilledButton>(find.widgetWithText(FilledButton, 'Saqlash'))

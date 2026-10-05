@@ -179,6 +179,7 @@
       }
     }
   },
+  "fieldFrom": "From",
   "fieldTo": "To",
   "dateToday": "Today",
   "dateYesterday": "Yesterday",

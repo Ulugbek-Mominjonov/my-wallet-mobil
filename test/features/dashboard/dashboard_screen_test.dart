@@ -43,7 +43,7 @@ void main() {
   testWidgets('stat bosilsa — filtrlangan amallar', (tester) async {
     await seedMonth(db, income: 1000000000, expense: 200000000);
     await pumpDashboard(tester, db);
-    await tester.tap(find.text('Daromad').first);
+    await tester.tap(find.text('DAROMAD'));
     await tester.pumpAndSettle();
     expect(find.text('Oylik'), findsOneWidget);
     expect(find.text('Oziq-ovqat'), findsNothing);
@@ -118,7 +118,7 @@ void main() {
     });
     await pumpDashboard(tester, db);
 
-    expect(find.text('Diqqat'), findsOneWidget);
+    expect(find.text('DIQQAT'), findsOneWidget);
     expect(find.textContaining('Oziq-ovqat'), findsWidgets);
     expect(find.textContaining('Netflix'), findsOneWidget);
   });

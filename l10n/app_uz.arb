@@ -311,6 +311,7 @@
       }
     }
   },
+  "fieldFrom": "Qayerdan",
   "fieldTo": "Qayerga",
   "dateToday": "Bugun",
   "dateYesterday": "Kecha",

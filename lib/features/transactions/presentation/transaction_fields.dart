@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_wallet/core/design_system/tokens.dart';
 import 'package:my_wallet/core/widgets/money_text.dart';
 import 'package:my_wallet/core/widgets/name_dialog.dart';
+import 'package:my_wallet/core/widgets/section_label.dart';
 import 'package:my_wallet/data/local/daos/ledger_dao.dart';
 import 'package:my_wallet/data/local/directory_providers.dart';
 import 'package:my_wallet/features/startup/application/startup_controller.dart';
@@ -427,13 +428,13 @@ class _Section extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+    padding: const EdgeInsets.only(bottom: AppSpacing.md),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (label != null) ...[
-          Text(label!, style: Theme.of(context).textTheme.labelMedium),
-          const SizedBox(height: AppSpacing.xs),
+        if (label case final label?) ...[
+          SectionLabel(label),
+          const SizedBox(height: AppSpacing.sm),
         ],
         child,
       ],

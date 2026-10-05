@@ -7,6 +7,7 @@ import 'package:my_wallet/core/design_system/tokens.dart';
 import 'package:my_wallet/core/widgets/empty_state.dart';
 import 'package:my_wallet/core/widgets/money_text.dart';
 import 'package:my_wallet/core/widgets/month_switcher.dart';
+import 'package:my_wallet/core/widgets/tonal_icon.dart';
 import 'package:my_wallet/data/local/daos/ledger_dao.dart';
 import 'package:my_wallet/data/local/database.dart';
 import 'package:my_wallet/data/local/directory_providers.dart';
@@ -388,12 +389,24 @@ class _TransactionTile extends ConsumerWidget {
       ),
       confirmDismiss: (_) => _delete(context, ref),
       child: ListTile(
-        leading: Icon(switch (kind) {
-          TransactionKind.income => Icons.south_west,
-          TransactionKind.expense => Icons.north_east,
-          TransactionKind.transfer => Icons.swap_horiz,
-        }),
-        title: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
+        leading: TonalIcon(
+          switch (kind) {
+            TransactionKind.income => Icons.south_west,
+            TransactionKind.expense => Icons.north_east,
+            TransactionKind.transfer => Icons.swap_horiz,
+          },
+          tone: switch (kind) {
+            TransactionKind.income => IconTone.income,
+            TransactionKind.expense => IconTone.expense,
+            TransactionKind.transfer => IconTone.neutral,
+          },
+        ),
+        title: Text(
+          title,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
         subtitle: subtitle.isEmpty
             ? null
             : Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
@@ -402,6 +415,7 @@ class _TransactionTile extends ConsumerWidget {
             TransactionKind.expense => -row.amount,
             _ => row.amount,
           },
+          style: Theme.of(context).textTheme.titleMedium,
           currency: currency,
           signed: kind != TransactionKind.transfer,
           tone: switch (kind) {
